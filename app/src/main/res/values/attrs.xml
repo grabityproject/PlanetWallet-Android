@@ -2,9 +2,22 @@
 <resources>
 
     <declare-styleable name="GlobalAttrDeclare">
-        <attr name="borderWidth" format="dimension" />
-    </declare-styleable>
 
+        <attr name="themeBackground" format="reference|color" />
+        <attr name="themeSrc" format="reference|color" />
+
+        <attr name="borderWidth" format="dimension" />
+        <attr name="borderColor" format="color" />
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="backgroundColor" format="color" />
+
+        <attr name="defaultTheme">
+            <enum name="NoTheme" value="0" />
+            <enum name="Dark" value="1" />
+            <enum name="Light" value="2" />
+        </attr>
+
+    </declare-styleable>
 
     <declare-styleable name="PlanetView">
         <attr name="data" format="string" />
@@ -13,7 +26,7 @@
 
     <declare-styleable name="RoundButton">
 
-        <attr name="cornerRadius" format="dimension" />
+        <attr name="cornerRadius" />
         <attr name="borderWidth" />
 
         <attr name="borderColorDisable" format="color" />
@@ -31,6 +44,14 @@
         <attr name="backgroundColorNormalGradientStart" format="color" />
         <attr name="backgroundColorNormalGradientEnd" format="color" />
 
+        <attr name="buttonType">
+            <flag name="A" value="1" />
+            <flag name="B" value="2" />
+            <flag name="C" value="3" />
+        </attr>
+
+        <attr name="defaultTheme" />
+
     </declare-styleable>
 
 
@@ -39,6 +60,10 @@
         <attr name="toolbarTitle" format="string" />
         <attr name="toolbarTitleColor" format="color" />
         <attr name="toolbarTitleIcon" format="reference" />
+        <attr name="toolbarBottomWidth" format="dimension" />
+        <attr name="toolbarBottomColor" format="color" />
+
+        <attr name="defaultTheme" />
 
     </declare-styleable>
 
@@ -49,7 +74,8 @@
 
     <declare-styleable name="CircleImageView">
         <attr name="borderWidth" />
-        <attr name="borderColor" format="color" />
+        <attr name="borderColor" />
+        <attr name="themeSrc" />
     </declare-styleable>
 
     <declare-styleable name="DotView">
@@ -62,14 +88,64 @@
         <attr name="start" format="color" />
         <attr name="end" format="color" />
         <attr name="direction">
-            <flag name="TOP_BOTTOM" value="1" />
-            <flag name="TR_BL" value="2" />
-            <flag name="BR_TL" value="3" />
-            <flag name="BOTTOM_TOP" value="4" />
-            <flag name="BL_TR" value="5" />
-            <flag name="LEFT_RIGHT" value="6" />
-            <flag name="TL_BR" value="7" />
+            <flag name="TOP_BOTTOM" value="0x0001" />
+            <flag name="TR_BL" value="0x0002" />
+            <flag name="BR_TL" value="0x0003" />
+            <flag name="BOTTOM_TOP" value="0x0004" />
+            <flag name="BL_TR" value="0x0005" />
+            <flag name="LEFT_RIGHT" value="0x0006" />
+            <flag name="TL_BR" value="0x0007" />
         </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="RoundRelativeLayout">
+
+        <attr name="cornerRadius" />
+        <attr name="borderWidth" />
+        <attr name="borderColor" />
+        <attr name="backgroundColor" />
+
+    </declare-styleable>
+
+    <declare-styleable name="RoundEditText">
+
+        <attr name="cornerRadius" />
+        <attr name="borderWidth" />
+        <attr name="borderColor" />
+        <attr name="focusBorderColor" format="color" />
+        <attr name="backgroundColor" />
+
+        <attr name="defaultTheme" />
+
+    </declare-styleable>
+
+    <declare-styleable name="SlideDrawerLayout">
+        <attr name="position">
+            <enum name="main" value="-1" />
+            <enum name="top" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+
+        <attr name="driect">
+            <enum name="main" value="-1" />
+            <enum name="top" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="BarcodeView">
+
+        <attr name="cornerRadius" />
+        <attr name="borderWidth" />
+        <attr name="borderColor" />
+        <attr name="backgroundColor" />
+
+        <attr name="addr" format="string"/>
 
     </declare-styleable>
 

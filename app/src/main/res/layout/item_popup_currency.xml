@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFF"
+    app:themeBackground="#000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/listHeight">
+
+        <TextView
+            android:id="@+id/text_item_popup_currency"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="한국어"
+            android:textColor="#000"
+            android:textSize="14dp"
+            android:gravity="center_vertical"
+            android:paddingStart="20dp"
+            />
+
+    </RelativeLayout>
+
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

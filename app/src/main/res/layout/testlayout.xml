@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <io.grabity.planetwallet.Widgets.BarcodeView
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_margin="10dp"
+        >
+    </io.grabity.planetwallet.Widgets.BarcodeView>
+
+
+    <io.grabity.planetwallet.Widgets.BarcodeView
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_centerInParent="true">
+
+    </io.grabity.planetwallet.Widgets.BarcodeView>
+
+
+
+
+
+
+</RelativeLayout>

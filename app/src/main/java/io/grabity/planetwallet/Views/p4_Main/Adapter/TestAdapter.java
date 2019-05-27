@@ -23,7 +23,7 @@ public class TestAdapter extends AdvanceArrayAdapter< String > {
     @Override
     public void bindData( ViewMapper viewMapper, String item, int position ) {
         ( ( TestItem ) viewMapper ).textName.setText( item );
-        ( ( TestItem ) viewMapper ).textCoin.setText( String.valueOf( Math.random( ) * 20000 ) );
+        ( ( TestItem ) viewMapper ).textCoin.setText( String.valueOf( Integer.parseInt( item ) * 11111 ) );
     }
 
     class TestItem extends ViewMapper {

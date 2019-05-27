@@ -18,6 +18,7 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
@@ -911,4 +912,37 @@ public class Utils {
             return null;
         }
     }
+
+    public static < T extends View > ArrayList< T > getAllViewsFromParentView( ViewGroup parentView, Class< T > findType ) {
+        ArrayList< ViewGroup > viewGroups = new ArrayList<>( );
+        viewGroups.add( parentView );
+        ArrayList< T > items = new ArrayList<>( );
+
+        int v = viewGroups.size( );
+        int t = 0;
+
+        while ( true ) {
+            for ( int i = 0; i < viewGroups.get( t ).getChildCount( ); i++ ) {
+
+                if ( viewGroups.get( t ).getChildAt( i ).getClass( ).equals( findType ) ) {
+
+                    items.add( ( T ) viewGroups.get( t ).getChildAt( i ) );
+
+                } else if ( viewGroups.get( t ).getChildAt( i ) instanceof ViewGroup ) {
+
+                    viewGroups.add( ( ViewGroup ) viewGroups.get( t ).getChildAt( i ) );
+
+                }
+
+            }
+            if ( v == viewGroups.size( ) && t + 1 == v ) {
+                break;
+            }
+            v = viewGroups.size( );
+            t++;
+        }
+
+        return items;
+    }
+
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="32dp"
+    android:paddingTop="126dp"
+    android:paddingRight="32dp"
+    android:paddingBottom="126dp">
+
+    <RelativeLayout
+        android:id="@+id/group_popup_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#FFF"
+        android:padding="16dp">
+
+        <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
+            android:id="@+id/list_popup_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <io.grabity.planetwallet.Widgets.ShadowView
+        android:id="@+id/view_list_popup_top_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignTop="@id/group_popup_list"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:direction="TOP_BOTTOM"
+        app:end="#00000000"
+        app:start="#FFFFFF" />
+
+    <io.grabity.planetwallet.Widgets.ShadowView
+        android:id="@+id/view_list_popup_bottom_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignBottom="@id/group_popup_list"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:direction="BOTTOM_TOP"
+        app:end="#00000000"
+        app:start="#FFFFFF" />
+
+</RelativeLayout>

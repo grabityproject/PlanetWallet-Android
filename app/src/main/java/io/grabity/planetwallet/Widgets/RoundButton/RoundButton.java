@@ -8,17 +8,31 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Widgets.Themeable;
 
 
 /**
  * Created by. JcobPark on 2018. 08. 29
  */
-public class RoundButton extends android.support.v7.widget.AppCompatButton implements View.OnClickListener {
+public class RoundButton extends android.support.v7.widget.AppCompatButton implements View.OnClickListener, Themeable {
+
+    private int defaultTheme;
+
+    public enum Type {
+        NONE,
+        A,
+        B,
+        C
+    }
 
     private int state;
 
@@ -40,11 +54,11 @@ public class RoundButton extends android.support.v7.widget.AppCompatButton imple
     private int backgroundColorNormalGradientStart;
     private int backgroundColorNormalGradientEnd;
 
+    private Type type = Type.NONE;
 
     float width;
     float height;
     float radius;
-
 
     public RoundButton( Context context ) {
         super( context );
@@ -94,8 +108,40 @@ public class RoundButton extends android.support.v7.widget.AppCompatButton imple
         backgroundColorNormalGradientStart = a.getColor( R.styleable.RoundButton_backgroundColorNormalGradientStart, Color.TRANSPARENT );
         backgroundColorNormalGradientEnd = a.getColor( R.styleable.RoundButton_backgroundColorNormalGradientEnd, Color.TRANSPARENT );
 
+        switch ( a.getInt( R.styleable.RoundButton_buttonType, 0 ) ) {
+            case 1:
+                setType( Type.A );
+                break;
+            case 2:
+                setType( Type.B );
+                break;
+            case 3:
+                setType( Type.C );
+                break;
+        }
+
+        defaultTheme = a.getInt( R.styleable.RoundButton_defaultTheme, 0 );
+        if ( defaultTheme > 0 ) {
+            borderWidth = Utils.dpToPx( getContext( ), 1 );
+            cornerRadius = Utils.dpToPx( getContext( ), 8 );
+            setTheme( false );
+        }
+
         a.recycle( );
         this.viewInit( );
+    }
+
+    public Type getType( ) {
+        return type;
+    }
+
+    public void setType( Type type ) {
+        this.type = type;
+
+        borderWidth = Utils.dpToPx( getContext( ), 1 );
+        cornerRadius = Utils.dpToPx( getContext( ), 8 );
+        setTextSize( TypedValue.COMPLEX_UNIT_DIP, 18 );
+        setTypeface( Typeface.DEFAULT_BOLD );
     }
 
     private void viewInit( ) {
@@ -226,6 +272,7 @@ public class RoundButton extends android.support.v7.widget.AppCompatButton imple
 
                 if ( backgroundColorNormalGradientStart != Color.TRANSPARENT && backgroundColorNormalGradientEnd != Color.TRANSPARENT ) {
                     LinearGradient gradient = new LinearGradient( 0, 0, width, 0, backgroundColorNormalGradientStart, backgroundColorNormalGradientEnd, Shader.TileMode.CLAMP );
+
                     paintBack.setDither( true );
                     paintBack.setShader( gradient );
                 }
@@ -239,8 +286,6 @@ public class RoundButton extends android.support.v7.widget.AppCompatButton imple
         }
 
         super.onDraw( canvas );
-
-
     }
 
 
@@ -385,5 +430,81 @@ public class RoundButton extends android.support.v7.widget.AppCompatButton imple
     @Override
     public void onClick( View v ) {
         // do not disturb
+    }
+
+
+    @Override
+    public void setTheme( boolean theme ) {
+        if ( defaultTheme > 0 ) {
+            theme = ( defaultTheme == 2 ) != theme;
+            if ( !theme ) {
+                if ( type == Type.A ) { // Type A
+                    backgroundColorNormal = Color.argb( 255, 255, 255, 255 );
+                    backgroundColorHighlight = Color.argb( 255, 92, 89, 100 );
+                    backgroundColorDisable = Color.argb( 255, 30, 30, 40 );
+                    textColorNormal = Color.argb( 255, 0, 0, 0 );
+                    textColorHighlight = Color.argb( 255, 0, 0, 0 );
+                    textColorDisable = Color.argb( 255, 92, 89, 100 );
+                    borderColorNormal = Color.argb( 0, 0, 0, 0 );
+                    borderColorHighlight = Color.argb( 0, 0, 0, 0 );
+                    borderColorDisable = Color.argb( 0, 0, 0, 0 );
+                } else if ( type == Type.B ) { // Type B
+                    backgroundColorNormal = Color.argb( 0, 0, 0, 0 );
+                    backgroundColorHighlight = Color.argb( 0, 0, 0, 0 );
+                    backgroundColorDisable = Color.argb( 0, 0, 0, 0 );
+                    textColorNormal = Color.argb( 255, 255, 0, 80 );
+                    textColorHighlight = Color.argb( 255, 255, 0, 80 );
+                    textColorDisable = Color.argb( 255, 255, 0, 80 );
+                    borderColorNormal = Color.argb( 255, 30, 30, 40 );
+                    borderColorHighlight = Color.argb( 255, 255, 0, 80 );
+                    borderColorDisable = Color.argb( 255, 30, 30, 40 );
+                } else if ( type == Type.C ) { // Type C
+                    backgroundColorNormal = Color.argb( 0, 0, 0, 0 );
+                    backgroundColorHighlight = Color.argb( 255, 30, 30, 40 );
+                    backgroundColorDisable = Color.argb( 0, 0, 0, 0 );
+                    textColorNormal = Color.argb( 255, 255, 255, 255 );
+                    textColorHighlight = Color.argb( 255, 255, 255, 255 );
+                    textColorDisable = Color.argb( 255, 255, 255, 255 );
+                    borderColorNormal = Color.argb( 255, 255, 255, 255 );
+                    borderColorHighlight = Color.argb( 255, 255, 255, 255 );
+                    borderColorDisable = Color.argb( 255, 255, 255, 255 );
+                }
+            } else {
+                if ( type == Type.A ) { // Type A
+                    backgroundColorNormal = Color.argb( 255, 0, 0, 0 );
+                    backgroundColorHighlight = Color.argb( 255, 92, 89, 100 );
+                    backgroundColorDisable = Color.argb( 255, 237, 237, 237 );
+                    textColorNormal = Color.argb( 255, 255, 255, 255 );
+                    textColorHighlight = Color.argb( 255, 255, 255, 255 );
+                    textColorDisable = Color.argb( 255, 207, 207, 207 );
+                    borderColorNormal = Color.argb( 0, 0, 0, 0 );
+                    borderColorHighlight = Color.argb( 0, 0, 0, 0 );
+                    borderColorDisable = Color.argb( 0, 0, 0, 0 );
+                } else if ( type == Type.B ) { // Type B
+                    backgroundColorNormal = Color.argb( 0, 0, 0, 0 );
+                    backgroundColorHighlight = Color.argb( 0, 0, 0, 0 );
+                    backgroundColorDisable = Color.argb( 0, 0, 0, 0 );
+                    textColorNormal = Color.argb( 255, 255, 0, 80 );
+                    textColorHighlight = Color.argb( 255, 255, 0, 80 );
+                    textColorDisable = Color.argb( 255, 255, 0, 80 );
+                    borderColorNormal = Color.argb( 255, 237, 237, 237 );
+                    borderColorHighlight = Color.argb( 255, 255, 0, 80 );
+                    borderColorDisable = Color.argb( 255, 237, 237, 237 );
+                } else if ( type == Type.C ) { // Type C
+                    backgroundColorNormal = Color.argb( 0, 0, 0, 0 );
+                    backgroundColorHighlight = Color.argb( 255, 237, 237, 237 );
+                    backgroundColorDisable = Color.argb( 0, 0, 0, 0 );
+                    textColorNormal = Color.argb( 255, 0, 0, 0 );
+                    textColorHighlight = Color.argb( 255, 0, 0, 0 );
+                    textColorDisable = Color.argb( 255, 0, 0, 0 );
+                    borderColorNormal = Color.argb( 255, 30, 30, 40 );
+                    borderColorHighlight = Color.argb( 255, 30, 30, 40 );
+                    borderColorDisable = Color.argb( 255, 30, 30, 40 );
+                }
+            }
+            invalidate( );
+            if ( isEnabled( ) )
+                RoundButton.super.setTextColor( textColorNormal );
+        }
     }
 }

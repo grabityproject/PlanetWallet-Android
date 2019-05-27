@@ -1,10 +1,15 @@
 package io.grabity.planetwallet.Common.components;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -13,8 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -27,27 +30,58 @@ import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Widgets.PWLinearLayout;
+import io.grabity.planetwallet.Widgets.PWRelativeLayout;
+import io.grabity.planetwallet.Widgets.Themeable;
 
 /**
  * Created by. JcobPark on 2018. 08. 29
  */
 public abstract class PlanetWalletActivity extends FragmentActivity implements View.OnClickListener, NetworkInterface {
 
-    protected boolean transition = false;
+
+    public enum Transition {
+        NO_ANIMATION,
+        SLIDE_SIDE,
+        SLIDE_UP
+    }
+
+    protected Transition transition = Transition.SLIDE_SIDE;
     private Stack< PopupView > popupViewStack;
+
+    private boolean theme = false;
+    private View contentView;
+
+    private boolean fadeIn = false;
 
     @Override
     protected void onResume( ) {
         super.onResume( );
+        if ( theme != getPlanetWalletApplication( ).getCurrentTheme( ) ) {
+            theme = getPlanetWalletApplication( ).getCurrentTheme( );
+            onUpdateTheme( theme );
+        }
         PLog.setTAG( this.getClass( ).getSimpleName( ) );
+    }
+
+    protected void onUpdateTheme( boolean theme ) {
+        applyTheme( theme );
     }
 
     @Override
     public void setContentView( int layoutResID ) {
-        View view = LayoutInflater.from( this ).inflate( layoutResID, null );
-        overrideFonts( view, FontManager.getInstance( ).getFont( ), FontManager.getInstance( ).getBoldFont( ) );
-        super.setContentView( view );
-        setStatusColor( );
+        contentView = LayoutInflater.from( this ).inflate( layoutResID, null );
+        overrideFonts( contentView, FontManager.getInstance( ).getFont( ), FontManager.getInstance( ).getBoldFont( ) );
+        applyTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
+        super.setContentView( contentView );
+    }
+
+    public void setContentView( int layoutResID, boolean fadeIn ) {
+        this.fadeIn = fadeIn;
+        this.setContentView( layoutResID );
+        if ( fadeIn ) {
+            childViewAllFadeIn( ( ( ViewGroup ) this.contentView ).getChildAt( 0 ) );
+        }
     }
 
     protected void overrideFonts( final View v, Typeface font, Typeface bold ) {
@@ -70,9 +104,105 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         }
     }
 
+    protected void childViewAllFadeIn( final View v ) {
+        ArrayList< Animator > animations = new ArrayList<>( );
+        AnimatorSet animatorSet = new AnimatorSet( );
+        animatorSet.setDuration( 400 );
+        if ( v instanceof ViewGroup ) {
+            ViewGroup vg = ( ViewGroup ) v;
+            for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                View child = vg.getChildAt( i );
+                child.setAlpha( 0.0f );
+                animations.add( ObjectAnimator.ofFloat( child, "alpha", 1.0f ) );
+            }
+        }
+        animatorSet.playTogether( animations );
+        animatorSet.start( );
+    }
+
+
+    protected void childViewAllFadeOut( final View v ) {
+        ArrayList< Animator > animations = new ArrayList<>( );
+        AnimatorSet animatorSet = new AnimatorSet( );
+        animatorSet.setDuration( 400 );
+        if ( v instanceof ViewGroup ) {
+            ViewGroup vg = ( ViewGroup ) v;
+            for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                View child = vg.getChildAt( i );
+                animations.add( ObjectAnimator.ofFloat( child, "alpha", 0.0f ) );
+            }
+        }
+        animatorSet.playTogether( animations );
+        animatorSet.start( );
+    }
+
+    public void setTheme( boolean theme ) {
+        getPlanetWalletApplication( ).setTheme( theme );
+        if ( this.theme != getPlanetWalletApplication( ).getCurrentTheme( ) ) {
+            onUpdateTheme( theme );
+            this.theme = getPlanetWalletApplication( ).getCurrentTheme( );
+        }
+    }
+
+    private void applyTheme( boolean theme ) {
+        if ( this.theme != theme ) findTextViewAndSetTheme( contentView );
+        this.theme = theme;
+        findViewAndSetTheme( contentView, theme );
+        setStatusColor( );
+    }
+
+    protected void findViewAndSetTheme( final View v, boolean theme ) {
+        try {
+            if ( v instanceof ViewGroup ) {
+                ViewGroup vg = ( ViewGroup ) v;
+                if ( v instanceof Themeable ) {
+                    ( ( Themeable ) v ).setTheme( theme );
+                }
+                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                    View child = vg.getChildAt( i );
+                    findViewAndSetTheme( child, theme );
+                }
+            } else if ( v instanceof Themeable ) {
+                ( ( Themeable ) v ).setTheme( theme );
+            }
+
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
+    }
+
+
+    protected void findTextViewAndSetTheme( final View v ) {
+        try {
+            if ( v instanceof ViewGroup ) {
+                ViewGroup vg = ( ViewGroup ) v;
+                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                    View child = vg.getChildAt( i );
+                    findTextViewAndSetTheme( child );
+                }
+            }
+
+            if ( v instanceof TextView && v.getClass( ).equals( TextView.class ) ) {
+                TextView tv = ( TextView ) v;
+                if ( tv.getCurrentTextColor( ) == Color.parseColor( "#000000" ) ) {
+                    tv.setTextColor( Color.parseColor( "#ffffff" ) );
+                } else if ( tv.getCurrentTextColor( ) == Color.parseColor( "#ffffff" ) ) {
+                    tv.setTextColor( Color.parseColor( "#000000" ) );
+                } else if ( tv.getCurrentTextColor( ) == Color.parseColor( "#aaaaaa" ) ) {
+                    tv.setTextColor( Color.parseColor( "#5c5964" ) );
+                } else if ( tv.getCurrentTextColor( ) == Color.parseColor( "#5c5964" ) ) {
+                    tv.setTextColor( Color.parseColor( "#aaaaaa" ) );
+                }
+            }
+
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
+    }
+
     @Override
-    protected void onPause( ) {
-        super.onPause( );
+    protected void onStop( ) {
+        super.onStop( );
     }
 
     @Override
@@ -80,26 +210,36 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     }
 
     @Override
-    protected void onStop( ) {
-        super.onStop( );
-        if ( !transition ) overridePendingTransition( 0, 0 );
-    }
-
-    @Override
     public void onBackPressed( ) {
-        super.onBackPressed( );
         if ( popupViewStack != null && !popupViewStack.isEmpty( ) ) {
             onRemovePopup( popupViewStack.peek( ) );
             popupViewStack.pop( ).onBackPressed( );
         } else {
-            super.onBackPressed( );
+            if ( fadeIn ) {
+                childViewAllFadeOut( ( ( ViewGroup ) this.contentView ).getChildAt( 0 ) );
+                new Handler( ).postDelayed( new Runnable( ) {
+                    @Override
+                    public void run( ) {
+                        finish( );
+                        setExitTransition( );
+                    }
+                }, 400 );
+            } else {
+                super.onBackPressed( );
+                setExitTransition( );
+            }
         }
     }
+
+//    @Override
+//    public void finish( ) {
+//        setExitTransition( );
+//        super.finish( );
+//    }
 
     @Override
     public void onRequestPermissionsResult( int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults ) {
         super.onRequestPermissionsResult( requestCode, permissions, grantResults );
-        PLog.e( "Activity onRequestPermissionsResult" );
         for ( int i = 0; i < grantResults.length; i++ ) {
             int grantResult = grantResults[ i ];
             if ( grantResult == PackageManager.PERMISSION_DENIED ) {
@@ -142,10 +282,9 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     protected void setData( ) {
     }
 
-    public void setTransition( boolean transition ) {
+    public void setTransition( Transition transition ) {
         this.transition = transition;
     }
-
 
     public PlanetWalletApplication getPlanetWalletApplication( ) {
         return ( PlanetWalletApplication ) getApplication( );
@@ -153,57 +292,79 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
     public void sendAction( Class< ? > targetClass ) {
         Intent intent = new Intent( this, targetClass );
-        startActivity( intent );
-        if ( !transition ) overridePendingTransition( 0, 0 );
+        startActivity( putTransitionToBundle( intent, transition ) );
+        setEnterTransition( );
     }
 
     public void sendAction( Class< ? > targetClass, Bundle bundle ) {
         Intent intent = new Intent( this, targetClass );
         if ( bundle != null ) intent.putExtras( bundle );
-        startActivity( intent );
-        if ( !transition ) overridePendingTransition( 0, 0 );
+        startActivity( putTransitionToBundle( intent, transition ) );
+        setEnterTransition( );
     }
 
     public void sendAction( int requestCode, Class< ? > targetClass ) {
         Intent intent = new Intent( this, targetClass );
-        startActivityForResult( intent, requestCode );
-        if ( !transition ) overridePendingTransition( 0, 0 );
+        startActivityForResult( putTransitionToBundle( intent, transition ), requestCode );
+        setEnterTransition( );
     }
 
     public void sendAction( int requestCode, Class< ? > targetClass, Bundle bundle ) {
         Intent intent = new Intent( this, targetClass );
         intent.putExtras( bundle );
-        startActivityForResult( intent, requestCode );
-        if ( !transition ) overridePendingTransition( 0, 0 );
+        startActivityForResult( putTransitionToBundle( intent, transition ), requestCode );
+        setEnterTransition( );
     }
 
     public void sendAction( Class< ? > targetClass, int... flags ) {
         Intent intent = new Intent( this, targetClass );
         for ( int f : flags ) intent.addFlags( f );
-        startActivity( intent );
-        if ( !transition ) overridePendingTransition( 0, 0 );
+        startActivity( putTransitionToBundle( intent, transition ) );
+        setEnterTransition( );
     }
 
     public void sendAction( Class< ? > targetClass, Bundle bundle, int... flags ) {
         Intent intent = new Intent( this, targetClass );
         if ( bundle != null ) intent.putExtras( bundle );
-        startActivity( intent );
-        if ( !transition ) overridePendingTransition( 0, 0 );
+        startActivity( putTransitionToBundle( intent, transition ) );
+        setEnterTransition( );
     }
 
     public void sendAction( int requestCode, Class< ? > targetClass, int... flags ) {
         Intent intent = new Intent( this, targetClass );
         for ( int f : flags ) intent.addFlags( f );
-        startActivityForResult( intent, requestCode );
-        if ( !transition ) overridePendingTransition( 0, 0 );
+        startActivityForResult( putTransitionToBundle( intent, transition ), requestCode );
+        setEnterTransition( );
     }
 
     public void sendAction( int requestCode, Class< ? > targetClass, Bundle bundle, int... flags ) {
         Intent intent = new Intent( this, targetClass );
         intent.putExtras( bundle );
         for ( int f : flags ) intent.addFlags( f );
-        startActivityForResult( intent, requestCode );
-        if ( !transition ) overridePendingTransition( 0, 0 );
+        startActivityForResult( putTransitionToBundle( intent, transition ), requestCode );
+        setEnterTransition( );
+    }
+
+    private Intent putTransitionToBundle( Intent intent, Transition transition ) {
+        intent.putExtra( "ACTIVITY_TRANSITION", transition.ordinal( ) );
+        return intent;
+    }
+
+    private void setEnterTransition( ) {
+        if ( transition == Transition.NO_ANIMATION ) overridePendingTransition( 0, 0 );
+        if ( transition == Transition.SLIDE_SIDE )
+            overridePendingTransition( R.anim.right_in, R.anim.left_out );
+        if ( transition == Transition.SLIDE_UP )
+            overridePendingTransition( R.anim.bottom_in, R.anim.top_out );
+    }
+
+    private void setExitTransition( ) {
+        Transition transition = Transition.values( )[ getInt( "ACTIVITY_TRANSITION" ) ];
+        if ( transition == Transition.NO_ANIMATION ) overridePendingTransition( 0, 0 );
+        if ( transition == Transition.SLIDE_SIDE )
+            overridePendingTransition( R.anim.left_in, R.anim.right_out );
+        if ( transition == Transition.SLIDE_UP )
+            overridePendingTransition( R.anim.top_in, R.anim.bottom_out );
     }
 
     public String localized( int id, Object... formats ) {
@@ -297,7 +458,39 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     }
 
     public void setStatusColor( ) {
-        setStatusColor( ContextCompat.getColor( this, R.color.colorPrimary ) );
+        if ( this.contentView instanceof PWRelativeLayout ) {
+
+            Integer color = ( ( PWRelativeLayout ) this.contentView ).getBackgroundColor( );
+            if ( color != null ) {
+                setStatusColor( color );
+                if ( color > -8421505 ) {
+                    setDarkStatusBarTextColor( );
+                } else {
+                    setLightStatusBarTextColor( );
+                }
+            }
+
+        } else if ( this.contentView instanceof PWLinearLayout ) {
+
+            Integer color = ( ( PWLinearLayout ) this.contentView ).getBackgroundColor( );
+            if ( color != null ) {
+                setStatusColor( color );
+                if ( color > -8421505 ) {
+                    setDarkStatusBarTextColor( );
+                } else {
+                    setLightStatusBarTextColor( );
+                }
+            }
+
+        } else {
+            if ( theme ) {
+                setStatusColor( Color.WHITE );
+                setDarkStatusBarTextColor( );
+            } else {
+                setStatusColor( Color.WHITE );
+                setLightStatusBarTextColor( );
+            }
+        }
     }
 
     public void clearStatusBar( ) {

@@ -14,6 +14,7 @@ import android.view.View;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
 
 public class PlanetView extends View {
@@ -139,6 +140,7 @@ public class PlanetView extends View {
         { // Main
             int pattern = patterns[ getValueFromByte( hash[ 0 ], patterns.length ) ];
             String colorCode = colors[ getValueFromByte( hash[ 1 ], colors.length ) ];
+            PLog.e( "Main colorCode : " + colorCode );
             drawMain( canvas, pattern, colorCode );
         }
 
@@ -149,6 +151,7 @@ public class PlanetView extends View {
                 double degree = getValueFromByte( hash[ 10 ], 360 );
                 double scale = 90.0d + getValueFromByte( hash[ 11 ], 40 ) * 0.5d;
                 String colorCode = colors[ getValueFromByte( hash[ 12 ], colors.length ) ];
+                PLog.e( " Circle 1 colorCode : " + colorCode );
                 drawCircle( canvas, outlineRadius, degree, scale, colorCode );
             }
         }
@@ -160,6 +163,7 @@ public class PlanetView extends View {
                 double degree = getValueFromByte( hash[ 18 ], 360 );
                 double scale = 90.0d + getValueFromByte( hash[ 19 ], 40 ) * 0.5d;
                 String colorCode = colors[ getValueFromByte( hash[ 20 ], colors.length ) ];
+                PLog.e( " Circle 2 colorCode : " + colorCode );
                 drawCircle( canvas, outlineRadius, degree, scale, colorCode );
             }
         }

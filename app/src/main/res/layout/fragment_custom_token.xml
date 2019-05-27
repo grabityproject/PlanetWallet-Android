@@ -1,7 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000"
+    app:themeBackground="#FFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="40dp"
+        android:paddingEnd="20dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="Contract Address"
+            android:textColor="#5C5964"
+            android:textSize="16dp" />
+
+        <io.grabity.planetwallet.Widgets.RoundEditText
+            android:id="@+id/et_custom_token_address"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:defaultTheme="Dark"/>
+
+        <RelativeLayout
+            android:id="@+id/group_custom_token_waring"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is not a valid Contract address."
+                android:textColor="#FF0050"
+                android:textSize="14dp" />
+
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/image_warning" />
+
+        </RelativeLayout>
 
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="10dp"
+            android:text="Token Symbol"
+            android:textColor="#5C5964"
+            android:textSize="16dp" />
+
+        <io.grabity.planetwallet.Widgets.RoundEditText
+            android:id="@+id/et_customToken_symbol"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:defaultTheme="Dark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="10dp"
+            android:text="Decimals of Precision"
+            android:textColor="#5C5964"
+            android:textSize="16dp" />
+
+        <io.grabity.planetwallet.Widgets.RoundEditText
+            android:id="@+id/edit_custom_token_decimals"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:enabled="false"
+            app:defaultTheme="Dark"/>
+
+    </LinearLayout>
+
+
+    <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Add Token"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:buttonType="A"
+        app:defaultTheme="Dark"/>
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

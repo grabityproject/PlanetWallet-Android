@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    app:themeBackground="#000">
+
+    <io.grabity.planetwallet.Widgets.ToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        app:toolbarBottomColor="#EDEDED"
+        app:toolbarBottomWidth="1dp"
+        app:toolbarTitle="E-mail"
+        app:toolbarTitleColor="#000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolBar"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="40dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="Enter Email"
+            android:textColor="#AAAAAA"
+            android:textSize="14dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <io.grabity.planetwallet.Widgets.RoundEditText
+                android:id="@+id/et_email_registration_email"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:hint="E-mail"
+                android:paddingStart="12dp"
+                android:paddingEnd="56dp"
+                android:textColorHint="#AAAAAA"
+                android:textSize="14dp"
+                android:textColor="#000"
+                app:defaultTheme="Light" />
+
+            <io.grabity.planetwallet.Widgets.CircleImageView
+                android:id="@+id/btn_email_registration_clear"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentEnd="true"
+                android:padding="16dp"
+                android:src="@drawable/image_input_clear_black"
+                app:themeSrc="@drawable/image_input_clear_blue"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_email_registration_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="A confirm message will be sent to your mail."
+            android:textColor="#ff0050"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+
+    <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Send"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:buttonType="A"
+        app:defaultTheme="Light"/>
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

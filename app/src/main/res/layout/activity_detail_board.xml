@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    app:themeBackground="#000">
+
+    <io.grabity.planetwallet.Widgets.ToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        app:toolbarBottomColor="#EDEDED"
+        app:toolbarBottomWidth="1dp"
+        app:toolbarTitleColor="#000"/>
+
+
+    <RelativeLayout
+        android:id="@+id/group_detail_board"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_below="@id/toolBar">
+
+        <TextView
+            android:id="@+id/text_detail_board_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:paddingBottom="6dp"
+            android:text="[Event] Planet Wallet open event!"
+            android:textColor="#000"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/text_detail_board_create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@id/text_detail_board_title"
+            android:layout_alignTop="@id/text_detail_board_title"
+            android:gravity="center"
+            android:text="2019. 02. 01"
+            android:textColor="#000"
+            android:textSize="14dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#F5F5F5" />
+
+    </RelativeLayout>
+
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/group_detail_board">
+
+        </WebView>
+
+
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

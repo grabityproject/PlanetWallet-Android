@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    app:themeBackground="#000">
+
+    <io.grabity.planetwallet.Widgets.ToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        app:defaultTheme="Light"
+        app:toolbarBottomColor="#EDEDED"
+        app:toolbarBottomWidth="1dp"
+        app:toolbarTitle="Nickname"
+        app:toolbarTitleColor="#000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolBar"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="40dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolBar"
+            android:paddingBottom="10dp"
+            android:text="Enter Nickname"
+            android:textColor="#AAAAAA"
+            android:textSize="14dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <io.grabity.planetwallet.Widgets.RoundEditText
+                android:id="@+id/et_nickname_registration_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="NickName"
+                android:paddingLeft="16dp"
+                android:textColor="#000"
+                android:textColorHint="#AAAAAA"
+                android:textSize="14dp"
+                app:defaultTheme="Light" />
+
+            <io.grabity.planetwallet.Widgets.CircleImageView
+                android:id="@+id/btn_nickname_registration_clear"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentRight="true"
+                android:padding="16dp"
+                android:src="@drawable/image_input_clear_black"
+                android:visibility="gone"
+                app:themeSrc="@drawable/image_input_clear_blue" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="Your nickname will be shown to others."
+            android:textColor="#FF0050"
+            android:textSize="14dp" />
+
+
+    </LinearLayout>
+
+    <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Save"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:buttonType="A"
+        app:defaultTheme="Light" />
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

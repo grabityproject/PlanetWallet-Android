@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    app:themeBackground="#FFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="40dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="Enter privateKey"
+            android:textColor="#5C5964"
+            android:textSize="14dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <io.grabity.planetwallet.Widgets.RoundEditText
+                android:id="@+id/et_privatekey_import_privatekey"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:inputType="textPassword"
+                android:letterSpacing="1.0"
+                android:paddingStart="14dp"
+                android:textColor="#FFFFFF"
+                app:defaultTheme="Dark"/>
+
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:id="@+id/btn_privatekey_import_password_invisible"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:layout_alignTop="@id/et_privatekey_import_privatekey"
+                android:layout_alignEnd="@id/et_privatekey_import_privatekey"
+                android:layout_alignBottom="@id/et_privatekey_import_privatekey"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/image_input_invisible_darkgray"
+                app:themeSrc="@drawable/image_input_invisible_gray"/>
+
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:id="@+id/btn_privatekey_import_password_visible"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:layout_alignTop="@id/et_privatekey_import_privatekey"
+                android:layout_alignEnd="@id/et_privatekey_import_privatekey"
+                android:layout_alignBottom="@id/et_privatekey_import_privatekey"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/image_input_visible"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Continue"
+        android:textSize="18dp"
+        app:buttonType="A"
+        app:defaultTheme="Dark"/>
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

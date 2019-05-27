@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:themeBackground="#FFF"
+    android:background="#000">
+
+    <io.grabity.planetwallet.Widgets.ToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        app:toolbarTitle="Manage Tokens"
+        app:toolbarTitleColor="#FFFFFF"/>
+
+    <io.grabity.planetwallet.Widgets.TabBar
+        android:id="@+id/tabBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tabbarHeight"
+        android:layout_below="@id/toolBar"
+        app:tabBarIndicatorColor="#5C5964" />
+
+   <View
+       android:layout_width="match_parent"
+       android:layout_height="1dp"
+       android:background="#5C5964"
+       android:layout_above="@id/viewPager"/>
+
+    <io.grabity.planetwallet.Widgets.LockableViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabBar" />
 
 
-</RelativeLayout>
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

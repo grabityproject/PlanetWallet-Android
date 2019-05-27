@@ -16,7 +16,6 @@ import android.view.animation.Interpolator;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.Utils;
 
 /**
  * Created by. JcobPark on 2018. 08. 29
@@ -32,7 +31,7 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
     public AbsSlideUpView( Context context ) {
         this.context = context;
         ( ( PlanetWalletActivity ) context ).addPopup( this );
-        viewInit( );
+        createView( );
     }
 
     public Context getContext( ) {
@@ -48,7 +47,7 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
         this.context = context;
     }
 
-    public void viewInit( ) {
+    private void createView( ) {
 
         background = new View( context );
         contentView = this.contentView( );
@@ -57,7 +56,7 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
 
             {
                 background.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-                background.setBackgroundColor( Color.parseColor( "#80000000" ) );
+                background.setBackgroundColor( Color.parseColor( "#19000000" ) );
                 background.setAlpha( 0.0f );
                 background.setOnClickListener( this );
                 ( ( ViewGroup ) ( ( Activity ) context ).findViewById( android.R.id.content ) ).addView( background );
@@ -70,12 +69,9 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
 
         }
 
-
     }
 
-    public void onCreateView( ) {
-
-    }
+    public abstract void onCreateView( );
 
     abstract protected View contentView( );
 
@@ -107,6 +103,8 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
     public void show( long duration, Interpolator interpolator ) {
 
         if ( contentView != null ) {
+            onCreateView( );
+
             ObjectAnimator animator = ObjectAnimator.ofFloat( contentView, "y", getScrennHeight( this.context ) / 1.0f, 0.0f );
             animator.setDuration( duration );
             animator.setInterpolator( interpolator );

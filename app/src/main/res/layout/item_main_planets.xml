@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#1E1E28"
+    app:themeBackground="#FFF">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/listHeight"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="20dp"
+
+        >
+        
+        <io.grabity.planetwallet.Widgets.PlanetView
+            android:id="@+id/planetview_item_main_planets"
+            android:layout_width="22dp"
+            android:layout_height="22dp" />
+
+        <TextView
+            android:id="@+id/text_item_main_planets_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="planetName"
+            android:textSize="14dp"
+            android:textColor="#FFF"
+            android:layout_toRightOf="@id/planetview_item_main_planets"
+            android:paddingStart="10dp"
+            />
+
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/image_item_main_planets_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_alignTop="@id/text_item_main_planets_name"
+            android:src="@drawable/image_arrow_right_gray"
+            app:themeSrc="@drawable/image_arrow_right_gray"/>
+
+        <TextView
+            android:id="@+id/text_item_main_planets_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Universe"
+            android:textColor="#5C5964"
+            android:layout_toLeftOf="@id/image_item_main_planets_arrow"
+            android:paddingEnd="8dp"/>
+        
+    </RelativeLayout>
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <!--Todo-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/text_item_popup_list_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="#000"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/text_item_popup_list_sub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="#AAA"
+            android:textSize="16dp" />
+
+    </RelativeLayout>
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

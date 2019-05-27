@@ -3,7 +3,10 @@ package io.grabity.planetwallet.Widgets;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -18,13 +21,15 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
 
 /**
  * Created by. JcobPark on 2018. 08. 29
  */
 
-public class ToolBar extends RelativeLayout implements View.OnClickListener {
+public class ToolBar extends RelativeLayout implements View.OnClickListener, Themeable {
 
+    private int defaultTheme;
 
     private TextView textTitle;
     private StretchHorizontalImageView imageIcon;
@@ -39,6 +44,10 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener {
     private int titleColor;
     private int titleIcon;
 
+    private int bottomWidth;
+    private int bottomColor;
+
+
     public ToolBar( Context context, AttributeSet attrs ) {
         this( context, attrs, 0 );
     }
@@ -49,7 +58,28 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener {
         this.title = a.getString( R.styleable.ToolBar_toolbarTitle );
         this.titleColor = a.getColor( R.styleable.ToolBar_toolbarTitleColor, Color.parseColor( "#FFFFFF" ) );
         this.titleIcon = a.getResourceId( R.styleable.ToolBar_toolbarTitleIcon, -1 );
+        this.bottomColor = a.getColor( R.styleable.ToolBar_toolbarBottomColor , Color.TRANSPARENT );
+        this.bottomWidth = a.getDimensionPixelSize( R.styleable.ToolBar_toolbarBottomWidth , 0 );
+
+        this.defaultTheme = a.getInt( R.styleable.ToolBar_defaultTheme, 0 );
+        if ( defaultTheme >= 0 ) {
+//            setTheme( defaultTheme == 1 );
+            setTheme( false );
+        }
         viewInit( );
+    }
+
+    @Override
+    protected void onSizeChanged ( int w, int h, int oldw, int oldh ) {
+        super.onSizeChanged( w, h, oldw, oldh );
+
+    }
+
+    @Override
+    public void setBackgroundColor ( int color ) {
+        super.setBackgroundColor( color );
+        bottomColor = color;
+        invalidate( );
     }
 
     private void viewInit( ) {
@@ -57,7 +87,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener {
         {
             if ( !isInEditMode( ) )
                 setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) ) );
-
+            
         }
 
         {
@@ -81,10 +111,12 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener {
                 textTitle.setLayoutParams( new LinearLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
                 textTitle.setGravity( Gravity.CENTER );
                 textTitle.setTextColor( titleColor );
-                textTitle.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 16 );
+
+                textTitle.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 18 );
                 if ( titleIcon != -1 )
                     textTitle.setPadding( 0, 0, ( int ) DPToPX( 12 ), 0 );
-//                textTitle.setTypeface( Typeface.create( Typeface.SANS_SERIF , Typeface.BOLD ) );
+
+                textTitle.setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ) , "fonts/WorkSans-SemiBold.otf" ) , Typeface.BOLD );
                 textTitle.setText( title );
                 wrapperTitle.addView( textTitle );
             }
@@ -105,6 +137,15 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener {
             groupRight.setLayoutDirection( LAYOUT_DIRECTION_RTL );
             addView( groupRight, new LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
             ( ( LayoutParams ) groupRight.getLayoutParams( ) ).addRule( ALIGN_PARENT_RIGHT );
+        }
+
+        {
+            LinearLayout line = new LinearLayout( getContext( ) );
+            LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT , bottomWidth );
+            params.addRule( ALIGN_PARENT_BOTTOM );
+            line.setLayoutParams( params );
+            line.setBackgroundColor( bottomColor );
+            addView( line );
         }
 
 
@@ -323,6 +364,10 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener {
         if ( textTitle != null ) textTitle.setTextColor( titleColor );
     }
 
+
+
+
+
     public ArrayList< ButtonItem > getButtonItems( ) {
         return buttonItems;
     }
@@ -333,6 +378,28 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener {
 
     public void setOnToolBarClickListener( OnToolBarClickListener onToolBarClickListener ) {
         this.onToolBarClickListener = onToolBarClickListener;
+    }
+
+    @Override
+    public void setTheme ( boolean theme ) {
+        if( defaultTheme > 0 ){
+            theme = ( defaultTheme == 2 ) != theme;
+            if ( !theme ) {
+                setTitleColor( Color.WHITE );
+            } else {
+                setTitleColor( Color.BLACK );
+            }
+        }
+
+
+//        if( defaultTheme > -1 ){
+//            theme = ( defaultTheme == 1 ) != theme;
+//            if ( !theme ) {
+//                setTitleColor( Color.BLACK );
+//            } else {
+//                setTitleColor( Color.WHITE );
+//            }
+//        }
     }
 
     public static class ButtonItem {

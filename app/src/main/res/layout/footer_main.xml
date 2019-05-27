@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:themeBackground="#FFF"
+    android:background="#000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <io.grabity.planetwallet.Widgets.PWView
+            android:id="@+id/view_footerMain_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#1E1E28"
+            app:themeBackground="#EDEDED"/>
+
+
+
+        <io.grabity.planetwallet.Widgets.RoundRelativeLayout
+            android:layout_width="196dp"
+            android:layout_height="match_parent"
+            app:borderWidth="1dp"
+            app:cornerRadius="6dp"
+            app:borderColor="#1E1E28"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-6dp">
+
+
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:id="@+id/image_footerMain_addTokenBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/image_main_addtokens_gray"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                app:themeSrc="@drawable/image_main_addtokens_blue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manage Tokens"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/image_footerMain_addTokenBtn"
+                android:layout_marginLeft="10dp"/>
+
+
+        </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
+
+    </RelativeLayout>
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

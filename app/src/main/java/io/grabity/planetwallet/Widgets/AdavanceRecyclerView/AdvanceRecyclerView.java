@@ -3,7 +3,6 @@ package io.grabity.planetwallet.Widgets.AdavanceRecyclerView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -53,6 +52,7 @@ public class AdvanceRecyclerView extends RecyclerView {
 
     private void viewInit( ) {
         setLayoutManager( new LinearLayoutManager( getContext( ), LinearLayoutManager.VERTICAL, false ) );
+        onScrollListeners = new ArrayList<>( );
     }
 
     public void setLayout( int layout ) {
@@ -240,22 +240,35 @@ public class AdvanceRecyclerView extends RecyclerView {
             super.onScrolled( recyclerView, dx, dy );
             scrollX += dx;
             scrollY += dy;
-            if ( onScrollListener != null ) {
-                onScrollListener.onScrolled( recyclerView, dx, dy, scrollX, scrollY );
+            if ( onScrollListeners != null ) {
+                for ( OnScrollListener listener : onScrollListeners ) {
+                    listener.onScrolled( recyclerView, dx, dy, scrollX, scrollY );
+                }
             }
         }
     }
 
     private OnDefScrollListener defScrollListener;
 
-    private OnScrollListener onScrollListener;
+    private ArrayList< OnScrollListener > onScrollListeners;
 
-    public OnScrollListener getOnScrollListener( ) {
-        return onScrollListener;
+    public ArrayList< OnScrollListener > getOnScrollListeners( ) {
+        return onScrollListeners;
     }
 
-    public void setOnScrollListener( OnScrollListener onScrollListener ) {
-        this.onScrollListener = onScrollListener;
+    public OnScrollListener getOnScrollListener( int index ) {
+        if ( index < 0 ) return null;
+        try {
+            return onScrollListeners.get( index );
+        } catch ( ArrayIndexOutOfBoundsException e ) {
+            return null;
+        }
+    }
+
+    public void addOnScrollListener( OnScrollListener onScrollListener ) {
+        if ( onScrollListeners != null ) {
+            onScrollListeners.add( onScrollListener );
+        }
         defScrollListener = new OnDefScrollListener( );
         addOnScrollListener( defScrollListener );
     }
@@ -263,7 +276,6 @@ public class AdvanceRecyclerView extends RecyclerView {
     public interface OnScrollListener {
         void onScrolled( RecyclerView recyclerView, int dx, int dy, float scrollX, float scrollY );
     }
-
 
     public Bitmap getScreenshot( ) {
         AdvanceArrayAdapter adapter = ( AdvanceArrayAdapter ) this.getAdapter( );
@@ -294,7 +306,6 @@ public class AdvanceRecyclerView extends RecyclerView {
 
         Bitmap bigBitmap = Bitmap.createBitmap( this.getMeasuredWidth( ), height, Bitmap.Config.ARGB_8888 );
         Canvas bigCanvas = new Canvas( bigBitmap );
-        bigCanvas.drawColor( Color.WHITE );
 
         for ( int i = 0; i < size; i++ ) {
             Bitmap bitmap = bitmaCache.get( String.valueOf( i ) );

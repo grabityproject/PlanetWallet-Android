@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFF"
+    app:themeBackground="#000">
+
+    <io.grabity.planetwallet.Widgets.ToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        app:toolbarTitle="Planet Name"
+        app:toolbarTitleColor="#000"
+        app:toolbarBottomColor="#EDEDED"
+        app:toolbarBottomWidth="1dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="40dp"
+        android:layout_below="@id/toolBar"
+        >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolBar"
+        android:text="Enter Planet name"
+        android:textSize="14dp"
+        android:textColor="#AAAAAA"
+        android:paddingBottom="10dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/group_renamePlanet_name"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <io.grabity.planetwallet.Widgets.RoundEditText
+            android:id="@+id/et_rename_planet_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="14dp"
+            android:paddingLeft="16dp"
+            android:textColor="#000"
+            android:hint="name"
+            android:textColorHint="#AAAAAA"
+            app:defaultTheme="Light"/>
+
+        <io.grabity.planetwallet.Widgets.CircleImageView
+            android:id="@+id/btn_rename_planet_clear"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/image_input_clear_blue"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:padding="16dp"
+            android:visibility="gone"
+            app:themeSrc="@drawable/image_input_clear_black"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/group_renamePlanet_name"
+        android:paddingTop="10dp"
+        android:text="Your Planet name will be shown to others."
+        android:textSize="14dp"
+        android:textColor="#FF0050"/>
+
+    </LinearLayout>
+
+    <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:text="Save"
+        android:textSize="18dp"
+        android:gravity="center"
+        app:buttonType="A"
+        app:defaultTheme="Light"
+        />
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

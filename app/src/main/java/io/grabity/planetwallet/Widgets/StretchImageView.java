@@ -1,18 +1,30 @@
 package io.grabity.planetwallet.Widgets;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
-public class StretchImageView extends android.support.v7.widget.AppCompatImageView {
+import io.grabity.planetwallet.R;
 
+public class StretchImageView extends android.support.v7.widget.AppCompatImageView implements Themeable {
+
+    private Drawable themeDrawable;
+    private Drawable defaultDrawable;
 
     public StretchImageView( Context context ) {
         super( context );
     }
 
     public StretchImageView( Context context, AttributeSet attrs ) {
-        super( context, attrs );
+        this( context, attrs, 0 );
+    }
+
+    public StretchImageView( Context context, AttributeSet attrs, int defStyleAttr ) {
+        super( context, attrs, defStyleAttr );
+        TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.GlobalAttrDeclare, defStyleAttr, 0 );
+        themeDrawable = a.getDrawable( R.styleable.GlobalAttrDeclare_themeSrc );
+        a.recycle( );
     }
 
     @Override
@@ -30,4 +42,17 @@ public class StretchImageView extends android.support.v7.widget.AppCompatImageVi
 
     }
 
+    @Override
+    public void setTheme( boolean theme ) {
+        if ( themeDrawable != null ) {
+            if ( defaultDrawable == null ) {
+                defaultDrawable = getDrawable( ).getConstantState( ).newDrawable( );
+            }
+            if ( !theme ) {
+                setImageDrawable( defaultDrawable );
+            } else {
+                setImageDrawable( themeDrawable );
+            }
+        }
+    }
 }

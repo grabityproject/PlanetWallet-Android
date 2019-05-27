@@ -15,8 +15,12 @@ public class FontManager {
 
     public FontManager( Context context ) {
         this.context = context;
-        this.defFont = Typeface.create( Typeface.SANS_SERIF, Typeface.NORMAL );
-        this.boldFont = Typeface.create( Typeface.SANS_SERIF, Typeface.BOLD );
+//        this.defFont = Typeface.create( Typeface.SANS_SERIF, Typeface.NORMAL );
+//        this.boldFont = Typeface.create( Typeface.SANS_SERIF, Typeface.BOLD );
+        this.defFont = Typeface.create( Typeface.createFromAsset( context.getAssets() , "fonts/WorkSans-Regular.otf" ), Typeface.NORMAL );
+        this.boldFont = Typeface.create( Typeface.createFromAsset( context.getAssets() , "fonts/WorkSans-Bold.otf" ), Typeface.BOLD );
+
+
     }
 
     public static void Init( Context context ) {

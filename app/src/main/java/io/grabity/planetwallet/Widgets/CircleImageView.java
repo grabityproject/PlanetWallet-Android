@@ -19,7 +19,7 @@ import android.util.AttributeSet;
 import io.grabity.planetwallet.R;
 
 
-public class CircleImageView extends android.support.v7.widget.AppCompatImageView {
+public class CircleImageView extends android.support.v7.widget.AppCompatImageView implements Themeable {
 
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
@@ -42,6 +42,12 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     private boolean mReady;
     private boolean mSetupPending;
 
+    private Drawable defaultDrawable;
+    private Drawable themeDrawable;
+
+    private float viewWidth;
+    private float viewHeight;
+
     public CircleImageView( Context context ) {
         super( context );
         init( );
@@ -56,7 +62,8 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         super( context, attrs, defStyle );
         TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.CircleImageView, defStyle, 0 );
         mBorderWidth = a.getDimensionPixelSize( R.styleable.CircleImageView_borderWidth, DEFAULT_BORDER_WIDTH );
-        mBorderColor = a.getColor( R.styleable.CircleImageView_borderWidth, DEFAULT_BORDER_COLOR );
+        mBorderColor = a.getColor( R.styleable.CircleImageView_borderColor, DEFAULT_BORDER_COLOR );
+        themeDrawable = a.getDrawable( R.styleable.CircleImageView_themeSrc );
         a.recycle( );
         init( );
     }
@@ -107,20 +114,26 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         }
     }
 
+
     @Override
     protected void onDraw( Canvas canvas ) {
         if ( getDrawable( ) == null ) {
             return;
         }
-        canvas.drawCircle( getWidth( ) / 2, getHeight( ) / 2, mDrawableRadius, mBitmapPaint );
+        canvas.drawCircle( getWidth( ) / 2, getHeight( ) / 2, mDrawableRadius - getPaddingLeft( ), mBitmapPaint );
+//        canvas.drawCircle( getWidth( ) / 2 , getHeight( ) / 2 , mDrawableRadius , mBitmapPaint );
         if ( mBorderWidth != 0 ) {
             canvas.drawCircle( getWidth( ) / 2, getHeight( ) / 2, mBorderRadius, mBorderPaint );
         }
+
     }
+
 
     @Override
     protected void onSizeChanged( int w, int h, int oldw, int oldh ) {
         super.onSizeChanged( w, h, oldw, oldh );
+        viewWidth = w;
+        viewHeight = h;
         setup( );
     }
 
@@ -211,6 +224,11 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         if ( mBitmap == null ) {
             return;
         }
+
+        if ( getPaddingLeft( ) != 0 || getPaddingBottom( ) != 0 || getPaddingRight( ) != 0 || getPaddingRight( ) != 0 ) {
+            mBitmap = paddingBitmap( mBitmap );
+        }
+
         mBitmapShader = new BitmapShader( mBitmap, Shader.TileMode.CLAMP,
                 Shader.TileMode.CLAMP );
         mBitmapPaint.setAntiAlias( true );
@@ -222,8 +240,10 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         mBitmapHeight = mBitmap.getHeight( );
         mBitmapWidth = mBitmap.getWidth( );
         mBorderRect.set( 0, 0, getWidth( ), getHeight( ) );
-        mBorderRadius = Math.min( ( mBorderRect.height( ) - mBorderWidth ) / 2, ( mBorderRect.width( ) - mBorderWidth ) / 2 );
-        mDrawableRect.set( mBorderWidth, mBorderWidth, mBorderRect.width( ) - mBorderWidth, mBorderRect.height( ) - mBorderWidth );
+        mBorderRadius = Math.min( ( ( mBorderRect.height( ) - mBorderWidth ) / 2 ) - ( getPaddingTop( ) / 2.0f ), ( ( mBorderRect.width( ) - mBorderWidth ) / 2 ) ) - ( getPaddingTop( ) / 2.0f );
+        mDrawableRect.set( mBorderWidth - ( getPaddingTop( ) / 2.0f ), mBorderWidth - ( getPaddingTop( ) / 2.0f ), mBorderRect.width( ) - mBorderWidth - ( getPaddingTop( ) / 2.0f ), mBorderRect.height( ) - mBorderWidth - ( getPaddingTop( ) / 2.0f ) );
+        //        mBorderRadius = Math.min( ( mBorderRect.height( ) - mBorderWidth ) / 2, ( mBorderRect.width( ) - mBorderWidth ) / 2 );
+//        mDrawableRect.set( mBorderWidth , mBorderWidth , mBorderRect.width( ) - mBorderWidth  , mBorderRect.height( ) - mBorderWidth );
         mDrawableRadius = Math.min( mDrawableRect.height( ) / 2,
                 mDrawableRect.width( ) / 2 );
         updateShaderMatrix( );
@@ -247,5 +267,35 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         mShaderMatrix.postTranslate( ( int ) ( dx + 0.5f ) + mBorderWidth,
                 ( int ) ( dy + 0.5f ) + mBorderWidth );
         mBitmapShader.setLocalMatrix( mShaderMatrix );
+    }
+
+    private Bitmap paddingBitmap( Bitmap bitmap ) {
+
+        if ( viewWidth <= 0 || viewHeight <= 0 ) {
+            return bitmap;
+        }
+
+        Bitmap paddedBitmap = Bitmap.createBitmap( ( int ) viewWidth, ( int ) viewHeight, BITMAP_CONFIG );
+
+        Canvas canvas = new Canvas( paddedBitmap );
+        canvas.drawARGB( 0xFF, 0xFF, 0xFF, 0xFF ); // this represents white color
+        canvas.drawBitmap( bitmap, null, new RectF( getPaddingLeft( ), getPaddingTop( ), viewWidth - getPaddingRight( ), viewHeight - getPaddingBottom( ) ), new Paint( Paint.FILTER_BITMAP_FLAG ) );
+
+
+        return paddedBitmap;
+    }
+
+    @Override
+    public void setTheme( boolean theme ) {
+        if ( themeDrawable != null ) {
+            if ( defaultDrawable == null ) {
+                defaultDrawable = getDrawable( );
+            }
+            if ( !theme ) {
+                setImageDrawable( defaultDrawable );
+            } else {
+                setImageDrawable( themeDrawable );
+            }
+        }
     }
 }

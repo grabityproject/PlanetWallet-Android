@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    app:themeBackground="#000">
+
+    <io.grabity.planetwallet.Widgets.ToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        app:toolbarBottomColor="#EDEDED"
+        app:toolbarBottomWidth="1dp"
+        app:toolbarTitle="Planet Satrini"
+        app:toolbarTitleColor="#000" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolBar"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="ETH Address"
+            android:textColor="#000"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/text_detail_planet_address"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="0xf291b69799516156fAA7F9ed4c39536335Ab797A"
+            android:textColor="#FF0050"
+            android:textSize="16dp" />
+
+        <io.grabity.planetwallet.Widgets.PWView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/toolBar"
+            android:layout_marginTop="20dp"
+            android:background="#EDEDED"
+            app:themeBackground="#1E1E28"/>
+
+        <RelativeLayout
+            android:id="@+id/group_detail_planet_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight">
+
+            <TextView
+                android:id="@+id/text_detail_planet_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Planet Name"
+                android:textColor="#000"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/text_detail_planet_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/text_detail_planet_text"
+                android:layout_marginRight="12dp"
+                android:layout_toLeftOf="@id/image_detail_planet_name_arrow"
+                android:text="Satriani"
+                android:textColor="#AAAAAA"
+                android:textSize="14dp" />
+
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:id="@+id/image_detail_planet_name_arrow"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignTop="@id/text_detail_planet_text"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/image_arrow_right_blue"
+                app:themeSrc="@drawable/image_arrow_right_gray"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Hide Planet"
+                android:textColor="#000"
+                android:textSize="14dp" />
+
+            <io.grabity.planetwallet.Widgets.ToggleButton
+                android:id="@+id/toggleBtn"
+                android:layout_width="52dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <io.grabity.planetwallet.Widgets.PWView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/toolBar"
+            android:layout_marginTop="20dp"
+            android:background="#EDEDED"
+            app:themeBackground="#1E1E28"/>
+
+        <RelativeLayout
+            android:id="@+id/group_detail_planet_mnemonic_backup"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/text_detail_planet_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Backup Mnemonic Phrase"
+                android:textColor="#000"
+                android:textSize="14dp" />
+
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignTop="@id/text_detail_planet_text1"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/image_arrow_right_blue"
+                app:themeSrc="@drawable/image_arrow_right_gray"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/group_detail_planet_privatekey_backup"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight">
+
+            <TextView
+                android:id="@+id/text_detail_planet_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Backup Private Key"
+                android:textColor="#000"
+                android:textSize="14dp" />
+
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignTop="@id/text_detail_planet_text2"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/image_arrow_right_blue"
+                app:themeSrc="@drawable/image_arrow_right_gray"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Delete Planet"
+        android:textStyle="bold"
+        app:buttonType="B"
+        app:defaultTheme="Light"/>
+
+
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>
