@@ -3,10 +3,9 @@ package io.grabity.planetwallet.Widgets;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -21,31 +20,42 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
+
 
 /**
- * Created by. JcobPark on 2018. 08. 29
+ * Change ToolBar 2019. 05. 28
  */
+
 
 public class ToolBar extends RelativeLayout implements View.OnClickListener, Themeable {
 
     private int defaultTheme;
 
     private TextView textTitle;
-    private StretchHorizontalImageView imageIcon;
-
-    private LinearLayout groupLeft;
-    private LinearLayout groupRight;
-    private ArrayList< ButtonItem > buttonItems;
-
     private OnToolBarClickListener onToolBarClickListener;
 
     private String title;
-    private int titleColor;
-    private int titleIcon;
 
     private int bottomWidth;
     private int bottomColor;
+    private int titleColor;
+
+    private LinearLayout line;
+
+    private ArrayList< ButtonItem > items;
+
+    private StretchImageView imageViewLeft;
+    private StretchImageView imageViewRight;
+
+    private Drawable darkLeftDrawable;
+    private Drawable whiteLeftDrawable;
+
+    private Drawable darkRightDrawable;
+    private Drawable whiteRightDrawable;
+
+    private Drawable imageLeftDrawable;
+    private Drawable imageRightDrawable;
+
 
 
     public ToolBar( Context context, AttributeSet attrs ) {
@@ -56,91 +66,54 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         super( context, attrs, defStyleAttr );
         TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.ToolBar, defStyleAttr, 0 );
         this.title = a.getString( R.styleable.ToolBar_toolbarTitle );
-        this.titleColor = a.getColor( R.styleable.ToolBar_toolbarTitleColor, Color.parseColor( "#FFFFFF" ) );
-        this.titleIcon = a.getResourceId( R.styleable.ToolBar_toolbarTitleIcon, -1 );
-        this.bottomColor = a.getColor( R.styleable.ToolBar_toolbarBottomColor , Color.TRANSPARENT );
-        this.bottomWidth = a.getDimensionPixelSize( R.styleable.ToolBar_toolbarBottomWidth , 0 );
-
+        this.bottomWidth = a.getDimensionPixelSize( R.styleable.ToolBar_toolbarBottomWidth, 0 );
         this.defaultTheme = a.getInt( R.styleable.ToolBar_defaultTheme, 0 );
-        if ( defaultTheme >= 0 ) {
-//            setTheme( defaultTheme == 1 );
+
+        this.bottomColor = Color.TRANSPARENT;
+        this.titleColor = Color.BLACK;
+
+        this.darkLeftDrawable = a.getDrawable( R.styleable.ToolBar_blackThemeLeftSrc );
+        this.whiteLeftDrawable = a.getDrawable( R.styleable.ToolBar_whiteThemeLeftSrc );
+
+        this.darkRightDrawable = a.getDrawable( R.styleable.ToolBar_blackThemeRightSrc );
+        this.whiteRightDrawable = a.getDrawable( R.styleable.ToolBar_whiteThemeRightSrc );
+
+
+
+        if ( defaultTheme >= 0 ){
             setTheme( false );
         }
+
+        a.recycle( );
         viewInit( );
     }
 
-    @Override
-    protected void onSizeChanged ( int w, int h, int oldw, int oldh ) {
-        super.onSizeChanged( w, h, oldw, oldh );
 
-    }
-
-    @Override
-    public void setBackgroundColor ( int color ) {
-        super.setBackgroundColor( color );
-        bottomColor = color;
-        invalidate( );
-    }
-
-    private void viewInit( ) {
+    public void viewInit( ){
 
         {
-            if ( !isInEditMode( ) )
-                setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) ) );
-            
+            if ( !isInEditMode() ) setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) ) );
         }
 
         {
-            LinearLayout wrapperTitle = new LinearLayout( getContext( ) );
-            LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT );
+            RelativeLayout relativeLayout = new RelativeLayout( getContext( ) );
+            RelativeLayout.LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
             params.addRule( CENTER_IN_PARENT );
-            wrapperTitle.setLayoutParams( params );
-            wrapperTitle.setOrientation( LinearLayout.HORIZONTAL );
-            addView( wrapperTitle );
-            {
-                imageIcon = new StretchHorizontalImageView( getContext( ) );
-                imageIcon.setLayoutParams( new LinearLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) ) );
-                imageIcon.setPadding( ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ), 0, ( int ) DPToPX( 12 ) );
-                if ( titleIcon != -1 )
-                    imageIcon.setImageResource( titleIcon );
-                wrapperTitle.addView( imageIcon );
-            }
+            addView( relativeLayout , params );
 
-            {
-                textTitle = new TextView( getContext( ) );
-                textTitle.setLayoutParams( new LinearLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-                textTitle.setGravity( Gravity.CENTER );
-                textTitle.setTextColor( titleColor );
+            textTitle = new TextView( getContext( ) );
+            textTitle.setLayoutParams( params );
+            textTitle.setGravity( Gravity.CENTER );
+            textTitle.setTextColor( titleColor );
+            textTitle.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 18 );
+            textTitle.setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ) , "fonts/WorkSans-SemiBold.otf" ) , Typeface.BOLD );
+            textTitle.setText( title );
 
-                textTitle.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 18 );
-                if ( titleIcon != -1 )
-                    textTitle.setPadding( 0, 0, ( int ) DPToPX( 12 ), 0 );
-
-                textTitle.setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ) , "fonts/WorkSans-SemiBold.otf" ) , Typeface.BOLD );
-                textTitle.setText( title );
-                wrapperTitle.addView( textTitle );
-            }
-
+            relativeLayout.addView( textTitle );
         }
 
         {
-            groupLeft = new LinearLayout( getContext( ) );
-            groupLeft.setGravity( Gravity.LEFT );
-            groupLeft.setOrientation( LinearLayout.HORIZONTAL );
-            addView( groupLeft, new ViewGroup.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-        }
-
-        {
-            groupRight = new LinearLayout( getContext( ) );
-            groupRight.setGravity( Gravity.RIGHT );
-            groupRight.setOrientation( LinearLayout.HORIZONTAL );
-            groupRight.setLayoutDirection( LAYOUT_DIRECTION_RTL );
-            addView( groupRight, new LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-            ( ( LayoutParams ) groupRight.getLayoutParams( ) ).addRule( ALIGN_PARENT_RIGHT );
-        }
-
-        {
-            LinearLayout line = new LinearLayout( getContext( ) );
+            line = new LinearLayout( getContext( ) );
             LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT , bottomWidth );
             params.addRule( ALIGN_PARENT_BOTTOM );
             line.setLayoutParams( params );
@@ -148,202 +121,41 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             addView( line );
         }
 
+        {  //Left
+            LayoutParams params = new LayoutParams( getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ), getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) );
+            params.addRule( ALIGN_PARENT_LEFT );
+            imageViewLeft = new StretchImageView( getContext( ) );
+            imageViewLeft.setImageDrawable( getImageLeftDrawable( ) );
+            imageViewLeft.setPadding( ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ) );
+            imageViewLeft.setOnClickListener( this );
 
-        buttonItems = new ArrayList<>( );
-    }
-
-    public void addLeftButton( ButtonItem resource ) {
-
-        if ( groupLeft != null && resource != null ) {
-
-            // Both
-            if ( resource.getText( ) != null && resource.getResource( ) > 0 ) {
-
-                // Do not disturb!!
-
-            } else if ( resource.getResource( ) > 0 ) {
-
-                // Image
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ), getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) );
-                StretchImageView imageView = new StretchImageView( getContext( ) );
-                imageView.setImageResource( resource.getResource( ) );
-                imageView.setOnClickListener( this );
-                imageView.setPadding( ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ) );
-                resource.setView( imageView );
-                groupLeft.addView( imageView, params );
-
-            } else if ( resource.getText( ) != null ) {
-
-                // Text
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT );
-                TextView textView = new TextView( getContext( ) );
-                textView.setText( resource.getText( ) );
-                textView.setGravity( Gravity.CENTER );
-                textView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, resource.getTextSize( ) );
-                textView.setTextColor( resource.getTextColor( ) );
-                textView.setOnClickListener( this );
-                resource.setView( textView );
-                groupLeft.addView( textView, params );
-
-            }
-
-            if ( buttonItems != null ) {
-                buttonItems.add( resource );
-            }
+            addView( imageViewLeft , params );
         }
 
-    }
+        { //Right
+            LayoutParams params = new LayoutParams( getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ), getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) );
+            params.addRule( ALIGN_PARENT_RIGHT );
+            imageViewRight = new StretchImageView( getContext( ) );
+            imageViewRight.setImageDrawable( getImageRightDrawable( ) );
+            imageViewRight.setPadding( ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ) );
+            imageViewRight.setOnClickListener( this );
 
-    public void removeLeftButton( int index ) {
-        if ( groupLeft != null ) {
-            if ( groupLeft.getChildCount( ) > 0 && groupLeft.getChildCount( ) > index && index >= 0 ) {
-                buttonItems.remove( groupLeft.getChildAt( index ) );
-                groupLeft.removeViewAt( index );
-            }
-        }
-    }
-
-    public void setLeftButtons( ButtonItem... items ) {
-        if ( items != null ) {
-            removeLeftButtons( );
-            for ( ButtonItem item : items ) {
-                addLeftButton( item );
-            }
-        }
-    }
-
-    public void setLeftButton( ButtonItem item ) {
-        if ( item != null ) {
-            removeLeftButtons( );
-            addLeftButton( item );
-        }
-    }
-
-    public void removeLeftButtons( ) {
-        if ( groupLeft != null ) {
-            for ( int i = 0; i < groupLeft.getChildCount( ); i++ ) {
-                buttonItems.remove( groupLeft.getChildAt( i ) );
-            }
-            groupLeft.removeAllViews( );
-        }
-    }
-
-    // Right buttons
-
-    public void addRightButton( ButtonItem resource ) {
-
-        if ( groupRight != null && resource != null ) {
-
-            // Both
-            if ( resource.getText( ) != null && resource.getResource( ) > 0 ) {
-
-                // Do not disturb!!
-
-            } else if ( resource.getResource( ) > 0 ) {
-
-                // Image
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ), getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) );
-                StretchImageView imageView = new StretchImageView( getContext( ) );
-                imageView.setOnClickListener( this );
-                imageView.setPadding( ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ) );
-                resource.setView( imageView );
-                imageView.setImageResource( resource.getResource( ) );
-                groupRight.addView( imageView, params );
-
-            } else if ( resource.getText( ) != null ) {
-
-                // Text
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT );
-                TextView textView = new TextView( getContext( ) );
-                textView.setText( resource.getText( ) );
-                textView.setGravity( Gravity.CENTER );
-                textView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, resource.getTextSize( ) );
-                textView.setTextColor( resource.getTextColor( ) );
-                textView.setOnClickListener( this );
-                resource.setView( textView );
-                groupRight.addView( textView, params );
-
-            }
-
-            if ( buttonItems != null ) {
-                buttonItems.add( resource );
-            }
+            addView( imageViewRight , params );
         }
 
+        items = new ArrayList<>(  );
+
     }
 
-    public void removeRightButton( int index ) {
-        if ( groupRight != null ) {
-            if ( groupRight.getChildCount( ) > 0 && groupRight.getChildCount( ) > index && index >= 0 ) {
-                buttonItems.remove( groupRight.getChildAt( index ) );
-                groupRight.removeViewAt( index );
-            }
-        }
+    public void setTitleColor ( int titleColor ) {
+        this.titleColor = titleColor;
+        if ( textTitle != null  ) textTitle.setTextColor( titleColor );
     }
 
-    public void setRightButtons( ButtonItem... items ) {
-        if ( items != null ) {
-            removeRightButtons( );
-            for ( ButtonItem item : items ) {
-                addRightButton( item );
-            }
-        }
-    }
+    public void setBottomColor( int bottomColor ) {
+        this.bottomColor = bottomColor;
+        if ( line != null ) line.setBackgroundColor( bottomColor );
 
-    public void setRightButton( ButtonItem item ) {
-        if ( item != null ) {
-            removeRightButtons( );
-            addRightButton( item );
-        }
-    }
-
-    public void removeRightButtons( ) {
-        if ( groupRight != null ) {
-            for ( int i = 0; i < groupRight.getChildCount( ); i++ ) {
-                buttonItems.remove( groupRight.getChildAt( i ) );
-            }
-            groupRight.removeAllViews( );
-        }
-    }
-
-    @Override
-    public void onClick( View view ) {
-        if ( buttonItems != null ) {
-
-            for ( int i = 0; i < buttonItems.size( ); i++ ) {
-                if ( Utils.equals( buttonItems.get( i ).getView( ), view ) ) {
-                    if ( onToolBarClickListener != null ) {
-
-                        int direction = -1;
-                        int position = -1;
-
-                        for ( int j = 0; j < groupLeft.getChildCount( ); j++ ) {
-
-                            if ( Utils.equals( groupLeft.getChildAt( j ), view ) ) {
-                                direction = 0;
-                                position = j;
-                            }
-
-                        }
-
-                        for ( int j = 0; j < groupRight.getChildCount( ); j++ ) {
-
-                            if ( Utils.equals( groupRight.getChildAt( j ), view ) ) {
-                                direction = 1;
-                                position = j;
-                            }
-                        }
-
-                        onToolBarClickListener.onToolBarClick( buttonItems.get( i ).getTag( ), view, direction, position );
-                    }
-                }
-            }
-
-        }
-    }
-
-    public void setVisibilityRightButtons( int visible ) {
-        groupRight.setVisibility( visible );
     }
 
     public String getTitle( ) {
@@ -353,92 +165,32 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
     public void setTitle( String title ) {
         this.title = title;
         if ( textTitle != null ) textTitle.setText( title );
+
     }
 
-    public int getTitleColor( ) {
-        return titleColor;
+    public void setLeftButton ( ButtonItem button ) {
+        imageViewLeft.setOnClickListener( this );
+        button.setView( imageViewLeft );
+        items.add( button );
     }
 
-    public void setTitleColor( int titleColor ) {
-        this.titleColor = titleColor;
-        if ( textTitle != null ) textTitle.setTextColor( titleColor );
+    public void setRightButton ( ButtonItem button ) {
+        imageViewRight.setOnClickListener( this );
+        button.setView( imageViewRight );
+        items.add( button );
     }
-
-
-
-
 
     public ArrayList< ButtonItem > getButtonItems( ) {
-        return buttonItems;
-    }
-
-    public OnToolBarClickListener getOnToolBarClickListener( ) {
-        return onToolBarClickListener;
-    }
-
-    public void setOnToolBarClickListener( OnToolBarClickListener onToolBarClickListener ) {
-        this.onToolBarClickListener = onToolBarClickListener;
-    }
-
-    @Override
-    public void setTheme ( boolean theme ) {
-        if( defaultTheme > 0 ){
-            theme = ( defaultTheme == 2 ) != theme;
-            if ( !theme ) {
-                setTitleColor( Color.WHITE );
-            } else {
-                setTitleColor( Color.BLACK );
-            }
-        }
-
-
-//        if( defaultTheme > -1 ){
-//            theme = ( defaultTheme == 1 ) != theme;
-//            if ( !theme ) {
-//                setTitleColor( Color.BLACK );
-//            } else {
-//                setTitleColor( Color.WHITE );
-//            }
-//        }
+        return items;
     }
 
     public static class ButtonItem {
 
-        private int resource = -1;
-        private String text;
-        private int textColor = Color.BLACK;
         private Object tag;
-        private int textSize = 16;
-
         private View view;
 
-        public ButtonItem( String text ) {
-            this.text = text;
-        }
+        public ButtonItem( ){
 
-        public ButtonItem( int resource ) {
-            this.resource = resource;
-        }
-
-        public ButtonItem( ) {
-        }
-
-        public String getText( ) {
-            return text;
-        }
-
-        public ButtonItem setText( String text ) {
-            this.text = text;
-            return this;
-        }
-
-        public int getResource( ) {
-            return resource;
-        }
-
-        public ButtonItem setResource( int resource ) {
-            this.resource = resource;
-            return this;
         }
 
         public Object getTag( ) {
@@ -450,36 +202,91 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             return this;
         }
 
-        public int getTextColor( ) {
-            return textColor;
-        }
-
-        public ButtonItem setTextColor( int textColor ) {
-            this.textColor = textColor;
-            return this;
-
-        }
-
-        public int getTextSize( ) {
-            return textSize;
-        }
-
-        public ButtonItem setTextSize( int textSize ) {
-            this.textSize = textSize;
-            return this;
-        }
-
         public View getView( ) {
             return view;
         }
 
         public void setView( View view ) {
             this.view = view;
+
         }
     }
 
+    public void setOnToolBarClickListener ( OnToolBarClickListener onToolBarClickListener ) {
+        this.onToolBarClickListener = onToolBarClickListener;
+    }
+
     public interface OnToolBarClickListener {
-        void onToolBarClick( Object tag, View view, int direction, int index );
+        void onToolBarClick( Object tag, View view );
+    }
+
+
+    @Override
+    public void onClick( View v ) {
+
+        if ( items != null ) {
+
+            for ( int i=0; i< items.size( ); i++ ){
+
+                if ( Utils.equals( items.get( i ).getView( ), v ) ) {
+
+                    if ( onToolBarClickListener != null ) {
+
+                        onToolBarClickListener.onToolBarClick( items.get( i ).getTag( ), v );
+                    }
+                }
+            }
+        }
+    }
+
+    public void setLeftDrawable( Drawable d ) {
+        this.imageLeftDrawable = d;
+        if ( imageViewLeft != null ) imageViewLeft.setImageDrawable( imageLeftDrawable );
+    }
+
+    public void setRightDrawable( Drawable d ) {
+        this.imageRightDrawable = d;
+        if ( imageViewRight != null ) imageViewRight.setImageDrawable( imageRightDrawable );
+    }
+
+    public Drawable getImageLeftDrawable( ) {
+        return imageLeftDrawable;
+    }
+
+    public void setImageLeftDrawable( Drawable imageLeftDrawable ) {
+        this.imageLeftDrawable = imageLeftDrawable;
+    }
+
+    public Drawable getImageRightDrawable( ) {
+        return imageRightDrawable;
+    }
+
+    public void setImageRightDrawable( Drawable imageRightDrawable ) {
+        this.imageRightDrawable = imageRightDrawable;
+    }
+
+    @Override
+    public void setTheme ( boolean theme ) {
+
+        if( defaultTheme > 0 ){
+            theme = ( defaultTheme == 2 ) != theme;
+
+            if ( !theme ) { //Dark
+                setTitleColor( Color.WHITE );
+                setBottomColor( Color.argb( 255, 30, 30, 40 ) );
+
+                if ( darkLeftDrawable != null ) setLeftDrawable( darkLeftDrawable );
+                if ( darkRightDrawable != null ) setRightDrawable( darkRightDrawable );
+
+            } else { // white
+                setTitleColor( Color.BLACK );
+                setBottomColor( Color.argb( 255, 237, 237, 237 ) );
+
+                if ( whiteLeftDrawable != null ) setLeftDrawable( whiteLeftDrawable );
+                if ( whiteRightDrawable != null ) setRightDrawable( whiteRightDrawable );
+
+            }
+        }
     }
 
     public float DPToPX( int dp ) {
@@ -488,5 +295,4 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         float px = dp * ( metrics.densityDpi / 160f );
         return px;
     }
-
 }

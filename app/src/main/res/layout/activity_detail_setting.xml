@@ -11,9 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
         app:toolbarTitle="Setting"
-        app:toolbarTitleColor="#000"
         app:toolbarBottomWidth="1dp"
-        app:toolbarBottomColor="#EDEDED"/>
+        app:defaultTheme="Light"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"/>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -137,6 +140,7 @@
                 android:layout_centerVertical="true" />
 
             <TextView
+                android:id="@+id/text_detail_setting_currency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="USD"

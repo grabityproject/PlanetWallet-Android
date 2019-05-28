@@ -27,7 +27,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         viewInit( );
         setData( );
 
-        setStatusColor( Color.BLACK );
     }
 
     @Override
@@ -35,7 +34,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         super.viewInit( );
         viewMapper.btnSelect.setOnClickListener( this );
         viewMapper.btnRefresh.setOnClickListener( this );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_close_gray ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
     }
 
@@ -45,7 +44,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag , C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
         }

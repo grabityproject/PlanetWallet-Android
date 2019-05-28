@@ -54,6 +54,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
         alphabetButtons = Utils.getAllViewsFromParentView( viewMapper.inputAlphabet, TextView.class );
         Collections.shuffle( numberButtons );
         Collections.shuffle( alphabetButtons );
+
     }
 
     @Override
@@ -70,6 +71,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
             alphabetButtons.get( i ).setOnClickListener( this );
         }
         keyList = new ArrayList<>( );
+
     }
 
 

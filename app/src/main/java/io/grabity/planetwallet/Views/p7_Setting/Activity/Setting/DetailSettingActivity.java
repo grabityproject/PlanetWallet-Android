@@ -14,11 +14,9 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
-import io.grabity.planetwallet.Views.p4_Main.Adapter.TestAdapter;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.PopupCurrencyAdapter;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
@@ -44,7 +42,7 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
     @Override
     protected void viewInit ( ) {
         super.viewInit( );
-        viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_back_gray ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.toggleButton.setOnToggleListener( this );
         viewMapper.btnPinCode.setOnClickListener( this );
@@ -69,7 +67,7 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag , C.tag.TOOLBAR_BACK ) ){
             finish( );
         }
@@ -94,7 +92,7 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
     protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
         if( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_OK ){
-            Toast.makeText( this , "PinCode Change Succes" , Toast.LENGTH_SHORT).show( );
+            Toast.makeText( this , "PinCode Change Success" , Toast.LENGTH_SHORT).show( );
         }
     }
 
@@ -105,8 +103,9 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
 
     @Override
     public void onListPopupItemClick ( PopupView popup, View view, int position ) {
-        PLog.e( "Popup item click : " +position );
-        PLog.e( "item name : " + items.get( position ) );
+        viewMapper.textCurrency.setText( items.get( position ) );
+        popup.onBackPressed( );
+
     }
 
     public class ViewMapper {
@@ -114,6 +113,7 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
         ToggleButton toggleButton;
         ViewGroup btnPinCode;
         ViewGroup btnCurrency;
+        TextView textCurrency;
 
 
         public ViewMapper ( ) {
@@ -121,6 +121,7 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
             toggleButton = findViewById( R.id.toggleBtn );
             btnPinCode = findViewById( R.id.group_detail_setting_change_pincode );
             btnCurrency = findViewById( R.id.group_detail_setting_change_currency );
+            textCurrency = findViewById( R.id.text_detail_setting_currency );
         }
     }
 }

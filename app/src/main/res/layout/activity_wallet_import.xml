@@ -12,7 +12,10 @@
         android:layout_height="@dimen/toolbarHeight"
         app:toolbarTitle="Import Planet"
         app:defaultTheme="Dark"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"
         />
+
 
 
     <io.grabity.planetwallet.Widgets.TabBar

@@ -14,21 +14,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import io.grabity.planetwallet.Common.commonset.C;
+import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.PhoneCode;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
+import io.grabity.planetwallet.Views.p7_Setting.Adapter.PopupPhoneCodeAdapter;
+import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
+import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.TimerView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class PhoneRegistrationActivity extends PlanetWalletActivity implements TextWatcher, ToolBar.OnToolBarClickListener {
+public class PhoneRegistrationActivity extends PlanetWalletActivity implements TextWatcher, ToolBar.OnToolBarClickListener, ListPopup.OnListPopupItemClickListener {
 
     private ViewMapper viewMapper;
+
+    private PopupPhoneCodeAdapter adapter;
+    private ArrayList< PhoneCode > items;
 
     //Todo Server 응답후 타이머
 
@@ -45,7 +54,7 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     @Override
     protected void viewInit ( ) {
         super.viewInit( );
-        viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.etPhone.addTextChangedListener( this );
         viewMapper.etCode.addTextChangedListener( this );
@@ -54,11 +63,24 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
         viewMapper.btnSubmit.setOnClickListener( this );
 
         viewMapper.btnSend.setEnabled( false );
+        viewMapper.btnSubmit.setEnabled( false );
     }
 
     @Override
     protected void setData ( ) {
         super.setData( );
+
+        items = new ArrayList<>(  );
+        items.add( new PhoneCode( "Korea", "+ 82" ) );
+        items.add( new PhoneCode( "China", "+ 86" ) );
+        items.add( new PhoneCode( "Japan", "+ 81" ) );
+        items.add( new PhoneCode( "New Zealand", "+ 64" ) );
+        items.add( new PhoneCode( "Hongkong", "+ 852" ) );
+        items.add( new PhoneCode( "Hawaii" , "+ 1808" ) );
+        items.add( new PhoneCode( "Grenada" , "+ 1809" ) );
+        items.add( new PhoneCode( "Denmark" , "+ 45" ) );
+
+        adapter = new PopupPhoneCodeAdapter( this, items );
 
     }
 
@@ -66,19 +88,31 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     public void onClick ( View v ) {
         super.onClick( v );
 
-        if( v == viewMapper.btnSend ) {
+        if ( v == viewMapper.btnDialCode ) {
+            ListPopup.newInstance( this )
+                    .setAdapter( adapter )
+                    .setOnListPopupItemClickListener( this )
+                    .show( );
+        } else if( v == viewMapper.btnSend ) {
             viewMapper.groupPhoneCode.setVisibility( View.VISIBLE );
             viewMapper.textTime.Start( 180000 );
         } else if( v == viewMapper.btnSubmit ) {
 
             if( viewMapper.textTime.isCertification( ) ){
                 viewMapper.textTime.Stop( );
+                Utils.hideKeyboard( this, getCurrentFocus( ) );
+                super.onBackPressed( );
                 finish( );
             }else{
                 Toast.makeText( this , "인증시간초과", Toast.LENGTH_SHORT).show( );
             }
-
         }
+    }
+
+    @Override
+    public void onListPopupItemClick( PopupView popup, View view, int position ) {
+        viewMapper.btnDialCode.setText( items.get( position ).getCountryCode( ) );
+        popup.onBackPressed( );
     }
 
     @Override
@@ -98,9 +132,10 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ){
             super.onBackPressed( );
+            finish( );
         }
     }
 
@@ -108,12 +143,13 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
 
         ViewGroup groupPhoneCode;
         View btnSend;
-        View btnDialCode;
         View btnSubmit;
         ToolBar toolBar;
         RoundEditText etPhone;
         RoundEditText etCode;
         TimerView textTime;
+
+        TextView btnDialCode;
 
         public ViewMapper ( ) {
 

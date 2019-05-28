@@ -32,7 +32,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
     @Override
     protected void viewInit ( ) {
         super.viewInit( );
-        viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_close_blue ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.etName.addTextChangedListener( this );
         viewMapper.btnSubmit.setOnClickListener( this );
@@ -66,7 +66,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag, C.tag.TOOLBAR_CLOSE) ){
             super.onBackPressed( );
             finish( );

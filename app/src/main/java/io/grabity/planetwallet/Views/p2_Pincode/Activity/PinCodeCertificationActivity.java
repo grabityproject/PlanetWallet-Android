@@ -52,6 +52,8 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         alphabetButtons = Utils.getAllViewsFromParentView( viewMapper.inputAlphabet, TextView.class );
         Collections.shuffle( numberButtons );
         Collections.shuffle( alphabetButtons );
+
+
     }
 
     @Override
@@ -59,15 +61,23 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         super.setData( );
         for ( int i = 0; i < numberButtons.size( ); i++ ) {
             numberButtons.get( i ).setText( String.valueOf( i ) );
+            numberButtons.get( i ).setTextColor
+                    (! Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#000000" ) );
             numberButtons.get( i ).setTag( String.valueOf( i ) );
             numberButtons.get( i ).setOnClickListener( this );
+
         }
         for ( int i = 0; i < alphabetButtons.size( ); i++ ) {
             alphabetButtons.get( i ).setText( Character.toString( ( char ) ( i + 65 ) ) );
+            alphabetButtons.get( i ).setTextColor
+                    (! Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#000000" ) );
             alphabetButtons.get( i ).setTag( Character.toString( ( char ) ( i + 65 ) ) );
             alphabetButtons.get( i ).setOnClickListener( this );
         }
         keyList = new ArrayList<>( );
+
+        setPasswordView( );
+        setPasswordMessage( true );
     }
 
     @Override
@@ -94,20 +104,22 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
 
                     if ( Utils.equals( Utils.getPreferenceData( this, C.pref.PASSWORD ), strKeyList ) ) {
 
-                        if ( ( Boolean ) Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, false ) ) {
+
+                        if ( Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, false ) ) ) ){
                             sendAction( MainActivity.class );
                             finish( );
                         } else {
                             sendAction( WalletAddActivity.class );
                             finish( );
                         }
+
+
                     } else {
                         keyList.clear( );
                         setPasswordMessage( false );
                     }
                 }
                 setPasswordView( );
-
 
             }
         }
@@ -116,7 +128,12 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
     void setPasswordMessage( boolean check ) {
         viewMapper.passwordTitle.setText( check ? "Verification Code" : "Code incorrect" );
         viewMapper.passwordSubtitle.setText( check ? "Enter the 4 digit + alphabet" : "Please check your code" );
-        viewMapper.passwordTitle.setTextColor( check ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#FF0050" ) );
+
+        if (! Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ) {
+            viewMapper.passwordTitle.setTextColor( check ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#FF0050" ) );
+        } else {
+            viewMapper.passwordTitle.setTextColor( check ? Color.parseColor( "#000000" ) : Color.parseColor( "#FF0050" ) );
+        }
         viewMapper.passwordSubtitle.setTextColor( check ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#FF0050" ) );
     }
 
@@ -127,10 +144,21 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                 params = new LinearLayout.LayoutParams( ( int ) Utils.dpToPx( this, 14 ), ( int ) Utils.dpToPx( this, 14 ) );
             } else {
                 params = new LinearLayout.LayoutParams( ( int ) Utils.dpToPx( this, 14 ), ( int ) Utils.dpToPx( this, 2 ) );
+
+                if (! Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ) {
+                    passwordViews.get( i ).setDotColor( !Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#BCBDD5" ) );
+                }
             }
             params.rightMargin = ( int ) Utils.dpToPx( this, 12 );
             passwordViews.get( i ).setLayoutParams( params );
-            passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#5C5964" ) );
+
+            if (! Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ) {
+                passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#5C5964" ) );
+            } else {
+                passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#000000" ) : Color.parseColor( "#BCBDD5" ) );
+            }
+
+
             viewMapper.inputNumber.setVisibility( keyList.size( ) <= 3 ? View.VISIBLE : View.GONE );
             viewMapper.inputAlphabet.setVisibility( keyList.size( ) >= 4 ? View.VISIBLE : View.GONE );
         }

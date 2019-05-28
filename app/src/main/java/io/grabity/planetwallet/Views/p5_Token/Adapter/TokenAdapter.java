@@ -25,6 +25,8 @@ public class TokenAdapter extends AdvanceArrayAdapter< Eth > {
     @Override
     public ViewMapper viewMapping ( int position ) {
         return new EthItem( View.inflate( getContext( ) , R.layout.item_token_add , null ) );
+
+
     }
 
     @Override

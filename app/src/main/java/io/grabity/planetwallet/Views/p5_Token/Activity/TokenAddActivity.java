@@ -43,7 +43,7 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_back_gray ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ) );
 
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
@@ -92,7 +92,7 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
 
     }
 

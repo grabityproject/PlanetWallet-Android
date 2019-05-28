@@ -31,7 +31,7 @@ public class AccountActivity extends PlanetWalletActivity implements ToolBar.OnT
     @Override
     protected void viewInit ( ) {
         super.viewInit( );
-        viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_back_blue ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.btnNickName.setOnClickListener( this );
@@ -69,7 +69,7 @@ public class AccountActivity extends PlanetWalletActivity implements ToolBar.OnT
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag , C.tag.TOOLBAR_BACK ) ){
             finish( );
         }

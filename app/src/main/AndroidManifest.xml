@@ -66,6 +66,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
+
+        <!--android:name=".Views.p4_Main.Activity.MainActivity"-->
         <activity
             android:name=".Views.p4_Main.Activity.MainActivity"
             android:screenOrientation="portrait"
@@ -158,10 +160,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
-        <activity
-            android:name=".Views.p7_Setting.Activity.Setting.DetailSettingActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"

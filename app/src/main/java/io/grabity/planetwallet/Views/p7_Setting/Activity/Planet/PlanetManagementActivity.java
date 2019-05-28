@@ -37,8 +37,8 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
     protected void viewInit( ) {
         super.viewInit( );
 
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_back_blue ).setTag( C.tag.TOOLBAR_BACK ) );
-        viewMapper.toolBar.setRightButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_add_blue ).setTag( C.tag.TOOLBAR_ADD ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setRightButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_ADD ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.listView.setOnItemClickListener( this );
     }
@@ -64,7 +64,7 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
     }
 
     @Override
-    public void onToolBarClick( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             finish( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_ADD ) ) {

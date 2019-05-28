@@ -34,7 +34,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
     protected void viewInit ( ) {
         super.viewInit( );
 
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_back_blue ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setTitle( Utils.equals( getString( "board" ), "announcements" ) ? "announcements" : "faq" );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.listView.setOnItemClickListener( this );
@@ -75,7 +75,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag , C.tag.TOOLBAR_BACK ) ){
             finish( );
         }

@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Account.AccountActivity;
@@ -43,7 +45,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         super.viewInit( );
 
 
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.btnPlanet.setOnClickListener( this );
@@ -56,7 +58,13 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
 
 
 
-
+//
+//        PLog.e( "toolbar btn items : " + viewMapper.toolBar.getButtonItems().get( 0 ).getResource() );
+//        PLog.e( "getDr : " + getResources().getIdentifier( "image_toolbar_close_blue","drawable","io.grabity.planetwallet" ) );
+//
+//        if ( viewMapper.toolBar.getButtonItems().get( 0 ).getResource() == R.drawable.image_toolbar_close_blue ){
+//            PLog.e( " 같습니다!!!! " );
+//        }
 
     }
 
@@ -95,7 +103,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag , C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
         }

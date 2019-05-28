@@ -10,10 +10,12 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarBottomColor="#EDEDED"
         app:toolbarBottomWidth="1dp"
         app:toolbarTitle="Phone number"
-        app:toolbarTitleColor="#000" />
+        app:defaultTheme="Light"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"/>
+
 
 
     <LinearLayout
@@ -63,6 +65,7 @@
                 android:textColorHint="#AAAAAA"
                 android:textSize="14dp"
                 android:textColor="#000"
+                android:inputType="number"
                 app:defaultTheme="Light" />
 
             <TextView
@@ -88,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
@@ -113,6 +116,7 @@
                     android:singleLine="true"
                     android:textColorHint="#AAAAAA"
                     android:textColor="#000"
+                    android:inputType="number"
                     app:defaultTheme="Light"
                     />
 

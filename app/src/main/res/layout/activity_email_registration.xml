@@ -10,10 +10,13 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarBottomColor="#EDEDED"
         app:toolbarBottomWidth="1dp"
         app:toolbarTitle="E-mail"
-        app:toolbarTitleColor="#000" />
+        app:defaultTheme="Light"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"/>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

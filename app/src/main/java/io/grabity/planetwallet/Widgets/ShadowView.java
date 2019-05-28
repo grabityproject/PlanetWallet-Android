@@ -20,6 +20,9 @@ public class ShadowView extends View {
     private int startColor;
     private int endColor;
 
+    private GradientDrawable g;
+    private GradientDrawable.Orientation orientation;
+
 
     public ShadowView( Context context ) {
         super( context );
@@ -45,7 +48,7 @@ public class ShadowView extends View {
 
     void viewInit( ) {
 
-        GradientDrawable.Orientation orientation = GradientDrawable.Orientation.TOP_BOTTOM;
+        orientation = GradientDrawable.Orientation.TOP_BOTTOM;
         switch ( direction ) { // 1~7
             case 1: {
                 orientation = GradientDrawable.Orientation.TOP_BOTTOM;
@@ -76,9 +79,34 @@ public class ShadowView extends View {
                 break;
             }
         }
-        GradientDrawable g = new GradientDrawable( orientation, new int[]{ startColor, endColor } );
+        g = new GradientDrawable( orientation, new int[]{ startColor, endColor } );
         g.setShape( GradientDrawable.RECTANGLE );
         setBackground( g );
     }
 
+    public int getStartColor( ) {
+        return startColor;
+    }
+
+    public void setStartColor( int startColor ) {
+        this.startColor = startColor;
+    }
+
+    public int getEndColor( ) {
+        return endColor;
+    }
+
+    public void setEndColor( int endColor ) {
+        this.endColor = endColor;
+
+    }
+
+    public void setShadowColor( int startColor, int endColor ){
+        this.startColor = startColor;
+        this.endColor = endColor;
+
+        g = new GradientDrawable( orientation, new int[]{ getStartColor( ), getEndColor( ) } );
+        setBackground( g );
+
+    }
 }

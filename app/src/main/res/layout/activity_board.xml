@@ -11,9 +11,13 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarTitleColor="#000"
         app:toolbarBottomWidth="1dp"
-        app:toolbarBottomColor="#EDEDED"/>
+        app:defaultTheme="Light"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"/>
+
+
+
 
 
     <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView

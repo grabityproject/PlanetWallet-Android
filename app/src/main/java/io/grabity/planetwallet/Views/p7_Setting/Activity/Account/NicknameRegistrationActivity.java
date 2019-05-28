@@ -35,7 +35,7 @@ public class NicknameRegistrationActivity extends PlanetWalletActivity implement
     @Override
     protected void viewInit ( ) {
         super.viewInit( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.etNickName.addTextChangedListener( this );
         viewMapper.btnNameClear.setOnClickListener( this );
@@ -49,7 +49,7 @@ public class NicknameRegistrationActivity extends PlanetWalletActivity implement
         viewMapper.etNickName.setSelection( viewMapper.etNickName.length( ) );
     }
 
-    boolean ccc = false;
+
 
     @Override
     public void onClick ( View v ) {
@@ -58,13 +58,11 @@ public class NicknameRegistrationActivity extends PlanetWalletActivity implement
             viewMapper.etNickName.setText( "" );
         }else if( v == viewMapper.btnSubmit ){
 
-            ccc = !ccc;
-            setTheme( ccc );
-
-           /* if( viewMapper.etNickName.getText( ) == null ) return;
+            if( viewMapper.etNickName.getText( ) == null ) return;
             Utils.hideKeyboard( this , getCurrentFocus( ) );
             setResult( RESULT_OK , new Intent(  ).putExtra( "name" , viewMapper.etNickName.getText( ).toString( ) ) );
-            finish( );*/
+            super.onBackPressed( );
+            finish( );
         }
     }
 
@@ -92,9 +90,10 @@ public class NicknameRegistrationActivity extends PlanetWalletActivity implement
 
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag , C.tag.TOOLBAR_CLOSE) ){
             super.onBackPressed( );
+            finish( );
         }
     }
 

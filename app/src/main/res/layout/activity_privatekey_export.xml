@@ -11,9 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
         app:toolbarTitle="PrivateKey"
-        app:toolbarTitleColor="#000"
         app:toolbarBottomWidth="1dp"
-        app:toolbarBottomColor="#EDEDED" />
+        app:defaultTheme="Light"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"
+        />
+
 
     <LinearLayout
         android:layout_below="@id/toolBar"

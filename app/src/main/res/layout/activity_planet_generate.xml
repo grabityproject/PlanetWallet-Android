@@ -9,7 +9,11 @@
     <io.grabity.planetwallet.Widgets.ToolBar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbarHeight" />
+        android:layout_height="@dimen/toolbarHeight"
+        app:defaultTheme="Dark"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"/>
+
 
     <LinearLayout
         android:id="@+id/group_planet_generate_title"

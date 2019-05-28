@@ -11,9 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
         app:toolbarTitle="Planet Name"
-        app:toolbarTitleColor="#000"
-        app:toolbarBottomColor="#EDEDED"
-        app:toolbarBottomWidth="1dp" />
+        app:toolbarBottomWidth="1dp"
+        app:defaultTheme="Light"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"/>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

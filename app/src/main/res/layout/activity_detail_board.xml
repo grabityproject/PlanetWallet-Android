@@ -10,9 +10,11 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarBottomColor="#EDEDED"
         app:toolbarBottomWidth="1dp"
-        app:toolbarTitleColor="#000"/>
+        app:defaultTheme="Light"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"/>
+
 
 
     <RelativeLayout

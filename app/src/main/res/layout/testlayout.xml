@@ -1,28 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:themeBackground="#FFF"
+    android:background="#000">
 
 
-    <io.grabity.planetwallet.Widgets.BarcodeView
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_margin="10dp"
-        >
-    </io.grabity.planetwallet.Widgets.BarcodeView>
+    <!--<io.grabity.planetwallet.Widgets.BarcodeView-->
+        <!--android:layout_width="180dp"-->
+        <!--android:layout_height="180dp"-->
+        <!--android:layout_margin="10dp"-->
+        <!--&gt;-->
+    <!--</io.grabity.planetwallet.Widgets.BarcodeView>-->
 
 
-    <io.grabity.planetwallet.Widgets.BarcodeView
-        android:layout_width="260dp"
-        android:layout_height="260dp"
-        android:layout_centerInParent="true">
+    <!--<io.grabity.planetwallet.Widgets.BarcodeView-->
+        <!--android:layout_width="260dp"-->
+        <!--android:layout_height="260dp"-->
+        <!--android:layout_centerInParent="true">-->
 
-    </io.grabity.planetwallet.Widgets.BarcodeView>
+    <!--</io.grabity.planetwallet.Widgets.BarcodeView>-->
+
+    <!--<io.grabity.planetwallet.Widgets.ToolBar-->
+        <!--android:id="@+id/themetoolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="64dp"-->
+        <!--app:toolbarTitle="TestToolBar"-->
+        <!--app:toolbarBottomWidth="1dp"-->
+        <!--app:defaultTheme="Dark"-->
+        <!--app:defaultLeftSrc="@drawable/image_toolbar_back_blue"-->
+        <!--app:themeLeftSrc="@drawable/image_toolbar_add_gray"-->
+        <!--app:defaultRightSrc="@drawable/icon_eth"-->
+        <!--app:themeRightSrc="@drawable/icon_gbt"-->
+        <!--&gt;-->
+
+    <!--</io.grabity.planetwallet.Widgets.ToolBar>-->
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="클릭"
+        android:layout_centerInParent="true"
+        />
+
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="클릭1111"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/btn"
+        />
 
 
 
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="64dp">-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="123"-->
+                <!--android:layout_centerInParent="true"/>-->
+
+        <!--</RelativeLayout>-->
+
+    <!--</LinearLayout>-->
 
 
-
-</RelativeLayout>
+</io.grabity.planetwallet.Widgets.PWRelativeLayout>

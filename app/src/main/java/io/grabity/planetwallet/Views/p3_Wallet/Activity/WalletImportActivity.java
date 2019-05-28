@@ -48,7 +48,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     protected void viewInit( ) {
         super.viewInit( );
 
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_back_gray ).setTag( C.tag.TOOLBAR_BACK ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.tabBar.setItems(
@@ -94,7 +94,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag , C.tag.TOOLBAR_BACK ) ){
             super.onBackPressed( );
         }
