@@ -39,7 +39,6 @@ public class MnemonicExportActivity extends PlanetWalletActivity implements Tool
     public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag , C.tag.TOOLBAR_CLOSE) ){
             super.onBackPressed( );
-            finish( );
         }
     }
 

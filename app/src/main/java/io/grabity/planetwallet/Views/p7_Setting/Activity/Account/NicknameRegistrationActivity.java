@@ -62,7 +62,6 @@ public class NicknameRegistrationActivity extends PlanetWalletActivity implement
             Utils.hideKeyboard( this , getCurrentFocus( ) );
             setResult( RESULT_OK , new Intent(  ).putExtra( "name" , viewMapper.etNickName.getText( ).toString( ) ) );
             super.onBackPressed( );
-            finish( );
         }
     }
 

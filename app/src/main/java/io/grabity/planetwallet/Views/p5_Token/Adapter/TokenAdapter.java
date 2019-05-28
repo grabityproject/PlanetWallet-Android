@@ -11,12 +11,12 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Eth;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.CircleImageView;
-import io.grabity.planetwallet.Widgets.OnListSideViewClick;
+import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
 public class TokenAdapter extends AdvanceArrayAdapter< Eth > {
 
-    OnListSideViewClick onListSideViewClick;
+    OnInsideItemClickListener onInsideItemClickListener;
 
     public TokenAdapter ( Context context, ArrayList< Eth > objects ) {
         super( context, objects );
@@ -45,14 +45,22 @@ public class TokenAdapter extends AdvanceArrayAdapter< Eth > {
         }
 
         ( ( EthItem ) viewMapper).clickView.setOnClickListener( v -> {
-            item.setCheck( !item.isCheck() );
-            onListSideViewClick.onListSideViewClick( position , item.isCheck( ) );
+            getObjects().get( position ).setCheck( !getObjects( ).get( position ).isCheck() );
+            if( getObjects().get( position ).isCheck( ) ){
+                ( ( EthItem ) viewMapper).btnTokenAddORremove.setImageResource( R.drawable.image_checkbox_on );
+                ( ( EthItem ) viewMapper).btnTokenAddORremove.setBorderColor( Color.parseColor( "#ff0050") );
+            }else{
+                ( ( EthItem ) viewMapper).btnTokenAddORremove.setImageDrawable( new ColorDrawable( Color.parseColor( "#111117" ) ) );
+                ( ( EthItem ) viewMapper).btnTokenAddORremove.setBorderColor( Color.parseColor( "#5C5964") );
+            }
+
+            onInsideItemClickListener.onInsideItemClick( position );
         } );
     }
 
 
-    public void setOnListSideViewClick ( OnListSideViewClick onListSideViewClick ){
-        this.onListSideViewClick = onListSideViewClick;
+    public void setOnInsideItemClickListener( OnInsideItemClickListener onInsideItemClickListener ){
+        this.onInsideItemClickListener = onInsideItemClickListener;
     }
 
 
@@ -71,4 +79,5 @@ public class TokenAdapter extends AdvanceArrayAdapter< Eth > {
             btnTokenAddORremove = findViewById( R.id.btn_item_tokenadd_tokenadd_removebtn );
         }
     }
+
 }

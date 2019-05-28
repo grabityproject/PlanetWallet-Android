@@ -59,7 +59,6 @@ public class EmailRegistrationActivity extends PlanetWalletActivity implements T
             Utils.hideKeyboard( this, getCurrentFocus( ) );
             setResult( RESULT_OK , new Intent(  ).putExtra( "mail" , viewMapper.etEmail.getText( ).toString( ) ) );
             super.onBackPressed( );
-            finish( );
         }
     }
 

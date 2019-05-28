@@ -56,7 +56,7 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            finish( );
+            super.onBackPressed( );
         }
     }
 

@@ -149,6 +149,8 @@ public class AdvanceRecyclerView extends RecyclerView {
         }
     }
 
+
+
     public OnItemClickListener getOnItemClickListener( ) {
         return onItemClickListener;
     }

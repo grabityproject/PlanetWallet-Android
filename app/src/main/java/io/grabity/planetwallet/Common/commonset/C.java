@@ -15,6 +15,8 @@ public class C {
 
         public final static int WALLET_CREATE = 210;
 
+        public final static int MAIN_TOKEN_ADD = 220;
+
     }
 
     public static class resultCode {
