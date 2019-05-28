@@ -43,8 +43,8 @@
                 <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
                     android:id="@+id/list_main"
                     android:layout_width="match_parent"
-                    android:overScrollMode="never"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never" />
 
             </io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper>
 
@@ -143,12 +143,12 @@
                 android:id="@+id/toolBar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbarHeight"
-                app:toolbarTitle="MAIN"
-                app:defaultTheme="Dark"
                 app:blackThemeLeftSrc="@drawable/image_toolbar_planetmenu_gray"
-                app:whiteThemeLeftSrc="@drawable/image_toolbar_planetmenu_blue"
                 app:blackThemeRightSrc="@drawable/image_toolbar_mutiuniverse_gray"
-                app:whiteThemeRightSrc="@drawable/image_toolbar_mutiuniverse_blue"/>
+                app:defaultTheme="Dark"
+                app:toolbarTitle="MAIN"
+                app:whiteThemeLeftSrc="@drawable/image_toolbar_planetmenu_blue"
+                app:whiteThemeRightSrc="@drawable/image_toolbar_mutiuniverse_blue" />
 
         </RelativeLayout>
 
