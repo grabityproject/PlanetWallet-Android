@@ -1,19 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="400dp">
+    android:layout_height="wrap_content"
+    android:paddingTop="120dp"
+    android:paddingBottom="42dp">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/group_main_header_planet"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="375">
 
         <io.grabity.planetwallet.Widgets.PlanetView
-            android:id="@+id/icon_planet"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_centerInParent="true" />
+            android:id="@+id/planet_main_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_weight="170" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
+    <TextView
+        android:id="@+id/text_main_header_planet_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/group_main_header_planet"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:paddingBottom="4dp"
+        android:text="Planet Name"
+        android:textColor="#FFF"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_main_header_planet_name"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_main_header_planet_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0x1234123123123"
+            android:textColor="#5c5964"
+            android:textSize="16dp" />
+
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/btn_main_header_copy"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/image_address_copy_darkgray"
+            app:themeSrc="@drawable/image_address_copy_gray" />
+
+    </LinearLayout>
 
 </RelativeLayout>

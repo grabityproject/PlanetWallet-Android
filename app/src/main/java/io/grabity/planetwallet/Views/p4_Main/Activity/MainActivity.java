@@ -35,6 +35,7 @@ import io.grabity.planetwallet.Widgets.ToolBar;
 public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, AdvanceRecyclerView.OnScrollListener {
 
     private ViewMapper viewMapper;
+    private HeaderViewMapper headerViewMapper;
 
     private ArrayList< Coin > items;
     private CoinAdapter coinAdapter;
@@ -86,27 +87,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     protected void setData( ) {
         super.setData( );
 
-
-//        //eth data mapping
-//    public Coin( String coin, int icon, String balance, String coinName, String currency ) {
-//            this.coin = coin;
-//            this.balance = balance;
-//            this.coinName = coinName;
-//            this.icon = icon;
-//            this.currency = currency;
-//        }
-//
-//        //btc data mappnig
-//
-//    public Coin( String coin, String balance, String walletName, String transferTime, int icon ) {
-//            this.coin = coin;
-//            this.balance = balance;
-//            this.icon = icon;
-//            this.walletName = walletName;
-//            this.transferTime = transferTime;
-//        }
-
-
         /**
          * Test main item list
          */
@@ -155,9 +135,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     public void onAttachView( int resId, int position, View view ) {
         if ( resId == R.layout.header_main && position == 0 ) {
-            PlanetView planetView = view.findViewById( R.id.icon_planet );
-            planetView.setData( "가즈아" );
-            viewMapper.barcodeView.setPlanetView( planetView );
+            headerViewMapper = new HeaderViewMapper( view );
+            headerViewMapper.planetView.setData( "가즈아" );
+            viewMapper.barcodeView.setPlanetView( headerViewMapper.planetView );
+            if ( viewController != null )
+                viewController.setHeaderViewMapper( headerViewMapper );
         }
     }
 
@@ -289,6 +271,25 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             imageTest = findViewById( R.id.image_test );
 
+        }
+    }
+
+    public class HeaderViewMapper {
+
+        public View groupHeaderPlanet;
+        public View headerView;
+        public PlanetView planetView;
+        TextView textName;
+        TextView textAddress;
+        View btnCopy;
+
+        public HeaderViewMapper( View headerView ) {
+            this.headerView = headerView;
+            groupHeaderPlanet = headerView.findViewById( R.id.group_main_header_planet );
+            planetView = headerView.findViewById( R.id.planet_main_header );
+            textName = headerView.findViewById( R.id.text_main_header_planet_name );
+            textAddress = headerView.findViewById( R.id.text_main_header_planet_address );
+            btnCopy = headerView.findViewById( R.id.btn_main_header_copy );
         }
     }
 }

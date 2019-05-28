@@ -122,6 +122,14 @@ public class PlanetView extends View {
     }
 
     @Override
+    protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec ) {
+        super.onMeasure( widthMeasureSpec, heightMeasureSpec );
+        int width = MeasureSpec.getSize( widthMeasureSpec );
+        int height = MeasureSpec.getSize( widthMeasureSpec );
+        setMeasuredDimension( width, height );
+    }
+
+    @Override
     protected void onSizeChanged( int w, int h, int oldw, int oldh ) {
         super.onSizeChanged( w, h, oldw, oldh );
         mWidth = w;

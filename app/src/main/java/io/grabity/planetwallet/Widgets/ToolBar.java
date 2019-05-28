@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
@@ -31,6 +32,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
     private int defaultTheme;
 
+    private View backgroundView;
     private TextView textTitle;
     private OnToolBarClickListener onToolBarClickListener;
 
@@ -40,7 +42,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
     private int bottomColor;
     private int titleColor;
 
-    private LinearLayout line;
+    private View line;
 
     private ArrayList< ButtonItem > items;
 
@@ -55,8 +57,6 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
     private Drawable imageLeftDrawable;
     private Drawable imageRightDrawable;
-
-
 
     public ToolBar( Context context, AttributeSet attrs ) {
         this( context, attrs, 0 );
@@ -78,9 +78,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         this.darkRightDrawable = a.getDrawable( R.styleable.ToolBar_blackThemeRightSrc );
         this.whiteRightDrawable = a.getDrawable( R.styleable.ToolBar_whiteThemeRightSrc );
 
-
-
-        if ( defaultTheme >= 0 ){
+        if ( defaultTheme >= 0 ) {
             setTheme( false );
         }
 
@@ -89,24 +87,32 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
     }
 
 
-    public void viewInit( ){
+    public void viewInit( ) {
 
         {
-            if ( !isInEditMode() ) setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) ) );
+            if ( !isInEditMode( ) )
+                setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) ) );
+        }
+
+        {
+            backgroundView = new View( getContext( ) );
+            RelativeLayout.LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
+            addView( backgroundView, params );
+            backgroundView.setAlpha( 0f );
         }
 
         {
             RelativeLayout relativeLayout = new RelativeLayout( getContext( ) );
             RelativeLayout.LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
             params.addRule( CENTER_IN_PARENT );
-            addView( relativeLayout , params );
+            addView( relativeLayout, params );
 
             textTitle = new TextView( getContext( ) );
             textTitle.setLayoutParams( params );
             textTitle.setGravity( Gravity.CENTER );
             textTitle.setTextColor( titleColor );
             textTitle.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 18 );
-            textTitle.setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ) , "fonts/WorkSans-SemiBold.otf" ) , Typeface.BOLD );
+            textTitle.setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ), "fonts/WorkSans-SemiBold.otf" ), Typeface.BOLD );
             textTitle.setText( title );
 
             relativeLayout.addView( textTitle );
@@ -114,7 +120,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
         {
             line = new LinearLayout( getContext( ) );
-            LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT , bottomWidth );
+            LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, bottomWidth );
             params.addRule( ALIGN_PARENT_BOTTOM );
             line.setLayoutParams( params );
             line.setBackgroundColor( bottomColor );
@@ -129,7 +135,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             imageViewLeft.setPadding( ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ) );
             imageViewLeft.setOnClickListener( this );
 
-            addView( imageViewLeft , params );
+            addView( imageViewLeft, params );
         }
 
         { //Right
@@ -140,16 +146,16 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             imageViewRight.setPadding( ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ) );
             imageViewRight.setOnClickListener( this );
 
-            addView( imageViewRight , params );
+            addView( imageViewRight, params );
         }
 
-        items = new ArrayList<>(  );
+        items = new ArrayList<>( );
 
     }
 
-    public void setTitleColor ( int titleColor ) {
+    public void setTitleColor( int titleColor ) {
         this.titleColor = titleColor;
-        if ( textTitle != null  ) textTitle.setTextColor( titleColor );
+        if ( textTitle != null ) textTitle.setTextColor( titleColor );
     }
 
     public void setBottomColor( int bottomColor ) {
@@ -168,13 +174,13 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
     }
 
-    public void setLeftButton ( ButtonItem button ) {
+    public void setLeftButton( ButtonItem button ) {
         imageViewLeft.setOnClickListener( this );
         button.setView( imageViewLeft );
         items.add( button );
     }
 
-    public void setRightButton ( ButtonItem button ) {
+    public void setRightButton( ButtonItem button ) {
         imageViewRight.setOnClickListener( this );
         button.setView( imageViewRight );
         items.add( button );
@@ -189,7 +195,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         private Object tag;
         private View view;
 
-        public ButtonItem( ){
+        public ButtonItem( ) {
 
         }
 
@@ -212,7 +218,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         }
     }
 
-    public void setOnToolBarClickListener ( OnToolBarClickListener onToolBarClickListener ) {
+    public void setOnToolBarClickListener( OnToolBarClickListener onToolBarClickListener ) {
         this.onToolBarClickListener = onToolBarClickListener;
     }
 
@@ -226,7 +232,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
         if ( items != null ) {
 
-            for ( int i=0; i< items.size( ); i++ ){
+            for ( int i = 0; i < items.size( ); i++ ) {
 
                 if ( Utils.equals( items.get( i ).getView( ), v ) ) {
 
@@ -265,10 +271,16 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         this.imageRightDrawable = imageRightDrawable;
     }
 
-    @Override
-    public void setTheme ( boolean theme ) {
+    public void setBackgroundAlpha( float alpha ) {
+        if ( backgroundView != null ) {
+            backgroundView.setAlpha( alpha );
+        }
+    }
 
-        if( defaultTheme > 0 ){
+    @Override
+    public void setTheme( boolean theme ) {
+
+        if ( defaultTheme > 0 ) {
             theme = ( defaultTheme == 2 ) != theme;
 
             if ( !theme ) { //Dark
@@ -278,12 +290,18 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
                 if ( darkLeftDrawable != null ) setLeftDrawable( darkLeftDrawable );
                 if ( darkRightDrawable != null ) setRightDrawable( darkRightDrawable );
 
+                if ( backgroundView != null )
+                    backgroundView.setBackgroundColor( Color.BLACK );
+
             } else { // white
                 setTitleColor( Color.BLACK );
                 setBottomColor( Color.argb( 255, 237, 237, 237 ) );
 
                 if ( whiteLeftDrawable != null ) setLeftDrawable( whiteLeftDrawable );
                 if ( whiteRightDrawable != null ) setRightDrawable( whiteRightDrawable );
+
+                if ( backgroundView != null )
+                    backgroundView.setBackgroundColor( Color.WHITE );
 
             }
         }

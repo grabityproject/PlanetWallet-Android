@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import io.grabity.planetwallet.MiniFramework.utils.BlurBuilder;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.ViewMapper;
+import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.HeaderViewMapper;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 
@@ -17,6 +19,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
 
     MainActivity activity;
     ViewMapper viewMapper;
+    HeaderViewMapper headerViewMapper;
 
     float scrollY = 0.0f;
 
@@ -82,5 +85,25 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         viewMapper.blurView.setY(
                 ( ( View ) viewMapper.blurView.getParent( ) ).getHeight( ) -
                         viewMapper.listView.getHeight( ) - ( scrollY > 0 ? scrollY : 0 ) - viewMapper.groupBlur.getHeight( ) / 2.0f );
+        if ( headerViewMapper != null ) {
+
+            float start = ( headerViewMapper.groupHeaderPlanet.getTop( ) + headerViewMapper.groupHeaderPlanet.getHeight( ) / 3.0f - viewMapper.toolBar.getHeight( ) );
+            float end = ( headerViewMapper.groupHeaderPlanet.getTop( ) + headerViewMapper.groupHeaderPlanet.getHeight( ) - viewMapper.toolBar.getHeight( ) );
+            float moveRange = end - start;
+            float current = scrollY - start > 0 ? scrollY - start : 0;
+            float alpha = current / moveRange;
+
+            if ( current > moveRange ) {
+                viewMapper.toolBar.setBackgroundAlpha( 1.0f );
+            } else if ( 0.0f <= alpha && alpha <= 1.0f ) {
+                viewMapper.toolBar.setBackgroundAlpha( alpha );
+            }
+
+        }
+
+    }
+
+    public void setHeaderViewMapper( HeaderViewMapper headerViewMapper ) {
+        this.headerViewMapper = headerViewMapper;
     }
 }
