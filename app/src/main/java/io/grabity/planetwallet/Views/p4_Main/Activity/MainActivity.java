@@ -73,6 +73,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         viewMapper.btnCopy.setOnClickListener( this );
         viewMapper.btnSend.setOnClickListener( this );
+
     }
 
     @Override
@@ -94,15 +95,15 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         viewMapper.listView.setAdapter( adapter = new TestAdapter( this, items ) );
 
-        itemss = new ArrayList<>(  );
-        itemss.add( new Planet( "" , "ETH" , "choi111" ) );
-        itemss.add( new Planet( "2323434" , "ETH" , "choi222" ) );
-        itemss.add( new Planet( "adwd124" , "BTC" , "choi333" ) );
-        itemss.add( new Planet( "" , "ETH" , "choi111" ) );
-        itemss.add( new Planet( "2323434" , "ETH" , "choi222" ) );
-        itemss.add( new Planet( "adwd124" , "BTC" , "choi333" ) );
+        itemss = new ArrayList<>( );
+        itemss.add( new Planet( "", "ETH", "choi111" ) );
+        itemss.add( new Planet( "2323434", "ETH", "choi222" ) );
+        itemss.add( new Planet( "adwd124", "BTC", "choi333" ) );
+        itemss.add( new Planet( "", "ETH", "choi111" ) );
+        itemss.add( new Planet( "2323434", "ETH", "choi222" ) );
+        itemss.add( new Planet( "adwd124", "BTC", "choi333" ) );
 
-        planetsAdapter = new PlanetsAdapter( this , itemss );
+        planetsAdapter = new PlanetsAdapter( this, itemss );
 
         viewMapper.planetslistView.setAdapter( planetsAdapter );
         viewMapper.planetsName.setText( "choi3950 Planet" );
@@ -148,9 +149,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         if ( viewMapper.slideDrawer.isOpen( ) && viewMapper.slideDrawer.getIsOpenPosition( ) == 0 ) {
             viewMapper.slideDrawer.close( SlideDrawerLayout.Position.TOP );
-        } else if ( viewMapper.slideDrawer.isOpen( ) && viewMapper.slideDrawer.getIsOpenPosition( ) == 3 ){
+        } else if ( viewMapper.slideDrawer.isOpen( ) && viewMapper.slideDrawer.getIsOpenPosition( ) == 3 ) {
             viewMapper.slideDrawer.close( SlideDrawerLayout.Position.BOTTOM );
-        } else{
+        } else {
             super.onBackPressed( );
         }
 
@@ -172,9 +173,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        if ( recyclerView == viewMapper.listView ){
-            PLog.e( "메인리스트뷰 클릭 : " + position);
-        } else if ( recyclerView == viewMapper.planetslistView ){
+        if ( recyclerView == viewMapper.listView ) {
+            PLog.e( "메인리스트뷰 클릭 : " + position );
+        } else if ( recyclerView == viewMapper.planetslistView ) {
             PLog.e( "플레닛츠리스트뷰 클릭 : " + position );
         }
     }
@@ -204,8 +205,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         TextView coinBalance;
         TextView coinName;
 
-        public StretchImageView imageTest;
-
 
         public ViewMapper( ) {
 
@@ -232,7 +231,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             coinBalance = findViewById( R.id.text_main_bottom_balance );
             coinName = findViewById( R.id.text_main_bottom_coin_name );
 
-            imageTest = findViewById( R.id.image_test );
 
         }
     }
