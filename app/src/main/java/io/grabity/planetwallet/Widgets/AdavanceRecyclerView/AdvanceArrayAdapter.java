@@ -189,6 +189,12 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
         public int getResId( ) {
             return resId;
         }
+
+        public View getView( ) {
+            return itemView;
+        }
+
+
     }
 
     public ArrayList< Integer > getHeaderViews( ) {

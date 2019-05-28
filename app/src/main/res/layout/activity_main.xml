@@ -30,7 +30,13 @@
                 android:id="@+id/group_main_blur"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                tools:ignore="MissingPrefix">
+
+                <io.grabity.planetwallet.Widgets.StretchImageView
+                    android:id="@+id/image_main_blur"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -41,7 +47,8 @@
                         android:layout_width="46dp"
                         android:layout_height="46dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="20dp" />
+                        android:layout_marginStart="20dp"
+                        app:data="Hello Sydney!!" />
 
                     <TextView
                         android:id="@+id/text_main_blur_wallet_name_balance"
@@ -88,11 +95,6 @@
 
 
                 </RelativeLayout>
-
-                <io.grabity.planetwallet.Widgets.StretchImageView
-                    android:id="@+id/image_main_blur"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
 
 
             </RelativeLayout>
@@ -201,7 +203,10 @@
                 <io.grabity.planetwallet.Widgets.BarcodeView
                     android:id="@+id/barcode_main_bottom_barcodeview"
                     android:layout_width="180dp"
-                    android:layout_height="180dp" />
+                    android:layout_height="180dp"
+                    android:padding="12dp"
+                    app:borderColor="#ededed"
+                    app:borderWidth="1dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -297,6 +302,6 @@
     <io.grabity.planetwallet.Widgets.StretchImageView
         android:id="@+id/image_test"
         android:layout_width="200dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="200dp" />
 
 </io.grabity.planetwallet.Widgets.PWRelativeLayout>

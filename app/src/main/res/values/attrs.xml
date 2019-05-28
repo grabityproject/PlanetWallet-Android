@@ -17,10 +17,12 @@
             <enum name="Light" value="2" />
         </attr>
 
+        <attr name="data" format="string" />
+
     </declare-styleable>
 
     <declare-styleable name="PlanetView">
-        <attr name="data" format="string" />
+        <attr name="data" />
     </declare-styleable>
 
 
@@ -138,15 +140,25 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="BarcodeView">
+    <declare-styleable name="BarcodeViewBak">
 
         <attr name="cornerRadius" />
         <attr name="borderWidth" />
         <attr name="borderColor" />
         <attr name="backgroundColor" />
 
-        <attr name="addr" format="string"/>
+        <attr name="addr" format="string" />
 
     </declare-styleable>
+
+    <declare-styleable name="BarcodeView">
+
+        <attr name="cornerRadius" />
+        <attr name="borderWidth" />
+        <attr name="borderColor" />
+        <attr name="data" />
+
+    </declare-styleable>
+
 
 </resources>

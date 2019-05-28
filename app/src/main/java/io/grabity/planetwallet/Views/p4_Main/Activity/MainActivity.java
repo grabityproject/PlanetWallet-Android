@@ -38,7 +38,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     private ArrayList< Planet > itemss;
     private PlanetsAdapter planetsAdapter;
 
-
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -109,7 +108,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.planetsName.setText( "choi3950 Planet" );
 
 
-        viewMapper.barcodeView.setData( "0x2133498349813afbrtdfetsff" );
+//        viewMapper.barcodeView.setData( "가즈아" );
         viewMapper.coinBalance.setText( "1.245" );
         viewMapper.coinName.setText( "BTC" );
 
@@ -119,7 +118,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onAttachView( int resId, int position, View view ) {
         if ( resId == R.layout.header_main && position == 0 ) {
             PlanetView planetView = view.findViewById( R.id.icon_planet );
-            planetView.setData( "가즈아" );
+            planetView.setData( "Hello Sydney!!" );
+            viewMapper.barcodeView.setPlanetView( planetView );
         }
     }
 
@@ -127,11 +127,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onClick( View v ) {
         super.onClick( v );
         //barcode Test
-        if ( v == viewMapper.btnCopy ) {
-            viewMapper.barcodeView.setData( "0x2133498349813afbrtdfetsff" );
-        } else if ( v == viewMapper.btnSend ) {
-            viewMapper.barcodeView.setData( "0x2234341133498349813afbrtdfefgtsff" );
-        }
+//        if ( v == viewMapper.btnCopy ) {
+//            viewMapper.barcodeView.setData( "0x2133498349813afbrtdfetsff" );
+//        } else if ( v == viewMapper.btnSend ) {
+//            viewMapper.barcodeView.setData( "0x2234341133498349813afbrtdfefgtsff" );
+//        }
     }
 
     @Override
@@ -204,7 +204,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         TextView coinBalance;
         TextView coinName;
-
 
         public ViewMapper( ) {
 
