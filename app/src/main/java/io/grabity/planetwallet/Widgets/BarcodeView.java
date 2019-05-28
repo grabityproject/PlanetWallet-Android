@@ -6,107 +6,66 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.view.View;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
-import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import java.util.HashMap;
+import java.util.Map;
+
 import io.grabity.planetwallet.R;
 
-/**
- * Created by. JeongHyun 2019. 05. 24
- */
+public class BarcodeView extends View {
 
-public class BarcodeView extends RelativeLayout {
-    private Context context;
-    private Paint paintBorder;
+    private PlanetView planetView;
 
-    private float border_width;
-    private int border_color;
+    private float cornerRadius = 0.0f;
+    private float borderWidth = 0.0f;
+    private int borderColor = Color.TRANSPARENT;
 
-    float width;
-    float height;
-    float radius;
+    private float width;
+    private float height;
 
     private String data;
-    private PlanetView planetView;
-    private StretchImageView stretchImageView;
-    private CircleImageView circleImageView;
+
     private MultiFormatWriter multiFormatWriter;
-    private BitMatrix bitMatrix;
     private BarcodeEncoder barcodeEncoder;
-    private Bitmap bitmap;
-    private int barcodeSize = 200;
+
+    private Paint mainPaint;
+    private Paint borderPaint;
+    private Paint circlePaint;
+
+    private RectF rectF;
 
     public BarcodeView( Context context ) {
         super( context );
-        this.context = context;
-
-        border_width = Utils.dpToPx( getContext( ), 1 );
-        border_color = Color.parseColor( "#EDEDED" );
-        data = "";
-
-        this.viewInit( );
     }
 
-    public BarcodeView( Context context, AttributeSet attrs ) {
+    public BarcodeView( Context context, @Nullable AttributeSet attrs ) {
         this( context, attrs, 0 );
-        this.viewInit( );
     }
 
     public BarcodeView( Context context, AttributeSet attrs, int defStyleAttr ) {
         super( context, attrs, defStyleAttr );
+
         TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.BarcodeView, defStyleAttr, 0 );
-        border_width = a.getDimensionPixelSize( R.styleable.BarcodeView_borderWidth , ( int ) Utils.dpToPx( getContext( ), 1 ) );
-        border_color = a.getColor( R.styleable.BarcodeView_borderColor , Color.parseColor( "#EDEDED" ) );
-        data = a.getString( R.styleable.BarcodeView_addr );
+
+        cornerRadius = a.getDimensionPixelSize( R.styleable.BarcodeView_cornerRadius, 0 );
+        borderWidth = a.getDimensionPixelSize( R.styleable.BarcodeView_borderWidth, 0 );
+        borderColor = a.getColor( R.styleable.BarcodeView_borderColor, Color.TRANSPARENT );
+        data = a.getString( R.styleable.BarcodeView_data );
+
         a.recycle( );
-        this.viewInit( );
-    }
-
-    private void viewInit( ) {
-        paintBorder = new Paint( Paint.ANTI_ALIAS_FLAG );
-        paintBorder.setColor( border_color );
-        paintBorder.setStrokeWidth( border_width );
-        paintBorder.setStyle( Paint.Style.STROKE );
-
-        {
-            stretchImageView = new StretchImageView( getContext( ) );
-            RelativeLayout.LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT , ViewGroup.LayoutParams.MATCH_PARENT );
-            params.setMargins( ( int ) Utils.dpToPx( getContext( ), 2 ), ( int ) Utils.dpToPx( getContext( ), 2 ), ( int ) Utils.dpToPx( getContext( ), 2 ), ( int ) Utils.dpToPx( getContext( ), 2 ) );
-            addView( stretchImageView , params);
-        }
-
-        {
-            circleImageView = new CircleImageView( getContext( ) );
-            RelativeLayout.LayoutParams params = new LayoutParams( ( int ) Utils.dpToPx( getContext( ), 36 ), ( int ) Utils.dpToPx( getContext( ), 36 ) );
-            params.addRule( CENTER_IN_PARENT );
-            circleImageView.setImageDrawable( new ColorDrawable( Color.WHITE ) );
-            addView( circleImageView, params );
-        }
-
-//        {
-//            planetView = new PlanetView( getContext( ) );
-//            RelativeLayout.LayoutParams params = new LayoutParams( ( int ) Utils.dpToPx( getContext( ), 26 ), ( int ) Utils.dpToPx( getContext( ), 26 ) );
-//            params.addRule( CENTER_IN_PARENT );
-//            planetView.setData( "" );
-//            addView( planetView, params );
-//        }
-
-        multiFormatWriter = new MultiFormatWriter( );
-        barcodeEncoder = new BarcodeEncoder( );
-        super.setBackgroundColor( Color.WHITE );
+        viewInit( );
     }
 
     @Override
@@ -114,14 +73,45 @@ public class BarcodeView extends RelativeLayout {
         super.onSizeChanged( w, h, oldw, oldh );
         width = w;
         height = h;
-        setMeasuredDimension( MeasureSpec.getSize( ( int ) width ), MeasureSpec.getSize( ( int ) height ) );
+        rectF = new RectF( 0 + borderWidth / 2.0f, 0 + borderWidth / 2.0f, w - borderWidth / 2.0f, h - borderWidth / 2.0f );
+    }
+
+    void viewInit( ) {
+        multiFormatWriter = new MultiFormatWriter( );
+        barcodeEncoder = new BarcodeEncoder( );
+        borderPaint = new Paint( Paint.ANTI_ALIAS_FLAG );
+        borderPaint.setColor( borderColor );
+        borderPaint.setStyle( Paint.Style.STROKE );
+        borderPaint.setStrokeWidth( borderWidth );
+
+        mainPaint = new Paint( Paint.ANTI_ALIAS_FLAG );
+        circlePaint = new Paint( Paint.ANTI_ALIAS_FLAG );
+        circlePaint.setColor( Color.WHITE );
+        circlePaint.setStyle( Paint.Style.FILL );
+
+        planetView = new PlanetView( getContext( ) );
     }
 
     @Override
-    protected void dispatchDraw( Canvas canvas ) {
-        canvas.drawRoundRect( new RectF( border_width / 2.0f, border_width / 2.0f, width - border_width / 2.0f, height - border_width / 2.0f ), radius, radius, paintBorder );
-
-        super.dispatchDraw( canvas );
+    protected void onDraw( Canvas canvas ) {
+        super.onDraw( canvas );
+        canvas.drawRoundRect( rectF, cornerRadius, cornerRadius, borderPaint );
+        if ( getData( ) != null ) {
+            Bitmap qrCodeBitmap = generateQRCode( getData( ) );
+            canvas.drawBitmap( qrCodeBitmap, getPaddingLeft( ), getPaddingTop( ), mainPaint );
+            if ( planetView != null ) {
+                float radius = Math.max( width, height ) / 8.0f;
+                circlePaint.setColor( Color.WHITE );
+                canvas.drawCircle( width / 2.0f, height / 2.0f, radius, circlePaint );
+                planetView.setData( data );
+                circlePaint.setColor( Color.BLACK );
+                canvas.drawCircle( width / 2.0f, height / 2.0f, ( radius ) * 5.0f / 6.0f, circlePaint );
+                canvas.drawBitmap( planetView.getPlanetImage( ( radius * 2.0f ) * 5.0f / 6.0f, ( radius * 2.0f ) * 5.0f / 6.0f ),
+                        width / 2.0f - ( radius * 5.0f / 6.0f ),
+                        height / 2.0f - ( radius * 5.0f / 6.0f ),
+                        mainPaint );
+            }
+        }
     }
 
     public String getData( ) {
@@ -130,46 +120,65 @@ public class BarcodeView extends RelativeLayout {
 
     public void setData( String data ) {
         this.data = data;
-
-        if( this.data == null ){
-            this.data = "sample";
-        }
-
-//        planetView.setData( this.data );
-
-        if( bitMatrix != null ) bitMatrix.clear( );
-        if( bitmap != null ) bitmap.recycle( );
-
-        try {
-            bitMatrix = multiFormatWriter.encode( getData(), BarcodeFormat.QR_CODE , barcodeSize , barcodeSize );
-            bitmap = barcodeEncoder.createBitmap( bitMatrix );
-            stretchImageView.setImageBitmap( bitmap );
-
-        } catch ( WriterException e ) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public int getBorder_color( ) {
-        return border_color;
-    }
-
-    public void setBorder_color( int border_color ) {
-        this.border_color = border_color;
         invalidate( );
     }
 
-    public float getBorder_width( ) {
-        return border_width;
+    private Bitmap generateQRCode( String data ) {
+        Bitmap bitmap = null;
+        try {
+            Map< EncodeHintType, Object > hints = new HashMap<>( );
+            hints.put( EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H );
+            hints.put( EncodeHintType.MARGIN, 0 );
+            BitMatrix bitMatrix = multiFormatWriter.encode( data,
+                    BarcodeFormat.QR_CODE,
+                    ( int ) ( width - getPaddingLeft( ) - getPaddingRight( ) ),
+                    ( int ) ( height - getPaddingTop( ) - getPaddingBottom( ) ),
+                    hints );
+            bitmap = barcodeEncoder.createBitmap( bitMatrix );
+        } catch ( WriterException e ) {
+            e.printStackTrace( );
+        }
+        return bitmap;
     }
 
-    public void setBorder_width( float border_width ) {
-        this.border_width = border_width;
+    public PlanetView getPlanetView( ) {
+        return planetView;
     }
 
+    public void setPlanetView( PlanetView planetView ) {
+        this.planetView = planetView;
+        if ( planetView != null ) {
+            setData( planetView.getData( ) );
+        }
+    }
 
+    public float getCornerRadius( ) {
+        return cornerRadius;
+    }
 
+    public void setCornerRadius( float cornerRadius ) {
+        this.cornerRadius = cornerRadius;
+        rectF = new RectF( 0 + borderWidth / 2.0f, 0 + borderWidth / 2.0f, width - borderWidth / 2.0f, height - borderWidth / 2.0f );
+        invalidate( );
+    }
 
+    public float getBorderWidth( ) {
+        return borderWidth;
+    }
+
+    public void setBorderWidth( float borderWidth ) {
+        this.borderWidth = borderWidth;
+        rectF = new RectF( 0 + borderWidth / 2.0f, 0 + borderWidth / 2.0f, width - borderWidth / 2.0f, height - borderWidth / 2.0f );
+        invalidate( );
+    }
+
+    public int getBorderColor( ) {
+        return borderColor;
+    }
+
+    public void setBorderColor( int borderColor ) {
+        this.borderColor = borderColor;
+        rectF = new RectF( 0 + borderWidth / 2.0f, 0 + borderWidth / 2.0f, width - borderWidth / 2.0f, height - borderWidth / 2.0f );
+        invalidate( );
+    }
 }

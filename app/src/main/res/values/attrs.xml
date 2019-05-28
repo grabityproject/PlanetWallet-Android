@@ -17,10 +17,12 @@
             <enum name="Light" value="2" />
         </attr>
 
+        <attr name="data" format="string" />
+
     </declare-styleable>
 
     <declare-styleable name="PlanetView">
-        <attr name="data" format="string" />
+        <attr name="data" />
     </declare-styleable>
 
 
@@ -58,12 +60,14 @@
     <declare-styleable name="ToolBar">
 
         <attr name="toolbarTitle" format="string" />
-        <attr name="toolbarTitleColor" format="color" />
-        <attr name="toolbarTitleIcon" format="reference" />
         <attr name="toolbarBottomWidth" format="dimension" />
-        <attr name="toolbarBottomColor" format="color" />
 
         <attr name="defaultTheme" />
+
+        <attr name="blackThemeLeftSrc" format="reference|color" />
+        <attr name="blackThemeRightSrc" format="reference|color" />
+        <attr name="whiteThemeLeftSrc" format="reference|color" />
+        <attr name="whiteThemeRightSrc" format="reference|color" />
 
     </declare-styleable>
 
@@ -143,10 +147,9 @@
         <attr name="cornerRadius" />
         <attr name="borderWidth" />
         <attr name="borderColor" />
-        <attr name="backgroundColor" />
-
-        <attr name="addr" format="string"/>
+        <attr name="data" />
 
     </declare-styleable>
+
 
 </resources>

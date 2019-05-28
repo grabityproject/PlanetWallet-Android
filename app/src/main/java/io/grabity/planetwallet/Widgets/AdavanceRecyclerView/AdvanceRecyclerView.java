@@ -15,6 +15,8 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
+
 /**
  * Created by. JcobPark on 2018. 08. 29
  */
@@ -303,6 +305,8 @@ public class AdvanceRecyclerView extends RecyclerView {
             }
             height += holder.itemView.getMeasuredHeight( );
         }
+
+        height += Utils.dpToPx( getContext( ), 130 );
 
         Bitmap bigBitmap = Bitmap.createBitmap( this.getMeasuredWidth( ), height, Bitmap.Config.ARGB_8888 );
         Canvas bigCanvas = new Canvas( bigBitmap );

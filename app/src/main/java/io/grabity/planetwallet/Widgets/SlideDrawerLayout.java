@@ -17,8 +17,6 @@ import io.grabity.planetwallet.R;
 
 public class SlideDrawerLayout extends ViewGroup {
 
-    private int isOpenPosition = -1;
-
     public static class Position {
         public final static int TOP = 0;
         public final static int LEFT = 1;
@@ -413,6 +411,12 @@ public class SlideDrawerLayout extends ViewGroup {
     }
 
 
+    public void close( ) {
+        if( currentMovingPosition >= 0 )
+            this.close( currentMovingPosition );
+    }
+
+
     public void close( int position ) {
         if ( isOpen ) {
             slideAnimation( position, false );
@@ -430,20 +434,8 @@ public class SlideDrawerLayout extends ViewGroup {
         }
     }
 
-    public int getIsOpenPosition( ) {
-        return isOpenPosition;
-    }
-
-    public void setIsOpenPosition( int isOpenPosition ) {
-        this.isOpenPosition = isOpenPosition;
-    }
-
     public boolean isOpen( ) {
         return isOpen;
-    }
-
-    public void setOpen( boolean open ) {
-        isOpen = open;
     }
 
     public OnSlideDrawerListener getOnSlideDrawerListener( ) {
@@ -457,8 +449,6 @@ public class SlideDrawerLayout extends ViewGroup {
     private void slideAnimation( final int position, boolean open ) {
         View target = triggers.get( position ).getView( );
         isOpen = open;
-
-        isOpenPosition = position;
 
         if ( target != null ) {
             ObjectAnimator animator = null;

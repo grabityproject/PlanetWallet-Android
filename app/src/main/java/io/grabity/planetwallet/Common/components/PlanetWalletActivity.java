@@ -30,8 +30,8 @@ import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Widgets.PWLinearLayout;
-import io.grabity.planetwallet.Widgets.PWRelativeLayout;
+import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout;
+import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout;
 import io.grabity.planetwallet.Widgets.Themeable;
 
 /**

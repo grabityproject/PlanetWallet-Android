@@ -2,11 +2,17 @@ package io.grabity.planetwallet.Widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Region;
+import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,14 +25,16 @@ import io.grabity.planetwallet.R;
 
 public class PlanetView extends View {
 
-    private float width;
-    private float height;
+    private String data;
 
-    private int patterns[] = {
+    private float mWidth;
+    private float mHeight;
+
+    private int[] patterns = {
             0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
     };
 
-    private String colors[] = {
+    private String[] colors = {
             "#FFFD00",
             "#FEB900",
             "#EFA288",
@@ -78,9 +86,15 @@ public class PlanetView extends View {
 
     public void setData( String data ) {
         if ( data == null ) data = "";
-        String data1 = data;
-        this.hash = sha256( data1 );
+        this.data = data;
+        this.hash = sha256( data );
+        PLog.e( "current Date : " + data );
+        PLog.e( "this.hash : " + hash );
         invalidate( );
+    }
+
+    public String getData( ) {
+        return data;
     }
 
     public int getValueFromByte( byte input, int range ) {
@@ -107,41 +121,44 @@ public class PlanetView extends View {
         }
     }
 
-
     @Override
     protected void onSizeChanged( int w, int h, int oldw, int oldh ) {
         super.onSizeChanged( w, h, oldw, oldh );
-        width = w;
-        height = h;
-        setMeasuredDimension( MeasureSpec.getSize( ( int ) width ), MeasureSpec.getSize( ( int ) height ) );
+        mWidth = w;
+        mHeight = h;
     }
 
     @Override
     protected void onDraw( Canvas canvas ) {
         super.onDraw( canvas );
+        drawCanvas( canvas, mWidth, mHeight );
+    }
 
+    void drawCanvas( Canvas canvas, float width, float height ) {
+        Canvas patternCanvas;
 
-        { // Circle Clip
-            Path path = new Path( );
-            path.addCircle( width / 2.0f, height / 2.0f, width / 2.0f, Path.Direction.CCW );
-            canvas.clipPath( path );
-        }
+        Bitmap original;
+        Bitmap originalPattern;
 
-        { // Mask Circle
-            boolean visible = getValueFromByte( hash[ 24 ], 10 ) <= 5;
-            if ( visible ) {
-                double outlineRadius = 30.0d + getValueFromByte( hash[ 25 ], 90 ) * 0.5d;
-                double degree = getValueFromByte( hash[ 26 ], 360 );
-                double scale = 60.0d + getValueFromByte( hash[ 27 ], 80 ) * 0.5d;
-                drawMaskCircle( canvas, outlineRadius, degree, scale );
-            }
-        }
+        Canvas originalCanvas;
+        Paint shaderPaint;
 
+        original = Bitmap.createBitmap( ( int ) width, ( int ) height, Bitmap.Config.ARGB_8888 );
+        originalCanvas = new Canvas( original );
+        Shader shader = new BitmapShader( original, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP );
+        shaderPaint = new Paint( Paint.ANTI_ALIAS_FLAG );
+        shaderPaint.setShader( shader );
+
+        originalPattern = Bitmap.createBitmap( ( int ) width, ( int ) height, Bitmap.Config.ARGB_8888 );
+        patternCanvas = new Canvas( originalPattern );
+        Paint patternShaderPaint = new Paint( Paint.ANTI_ALIAS_FLAG );
+        patternShaderPaint.setShader( new BitmapShader( originalPattern, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP ) );
+
+        if ( hash == null ) this.hash = sha256( "" );
         { // Main
             int pattern = patterns[ getValueFromByte( hash[ 0 ], patterns.length ) ];
             String colorCode = colors[ getValueFromByte( hash[ 1 ], colors.length ) ];
-            PLog.e( "Main colorCode : " + colorCode );
-            drawMain( canvas, pattern, colorCode );
+            drawMain( patternCanvas, width, height, pattern, colorCode );
         }
 
         { // Circle 1
@@ -151,8 +168,7 @@ public class PlanetView extends View {
                 double degree = getValueFromByte( hash[ 10 ], 360 );
                 double scale = 90.0d + getValueFromByte( hash[ 11 ], 40 ) * 0.5d;
                 String colorCode = colors[ getValueFromByte( hash[ 12 ], colors.length ) ];
-                PLog.e( " Circle 1 colorCode : " + colorCode );
-                drawCircle( canvas, outlineRadius, degree, scale, colorCode );
+                drawCircle( patternCanvas, width, height, outlineRadius, degree, scale, colorCode );
             }
         }
 
@@ -163,23 +179,50 @@ public class PlanetView extends View {
                 double degree = getValueFromByte( hash[ 18 ], 360 );
                 double scale = 90.0d + getValueFromByte( hash[ 19 ], 40 ) * 0.5d;
                 String colorCode = colors[ getValueFromByte( hash[ 20 ], colors.length ) ];
-                PLog.e( " Circle 2 colorCode : " + colorCode );
-                drawCircle( canvas, outlineRadius, degree, scale, colorCode );
+                drawCircle( patternCanvas, width, height, outlineRadius, degree, scale, colorCode );
             }
         }
 
+        { // Mask Circle
+            boolean visible = getValueFromByte( hash[ 24 ], 10 ) <= 5;
+            if ( visible ) {
+                double outlineRadius = 30.0d + getValueFromByte( hash[ 25 ], 90 ) * 0.5d;
+                double degree = getValueFromByte( hash[ 26 ], 360 );
+                double scale = 60.0d + getValueFromByte( hash[ 27 ], 80 ) * 0.5d;
+                drawMaskCircle( originalCanvas, originalPattern, width, height, outlineRadius, degree, scale );
+            } else {
+                drawMaskCircle( originalCanvas, originalPattern, width, height, 0, 0, 0 );
+            }
+        }
+
+        { // Circle Clip
+            canvas.drawCircle( width / 2.0f, height / 2.0f, width / 2.0f, shaderPaint );
+        }
     }
 
-    void drawMaskCircle( Canvas canvas, double outlineRadius, double degree, double scale ) {
-        Path path = new Path( );
-        path.addCircle(
-                width / 2.0f + ( float ) ( outlineRadius / 100.0f * ( width / 2.0f ) * Math.cos( degree * Math.PI / 180.0f ) ),
-                height / 2.0f + ( float ) ( outlineRadius / 100.0f * ( width / 2.0f ) * Math.sin( degree * Math.PI / 180.0f ) ),
-                ( float ) scale / 100.0f * ( width / 2.0f ), Path.Direction.CCW );
-        canvas.clipPath( path, Region.Op.DIFFERENCE );
+    void drawMaskCircle( Canvas canvas, Bitmap originalPattern, float width, float height, double outlineRadius, double degree, double scale ) {
+        Bitmap bitmap = Bitmap.createBitmap( ( int ) width, ( int ) height, Bitmap.Config.ARGB_8888 );
+        Canvas c = new Canvas( bitmap );
+        Shader shader = new BitmapShader( originalPattern, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP );
+        Paint shaderPaint = new Paint( Paint.ANTI_ALIAS_FLAG );
+        shaderPaint.setShader( shader );
+        {
+            Path path = new Path( );
+            path.moveTo( 0, 0 );
+            path.lineTo( width, 0 );
+            path.lineTo( width, height );
+            path.lineTo( 0, height );
+            path.close( );
+
+            path.addCircle( width / 2.0f + ( float ) ( outlineRadius / 100.0f * ( width / 2.0f ) * Math.cos( degree * Math.PI / 180.0f ) ),
+                    height / 2.0f + ( float ) ( outlineRadius / 100.0f * ( width / 2.0f ) * Math.sin( degree * Math.PI / 180.0f ) ),
+                    ( float ) scale / 100.0f * ( width / 2.0f ), Path.Direction.CCW );
+            c.drawPath( path, shaderPaint );
+        }
+        canvas.drawBitmap( bitmap, 0, 0, shaderPaint );
     }
 
-    void drawCircle( Canvas canvas, double outlineRadius, double degree, double scale, String colorCode ) {
+    void drawCircle( Canvas canvas, float width, float height, double outlineRadius, double degree, double scale, String colorCode ) {
         Paint paint = new Paint( Paint.ANTI_ALIAS_FLAG );
         paint.setStyle( Paint.Style.FILL );
         paint.setColor( Color.parseColor( colorCode ) );
@@ -189,7 +232,7 @@ public class PlanetView extends View {
                 ( float ) scale / 100.0f * ( width / 2.0f ), paint );
     }
 
-    void drawMain( Canvas canvas, int pattern, String colorCode ) {
+    void drawMain( Canvas canvas, float width, float height, int pattern, String colorCode ) {
         if ( pattern == 0 ) {
             Paint paint = new Paint( Paint.ANTI_ALIAS_FLAG );
             paint.setColor( Color.parseColor( colorCode ) );
@@ -505,4 +548,11 @@ public class PlanetView extends View {
         }
     }
 
+    public Bitmap getPlanetImage( float width, float height ) {
+        Bitmap bitmap = Bitmap.createBitmap( ( int ) width, ( int ) height, Bitmap.Config.ARGB_8888 );
+        Canvas canvas = new Canvas( bitmap );
+        PLog.e( "canvas : " + canvas );
+        drawCanvas( canvas, width, height );
+        return bitmap;
+    }
 }

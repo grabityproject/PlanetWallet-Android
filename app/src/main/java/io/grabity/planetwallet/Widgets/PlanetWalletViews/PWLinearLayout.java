@@ -1,27 +1,29 @@
-package io.grabity.planetwallet.Widgets;
+package io.grabity.planetwallet.Widgets.PlanetWalletViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.View;
+import android.widget.LinearLayout;
 
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Widgets.Themeable;
 
-public class PWView extends View implements Themeable {
+public class PWLinearLayout extends LinearLayout implements Themeable {
 
     private Drawable themeBackground;
     private Drawable defaultBackground;
 
-    public PWView( Context context ) {
+    public PWLinearLayout( Context context ) {
         super( context );
     }
 
-    public PWView( Context context, AttributeSet attrs ) {
+    public PWLinearLayout( Context context, AttributeSet attrs ) {
         this( context, attrs, 0 );
     }
 
-    public PWView( Context context, AttributeSet attrs, int defStyleAttr ) {
+    public PWLinearLayout( Context context, AttributeSet attrs, int defStyleAttr ) {
         super( context, attrs, defStyleAttr );
         TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.GlobalAttrDeclare, defStyleAttr, 0 );
         themeBackground = a.getDrawable( R.styleable.GlobalAttrDeclare_themeBackground );
@@ -41,5 +43,12 @@ public class PWView extends View implements Themeable {
                 setBackground( defaultBackground );
             }
         }
+    }
+
+    public Integer getBackgroundColor( ) {
+        if ( getBackground( ) instanceof ColorDrawable ) {
+            return ( ( ColorDrawable ) getBackground( ) ).getColor( );
+        }
+        return null;
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.grabity.planetwallet.Widgets.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,6 +16,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <RelativeLayout
+                android:id="@+id/group_main_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+
+                <io.grabity.planetwallet.Widgets.PlanetView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-200dp" />
+
+                <io.grabity.planetwallet.Widgets.ShadowView
+                    android:id="@+id/shadow_main_shadow_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:direction="BOTTOM_TOP"
+                    app:end="#7A000000"
+                    app:start="#000000" />
+
+            </RelativeLayout>
+
             <io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -23,75 +43,22 @@
                 <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
                     android:id="@+id/list_main"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="130dp"/>
+                    android:overScrollMode="never"
+                    android:layout_height="match_parent" />
+
             </io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper>
-            <!--android:clipToPadding="false"-->
-
-            <!--Test-->
-            <!--<RelativeLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="80dp"-->
-                <!--android:layout_alignParentBottom="true">-->
-
-                <!--<io.grabity.planetwallet.Widgets.PlanetView-->
-                <!--android:id="@+id/planetview_main_blur_planetview"-->
-                <!--android:layout_width="46dp"-->
-                <!--android:layout_height="46dp"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginStart="20dp"-->
-                <!--/>-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/text_main_blur_wallet_name_balance"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Wallet Balance"-->
-                <!--android:textColor="#5C5964"-->
-                <!--android:textSize="14dp"-->
-                <!--android:layout_toRightOf="@id/planetview_main_blur_planetview"-->
-                <!--android:layout_alignTop="@id/planetview_main_blur_planetview"-->
-                <!--android:paddingStart="10dp"/>-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/text_main_blur_balance"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="18dp"-->
-                <!--android:textColor="#FFF"-->
-                <!--android:text="1.2345"-->
-                <!--android:layout_alignLeft="@id/text_main_blur_wallet_name_balance"-->
-                <!--android:layout_below="@id/text_main_blur_wallet_name_balance"-->
-                <!--android:paddingStart="10dp"/>-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/text_main_blur_coin_name"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="18dp"-->
-                <!--android:textColor="#5C5964"-->
-                <!--android:text="BTC"-->
-                <!--android:textStyle="bold"-->
-                <!--android:layout_toRightOf="@id/text_main_blur_balance"-->
-                <!--android:layout_alignTop="@id/text_main_blur_balance"-->
-                <!--android:paddingStart="4dp"/>-->
-
-                <!--<io.grabity.planetwallet.Widgets.StretchImageView-->
-                <!--android:id="@+id/btn_main_blur_transfer"-->
-                <!--android:layout_width="80dp"-->
-                <!--android:layout_height="80dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:src="@drawable/image_main_bottom_transfer_gray"-->
-                <!--app:themeSrc="@drawable/image_main_bottom_transfer_blue"-->
-                <!--android:padding="20dp"/>-->
-
-            <!--</RelativeLayout>-->
 
             <RelativeLayout
                 android:id="@+id/group_main_blur"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                tools:ignore="MissingPrefix">
+
+                <io.grabity.planetwallet.Widgets.StretchImageView
+                    android:id="@+id/image_main_blur"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -103,58 +70,51 @@
                         android:layout_height="46dp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="20dp"
-                        />
+                        app:data="Hello Sydney!!" />
 
                     <TextView
                         android:id="@+id/text_main_blur_wallet_name_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/planetview_main_blur_planetview"
+                        android:layout_toRightOf="@id/planetview_main_blur_planetview"
+                        android:paddingStart="10dp"
                         android:text="Wallet Balance"
                         android:textColor="#5C5964"
-                        android:textSize="14dp"
-                        android:layout_toRightOf="@id/planetview_main_blur_planetview"
-                        android:layout_alignTop="@id/planetview_main_blur_planetview"
-                        android:paddingStart="10dp"/>
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/text_main_blur_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:textColor="#FFF"
-                        android:text="1.2345"
-                        android:layout_alignLeft="@id/text_main_blur_wallet_name_balance"
                         android:layout_below="@id/text_main_blur_wallet_name_balance"
-                        android:paddingStart="10dp"/>
+                        android:layout_alignLeft="@id/text_main_blur_wallet_name_balance"
+                        android:paddingStart="10dp"
+                        android:text="1.2345"
+                        android:textColor="#FFF"
+                        android:textSize="18dp" />
 
                     <TextView
                         android:id="@+id/text_main_blur_coin_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:textColor="#5C5964"
-                        android:text="BTC"
-                        android:textStyle="bold"
-                        android:layout_toRightOf="@id/text_main_blur_balance"
                         android:layout_alignTop="@id/text_main_blur_balance"
-                        android:paddingStart="4dp"/>
+                        android:layout_toRightOf="@id/text_main_blur_balance"
+                        android:paddingStart="4dp"
+                        android:text="BTC"
+                        android:textColor="#5C5964"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
 
                     <io.grabity.planetwallet.Widgets.StretchImageView
                         android:id="@+id/btn_main_blur_transfer"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_alignParentRight="true"
+                        android:padding="20dp"
                         android:src="@drawable/image_main_bottom_transfer_gray"
-                        app:themeSrc="@drawable/image_main_bottom_transfer_blue"
-                        android:padding="20dp"/>
+                        app:themeSrc="@drawable/image_main_bottom_transfer_blue" />
 
-
-
-                    <io.grabity.planetwallet.Widgets.StretchImageView
-                        android:id="@+id/image_main_blur"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                    <!--wrap_content-->
 
                 </RelativeLayout>
 
@@ -184,7 +144,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbarHeight"
                 app:toolbarTitle="MAIN"
-                app:defaultTheme="Dark"/>
+                app:defaultTheme="Dark"
+                app:blackThemeLeftSrc="@drawable/image_toolbar_planetmenu_gray"
+                app:whiteThemeLeftSrc="@drawable/image_toolbar_planetmenu_blue"
+                app:blackThemeRightSrc="@drawable/image_toolbar_mutiuniverse_gray"
+                app:whiteThemeRightSrc="@drawable/image_toolbar_mutiuniverse_blue"/>
 
         </RelativeLayout>
 
@@ -192,12 +156,12 @@
         <io.grabity.planetwallet.Widgets.RoundRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="320dp"
+            android:background="#000"
             app:backgroundColor="#1E1E28"
             app:cornerRadius="24dp"
             app:position="top"
-            tools:ignore="MissingPrefix"
-            android:background="#000"
-            app:themeBackground="#FFF">
+            app:themeBackground="#FFF"
+            tools:ignore="MissingPrefix">
 
             <View
                 android:id="@+id/views"
@@ -210,17 +174,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:layout_below="@id/views"
+                android:paddingStart="20dp"
                 android:text="names"
                 android:textColor="#5C5964"
-                android:paddingStart="20dp"
-                android:textSize="16dp"/>
+                android:textSize="16dp" />
 
             <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
                 android:id="@+id/list_main_planets_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="40dp"
-                android:layout_below="@id/text_main_planets_name"/>
+                android:layout_below="@id/text_main_planets_name"
+                android:layout_marginBottom="40dp" />
 
             <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
                 android:layout_width="40dp"
@@ -265,7 +229,10 @@
                 <io.grabity.planetwallet.Widgets.BarcodeView
                     android:id="@+id/barcode_main_bottom_barcodeview"
                     android:layout_width="180dp"
-                    android:layout_height="180dp" />
+                    android:layout_height="180dp"
+                    android:padding="12dp"
+                    app:borderColor="#ededed"
+                    app:borderWidth="1dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -361,6 +328,6 @@
     <io.grabity.planetwallet.Widgets.StretchImageView
         android:id="@+id/image_test"
         android:layout_width="200dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="200dp" />
 
-</io.grabity.planetwallet.Widgets.PWRelativeLayout>
+</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

@@ -1,4 +1,4 @@
-package io.grabity.planetwallet.Widgets;
+package io.grabity.planetwallet.Widgets.PlanetWalletViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Widgets.Themeable;
 
 public class PWRelativeLayout extends RelativeLayout implements Themeable {
 

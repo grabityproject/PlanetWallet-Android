@@ -1,7 +1,11 @@
+
+
+
 package io.grabity.planetwallet.Views.p4_Main.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,9 +17,10 @@ import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Coin;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.Views.p4_Main.Adapter.CoinAdapter;
 import io.grabity.planetwallet.Views.p4_Main.Adapter.PlanetsAdapter;
-import io.grabity.planetwallet.Views.p4_Main.Adapter.TestAdapter;
 import io.grabity.planetwallet.Views.p4_Main.Etc.ViewController;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.SettingActivity;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
@@ -27,12 +32,13 @@ import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener {
+public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, AdvanceRecyclerView.OnScrollListener {
 
     private ViewMapper viewMapper;
 
-    private ArrayList< String > items;
-    private TestAdapter adapter;
+    private ArrayList< Coin > items;
+    private CoinAdapter coinAdapter;
+
     private ViewController viewController;
 
     private ArrayList< Planet > itemss;
@@ -59,9 +65,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.listView.setOnAttachViewListener( this );
         viewMapper.listView.addHeaderView( R.layout.header_main );
         viewMapper.listView.addFooterView( R.layout.footer_main );
+        viewMapper.listView.addOnScrollListener( this );
 
-        viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_planetmenu_gray ).setTag( C.tag.TOOLBAR_MENU ) );
-        viewMapper.toolBar.addRightButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_mutiuniverse_gray ).setTag( C.tag.TOOLBAR_MUTIUNIVERSE ) );
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MENU ) );
+        viewMapper.toolBar.setRightButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MUTIUNIVERSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.rippleView.setTrigger( viewMapper.toolBar.getButtonItems( ).get( 0 ).getView( ) );
@@ -78,31 +85,62 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     protected void setData( ) {
         super.setData( );
+
+
+//        //eth data mapping
+//    public Coin( String coin, int icon, String balance, String coinName, String currency ) {
+//            this.coin = coin;
+//            this.balance = balance;
+//            this.coinName = coinName;
+//            this.icon = icon;
+//            this.currency = currency;
+//        }
+//
+//        //btc data mappnig
+//
+//    public Coin( String coin, String balance, String walletName, String transferTime, int icon ) {
+//            this.coin = coin;
+//            this.balance = balance;
+//            this.icon = icon;
+//            this.walletName = walletName;
+//            this.transferTime = transferTime;
+//        }
+
+
         /**
-         * Test
+         * Test main item list
          */
         items = new ArrayList<>( );
-        items.add( "1" );
-        items.add( "2" );
-        items.add( "3" );
-        items.add( "4" );
-        items.add( "5" );
-        items.add( "6" );
-        items.add( "7" );
-        items.add( "8" );
-        items.add( "9" );
+        //ETH
+        items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
+        items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
+        items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
+        items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
+        items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
+        items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
+        items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
+        items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
 
-        viewMapper.listView.setAdapter( adapter = new TestAdapter( this, items ) );
+        //BTC
+        items.add( new Coin( "BTC", "0.21352", "choi3950", "April 04, 11:23", R.drawable.image_btc_increase ) );
+        items.add( new Coin( "BTC", "1.65", "choi3950", "April 04, 20:23", R.drawable.image_btc_increase ) );
+        items.add( new Coin( "BTC", "0.422", "choi3950", "April 04, 09:18", R.drawable.image_btc_discrease ) );
+        items.add( new Coin( "BTC", "0.21352", "choi3950", "April 04, 11:23", R.drawable.image_btc_increase ) );
+        items.add( new Coin( "BTC", "1.65", "choi3950", "April 04, 20:23", R.drawable.image_btc_increase ) );
+        items.add( new Coin( "BTC", "0.422", "choi3950", "April 04, 09:18", R.drawable.image_btc_discrease ) );
 
-        itemss = new ArrayList<>(  );
-        itemss.add( new Planet( "" , "ETH" , "choi111" ) );
-        itemss.add( new Planet( "2323434" , "ETH" , "choi222" ) );
-        itemss.add( new Planet( "adwd124" , "BTC" , "choi333" ) );
-        itemss.add( new Planet( "" , "ETH" , "choi111" ) );
-        itemss.add( new Planet( "2323434" , "ETH" , "choi222" ) );
-        itemss.add( new Planet( "adwd124" , "BTC" , "choi333" ) );
+        coinAdapter = new CoinAdapter( this, items );
+        viewMapper.listView.setAdapter( coinAdapter );
 
-        planetsAdapter = new PlanetsAdapter( this , itemss );
+        itemss = new ArrayList<>( );
+        itemss.add( new Planet( "", "ETH", "choi111" ) );
+        itemss.add( new Planet( "2323434", "ETH", "choi222" ) );
+        itemss.add( new Planet( "adwd124", "BTC", "choi333" ) );
+        itemss.add( new Planet( "", "ETH", "choi111" ) );
+        itemss.add( new Planet( "2323434", "ETH", "choi222" ) );
+        itemss.add( new Planet( "adwd124", "BTC", "choi333" ) );
+
+        planetsAdapter = new PlanetsAdapter( this, itemss );
 
         viewMapper.planetslistView.setAdapter( planetsAdapter );
         viewMapper.planetsName.setText( "choi3950 Planet" );
@@ -119,6 +157,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( resId == R.layout.header_main && position == 0 ) {
             PlanetView planetView = view.findViewById( R.id.icon_planet );
             planetView.setData( "가즈아" );
+            viewMapper.barcodeView.setPlanetView( planetView );
         }
     }
 
@@ -134,7 +173,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     }
 
     @Override
-    public void onToolBarClick( Object tag, View view, int direction, int index ) {
+    public void onToolBarClick( Object tag, View view ) {
 
         if ( Utils.equals( tag, C.tag.TOOLBAR_MENU ) ) {
             viewMapper.rippleView.ripple( true );
@@ -146,11 +185,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     public void onBackPressed( ) {
 
-        if ( viewMapper.slideDrawer.isOpen( ) && viewMapper.slideDrawer.getIsOpenPosition( ) == 0 ) {
-            viewMapper.slideDrawer.close( SlideDrawerLayout.Position.TOP );
-        } else if ( viewMapper.slideDrawer.isOpen( ) && viewMapper.slideDrawer.getIsOpenPosition( ) == 3 ){
-            viewMapper.slideDrawer.close( SlideDrawerLayout.Position.BOTTOM );
-        } else{
+        if ( viewMapper.slideDrawer.isOpen( ) ) {
+            viewMapper.slideDrawer.close( );
+        } else {
             super.onBackPressed( );
         }
 
@@ -172,11 +209,26 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        if ( recyclerView == viewMapper.listView ){
-            PLog.e( "메인리스트뷰 클릭 : " + position);
-        } else if ( recyclerView == viewMapper.planetslistView ){
+        if ( recyclerView == viewMapper.listView ) {
+            PLog.e( "메인리스트뷰 클릭 : " + position );
+        } else if ( recyclerView == viewMapper.planetslistView ) {
             PLog.e( "플레닛츠리스트뷰 클릭 : " + position );
         }
+    }
+
+    @Override
+    public void onScrolled( RecyclerView recyclerView, int dx, int dy, float scrollX, float scrollY ) {
+
+        if ( scrollY > 0 ) {
+            viewMapper.groupShadow.setY( -scrollY );
+        } else {
+
+            viewMapper.groupShadow.setScaleX( 1.0f + ( -scrollY * 0.001f ) );
+            viewMapper.groupShadow.setScaleY( 1.0f + ( -scrollY * 0.001f ) );
+
+        }
+
+
     }
 
     public class ViewMapper {
@@ -205,6 +257,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         TextView coinName;
 
         public StretchImageView imageTest;
+        View groupShadow;
 
 
         public ViewMapper( ) {
@@ -231,6 +284,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             coinBalance = findViewById( R.id.text_main_bottom_balance );
             coinName = findViewById( R.id.text_main_bottom_coin_name );
+
+            groupShadow = findViewById( R.id.group_main_shadow );
 
             imageTest = findViewById( R.id.image_test );
 
