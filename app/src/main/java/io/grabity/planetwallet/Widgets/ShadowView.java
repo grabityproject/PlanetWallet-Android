@@ -88,18 +88,11 @@ public class ShadowView extends View {
         return startColor;
     }
 
-    public void setStartColor( int startColor ) {
-        this.startColor = startColor;
-    }
 
     public int getEndColor( ) {
         return endColor;
     }
 
-    public void setEndColor( int endColor ) {
-        this.endColor = endColor;
-
-    }
 
     public void setShadowColor( int startColor, int endColor ){
         this.startColor = startColor;

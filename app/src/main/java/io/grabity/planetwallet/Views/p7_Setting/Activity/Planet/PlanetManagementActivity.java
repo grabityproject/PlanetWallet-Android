@@ -9,13 +9,11 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.PlanetManagementAdapter;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
-import io.grabity.planetwallet.Widgets.OnListSideViewClick;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class PlanetManagementActivity extends PlanetWalletActivity implements AdvanceRecyclerView.OnItemClickListener, ToolBar.OnToolBarClickListener {
@@ -66,7 +64,7 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            finish( );
+            super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_ADD ) ) {
             Toast.makeText( this, "ADD버튼클릭", Toast.LENGTH_SHORT ).show( );
         }

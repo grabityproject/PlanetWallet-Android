@@ -1,6 +1,6 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -10,13 +10,13 @@ import android.widget.Toast;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Account.AccountActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Board.BoardActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.PlanetManagementActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Setting.DetailSettingActivity;
+import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
@@ -56,18 +56,22 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         viewMapper.btnThemeWhite.setOnClickListener( this );
         viewMapper.btnThemeBlack.setOnClickListener( this );
 
+        btnThemeSetting( );
 
 
-//
-//        PLog.e( "toolbar btn items : " + viewMapper.toolBar.getButtonItems().get( 0 ).getResource() );
-//        PLog.e( "getDr : " + getResources().getIdentifier( "image_toolbar_close_blue","drawable","io.grabity.planetwallet" ) );
-//
-//        if ( viewMapper.toolBar.getButtonItems().get( 0 ).getResource() == R.drawable.image_toolbar_close_blue ){
-//            PLog.e( " 같습니다!!!! " );
-//        }
+
 
     }
 
+    void btnThemeSetting( ) {
+        viewMapper.btnThemeBlack.setBorderColorNormal( !Boolean.parseBoolean( String.valueOf(
+                Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ?
+                Color.parseColor( "#FF0050" ) : Color.parseColor( "#BCBDD5" ) );
+
+        viewMapper.btnThemeWhite.setBorderColorNormal( !Boolean.parseBoolean( String.valueOf(
+                Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ?
+                Color.parseColor( "#BCBDD5" ) : Color.parseColor( "#FF0050" ) );
+    }
 
     @Override
     protected void setData( ) {
@@ -93,11 +97,15 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
             getPlanetWalletApplication( ).setTheme( false );
             setTheme( false );
 
-            Toast.makeText( this , "블랙테마" , Toast.LENGTH_SHORT).show( );
+            btnThemeSetting( );
+
         }else if( v == viewMapper.btnThemeWhite ){
+
             getPlanetWalletApplication( ).setTheme( true );
             setTheme( true );
-            Toast.makeText( this , "화이트테마" , Toast.LENGTH_SHORT).show( );
+
+            btnThemeSetting( );
+
         }
 
     }
@@ -121,8 +129,8 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         ViewGroup btnFaq;
         ViewGroup howtouse; // 보류
 
-        View btnThemeWhite;
-        View btnThemeBlack;
+        RoundButton btnThemeWhite;
+        RoundButton btnThemeBlack;
 
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );

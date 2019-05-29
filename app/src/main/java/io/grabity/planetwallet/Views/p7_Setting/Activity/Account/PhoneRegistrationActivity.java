@@ -102,7 +102,6 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
                 viewMapper.textTime.Stop( );
                 Utils.hideKeyboard( this, getCurrentFocus( ) );
                 super.onBackPressed( );
-                finish( );
             }else{
                 Toast.makeText( this , "인증시간초과", Toast.LENGTH_SHORT).show( );
             }

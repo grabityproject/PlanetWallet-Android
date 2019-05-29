@@ -222,7 +222,8 @@
                     app:backgroundColorNormal="#FFFFFF"
                     app:borderColorNormal="#BCBDD5"
                     app:borderWidth="2dp"
-                    app:cornerRadius="0dp" />
+                    app:cornerRadius="0dp"
+                    app:defaultTheme="NoTheme"/>
 
                 <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
                     android:id="@+id/btn_setting_theme_black"
@@ -234,7 +235,8 @@
                     app:backgroundColorNormal="#000000"
                     app:borderColorNormal="#FF0050"
                     app:borderWidth="2dp"
-                    app:cornerRadius="0dp" />
+                    app:cornerRadius="0dp"
+                    app:defaultTheme="NoTheme"/>
 
 
             </RelativeLayout>

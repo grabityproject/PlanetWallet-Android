@@ -16,10 +16,10 @@ import io.grabity.planetwallet.VO.Eth;
 import io.grabity.planetwallet.Views.p5_Token.Adapter.TokenAdapter;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.CircleImageView;
-import io.grabity.planetwallet.Widgets.OnListSideViewClick;
+import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class TokenListFragment extends PlanetWalletFragment implements View.OnClickListener , TextWatcher , OnListSideViewClick , AdvanceRecyclerView.OnItemClickListener {
+public class TokenListFragmentListener extends PlanetWalletFragment implements View.OnClickListener , TextWatcher , OnInsideItemClickListener, AdvanceRecyclerView.OnItemClickListener {
 
     private ViewMapper viewMapper;
     private TokenAdapter adapter;
@@ -28,11 +28,11 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
 
     private ArrayList<Eth> filterItems;
 
-    public TokenListFragment( ) {
+    public TokenListFragmentListener( ) {
     }
 
-    public static TokenListFragment newInstance( ) {
-        TokenListFragment fragment = new TokenListFragment( );
+    public static TokenListFragmentListener newInstance( ) {
+        TokenListFragmentListener fragment = new TokenListFragmentListener( );
         return fragment;
     }
 
@@ -76,7 +76,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
         filterItems = new ArrayList<>( items );
 
         adapter = new TokenAdapter( getContext() , filterItems );
-        adapter.setOnListSideViewClick( this );
+        adapter.setOnInsideItemClickListener( this );
         viewMapper.listview.setAdapter( adapter );
         viewMapper.listview.setOnItemClickListener( this );
 
@@ -130,11 +130,14 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     }
 
     @Override
-    public void onListSideViewClick ( int position, boolean isCheck ) {
-        filterItems.get( position ).setCheck( isCheck );
-        adapter.notifyItemChanged( position );
+    public void onInsideItemClick( int position ) {
+            //Todo DB갱신
     }
 
+
+    public ArrayList< Eth > getItems( ) {
+        return items;
+    }
 
     public class ViewMapper {
 

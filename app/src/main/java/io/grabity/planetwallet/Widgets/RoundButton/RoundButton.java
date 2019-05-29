@@ -319,6 +319,7 @@ public class RoundButton extends android.support.v7.widget.AppCompatButton imple
 
     public void setBorderColorNormal( int borderColorNormal ) {
         this.borderColorNormal = borderColorNormal;
+        invalidate( );
     }
 
     public int getBorderColorHighlight( ) {

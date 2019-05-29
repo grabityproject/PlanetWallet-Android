@@ -6,14 +6,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import io.grabity.planetwallet.Common.commonset.C;
-import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.DetailPlanetActivity;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
-import io.grabity.planetwallet.Widgets.OnListSideViewClick;
 import io.grabity.planetwallet.Widgets.PlanetView;
 
 public class PlanetsAdapter extends AdvanceArrayAdapter< Planet > {

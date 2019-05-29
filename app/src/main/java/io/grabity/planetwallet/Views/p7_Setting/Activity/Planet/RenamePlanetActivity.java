@@ -58,7 +58,6 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
                 planet.setWalletName( viewMapper.etName.getText( ).toString( ) );
                 setResult( RESULT_OK , new Intent(  ).putExtra( C.bundleKey.PLANET , planet ) );
                 super.onBackPressed( );
-                finish( );
 
         }else if( v == viewMapper.btnNameClear ){
             viewMapper.etName.setText( "" );
@@ -69,7 +68,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
     public void onToolBarClick ( Object tag, View view ) {
         if( Utils.equals( tag, C.tag.TOOLBAR_CLOSE) ){
             super.onBackPressed( );
-            finish( );
+
         }
     }
 
