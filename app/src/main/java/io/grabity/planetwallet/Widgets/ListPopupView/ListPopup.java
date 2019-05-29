@@ -3,6 +3,7 @@ package io.grabity.planetwallet.Widgets.ListPopupView;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
@@ -11,6 +12,7 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Widgets.Themeable;
 
 public class ListPopup extends AbsSlideUpView implements AdvanceRecyclerView.OnScrollListener, AdvanceRecyclerView.OnEndItemListener, AdvanceRecyclerView.OnItemClickListener {
 
@@ -19,12 +21,20 @@ public class ListPopup extends AbsSlideUpView implements AdvanceRecyclerView.OnS
     private OnListPopupItemClickListener onListPopupItemClickListener;
     private boolean showShadow = false;
 
+    private boolean theme = false;
+
     private ListPopup( Context context ) {
         super( context );
     }
 
     public static ListPopup newInstance( Context context ) {
         ListPopup popup = new ListPopup( context );
+        return popup;
+    }
+
+    public static ListPopup newInstance( Context context, boolean theme ) {
+        ListPopup popup = new ListPopup( context );
+        popup.theme = theme;
         return popup;
     }
 
@@ -36,9 +46,6 @@ public class ListPopup extends AbsSlideUpView implements AdvanceRecyclerView.OnS
     @Override
     public void onCreateView( ) {
         viewMapper = new ViewMapper( );
-
-        float dp = Utils.dpToPx( getContext( ), 6 );
-        CornerRound.radius( viewMapper.groupPopupList, dp, dp, dp, dp, dp, dp, dp, dp );
 
         viewMapper.groupPopupList.setOnClickListener( this );
         viewMapper.recyclerView.setOverScrollMode( View.OVER_SCROLL_NEVER );
@@ -54,7 +61,33 @@ public class ListPopup extends AbsSlideUpView implements AdvanceRecyclerView.OnS
             viewMapper.recyclerView.setAdapter( adapter );
         }
 
+        findViewAndSetTheme(viewMapper.groupPopupList, theme );
+
+        float dp = Utils.dpToPx( getContext( ), 8 );
+        CornerRound.radius( viewMapper.groupPopupList, dp, dp, dp, dp, dp, dp, dp, dp );
     }
+
+
+    protected void findViewAndSetTheme( final View v, boolean theme ) {
+        try {
+            if ( v instanceof ViewGroup ) {
+                ViewGroup vg = ( ViewGroup ) v;
+                if ( v instanceof Themeable ) {
+                    ( ( Themeable ) v ).setTheme( theme );
+                }
+                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                    View child = vg.getChildAt( i );
+                    findViewAndSetTheme( child, theme );
+                }
+            } else if ( v instanceof Themeable ) {
+                ( ( Themeable ) v ).setTheme( theme );
+            }
+
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
+    }
+
 
     public ListPopup setAdapter( AdvanceArrayAdapter adapter ) {
         this.adapter = adapter;

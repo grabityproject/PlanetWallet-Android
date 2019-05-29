@@ -12,10 +12,29 @@
         android:layout_height="224dp">
 
         <RelativeLayout
+            android:id="@+id/group_footer_main_bit_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You haven’t made any \n transaction yet :)"
+                android:textColor="#5C5964"
+                android:textSize="14dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/group_footer_main_manage_token"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingRight="20dp"
+            android:visibility="visible">
 
             <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
                 android:layout_width="match_parent"

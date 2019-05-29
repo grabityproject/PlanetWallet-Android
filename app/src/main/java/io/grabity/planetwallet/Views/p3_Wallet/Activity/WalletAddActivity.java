@@ -6,15 +6,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import java.util.ArrayList;
+
 import io.grabity.planetwallet.Common.commonset.C;
+import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Coin;
+import io.grabity.planetwallet.Views.p3_Wallet.Adapter.PopupWalletAddAdapter;
+import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
-public class WalletAddActivity extends PlanetWalletActivity {
+public class WalletAddActivity extends PlanetWalletActivity implements ListPopup.OnListPopupItemClickListener {
 
     private ViewMapper viewMapper;
+    private PopupWalletAddAdapter adapter;
+    private ArrayList< Coin > items;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -36,14 +45,33 @@ public class WalletAddActivity extends PlanetWalletActivity {
     @Override
     protected void setData( ) {
         super.setData( );
+
+
     }
 
     @Override
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnCreate ) {
-            setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.WALLET_CREATE, PlanetGenerateActivity.class );
+
+            if ( Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, false ) ) ) ) {
+
+                items = new ArrayList<>( );
+                items.add( new Coin( "BTC Universe", R.drawable.icon_bit ) );
+                items.add( new Coin( "ETH Universe", R.drawable.icon_eth ) );
+
+                adapter = new PopupWalletAddAdapter( this, items );
+                ListPopup.newInstance( this, true ).
+                        setAdapter( adapter ).
+                        setOnListPopupItemClickListener( this ).
+                        show( );
+
+            } else {
+                setTransition( Transition.SLIDE_UP );
+                sendAction( C.requestCode.WALLET_CREATE, PlanetGenerateActivity.class );
+            }
+
+
         } else if ( v == viewMapper.btnImport ) {
             setTransition( Transition.SLIDE_SIDE );
             sendAction( WalletImportActivity.class );
@@ -53,9 +81,14 @@ public class WalletAddActivity extends PlanetWalletActivity {
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.WALLET_CREATE && resultCode == RESULT_OK ){
+        if ( requestCode == C.requestCode.WALLET_CREATE && resultCode == RESULT_OK ) {
             finish( );
         }
+    }
+
+    @Override
+    public void onListPopupItemClick( PopupView popup, View view, int position ) {
+        popup.onBackPressed( );
     }
 
     public class ViewMapper {

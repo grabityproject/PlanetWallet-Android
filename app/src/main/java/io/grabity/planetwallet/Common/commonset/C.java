@@ -8,14 +8,17 @@ public class C {
 
     public static class requestCode {
         public final static int PLANET_RENAME = 200;
-        public final static int ACCOUNT_RENAME = 201;
-        public final static int ACCOUNT_REMAIL = 202;
-        public final static int ACCOUNT_REPHONE_NUMBER = 203;
-        public final static int SETTING_CHANGE_PINCODE = 204;
+        public final static int PLANET_ADD = 201;
 
-        public final static int WALLET_CREATE = 210;
+        public final static int ACCOUNT_RENAME = 210;
+        public final static int ACCOUNT_REMAIL = 211;
+        public final static int ACCOUNT_REPHONE_NUMBER = 212;
 
-        public final static int MAIN_TOKEN_ADD = 220;
+        public final static int WALLET_CREATE = 220;
+
+        public final static int MAIN_TOKEN_ADD = 230;
+
+        public final static int SETTING_CHANGE_PINCODE = 240;
 
     }
 

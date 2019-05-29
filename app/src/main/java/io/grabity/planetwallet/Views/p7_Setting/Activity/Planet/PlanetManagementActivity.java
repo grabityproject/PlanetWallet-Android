@@ -12,6 +12,7 @@ import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.PlanetManagementAdapter;
 import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -66,7 +67,7 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_ADD ) ) {
-            Toast.makeText( this, "ADD버튼클릭", Toast.LENGTH_SHORT ).show( );
+            sendAction( C.requestCode.PLANET_ADD , WalletAddActivity.class );
         }
     }
 

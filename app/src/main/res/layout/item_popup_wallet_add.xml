@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <RelativeLayout
+        android:id="@+id/group_item_popup_wallet_add"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/listHeight"
+        android:paddingStart="20dp"
+        >
+
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/image_item_popup_wallet_add_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_bit"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/text_item_popup_wallet_add_coin_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="BTC Universe"
+            android:layout_toRightOf="@id/image_item_popup_wallet_add_icon"
+            android:layout_centerVertical="true"
+            android:paddingStart="8dp"
+            android:textColor="#FFF"/>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
