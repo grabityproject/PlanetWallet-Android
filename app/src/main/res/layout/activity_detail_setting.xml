@@ -32,7 +32,7 @@
             android:layout_height="@dimen/listHeight"
             android:layout_marginTop="20dp">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Change pincode"
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/listHeight">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Touch or Face ID"
@@ -95,7 +95,7 @@
             android:layout_height="48dp"
             android:visibility="gone">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_detailSetting_languageText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 android:textColor="#000"
                 android:layout_centerVertical="true" />
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_detailSetting_language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/listHeight">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
@@ -139,7 +139,7 @@
                 android:textColor="#000"
                 android:layout_centerVertical="true" />
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_detail_setting_currency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

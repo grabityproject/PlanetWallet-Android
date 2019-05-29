@@ -18,7 +18,7 @@
             android:layout_marginLeft="20dp"
             />
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_tokenadd_tokenname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

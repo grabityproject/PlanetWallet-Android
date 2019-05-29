@@ -13,7 +13,7 @@
         android:paddingEnd="20dp"
         android:orientation="vertical">
 
-    <TextView
+    <io.grabity.planetwallet.Widgets.FontTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Enter password (Option)"
@@ -62,7 +62,7 @@
 
         </RelativeLayout>
 
-    <TextView
+    <io.grabity.planetwallet.Widgets.FontTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Enter Json File"

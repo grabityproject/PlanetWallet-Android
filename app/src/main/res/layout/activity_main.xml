@@ -72,7 +72,7 @@
                         android:layout_marginStart="20dp"
                         app:data="Hello Sydney!!" />
 
-                    <TextView
+                    <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_blur_wallet_name_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                         android:textColor="#5C5964"
                         android:textSize="14dp" />
 
-                    <TextView
+                    <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_blur_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                         android:textColor="#FFF"
                         android:textSize="18dp" />
 
-                    <TextView
+                    <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_blur_coin_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                 android:layout_height="80dp"
                 android:layout_alignParentBottom="true" />
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_main_notice"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -169,7 +169,7 @@
                 android:layout_height="20dp"
                 android:background="#1E1E28" />
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_main_planets_name"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
@@ -241,7 +241,7 @@
                     android:paddingTop="28dp"
                     android:paddingBottom="12dp">
 
-                    <TextView
+                    <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_bottom_balance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
                         android:textSize="24dp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_bottom_coin_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -261,7 +261,7 @@
 
                 </LinearLayout>
 
-                <TextView
+                <io.grabity.planetwallet.Widgets.FontTextView
                     android:id="@+id/text_main_bottom_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

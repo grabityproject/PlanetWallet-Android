@@ -133,13 +133,6 @@
             <enum name="bottom" value="3" />
         </attr>
 
-        <attr name="driect">
-            <enum name="main" value="-1" />
-            <enum name="top" value="0" />
-            <enum name="left" value="1" />
-            <enum name="right" value="2" />
-            <enum name="bottom" value="3" />
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="BarcodeView">
@@ -151,5 +144,19 @@
 
     </declare-styleable>
 
+    <declare-styleable name="FontTextView">
+
+        <attr name="themeTextColor" format="color" />
+        <attr name="typefaceStyle">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="medium" value="5" />
+            <enum name="semibold" value="6" />
+        </attr>
+
+        <attr name="defaultTheme" />
+
+
+    </declare-styleable>
 
 </resources>

@@ -14,7 +14,7 @@
         android:paddingTop="40dp"
         android:paddingEnd="20dp">
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="12dp"

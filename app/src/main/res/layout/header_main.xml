@@ -23,7 +23,7 @@
 
     </LinearLayout>
 
-    <TextView
+    <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_main_header_planet_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_main_header_planet_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

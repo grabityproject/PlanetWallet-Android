@@ -23,7 +23,7 @@
         android:layout_height="80dp"
         android:layout_below="@id/toolBar">
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_detail_board_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:textColor="#000"
             android:textSize="14dp" />
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_detail_board_create_time"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

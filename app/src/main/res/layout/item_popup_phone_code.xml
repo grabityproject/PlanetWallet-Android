@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/listHeight">
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_popup_phone_code_country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
             android:paddingStart="20dp"
             />
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_popup_phone_code_country_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -28,7 +28,7 @@
         android:paddingRight="20dp">
 
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
@@ -68,7 +68,7 @@
                 android:inputType="number"
                 app:defaultTheme="Light" />
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/btn_phone_registration_dial_code"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
@@ -93,7 +93,7 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="20dp"

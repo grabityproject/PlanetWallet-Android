@@ -3,23 +3,29 @@ package io.grabity.planetwallet.MiniFramework.managers;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import java.util.HashMap;
+
 /**
  * Created by. JcobPark on 2018. 08. 29
  */
 public class FontManager {
 
     private static FontManager fontManager;
-    Typeface defFont;
-    Typeface boldFont;
+    public static final int NORMAL = Typeface.NORMAL;
+    public static final int BOLD = Typeface.BOLD;
+    public static final int SEMIBOLD = 5;
+    public static final int MEDIUM = 6;
+    private HashMap< Integer, Typeface > fonts;
+
     private Context context;
 
     public FontManager( Context context ) {
         this.context = context;
-//        this.defFont = Typeface.create( Typeface.SANS_SERIF, Typeface.NORMAL );
-//        this.boldFont = Typeface.create( Typeface.SANS_SERIF, Typeface.BOLD );
-        this.defFont = Typeface.create( Typeface.createFromAsset( context.getAssets() , "fonts/WorkSans-Regular.otf" ), Typeface.NORMAL );
-        this.boldFont = Typeface.create( Typeface.createFromAsset( context.getAssets() , "fonts/WorkSans-Bold.otf" ), Typeface.BOLD );
-
+        fonts = new HashMap<>( );
+        fonts.put( NORMAL, Typeface.createFromAsset( context.getAssets( ), "fonts/WorkSans-Regular.otf" ) );
+        fonts.put( BOLD, Typeface.createFromAsset( context.getAssets( ), "fonts/WorkSans-Bold.otf" ) );
+        fonts.put( MEDIUM, Typeface.createFromAsset( context.getAssets( ), "fonts/WorkSans-Medium.otf" ) );
+        fonts.put( SEMIBOLD, Typeface.createFromAsset( context.getAssets( ), "fonts/WorkSans-SemiBold.otf" ) );
 
     }
 
@@ -32,12 +38,17 @@ public class FontManager {
         return fontManager;
     }
 
+
+    public Typeface getFont( int fontStyle ) {
+        return fonts.get( fontStyle );
+    }
+
     public Typeface getFont( ) {
-        return defFont;
+        return fonts.get( NORMAL );
     }
 
     public Typeface getBoldFont( ) {
-        return boldFont;
+        return fonts.get( BOLD );
     }
 
     public Typeface getFont( String font ) {

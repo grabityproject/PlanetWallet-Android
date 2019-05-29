@@ -26,7 +26,7 @@
         android:paddingTop="40dp"
         android:paddingRight="20dp">
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/toolBar"
@@ -62,7 +62,7 @@
 
         </RelativeLayout>
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"

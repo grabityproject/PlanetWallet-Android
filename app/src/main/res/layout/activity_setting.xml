@@ -16,7 +16,7 @@
         />
 
 
-    <TextView
+    <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_setting_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:src="@drawable/image_setting_planet_black"
                 app:themeSrc="@drawable/image_setting_planet_white"/>
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -72,7 +72,7 @@
                 android:src="@drawable/image_setting_account_black"
                 app:themeSrc="@drawable/image_setting_account_white"/>
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -97,7 +97,7 @@
                 android:src="@drawable/image_setting_setting_black"
                 app:themeSrc="@drawable/image_setting_setting_white"/>
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -140,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listHeight">
 
-                <TextView
+                <io.grabity.planetwallet.Widgets.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -162,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listHeight">
 
-                <TextView
+                <io.grabity.planetwallet.Widgets.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -184,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listHeight">
 
-                <TextView
+                <io.grabity.planetwallet.Widgets.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -205,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listHeight">
 
-                <TextView
+                <io.grabity.planetwallet.Widgets.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -254,7 +254,7 @@
                 android:layout_height="@dimen/listHeight"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <io.grabity.planetwallet.Widgets.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -262,7 +262,7 @@
                     android:textColor="#000"
                     android:textSize="14dp" />
 
-                <TextView
+                <io.grabity.planetwallet.Widgets.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

@@ -20,7 +20,7 @@
             android:layout_width="22dp"
             android:layout_height="22dp" />
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_planets_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:src="@drawable/image_arrow_right_gray"
             app:themeSrc="@drawable/image_arrow_right_gray"/>
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_planets_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
