@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_item_board_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 app:themeSrc="@drawable/image_arrow_right_gray"
                 />
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_item_board_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

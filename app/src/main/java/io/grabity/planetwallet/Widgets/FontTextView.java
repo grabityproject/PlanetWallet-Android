@@ -1,4 +1,4 @@
-package io.grabity.planetwallet.Widgets.PlanetWalletViews;
+package io.grabity.planetwallet.Widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Widgets.Themeable;
 
 public class FontTextView extends android.support.v7.widget.AppCompatTextView implements Themeable {
 

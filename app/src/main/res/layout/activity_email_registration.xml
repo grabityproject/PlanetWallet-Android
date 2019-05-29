@@ -27,7 +27,7 @@
         android:paddingTop="40dp"
         android:paddingRight="20dp">
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
@@ -63,7 +63,7 @@
 
         </RelativeLayout>
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_email_registration_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

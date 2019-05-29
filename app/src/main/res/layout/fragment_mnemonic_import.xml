@@ -13,7 +13,7 @@
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="40dp"
@@ -62,7 +62,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/et_mnemonic_import_password"
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_mnemonic_import_waring"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

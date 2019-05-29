@@ -28,7 +28,7 @@
         android:paddingTop="40dp">
 
 
-        <TextView
+        <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Backup PrivateKey"
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save the PrivateKey safely."

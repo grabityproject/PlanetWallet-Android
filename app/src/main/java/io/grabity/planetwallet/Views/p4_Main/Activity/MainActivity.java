@@ -135,10 +135,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     protected void onUpdateTheme( boolean theme ) {
         super.onUpdateTheme( theme );
-        PLog.e( "theme  on Update : " + theme );
-        PLog.e( "viewMapper.listView.getChildCount() : " + viewMapper.listView.getChildCount( ) );
-        findViewAndSetTheme( viewMapper.listView, theme );
-        findTextViewAndSetTheme( viewMapper.listView );
     }
 
     @Override
