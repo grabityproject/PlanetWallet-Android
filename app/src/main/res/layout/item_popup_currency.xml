@@ -15,11 +15,9 @@
             android:textColor="#000"
             android:textSize="14dp"
             android:gravity="center_vertical"
-            android:paddingStart="20dp"
-            />
+            android:paddingStart="20dp" />
 
     </RelativeLayout>
-
 
 
 </RelativeLayout>

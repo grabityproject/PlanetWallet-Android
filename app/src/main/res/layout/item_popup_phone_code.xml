@@ -15,8 +15,7 @@
             android:textSize="14dp"
             android:textColor="#000"
             android:layout_centerVertical="true"
-            android:paddingStart="20dp"
-            />
+            android:paddingStart="20dp" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_popup_phone_code_country_code"
@@ -27,8 +26,7 @@
             android:textColor="#AAAAAA"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:paddingEnd="20dp"
-            />
+            android:paddingEnd="20dp" />
 
     </RelativeLayout>
 

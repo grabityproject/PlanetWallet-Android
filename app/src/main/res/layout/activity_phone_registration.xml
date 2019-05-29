@@ -14,8 +14,7 @@
         app:toolbarTitle="Phone number"
         app:defaultTheme="Light"
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"/>
-
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
     <LinearLayout
@@ -82,7 +81,7 @@
                 android:background="#EDEDED"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/btn_phone_registration_dial_code"
-                app:themeBackground="#1E1E28"/>
+                app:themeBackground="#1E1E28" />
 
         </RelativeLayout>
 
@@ -117,8 +116,7 @@
                     android:textColorHint="#AAAAAA"
                     android:textColor="#000"
                     android:inputType="number"
-                    app:defaultTheme="Light"
-                    />
+                    app:defaultTheme="Light" />
 
                 <io.grabity.planetwallet.Widgets.TimerView
                     android:id="@+id/text_phone_registration_time"
@@ -128,7 +126,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
                     android:textColor="#FF0050"
-                    android:text="03:00"/>
+                    android:text="03:00" />
 
             </RelativeLayout>
 
@@ -150,7 +148,7 @@
         android:text="OK"
         android:textSize="18dp"
         app:buttonType="A"
-        app:defaultTheme="Light"/>
+        app:defaultTheme="Light" />
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

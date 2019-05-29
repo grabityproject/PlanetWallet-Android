@@ -15,7 +15,7 @@
         android:textColor="#FFFFFF"
         android:textColorHint="#5C5964"
         android:textSize="14dp"
-        app:defaultTheme="Dark"/>
+        app:defaultTheme="Dark" />
 
     <io.grabity.planetwallet.Widgets.StretchImageView
         android:id="@+id/image_tokenlist_nosearch_icon"
@@ -31,7 +31,7 @@
         android:padding="16dp"
         android:src="@drawable/image_search_white"
         android:visibility="invisible"
-        app:themeSrc="@drawable/image_search_black"/>
+        app:themeSrc="@drawable/image_search_black" />
 
     <io.grabity.planetwallet.Widgets.CircleImageView
         android:id="@+id/btn_tokenlist_clear"

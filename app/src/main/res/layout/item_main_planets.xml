@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#1E1E28"
     app:themeBackground="#FFF">
-    
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/listHeight"
@@ -14,7 +14,7 @@
         android:paddingTop="20dp"
 
         >
-        
+
         <io.grabity.planetwallet.Widgets.PlanetView
             android:id="@+id/planetview_item_main_planets"
             android:layout_width="22dp"
@@ -28,8 +28,7 @@
             android:textSize="14dp"
             android:textColor="#FFF"
             android:layout_toRightOf="@id/planetview_item_main_planets"
-            android:paddingStart="10dp"
-            />
+            android:paddingStart="10dp" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_main_planets_arrow"
@@ -39,7 +38,7 @@
             android:layout_centerVertical="true"
             android:layout_alignTop="@id/text_item_main_planets_name"
             android:src="@drawable/image_arrow_right_gray"
-            app:themeSrc="@drawable/image_arrow_right_gray"/>
+            app:themeSrc="@drawable/image_arrow_right_gray" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_planets_currency"
@@ -48,8 +47,8 @@
             android:text="Universe"
             android:textColor="#5C5964"
             android:layout_toLeftOf="@id/image_item_main_planets_arrow"
-            android:paddingEnd="8dp"/>
-        
+            android:paddingEnd="8dp" />
+
     </RelativeLayout>
 
 </RelativeLayout>

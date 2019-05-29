@@ -14,8 +14,7 @@
         app:toolbarBottomWidth="1dp"
         app:defaultTheme="Light"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"/>
-
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 
     <LinearLayout
@@ -38,7 +37,7 @@
                 android:text="Change pincode"
                 android:textSize="14dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"
@@ -46,7 +45,7 @@
                 android:src="@drawable/image_arrow_right_blue"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                app:themeSrc="@drawable/image_arrow_right_gray"/>
+                app:themeSrc="@drawable/image_arrow_right_gray" />
 
         </RelativeLayout>
 
@@ -60,7 +59,7 @@
                 android:text="Touch or Face ID"
                 android:textSize="14dp"
                 android:textColor="#000"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
 
 
             <io.grabity.planetwallet.Widgets.ToggleButton
@@ -68,15 +67,14 @@
                 android:layout_width="52dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                />
+                android:layout_alignParentRight="true" />
 
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
             android:layout_width="match_parent"
@@ -84,11 +82,11 @@
             android:layout_below="@id/toolBar"
             android:layout_marginTop="20dp"
             android:background="#EDEDED"
-            app:themeBackground="#1E1E28"/>
+            app:themeBackground="#1E1E28" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -113,7 +111,7 @@
                 android:textColor="#AAAAAA"
                 android:layout_alignTop="@id/text_detailSetting_languageText"
                 android:layout_toLeftOf="@id/image_detailSetting_languageArrow"
-                android:layout_marginRight="12dp"/>
+                android:layout_marginRight="12dp" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/image_detailSetting_languageArrow"
@@ -122,7 +120,7 @@
                 android:src="@drawable/image_arrow_right_blue"
                 app:themeSrc="@drawable/image_arrow_right_gray"
                 android:layout_alignTop="@id/text_detailSetting_languageText"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
 
@@ -148,7 +146,7 @@
                 android:textColor="#AAAAAA"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/image_detail_setting_currency_arrow"
-                android:layout_marginRight="12dp"/>
+                android:layout_marginRight="12dp" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/image_detail_setting_currency_arrow"
@@ -157,7 +155,7 @@
                 android:src="@drawable/image_arrow_right_blue"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                app:themeSrc="@drawable/image_arrow_right_gray"/>
+                app:themeSrc="@drawable/image_arrow_right_gray" />
 
         </RelativeLayout>
 

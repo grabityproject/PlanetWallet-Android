@@ -14,8 +14,7 @@
         app:toolbarBottomWidth="1dp"
         app:defaultTheme="Light"
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"
-        />
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
     <LinearLayout
@@ -35,7 +34,7 @@
             android:textSize="14dp"
             android:textColor="#AAAAAA"
             android:layout_below="@id/toolBar"
-            android:paddingBottom="12dp"/>
+            android:paddingBottom="12dp" />
 
 
         <io.grabity.planetwallet.Widgets.RoundEditText
@@ -48,7 +47,7 @@
             android:paddingRight="14dp"
             android:lineSpacingExtra="8dp"
             android:enabled="false"
-            app:defaultTheme="Light"/>
+            app:defaultTheme="Light" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -60,18 +59,16 @@
                 android:text="Save the PrivateKey safely."
                 android:textSize="14dp"
                 android:textColor="#FF0050"
-                android:paddingTop="10dp"
-                />
+                android:paddingTop="10dp" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/image_warning"
                 android:layout_marginTop="10dp"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
-
 
 
     </LinearLayout>

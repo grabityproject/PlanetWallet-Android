@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-  >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,8 +14,7 @@
             android:layout_height="30dp"
             android:src="@drawable/icon_eth"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            />
+            android:layout_marginLeft="20dp" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_tokenadd_tokenname"
@@ -28,7 +26,7 @@
             android:textStyle="bold"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/image_item_tokenadd_icon"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp" />
 
 
         <io.grabity.planetwallet.Widgets.CircleImageView
@@ -41,18 +39,15 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            app:themeSrc="#EDEDED"
-            />
+            app:themeSrc="#EDEDED" />
 
         <View
             android:id="@+id/view_item_tokenadd_clickbtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>

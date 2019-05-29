@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000"
     app:themeBackground="#FFF">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,76 +13,74 @@
         android:paddingEnd="20dp"
         android:orientation="vertical">
 
-    <io.grabity.planetwallet.Widgets.FontTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter password (Option)"
-        android:textSize="14dp"
-        android:textColor="#5C5964"
-        android:paddingTop="40dp"
-        android:paddingBottom="12dp"
-        />
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter password (Option)"
+            android:textSize="14dp"
+            android:textColor="#5C5964"
+            android:paddingTop="40dp"
+            android:paddingBottom="12dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="56dp">
 
-    <io.grabity.planetwallet.Widgets.RoundEditText
-        android:id="@+id/et_json_import_password"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:inputType="textPassword"
-        android:textColor="#FFFFFF"
-        android:letterSpacing="1.0"
-        android:paddingLeft="14dp"
-        app:defaultTheme="Dark"/>
+            <io.grabity.planetwallet.Widgets.RoundEditText
+                android:id="@+id/et_json_import_password"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:letterSpacing="1.0"
+                android:paddingLeft="14dp"
+                app:defaultTheme="Dark" />
 
-    <io.grabity.planetwallet.Widgets.StretchImageView
-        android:id="@+id/btn_json_import_password_invisible"
-        android:layout_width="40dp"
-        android:layout_height="0dp"
-        android:src="@drawable/image_input_invisible_darkgray"
-        android:layout_alignEnd="@id/et_json_import_password"
-        android:layout_alignTop="@id/et_json_import_password"
-        android:layout_alignBottom="@id/et_json_import_password"
-        android:layout_marginEnd="6dp"
-        app:themeSrc="@drawable/image_input_invisible_gray"
-        />
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:id="@+id/btn_json_import_password_invisible"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:src="@drawable/image_input_invisible_darkgray"
+                android:layout_alignEnd="@id/et_json_import_password"
+                android:layout_alignTop="@id/et_json_import_password"
+                android:layout_alignBottom="@id/et_json_import_password"
+                android:layout_marginEnd="6dp"
+                app:themeSrc="@drawable/image_input_invisible_gray" />
 
-    <io.grabity.planetwallet.Widgets.StretchImageView
-        android:id="@+id/btn_json_import_password_visible"
-        android:layout_width="40dp"
-        android:layout_height="0dp"
-        android:src="@drawable/image_input_visible"
-        android:layout_alignEnd="@id/et_json_import_password"
-        android:layout_alignTop="@id/et_json_import_password"
-        android:layout_alignBottom="@id/et_json_import_password"
-        android:layout_marginEnd="6dp"
-        android:visibility="gone"/>
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:id="@+id/btn_json_import_password_visible"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:src="@drawable/image_input_visible"
+                android:layout_alignEnd="@id/et_json_import_password"
+                android:layout_alignTop="@id/et_json_import_password"
+                android:layout_alignBottom="@id/et_json_import_password"
+                android:layout_marginEnd="6dp"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
-    <io.grabity.planetwallet.Widgets.FontTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter Json File"
-        android:textColor="#5C5964"
-        android:textSize="14dp"
-        android:layout_below="@id/et_json_import_password"
-        android:paddingTop="20dp"
-        android:paddingBottom="12dp" />
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter Json File"
+            android:textColor="#5C5964"
+            android:textSize="14dp"
+            android:layout_below="@id/et_json_import_password"
+            android:paddingTop="20dp"
+            android:paddingBottom="12dp" />
 
 
-    <io.grabity.planetwallet.Widgets.RoundEditText
-        android:id="@+id/et_json_import_json"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:textColor="#FFFFFF"
-        android:background="@null"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"
-        android:lineSpacingExtra="8dp"
-        app:defaultTheme="Dark"/>
+        <io.grabity.planetwallet.Widgets.RoundEditText
+            android:id="@+id/et_json_import_json"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:textColor="#FFFFFF"
+            android:background="@null"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:lineSpacingExtra="8dp"
+            app:defaultTheme="Dark" />
 
     </LinearLayout>
 
@@ -96,7 +94,6 @@
         android:gravity="center"
         android:textStyle="bold"
         android:layout_alignParentBottom="true"
-        app:buttonType="A"
-        />
+        app:buttonType="A" />
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

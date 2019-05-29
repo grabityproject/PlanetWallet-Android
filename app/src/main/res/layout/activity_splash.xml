@@ -8,16 +8,15 @@
 
 
     <!--<io.grabity.planetwallet.Widgets.StretchImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/image_splash"-->
-        <!--/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:src="@drawable/image_splash"-->
+    <!--/>-->
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_splash"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

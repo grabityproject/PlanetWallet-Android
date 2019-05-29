@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    app:themeBackground="#FFF"
-    >
+    app:themeBackground="#FFF">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,15 +16,14 @@
             android:layout_height="match_parent"
             android:visibility="gone">
 
-            <TextView
+            <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="You haven’t made any \n transaction yet :)"
                 android:textColor="#5C5964"
                 android:textSize="14dp"
                 android:layout_centerInParent="true"
-                android:gravity="center"
-                />
+                android:gravity="center" />
         </RelativeLayout>
 
         <RelativeLayout

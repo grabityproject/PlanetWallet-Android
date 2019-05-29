@@ -12,7 +12,7 @@
         android:layout_height="@dimen/toolbarHeight"
         app:defaultTheme="Dark"
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"/>
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
     <LinearLayout

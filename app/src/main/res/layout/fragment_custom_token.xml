@@ -27,7 +27,7 @@
             android:id="@+id/et_custom_token_address"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:defaultTheme="Dark"/>
+            app:defaultTheme="Dark" />
 
         <RelativeLayout
             android:id="@+id/group_custom_token_waring"
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:enabled="false"
-            app:defaultTheme="Dark"/>
+            app:defaultTheme="Dark" />
 
     </LinearLayout>
 
@@ -96,6 +96,6 @@
         android:textSize="18dp"
         android:textStyle="bold"
         app:buttonType="A"
-        app:defaultTheme="Dark"/>
+        app:defaultTheme="Dark" />
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

@@ -46,7 +46,7 @@
                 android:layout_alignBottom="@id/et_mnemonic_import_password"
                 android:layout_marginEnd="6dp"
                 android:src="@drawable/image_input_invisible_darkgray"
-                app:themeSrc="@drawable/image_input_invisible_gray"/>
+                app:themeSrc="@drawable/image_input_invisible_gray" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/btn_mnemonic_import_password_visible"
@@ -82,7 +82,7 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:textColor="#FFFFFF"
-            app:defaultTheme="Dark"/>
+            app:defaultTheme="Dark" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -119,7 +119,7 @@
         android:textSize="18dp"
         android:textStyle="bold"
         app:buttonType="A"
-        app:defaultTheme="Dark"/>
+        app:defaultTheme="Dark" />
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

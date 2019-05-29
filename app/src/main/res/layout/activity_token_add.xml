@@ -13,7 +13,7 @@
         app:toolbarTitle="Manage Tokens"
         app:defaultTheme="Dark"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"/>
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 
     <io.grabity.planetwallet.Widgets.TabBar
@@ -23,19 +23,17 @@
         android:layout_below="@id/toolBar"
         app:tabBarIndicatorColor="#5C5964" />
 
-   <View
-       android:layout_width="match_parent"
-       android:layout_height="1dp"
-       android:background="#5C5964"
-       android:layout_above="@id/viewPager"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#5C5964"
+        android:layout_above="@id/viewPager" />
 
     <io.grabity.planetwallet.Widgets.LockableViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tabBar" />
-
-
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

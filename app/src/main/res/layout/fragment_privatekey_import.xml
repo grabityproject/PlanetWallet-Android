@@ -34,7 +34,7 @@
                 android:letterSpacing="1.0"
                 android:paddingStart="14dp"
                 android:textColor="#FFFFFF"
-                app:defaultTheme="Dark"/>
+                app:defaultTheme="Dark" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/btn_privatekey_import_password_invisible"
@@ -45,7 +45,7 @@
                 android:layout_alignBottom="@id/et_privatekey_import_privatekey"
                 android:layout_marginEnd="6dp"
                 android:src="@drawable/image_input_invisible_darkgray"
-                app:themeSrc="@drawable/image_input_invisible_gray"/>
+                app:themeSrc="@drawable/image_input_invisible_gray" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/btn_privatekey_import_password_visible"
@@ -73,7 +73,7 @@
         android:text="Continue"
         android:textSize="18dp"
         app:buttonType="A"
-        app:defaultTheme="Dark"/>
+        app:defaultTheme="Dark" />
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

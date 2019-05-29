@@ -12,8 +12,7 @@
         android:layout_height="@dimen/toolbarHeight"
         app:defaultTheme="Light"
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"
-        />
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
     <io.grabity.planetwallet.Widgets.FontTextView
@@ -45,7 +44,7 @@
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/image_setting_planet_black"
-                app:themeSrc="@drawable/image_setting_planet_white"/>
+                app:themeSrc="@drawable/image_setting_planet_white" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
@@ -70,7 +69,7 @@
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/image_setting_account_black"
-                app:themeSrc="@drawable/image_setting_account_white"/>
+                app:themeSrc="@drawable/image_setting_account_white" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
@@ -95,7 +94,7 @@
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/image_setting_setting_black"
-                app:themeSrc="@drawable/image_setting_setting_white"/>
+                app:themeSrc="@drawable/image_setting_setting_white" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
@@ -119,7 +118,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:background="#EDEDED"
-        app:themeBackground="#1E1E28"/>
+        app:themeBackground="#1E1E28" />
 
     <ScrollView
         android:id="@+id/scrollview"
@@ -154,7 +153,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/image_arrow_right_blue"
-                    app:themeSrc="@drawable/image_arrow_right_gray"/>
+                    app:themeSrc="@drawable/image_arrow_right_gray" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -176,7 +175,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/image_arrow_right_blue"
-                    app:themeSrc="@drawable/image_arrow_right_gray"/>
+                    app:themeSrc="@drawable/image_arrow_right_gray" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -198,7 +197,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/image_arrow_right_blue"
-                    app:themeSrc="@drawable/image_arrow_right_gray"/>
+                    app:themeSrc="@drawable/image_arrow_right_gray" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -223,7 +222,7 @@
                     app:borderColorNormal="#BCBDD5"
                     app:borderWidth="2dp"
                     app:cornerRadius="0dp"
-                    app:defaultTheme="NoTheme"/>
+                    app:defaultTheme="NoTheme" />
 
                 <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
                     android:id="@+id/btn_setting_theme_black"
@@ -236,7 +235,7 @@
                     app:borderColorNormal="#FF0050"
                     app:borderWidth="2dp"
                     app:cornerRadius="0dp"
-                    app:defaultTheme="NoTheme"/>
+                    app:defaultTheme="NoTheme" />
 
 
             </RelativeLayout>
@@ -246,8 +245,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="30dp"
                 android:background="#EDEDED"
-                app:themeBackground="#1E1E28"
-                />
+                app:themeBackground="#1E1E28" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

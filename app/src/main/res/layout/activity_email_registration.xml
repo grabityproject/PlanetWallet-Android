@@ -14,8 +14,7 @@
         app:toolbarTitle="E-mail"
         app:defaultTheme="Light"
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"/>
-
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
     <LinearLayout
@@ -88,7 +87,7 @@
         android:textSize="18dp"
         android:textStyle="bold"
         app:buttonType="A"
-        app:defaultTheme="Light"/>
+        app:defaultTheme="Light" />
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
