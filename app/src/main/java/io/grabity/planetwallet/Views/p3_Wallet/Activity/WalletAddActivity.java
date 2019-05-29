@@ -45,16 +45,15 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     @Override
     protected void setData( ) {
         super.setData( );
-
-
     }
+
 
     @Override
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnCreate ) {
 
-            if ( Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, false ) ) ) ) {
+            if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {
 
                 items = new ArrayList<>( );
                 items.add( new Coin( "BTC Universe", R.drawable.icon_bit ) );
@@ -88,7 +87,7 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
 
     @Override
     public void onListPopupItemClick( PopupView popup, View view, int position ) {
-        popup.onBackPressed( );
+        super.onBackPressed( );
     }
 
     public class ViewMapper {

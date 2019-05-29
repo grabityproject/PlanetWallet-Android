@@ -44,22 +44,20 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
-        if( Utils.equals( tag , C.tag.TOOLBAR_CLOSE ) ) {
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
         }
     }
 
 
-
     @Override
-    public void onClick ( View v ) {
+    public void onClick( View v ) {
         super.onClick( v );
-        if( v == viewMapper.btnRefresh ){
-            Toast.makeText( this,"새로운 이미지 교체" , Toast.LENGTH_SHORT).show( );
-        }
-        else if( v == viewMapper.btnSelect ){
-            Utils.setPreferenceData( this , C.pref.WALLET_GENERATE , "Y" );
+        if ( v == viewMapper.btnRefresh ) {
+            Toast.makeText( this, "새로운 이미지 교체", Toast.LENGTH_SHORT ).show( );
+        } else if ( v == viewMapper.btnSelect ) {
+            Utils.setPreferenceData( this, C.pref.WALLET_GENERATE, C.wallet.CREATE );
             sendAction( MainActivity.class );
             setResult( RESULT_OK );
             finish( );

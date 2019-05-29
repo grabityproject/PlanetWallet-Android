@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.SetTokenImageDownloader;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 
@@ -38,7 +39,9 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void initLoader( ) {
 
-        this.theme = Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.THEME, false ) ) );
+        this.theme = !Utils.getPreferenceData( this, C.pref.THEME, C.theme.DARK ).equals( C.theme.DARK );
+        PLog.e( "initLoader theme : " + theme );
+
 
         if ( ImageLoader.getInstance( ).isInited( ) ) ImageLoader.getInstance( ).destroy( );
         FontManager.Init( this );
@@ -68,8 +71,7 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void setTheme( boolean theme ) {
         this.theme = theme;
-
-        Utils.setPreferenceData( this, C.pref.THEME, theme );
+        Utils.setPreferenceData( this, C.pref.THEME, theme ? C.theme.LIGHT : C.theme.DARK );
     }
 }
 

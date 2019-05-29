@@ -111,7 +111,7 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     @Override
     public void onListPopupItemClick( PopupView popup, View view, int position ) {
         viewMapper.btnDialCode.setText( items.get( position ).getCountryCode( ) );
-        popup.onBackPressed( );
+        super.onBackPressed( );
     }
 
     @Override

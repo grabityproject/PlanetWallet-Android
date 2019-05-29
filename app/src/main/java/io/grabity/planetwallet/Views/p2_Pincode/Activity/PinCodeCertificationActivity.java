@@ -74,7 +74,6 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         keyList = new ArrayList<>( );
 
         setPasswordView( );
-//        setPasswordMessage( true );
     }
 
     @Override
@@ -101,15 +100,12 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
 
                     if ( Utils.equals( Utils.getPreferenceData( this, C.pref.PASSWORD ), strKeyList ) ) {
 
-
-                        if ( Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, false ) ) ) ) {
+                        if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {
                             sendAction( MainActivity.class );
-                            finish( );
                         } else {
                             sendAction( WalletAddActivity.class );
-                            finish( );
                         }
-
+                        finish( );
 
                     } else {
                         keyList.clear( );
@@ -153,12 +149,6 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
             } else {
                 passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#000000" ) : Color.parseColor( "#BCBDD5" ) );
             }
-//            if (! Boolean.parseBoolean( String.valueOf( Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ) {
-//                passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#5C5964" ) );
-//            } else {
-//                passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#000000" ) : Color.parseColor( "#BCBDD5" ) );
-//            }
-
 
             viewMapper.inputNumber.setVisibility( keyList.size( ) <= 3 ? View.VISIBLE : View.GONE );
             viewMapper.inputAlphabet.setVisibility( keyList.size( ) >= 4 ? View.VISIBLE : View.GONE );

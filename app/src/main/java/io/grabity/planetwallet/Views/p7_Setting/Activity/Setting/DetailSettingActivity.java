@@ -104,7 +104,7 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
     @Override
     public void onListPopupItemClick ( PopupView popup, View view, int position ) {
         viewMapper.textCurrency.setText( items.get( position ) );
-        popup.onBackPressed( );
+        super.onBackPressed( );
 
     }
 

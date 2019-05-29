@@ -88,8 +88,6 @@ public class PlanetView extends View {
         if ( data == null ) data = "";
         this.data = data;
         this.hash = sha256( data );
-        PLog.e( "current Date : " + data );
-        PLog.e( "this.hash : " + hash );
         invalidate( );
     }
 
@@ -559,7 +557,6 @@ public class PlanetView extends View {
     public Bitmap getPlanetImage( float width, float height ) {
         Bitmap bitmap = Bitmap.createBitmap( ( int ) width, ( int ) height, Bitmap.Config.ARGB_8888 );
         Canvas canvas = new Canvas( bitmap );
-        PLog.e( "canvas : " + canvas );
         drawCanvas( canvas, width, height );
         return bitmap;
     }

@@ -30,6 +30,12 @@ public class C {
         public final static String PLANET = "PLANET";
     }
 
+    public static class theme{
+
+        public final static String DARK = "DARK";
+        public final static String LIGHT = "LIGHT";
+    }
+
     public static class tag {
 
         public final static int TOOLBAR_BACK = 100;
@@ -41,10 +47,17 @@ public class C {
     }
 
     public static class pref {
-        public final static String THEME = "theme";
+
         public final static String PREF = "PlanetWallet";
+
+        public final static String THEME = "theme";
         public final static String PASSWORD = "PinPassword";
         public final static String WALLET_GENERATE = "WalletGenerate";
+
+    }
+
+    public static class wallet {
+        public final static String CREATE = "create";
     }
 
     public static class db {

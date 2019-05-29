@@ -18,6 +18,7 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Widgets.DotView;
+import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
 
 
@@ -25,8 +26,8 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
 
     private ViewMapper viewMapper;
     private ArrayList< DotView > passwordViews;
-    private ArrayList< TextView > numberButtons;
-    private ArrayList< TextView > alphabetButtons;
+    private ArrayList< FontTextView > numberButtons;
+    private ArrayList< FontTextView > alphabetButtons;
 
     private ArrayList< String > keyList;
     private String strKeyList;
@@ -50,8 +51,8 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
         viewMapper.btnDeleteAlphabet.setOnClickListener( this );
 
         passwordViews = Utils.getAllViewsFromParentView( viewMapper.inputPassword, DotView.class );
-        numberButtons = Utils.getAllViewsFromParentView( viewMapper.inputNumber, TextView.class );
-        alphabetButtons = Utils.getAllViewsFromParentView( viewMapper.inputAlphabet, TextView.class );
+        numberButtons = Utils.getAllViewsFromParentView( viewMapper.inputNumber, FontTextView.class );
+        alphabetButtons = Utils.getAllViewsFromParentView( viewMapper.inputAlphabet, FontTextView.class );
         Collections.shuffle( numberButtons );
         Collections.shuffle( alphabetButtons );
 
@@ -72,6 +73,10 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
         }
         keyList = new ArrayList<>( );
 
+        setPasswordView( );
+
+        viewMapper.passwordTitle.setText( "Verification Code" );
+        viewMapper.passwordSubtitle.setText( "Enter the 4 digit + alphabet" );
     }
 
 
@@ -87,9 +92,8 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
             String tag = String.valueOf( v.getTag( ) );
             if ( tag != null ) {
                 keyList.add( tag );
-                setPasswordMessage( true );
 
-                if ( keyList.size( ) == 5 ){
+                if ( keyList.size( ) == 5 ) {
                     //Todo 임시작업
                     StringBuffer stringBuffer = new StringBuffer( );
                     for ( int i = 0; i < keyList.size( ); i++ ) {
@@ -97,19 +101,10 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
                     }
                     strKeyList = stringBuffer.toString( );
 
-                    if ( Utils.getPreferenceData( this , C.pref.PASSWORD ).length( ) == 0 ) {
-                        Utils.setPreferenceData( this, C.pref.PASSWORD, strKeyList );
-                        strKeyList = null;
-                        keyList.clear( );
-                    }else{
-                        if ( Utils.equals( Utils.getPreferenceData( this , C.pref.PASSWORD ), strKeyList ) ){
-                            sendAction( WalletAddActivity.class );
-                            finish( );
-                        }else{
-                            keyList.clear( );
-                            setPasswordMessage( false );
-                        }
-                    }
+                    Utils.setPreferenceData( this, C.pref.PASSWORD, strKeyList );
+                    setTransition( Transition.NO_ANIMATION );
+                    sendAction( PinCodeCertificationActivity.class );
+                    finish( );
                 }
                 setPasswordView( );
             }
@@ -126,17 +121,17 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
             }
             params.rightMargin = ( int ) Utils.dpToPx( this, 12 );
             passwordViews.get( i ).setLayoutParams( params );
-            passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#5C5964" ) );
+
+            if ( !getPlanetWalletApplication( ).getCurrentTheme( ) ) {
+                passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#5C5964" ) );
+            } else {
+                passwordViews.get( i ).setDotColor( i < keyList.size( ) ? Color.parseColor( "#000000" ) : Color.parseColor( "#BCBDD5" ) );
+            }
+
+
             viewMapper.inputNumber.setVisibility( keyList.size( ) <= 3 ? View.VISIBLE : View.GONE );
             viewMapper.inputAlphabet.setVisibility( keyList.size( ) >= 4 ? View.VISIBLE : View.GONE );
         }
-    }
-
-    void setPasswordMessage( boolean check ) {
-        viewMapper.passwordTitle.setText( check ? "Verification Code" : "Code incorrect" );
-        viewMapper.passwordSubtitle.setText( check ? "Enter the 4 digit + alphabet" : "Please check your code" );
-        viewMapper.passwordTitle.setTextColor( check ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#FF0050" ) );
-        viewMapper.passwordSubtitle.setTextColor( check ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#FF0050" ) );
     }
 
     @Override
@@ -158,8 +153,8 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
         View btnDeleteNumber;
         View btnDeleteAlphabet;
 
-        TextView passwordTitle;
-        TextView passwordSubtitle;
+        FontTextView passwordTitle;
+        FontTextView passwordSubtitle;
 
         public ViewMapper( ) {
 
