@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,12 +21,12 @@
             android:id="@+id/text_item_detailplanet_currencyname"
             android:layout_width="40dp"
             android:layout_height="20dp"
-            android:layout_toRightOf="@id/planetview_item_detailplanet"
             android:layout_alignTop="@id/planetview_item_detailplanet"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="6dp"
-            android:text="ETH"
+            android:layout_toRightOf="@id/planetview_item_detailplanet"
             android:gravity="center"
+            android:text="ETH"
             app:backgroundColorNormal="#000"
             app:cornerRadius="6dp"
             app:textColorNormal="#FFF" />
@@ -35,29 +35,32 @@
             android:id="@+id/text_item_detailplanet_walletname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/text_item_detailplanet_currencyname"
+            android:layout_alignStart="@id/text_item_detailplanet_currencyname"
+            android:layout_marginTop="12dp"
             android:text="Satriani"
             android:textColor="#000"
             android:textSize="16dp"
-            android:layout_below="@id/text_item_detailplanet_currencyname"
-            android:layout_alignStart="@id/text_item_detailplanet_currencyname"
-            android:layout_marginTop="12dp" />
+            app:themeTextColor="#FFF"
+            app:typefaceStyle="medium"/>
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_detailplanet_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0x1123A..Be24"
-            android:textSize="14dp"
-            android:textColor="#AAAAAA"
             android:layout_alignTop="@id/text_item_detailplanet_walletname"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:text="0x1123A..Be24"
+            android:textColor="#AAAAAA"
+            android:textSize="14dp"
+            app:themeTextColor="#5c5964" />
 
         <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#EDEDED"
             android:layout_alignParentBottom="true"
+            android:background="#EDEDED"
             app:themeBackground="#1E1E28" />
 
     </RelativeLayout>

@@ -10,10 +10,10 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:defaultTheme="Light"
         app:toolbarBottomWidth="1dp"
         app:toolbarTitle="Phone number"
-        app:defaultTheme="Light"
-        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
@@ -33,7 +33,8 @@
             android:paddingBottom="10dp"
             android:text="Enter Phone Number"
             android:textColor="#AAAAAA"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            app:themeTextColor="#5c5964" />
 
 
         <RelativeLayout
@@ -49,9 +50,9 @@
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:text="send"
-                app:textColorNormal="#000"
                 app:buttonType="A"
-                app:defaultTheme="Light" />
+                app:defaultTheme="Light"
+                app:textColorNormal="#000" />
 
             <io.grabity.planetwallet.Widgets.RoundEditText
                 android:id="@+id/et_phone_registration_phone"
@@ -60,11 +61,11 @@
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@id/btn_phone_registration_send"
                 android:hint="phone"
+                android:inputType="number"
                 android:paddingStart="68dp"
+                android:textColor="#000"
                 android:textColorHint="#AAAAAA"
                 android:textSize="14dp"
-                android:textColor="#000"
-                android:inputType="number"
                 app:defaultTheme="Light" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
@@ -73,14 +74,15 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="+82"
-                android:textColor="#000" />
+                android:textColor="#000"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
                 android:layout_width="1dp"
                 android:layout_height="20dp"
-                android:background="#EDEDED"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/btn_phone_registration_dial_code"
+                android:background="#EDEDED"
                 app:themeBackground="#1E1E28" />
 
         </RelativeLayout>
@@ -99,7 +101,8 @@
                 android:paddingBottom="10dp"
                 android:text="Enter the code that was sent to"
                 android:textColor="#AAAAAA"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#5c5964" />
 
 
             <RelativeLayout
@@ -110,12 +113,12 @@
                     android:id="@+id/et_phone_registration_code"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
+                    android:inputType="number"
                     android:paddingLeft="16dp"
                     android:paddingRight="72dp"
                     android:singleLine="true"
-                    android:textColorHint="#AAAAAA"
                     android:textColor="#000"
-                    android:inputType="number"
+                    android:textColorHint="#AAAAAA"
                     app:defaultTheme="Light" />
 
                 <io.grabity.planetwallet.Widgets.TimerView
@@ -125,8 +128,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
-                    android:textColor="#FF0050"
-                    android:text="03:00" />
+                    android:text="03:00"
+                    android:textColor="#FF0050" />
 
             </RelativeLayout>
 

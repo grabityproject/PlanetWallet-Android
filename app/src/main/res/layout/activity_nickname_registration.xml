@@ -10,11 +10,11 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_blue"
         app:defaultTheme="Light"
         app:toolbarBottomWidth="1dp"
         app:toolbarTitle="Nickname"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_gray"
-        app:blackThemeLeftSrc="@drawable/image_toolbar_close_blue" />
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_gray" />
 
 
     <LinearLayout
@@ -33,7 +33,8 @@
             android:paddingBottom="10dp"
             android:text="Enter Nickname"
             android:textColor="#AAAAAA"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            app:themeTextColor="#5c5964" />
 
         <RelativeLayout
             android:layout_width="match_parent"

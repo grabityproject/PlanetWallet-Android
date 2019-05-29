@@ -10,10 +10,10 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:defaultTheme="Light"
         app:toolbarBottomWidth="1dp"
         app:toolbarTitle="Mnemonic Phrase"
-        app:defaultTheme="Light"
-        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
@@ -34,7 +34,8 @@
             android:paddingBottom="12dp"
             android:text="Backup Mnemonic Phrase"
             android:textColor="#AAAAAA"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            app:themeTextColor="#5c5964" />
 
 
         <io.grabity.planetwallet.Widgets.RoundEditText
@@ -42,11 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@null"
+            android:enabled="false"
             android:lineSpacingExtra="8dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:textColor="#5C5964"
-            android:enabled="false"
             app:defaultTheme="Light" />
 
         <RelativeLayout

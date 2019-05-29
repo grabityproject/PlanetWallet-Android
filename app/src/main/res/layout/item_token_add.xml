@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,33 +12,34 @@
             android:id="@+id/image_item_tokenadd_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/icon_eth"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/icon_eth" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_tokenadd_tokenname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ETH"
-            android:textSize="16dp"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/image_item_tokenadd_icon"
-            android:layout_marginLeft="10dp" />
+            android:text="ETH"
+            android:textColor="#FFF"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:themeTextColor="#000" />
 
 
         <io.grabity.planetwallet.Widgets.CircleImageView
             android:id="@+id/btn_item_tokenadd_tokenadd_removebtn"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:src="#111117"
-            app:borderWidth="1dp"
-            app:borderColor="#5C5964"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:src="#111117"
+            app:borderColor="#5C5964"
+            app:borderWidth="1dp"
             app:themeSrc="#EDEDED" />
 
         <View

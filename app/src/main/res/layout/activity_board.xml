@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF"
+    android:orientation="vertical"
     app:themeBackground="#000">
 
     <io.grabity.planetwallet.Widgets.ToolBar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarBottomWidth="1dp"
-        app:defaultTheme="Light"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:defaultTheme="Light"
+        app:toolbarBottomWidth="1dp"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 
@@ -21,6 +21,6 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolBar"/>
+        android:layout_below="@id/toolBar" />
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

@@ -20,7 +20,7 @@ import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
-public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener{
+public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
 
     private ViewMapper viewMapper;
 
@@ -36,7 +36,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     }
 
     @Override
-    protected void onResume ( ) {
+    protected void onResume( ) {
         super.onResume( );
     }
 
@@ -59,18 +59,11 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         btnThemeSetting( );
 
 
-
-
     }
 
     void btnThemeSetting( ) {
-        viewMapper.btnThemeBlack.setBorderColorNormal( !Boolean.parseBoolean( String.valueOf(
-                Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ?
-                Color.parseColor( "#FF0050" ) : Color.parseColor( "#BCBDD5" ) );
-
-        viewMapper.btnThemeWhite.setBorderColorNormal( !Boolean.parseBoolean( String.valueOf(
-                Utils.getPreferenceData( this, C.pref.THEME, false ) ) ) ?
-                Color.parseColor( "#BCBDD5" ) : Color.parseColor( "#FF0050" ) );
+        viewMapper.btnThemeBlack.setBorderColorNormal( !getPlanetWalletApplication( ).getCurrentTheme( ) ? Color.parseColor( "#FF0050" ) : Color.parseColor( "#BCBDD5" ) );
+        viewMapper.btnThemeWhite.setBorderColorNormal( !getPlanetWalletApplication( ).getCurrentTheme( ) ? Color.parseColor( "#BCBDD5" ) : Color.parseColor( "#FF0050" ) );
     }
 
     @Override
@@ -80,26 +73,26 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     }
 
     @Override
-    public void onClick ( View v ) {
+    public void onClick( View v ) {
         super.onClick( v );
-        if( v == viewMapper.btnPlanet ){
+        if ( v == viewMapper.btnPlanet ) {
             sendAction( PlanetManagementActivity.class );
-        }else if( v == viewMapper.btnAccount ){
+        } else if ( v == viewMapper.btnAccount ) {
             sendAction( AccountActivity.class );
-        }else if( v == viewMapper.btnSetting ){
+        } else if ( v == viewMapper.btnSetting ) {
             sendAction( DetailSettingActivity.class );
-        }else if( v == viewMapper.btnAnnouncements ){
-            sendAction( BoardActivity.class , Utils.createStringBundle( "board", "announcements" ) );
-        }else if( v == viewMapper.btnFaq ){
-            sendAction( BoardActivity.class , Utils.createStringBundle( "board", "faq" ));
-        }else if( v == viewMapper.btnThemeBlack ){
+        } else if ( v == viewMapper.btnAnnouncements ) {
+            sendAction( BoardActivity.class, Utils.createStringBundle( "board", "announcements" ) );
+        } else if ( v == viewMapper.btnFaq ) {
+            sendAction( BoardActivity.class, Utils.createStringBundle( "board", "faq" ) );
+        } else if ( v == viewMapper.btnThemeBlack ) {
 
             getPlanetWalletApplication( ).setTheme( false );
             setTheme( false );
 
             btnThemeSetting( );
 
-        }else if( v == viewMapper.btnThemeWhite ){
+        } else if ( v == viewMapper.btnThemeWhite ) {
 
             getPlanetWalletApplication( ).setTheme( true );
             setTheme( true );
@@ -111,8 +104,8 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
-        if( Utils.equals( tag , C.tag.TOOLBAR_CLOSE ) ) {
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
         }
     }

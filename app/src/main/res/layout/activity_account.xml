@@ -36,7 +36,8 @@
                 android:layout_centerVertical="true"
                 android:text="Nickname"
                 android:textColor="#000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/image_account_nickname_arrow"
@@ -57,7 +58,8 @@
                 android:gravity="center"
                 android:text="choi3950"
                 android:textColor="#AAAAAA"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#5c5964" />
 
         </RelativeLayout>
 
@@ -72,7 +74,8 @@
                 android:layout_centerVertical="true"
                 android:text="E-mail"
                 android:textColor="#000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/image_account_email_arrow"
@@ -92,7 +95,8 @@
                 android:gravity="center"
                 android:text="foodover12345@grabity.org"
                 android:textColor="#AAAAAA"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#5c5964" />
 
         </RelativeLayout>
 
@@ -107,7 +111,8 @@
                 android:layout_centerVertical="true"
                 android:text="Phone Number"
                 android:textColor="#000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/image_account_phone_number_arrow"
@@ -127,7 +132,8 @@
                 android:gravity="center"
                 android:text="+82 10-1234-5678"
                 android:textColor="#AAAAAA"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#5c5964" />
 
         </RelativeLayout>
 
@@ -143,7 +149,8 @@
                 android:layout_centerVertical="true"
                 android:text="Connect Manager"
                 android:textColor="#000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/image_account_connect_manager_arrow"
@@ -161,7 +168,8 @@
                 android:gravity="center"
                 android:text=""
                 android:textColor="#AAAAAA"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
         </RelativeLayout>
 

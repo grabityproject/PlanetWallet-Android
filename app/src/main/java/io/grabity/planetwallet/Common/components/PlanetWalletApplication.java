@@ -68,6 +68,7 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void setTheme( boolean theme ) {
         this.theme = theme;
+
         Utils.setPreferenceData( this, C.pref.THEME, theme );
     }
 }

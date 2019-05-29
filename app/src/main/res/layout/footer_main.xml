@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000"
-    app:themeBackground="#FFF">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,11 +17,12 @@
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
                 android:text="You haven’t made any \n transaction yet :)"
                 android:textColor="#5C5964"
                 android:textSize="14dp"
-                android:layout_centerInParent="true"
-                android:gravity="center" />
+                app:themeTextColor="#aaaaaa" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -51,7 +50,8 @@
                 android:paddingRight="16dp"
                 app:borderColorNormal="#1E1E28"
                 app:borderWidth="1dp"
-                app:cornerRadius="6dp" />
+                app:cornerRadius="6dp"
+                />
 
 
             <io.grabity.planetwallet.Widgets.StretchImageView
@@ -72,10 +72,11 @@
                 android:paddingLeft="12dp"
                 android:text="Manage Tokens"
                 android:textColor="#FFFFFF"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                app:themeTextColor="#000" />
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
+</RelativeLayout>

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000"
-    app:themeBackground="#FFF">
+    android:layout_height="match_parent">
 
     <io.grabity.planetwallet.Widgets.RoundEditText
         android:id="@+id/et_tokenlist_search"
@@ -12,7 +10,6 @@
         android:layout_height="56dp"
         android:hint="Search"
         android:paddingStart="60dp"
-        android:textColor="#FFFFFF"
         android:textColorHint="#5C5964"
         android:textSize="14dp"
         app:defaultTheme="Dark" />
@@ -40,8 +37,8 @@
         android:layout_alignParentRight="true"
         android:padding="14dp"
         android:src="@drawable/image_input_clear_blue"
-        app:themeSrc="@drawable/image_input_clear_black"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:themeSrc="@drawable/image_input_clear_black" />
 
 
     <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
@@ -53,4 +50,4 @@
     </io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView>
 
 
-</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
+</RelativeLayout>

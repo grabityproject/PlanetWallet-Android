@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFF"
     app:themeBackground="#000">
 
@@ -10,43 +10,44 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarTitle="PrivateKey"
-        app:toolbarBottomWidth="1dp"
-        app:defaultTheme="Light"
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:defaultTheme="Light"
+        app:toolbarBottomWidth="1dp"
+        app:toolbarTitle="PrivateKey"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
     <LinearLayout
-        android:layout_below="@id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolBar"
         android:orientation="vertical"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="40dp">
+        android:paddingTop="40dp"
+        android:paddingEnd="20dp">
 
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Backup PrivateKey"
-            android:textSize="14dp"
-            android:textColor="#AAAAAA"
             android:layout_below="@id/toolBar"
-            android:paddingBottom="12dp" />
+            android:paddingBottom="12dp"
+            android:text="Backup PrivateKey"
+            android:textColor="#AAAAAA"
+            android:textSize="14dp"
+            app:themeTextColor="#5c5964" />
 
 
         <io.grabity.planetwallet.Widgets.RoundEditText
             android:id="@+id/et_privatekey_import_privatekey"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:textColor="#FFFFFF"
             android:background="@null"
+            android:enabled="false"
+            android:lineSpacingExtra="8dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
-            android:lineSpacingExtra="8dp"
-            android:enabled="false"
+            android:textColor="#FFFFFF"
             app:defaultTheme="Light" />
 
         <RelativeLayout
@@ -56,17 +57,18 @@
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
                 android:text="Save the PrivateKey safely."
-                android:textSize="14dp"
                 android:textColor="#FF0050"
-                android:paddingTop="10dp" />
+                android:textSize="14dp"
+                />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/image_warning"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dp"
-                android:layout_alignParentEnd="true" />
+                android:src="@drawable/image_warning" />
 
         </RelativeLayout>
 

@@ -59,7 +59,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             Toast.makeText( this,"새로운 이미지 교체" , Toast.LENGTH_SHORT).show( );
         }
         else if( v == viewMapper.btnSelect ){
-            Utils.setPreferenceData( this , C.pref.WALLET_GENERATE , true );
+            Utils.setPreferenceData( this , C.pref.WALLET_GENERATE , "Y" );
             sendAction( MainActivity.class );
             setResult( RESULT_OK );
             finish( );

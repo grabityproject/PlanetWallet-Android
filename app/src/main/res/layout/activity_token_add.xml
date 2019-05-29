@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:themeBackground="#FFF"
-    android:background="#000">
+    android:background="#000"
+    app:themeBackground="#FFF">
 
     <io.grabity.planetwallet.Widgets.ToolBar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarTitle="Manage Tokens"
-        app:defaultTheme="Dark"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:defaultTheme="Dark"
+        app:toolbarTitle="Manage Tokens"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 
@@ -26,8 +26,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#5C5964"
-        android:layout_above="@id/viewPager" />
+        android:layout_above="@id/viewPager"
+        android:background="#5C5964" />
 
     <io.grabity.planetwallet.Widgets.LockableViewPager
         android:id="@+id/viewPager"

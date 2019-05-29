@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,51 +14,55 @@
             android:id="@+id/text_item_main_btc_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="#FFF"
+            android:paddingTop="16dp"
             android:text="choi3950s"
-            android:paddingTop="16dp" />
+            android:textColor="#FFF"
+            android:textSize="16dp"
+            app:themeTextColor="#000" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_btc_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#5C5964"
-            android:text="April 04, 11:32"
-            android:textSize="14dp"
             android:layout_below="@id/text_item_main_btc_name"
-            android:paddingTop="2dp" />
+            android:paddingTop="2dp"
+            android:text="April 04, 11:32"
+            android:textColor="#5C5964"
+            android:textSize="14dp"
+            app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_main_btc_arrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/image_btc_increase"
+            android:layout_alignBottom="@id/text_item_main_btc_name"
             android:layout_alignParentRight="true"
-            android:layout_alignBottom="@id/text_item_main_btc_name" />
+            android:src="@drawable/image_btc_increase" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_btc_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="#5C5964"
-            android:text="BTC"
             android:layout_below="@id/image_item_main_btc_arrow"
             android:layout_alignParentRight="true"
-            android:paddingTop="2dp" />
+            android:paddingTop="2dp"
+            android:text="BTC"
+            android:textColor="#5C5964"
+            android:textSize="14dp"
+            app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_btc_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="#FFF"
-            android:text="0.2341"
-            android:layout_toLeftOf="@id/text_item_main_btc_value"
             android:layout_below="@id/image_item_main_btc_arrow"
+            android:layout_toLeftOf="@id/text_item_main_btc_value"
+            android:paddingTop="2dp"
             android:paddingEnd="6dp"
-            android:paddingTop="2dp" />
+            android:text="0.2341"
+            android:textColor="#FFF"
+            android:textSize="14dp"
+            app:themeTextColor="#000" />
 
 
     </RelativeLayout>

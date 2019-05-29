@@ -10,10 +10,10 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:defaultTheme="Light"
         app:toolbarBottomWidth="1dp"
         app:toolbarTitle="E-mail"
-        app:defaultTheme="Light"
-        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
@@ -32,7 +32,8 @@
             android:paddingBottom="10dp"
             android:text="Enter Email"
             android:textColor="#AAAAAA"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            app:themeTextColor="#5c5964" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,9 +46,9 @@
                 android:hint="E-mail"
                 android:paddingStart="12dp"
                 android:paddingEnd="56dp"
+                android:textColor="#000"
                 android:textColorHint="#AAAAAA"
                 android:textSize="14dp"
-                android:textColor="#000"
                 app:defaultTheme="Light" />
 
             <io.grabity.planetwallet.Widgets.CircleImageView
@@ -57,8 +58,8 @@
                 android:layout_alignParentEnd="true"
                 android:padding="16dp"
                 android:src="@drawable/image_input_clear_black"
-                app:themeSrc="@drawable/image_input_clear_blue"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:themeSrc="@drawable/image_input_clear_blue" />
 
         </RelativeLayout>
 

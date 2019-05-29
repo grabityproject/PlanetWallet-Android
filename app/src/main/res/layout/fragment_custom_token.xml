@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000"
-    app:themeBackground="#FFF">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +19,8 @@
             android:paddingBottom="10dp"
             android:text="Contract Address"
             android:textColor="#5C5964"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.RoundEditText
             android:id="@+id/et_custom_token_address"
@@ -40,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:text="This is not a valid Contract address."
                 android:textColor="#FF0050"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"
@@ -58,7 +58,8 @@
             android:paddingBottom="10dp"
             android:text="Token Symbol"
             android:textColor="#5C5964"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.RoundEditText
             android:id="@+id/et_customToken_symbol"
@@ -73,7 +74,8 @@
             android:paddingBottom="10dp"
             android:text="Decimals of Precision"
             android:textColor="#5C5964"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.RoundEditText
             android:id="@+id/edit_custom_token_decimals"
@@ -98,4 +100,4 @@
         app:buttonType="A"
         app:defaultTheme="Dark" />
 
-</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
+</RelativeLayout>

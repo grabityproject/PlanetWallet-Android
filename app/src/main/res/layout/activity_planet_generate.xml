@@ -10,8 +10,8 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:defaultTheme="Dark"
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:defaultTheme="Dark"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
@@ -31,7 +31,9 @@
             android:text="Is that your"
             android:textColor="#FFFFFF"
             android:textSize="28dp"
-            android:textStyle="bold" />
+            app:themeTextColor="#000"
+            app:typefaceStyle="bold"
+             />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:layout_width="match_parent"
@@ -40,7 +42,8 @@
             android:text="planet?"
             android:textColor="#FFFFFF"
             android:textSize="28dp"
-            android:textStyle="bold" />
+            app:themeTextColor="#000"
+            app:typefaceStyle="bold"/>
     </LinearLayout>
 
 
@@ -61,7 +64,8 @@
         android:text="Planet IIV"
         android:textColor="#FFFFFF"
         android:textSize="28dp"
-        android:textStyle="bold" />
+        app:themeTextColor="#000"
+        app:typefaceStyle="semibold" />
 
 
     <LinearLayout

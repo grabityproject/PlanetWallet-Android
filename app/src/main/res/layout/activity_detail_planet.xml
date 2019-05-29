@@ -10,10 +10,10 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:defaultTheme="Light"
         app:toolbarBottomWidth="1dp"
         app:toolbarTitle="Planet Satrini"
-        app:defaultTheme="Light"
-        app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 
@@ -32,7 +32,8 @@
             android:gravity="center_vertical"
             android:text="ETH Address"
             android:textColor="#000"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            app:themeTextColor="#FFF" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_detail_planet_address"
@@ -43,7 +44,8 @@
             android:singleLine="true"
             android:text="0xf291b69799516156fAA7F9ed4c39536335Ab797A"
             android:textColor="#FF0050"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            app:themeTextColor="#FFF" />
 
         <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
             android:layout_width="match_parent"
@@ -65,7 +67,8 @@
                 android:layout_centerVertical="true"
                 android:text="Planet Name"
                 android:textColor="#000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_detail_planet_name"
@@ -76,7 +79,8 @@
                 android:layout_toLeftOf="@id/image_detail_planet_name_arrow"
                 android:text="Satriani"
                 android:textColor="#AAAAAA"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#5c5964" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:id="@+id/image_detail_planet_name_arrow"
@@ -99,7 +103,8 @@
                 android:layout_centerVertical="true"
                 android:text="Hide Planet"
                 android:textColor="#000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.ToggleButton
                 android:id="@+id/toggleBtn"
@@ -131,7 +136,8 @@
                 android:layout_centerVertical="true"
                 android:text="Backup Mnemonic Phrase"
                 android:textColor="#000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"
@@ -155,7 +161,8 @@
                 android:layout_centerVertical="true"
                 android:text="Backup Private Key"
                 android:textColor="#000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"

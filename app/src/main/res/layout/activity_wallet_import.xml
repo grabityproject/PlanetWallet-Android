@@ -10,9 +10,9 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarTitle="Import Planet"
-        app:defaultTheme="Dark"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:defaultTheme="Dark"
+        app:toolbarTitle="Import Planet"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 

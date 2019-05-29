@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,24 +12,26 @@
             android:id="@+id/text_item_popup_phone_code_country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Korea"
-            android:textSize="14dp"
-            android:textColor="#000"
             android:layout_centerVertical="true"
-            android:paddingStart="20dp" />
+            android:paddingStart="20dp"
+            android:text="Korea"
+            android:textColor="#000"
+            android:textSize="14dp"
+            app:themeTextColor="#FFF" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_popup_phone_code_country_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingEnd="20dp"
             android:text="+ 82"
             android:textColor="#AAAAAA"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:paddingEnd="20dp" />
+            android:textSize="14dp"
+            app:themeTextColor="#5c5964" />
 
     </RelativeLayout>
 
 
-</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
+</RelativeLayout>

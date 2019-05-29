@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,52 +12,57 @@
             android:id="@+id/image_item_main_eth_icon"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/icon_eth"
             android:layout_centerVertical="true"
-            android:padding="20dp" />
+            android:padding="20dp"
+            android:src="@drawable/icon_eth" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_eth_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="#FFF"
-            android:text="ETH"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/image_item_main_eth_icon" />
+            android:layout_toRightOf="@id/image_item_main_eth_icon"
+            android:text="ETH"
+            android:textColor="#FFF"
+            android:textSize="16dp"
+            app:themeTextColor="#000"
+            app:typefaceStyle="medium"/>
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_main_eth_arrow"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/image_arrow_right_gray"
-            app:themeSrc="@drawable/image_arrow_right_blue"
             android:layout_alignParentRight="true"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
             android:paddingStart="20dp"
-            android:paddingEnd="14dp" />
+            android:paddingTop="20dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/image_arrow_right_gray"
+            app:themeSrc="@drawable/image_arrow_right_blue" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_eth_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="#FFF"
-            android:text="120,230"
             android:layout_toLeftOf="@id/image_item_main_eth_arrow"
-            android:paddingTop="18dp" />
+            android:paddingTop="18dp"
+            android:text="120,230"
+            android:textColor="#FFF"
+            android:textSize="16dp"
+            app:themeTextColor="#000"
+            app:typefaceStyle="medium"/>
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_eth_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textColor="#5C5964"
-            android:text="1000 USD"
-            android:layout_toLeftOf="@id/image_item_main_eth_arrow"
             android:layout_below="@id/text_item_main_eth_balance"
-            android:paddingTop="2dp" />
+            android:layout_toLeftOf="@id/image_item_main_eth_arrow"
+            android:paddingTop="2dp"
+            android:text="1000 USD"
+            android:textColor="#5C5964"
+            android:textSize="12dp"
+            app:themeTextColor="#aaaaaa" />
 
 
     </RelativeLayout>

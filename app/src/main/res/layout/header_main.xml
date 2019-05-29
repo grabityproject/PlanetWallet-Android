@@ -34,7 +34,8 @@
         android:text="Planet Name"
         android:textColor="#FFF"
         android:textSize="24dp"
-        android:textStyle="bold" />
+        app:themeTextColor="#000"
+        app:typefaceStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -50,7 +51,8 @@
             android:gravity="center"
             android:text="0x1234123123123"
             android:textColor="#5c5964"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/btn_main_header_copy"

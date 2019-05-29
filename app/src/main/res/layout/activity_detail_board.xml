@@ -10,9 +10,9 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:toolbarBottomWidth="1dp"
-        app:defaultTheme="Light"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:defaultTheme="Light"
+        app:toolbarBottomWidth="1dp"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 
@@ -32,7 +32,8 @@
             android:paddingBottom="6dp"
             android:text="[Event] Planet Wallet open event!"
             android:textColor="#000"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            app:themeTextColor="#FFF" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_detail_board_create_time"
@@ -43,7 +44,8 @@
             android:gravity="center"
             android:text="2019. 02. 01"
             android:textColor="#000"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            app:themeTextColor="#FFF" />
 
         <View
             android:layout_width="match_parent"

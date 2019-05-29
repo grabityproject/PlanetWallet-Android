@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="#FFF"
-        app:themeBackground="#1E1E28"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:themeBackground="#1E1E28">
 
         <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
             android:id="@+id/list_popup_list"

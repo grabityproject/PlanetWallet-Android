@@ -13,8 +13,8 @@ public class FontManager {
     private static FontManager fontManager;
     public static final int NORMAL = Typeface.NORMAL;
     public static final int BOLD = Typeface.BOLD;
-    public static final int SEMIBOLD = 5;
-    public static final int MEDIUM = 6;
+    public static final int MEDIUM = 5;
+    public static final int SEMIBOLD = 6;
     private HashMap< Integer, Typeface > fonts;
 
     private Context context;
