@@ -157,9 +157,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onAttachView( int resId, int position, View view ) {
-
-        PLog.e( " onAttachView " );
-
         if ( resId == R.layout.header_main && position == 0 ) {
             headerViewMapper = new HeaderViewMapper( view );
             headerViewMapper.planetView.setData( "가즈아" );
@@ -180,7 +177,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     public void onClick( View v ) {
         super.onClick( v );
-        //barcode Test // notice Test
+        //barcode Test
         if ( v == viewMapper.btnCopy ) {
             viewMapper.barcodeView.setData( "0x2133498349813afbrtdfetsff" );
         } else if ( v == viewMapper.btnSend ) {
@@ -204,7 +201,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         if ( Utils.equals( tag, C.tag.TOOLBAR_MENU ) ) {
             viewMapper.rippleView.ripple( true );
-
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_MUTIUNIVERSE ) ) {
             viewMapper.slideDrawer.open( SlideDrawerLayout.Position.TOP );
         }
