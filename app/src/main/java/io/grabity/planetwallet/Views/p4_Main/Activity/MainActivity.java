@@ -92,14 +92,14 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
          */
         items = new ArrayList<>( );
         //ETH
-        items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
-        items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
-        items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
-        items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
-        items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
-        items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
-        items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
-        items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
+//        items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
+//        items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
+//        items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
+//        items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
+//        items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
+//        items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
+//        items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
+//        items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
 
         //BTC
         items.add( new Coin( "BTC", "0.21352", "choi3950", "April 04, 11:23", R.drawable.image_btc_increase ) );
@@ -133,11 +133,21 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     }
 
     @Override
+    protected void onUpdateTheme( boolean theme ) {
+        super.onUpdateTheme( theme );
+        PLog.e( "theme  on Update : " + theme );
+        PLog.e( "viewMapper.listView.getChildCount() : " + viewMapper.listView.getChildCount( ) );
+        findViewAndSetTheme( viewMapper.listView, theme );
+        findTextViewAndSetTheme( viewMapper.listView );
+    }
+
+    @Override
     public void onAttachView( int resId, int position, View view ) {
         if ( resId == R.layout.header_main && position == 0 ) {
             headerViewMapper = new HeaderViewMapper( view );
             headerViewMapper.planetView.setData( "가즈아" );
             viewMapper.barcodeView.setPlanetView( headerViewMapper.planetView );
+
             if ( viewController != null )
                 viewController.setHeaderViewMapper( headerViewMapper );
         }

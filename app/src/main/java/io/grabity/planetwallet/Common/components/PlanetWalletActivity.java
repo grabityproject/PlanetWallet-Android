@@ -30,6 +30,7 @@ import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Widgets.PlanetWalletViews.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout;
 import io.grabity.planetwallet.Widgets.Themeable;
@@ -71,7 +72,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     @Override
     public void setContentView( int layoutResID ) {
         contentView = LayoutInflater.from( this ).inflate( layoutResID, null );
-        overrideFonts( contentView, FontManager.getInstance( ).getFont( ), FontManager.getInstance( ).getBoldFont( ) );
+        overrideFonts( contentView );
         applyTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
         super.setContentView( contentView );
     }
@@ -84,20 +85,18 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         }
     }
 
-    protected void overrideFonts( final View v, Typeface font, Typeface bold ) {
+    protected void overrideFonts( final View v ) {
         try {
             if ( v instanceof ViewGroup ) {
                 ViewGroup vg = ( ViewGroup ) v;
                 for ( int i = 0; i < vg.getChildCount( ); i++ ) {
                     View child = vg.getChildAt( i );
-                    overrideFonts( child, font, bold );
+                    overrideFonts( child );
                 }
+            } else if ( v instanceof FontTextView ) {
+                ( ( TextView ) v ).setTypeface( FontManager.getInstance( ).getFont( ( ( FontTextView ) v ).getFontStyle( ) ) );
             } else if ( v instanceof TextView ) {
-                if ( ( ( TextView ) v ).getTypeface( ).getStyle( ) == Typeface.BOLD ) {
-                    ( ( TextView ) v ).setTypeface( bold );
-                } else {
-                    ( ( TextView ) v ).setTypeface( font );
-                }
+                ( ( TextView ) v ).setTypeface( FontManager.getInstance( ).getFont( ( ( TextView ) v ).getTypeface( ).getStyle( ) ) );
             }
         } catch ( Exception e ) {
 
@@ -145,7 +144,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     }
 
     private void applyTheme( boolean theme ) {
-        if ( this.theme != theme ) findTextViewAndSetTheme( contentView );
         this.theme = theme;
         findViewAndSetTheme( contentView, theme );
         setStatusColor( );
@@ -164,35 +162,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
                 }
             } else if ( v instanceof Themeable ) {
                 ( ( Themeable ) v ).setTheme( theme );
-            }
-
-        } catch ( Exception e ) {
-            e.printStackTrace( );
-        }
-    }
-
-
-    protected void findTextViewAndSetTheme( final View v ) {
-        try {
-            if ( v instanceof ViewGroup ) {
-                ViewGroup vg = ( ViewGroup ) v;
-                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
-                    View child = vg.getChildAt( i );
-                    findTextViewAndSetTheme( child );
-                }
-            }
-
-            if ( v instanceof TextView && v.getClass( ).equals( TextView.class ) ) {
-                TextView tv = ( TextView ) v;
-                if ( tv.getCurrentTextColor( ) == Color.parseColor( "#000000" ) ) {
-                    tv.setTextColor( Color.parseColor( "#ffffff" ) );
-                } else if ( tv.getCurrentTextColor( ) == Color.parseColor( "#ffffff" ) ) {
-                    tv.setTextColor( Color.parseColor( "#000000" ) );
-                } else if ( tv.getCurrentTextColor( ) == Color.parseColor( "#aaaaaa" ) ) {
-                    tv.setTextColor( Color.parseColor( "#5c5964" ) );
-                } else if ( tv.getCurrentTextColor( ) == Color.parseColor( "#5c5964" ) ) {
-                    tv.setTextColor( Color.parseColor( "#aaaaaa" ) );
-                }
             }
 
         } catch ( Exception e ) {
@@ -534,5 +503,9 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     public void onReceive( boolean error, int requestCode, int resultCode,
                            int statusCode, String result ) {
 
+    }
+
+    public boolean getCurrentTheme( ) {
+        return theme;
     }
 }
