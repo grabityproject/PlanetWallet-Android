@@ -16,19 +16,19 @@ import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p5_Token.Fragment.CustomTokenFragment;
-import io.grabity.planetwallet.Views.p5_Token.Fragment.TokenListFragmentListener;
+import io.grabity.planetwallet.Views.p5_Token.Fragment.TokenListFragment;
 import io.grabity.planetwallet.Widgets.LockableViewPager;
 import io.grabity.planetwallet.Widgets.TabBar;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
-public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.OnPageChangeListener , ToolBar.OnToolBarClickListener {
+public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.OnPageChangeListener, ToolBar.OnToolBarClickListener {
 
     private ViewMapper viewMapper;
     private ViewPagerAdapter< PlanetWalletFragment > adapter;
     private ArrayList< PlanetWalletFragment > fragments;
 
-    private TokenListFragmentListener tokenListFragment;
+    private TokenListFragment tokenListFragment;
     private CustomTokenFragment customTokenFragment;
 
     @Override
@@ -48,8 +48,8 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.tabBar.setItems(
-                new TabBar.ButtonItem(  ).setText( "Add Token" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964") ),
-                new TabBar.ButtonItem(  ).setText( "Custom Token" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) )
+                new TabBar.ButtonItem( ).setText( "Add Token" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) ),
+                new TabBar.ButtonItem( ).setText( "Custom Token" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) )
         );
 
 
@@ -65,21 +65,21 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
     @Override
     protected void setData( ) {
         super.setData( );
-        fragments = new ArrayList<>(  );
-        fragments.add( tokenListFragment = TokenListFragmentListener.newInstance() );
-        fragments.add( customTokenFragment = CustomTokenFragment.newInstance() );
+        fragments = new ArrayList<>( );
+        fragments.add( tokenListFragment = TokenListFragment.newInstance( ) );
+        fragments.add( customTokenFragment = CustomTokenFragment.newInstance( ) );
 
-        adapter = new ViewPagerAdapter<>( getSupportFragmentManager() , fragments );
+        adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
         viewMapper.viewPager.setAdapter( adapter );
 
     }
 
     @Override
-    public void onPageScrolled ( int i, float v, int i1 ) {
+    public void onPageScrolled( int i, float v, int i1 ) {
     }
 
     @Override
-    public void onPageSelected ( int position ) {
+    public void onPageSelected( int position ) {
         for ( int i = 0; i < viewMapper.tabBar.getItems( ).size( ); i++ ) {
             ( ( TextView ) viewMapper.tabBar.getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#FFFFFF" : "#5C5964" ) );
         }
@@ -88,13 +88,13 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
     }
 
     @Override
-    public void onPageScrollStateChanged ( int i ) {
+    public void onPageScrollStateChanged( int i ) {
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
+    public void onToolBarClick( Object tag, View view ) {
         //Todo 토큰추가를 확인후 setResult 분기
-        if( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ){
+        if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             setResult( RESULT_OK );
             super.onBackPressed( );
         }

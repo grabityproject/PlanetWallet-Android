@@ -17,7 +17,7 @@
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 
-    <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
+    <io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

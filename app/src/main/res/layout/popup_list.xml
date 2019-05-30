@@ -17,7 +17,7 @@
         android:padding="16dp"
         app:themeBackground="#1E1E28">
 
-        <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
+        <io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView
             android:id="@+id/list_popup_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

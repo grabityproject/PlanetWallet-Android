@@ -26,6 +26,7 @@
             android:layout_height="56dp">
 
             <io.grabity.planetwallet.Widgets.RoundEditText
+                android:textCursorDrawable="@null"
                 android:id="@+id/et_mnemonic_import_password"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -74,6 +75,7 @@
 
 
         <io.grabity.planetwallet.Widgets.RoundEditText
+            android:textCursorDrawable="@null"
             android:id="@+id/et_mnemonic_import_mnemonic"
             android:layout_width="match_parent"
             android:layout_height="120dp"

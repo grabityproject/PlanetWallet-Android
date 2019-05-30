@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.PhoneCode;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 
 public class PopupPhoneCodeAdapter extends AdvanceArrayAdapter< PhoneCode > {
 

@@ -12,8 +12,7 @@
         android:layout_height="@dimen/toolbarHeight"
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
         app:defaultTheme="Dark"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"
-        />
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
     <io.grabity.planetwallet.Widgets.StretchImageView
@@ -21,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolBar"
         android:src="@drawable/image_walletadd_black"
-        app:themeSrc="@drawable/image_walletadd_white"/>
+        app:themeSrc="@drawable/image_walletadd_white" />
 
 
     <LinearLayout

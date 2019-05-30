@@ -1,4 +1,5 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -15,16 +16,16 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
 
     private ViewMapper viewMapper;
 
-    public MnemonicImportFragment ( ) {
+    public MnemonicImportFragment( ) {
     }
 
     public static MnemonicImportFragment newInstance( ) {
-       MnemonicImportFragment fragment = new MnemonicImportFragment( );
-       return fragment;
+        MnemonicImportFragment fragment = new MnemonicImportFragment( );
+        return fragment;
     }
 
     @Override
-    public void onCreate ( @Nullable Bundle savedInstanceState ) {
+    public void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.fragment_mnemonic_import );
 
@@ -36,7 +37,7 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
     }
 
     @Override
-    protected void viewInit ( ) {
+    protected void viewInit( ) {
         super.viewInit( );
         viewMapper.passwordVisible.setOnClickListener( this );
         viewMapper.passwordInvisible.setOnClickListener( this );
@@ -49,22 +50,21 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
     }
 
 
-
     @Override
-    public void setData ( ) {
+    public void setData( ) {
         super.setData( );
     }
 
     @Override
-    public void onClick ( View v ) {
-        if( v == viewMapper.passwordInvisible || v == viewMapper.passwordVisible ){
-            viewMapper.passwordInvisible.setVisibility( viewMapper.passwordInvisible.getVisibility() == View.GONE ? View.VISIBLE : View.GONE );
-            viewMapper.passwordVisible.setVisibility( viewMapper.passwordVisible.getVisibility() == View.GONE ? View.VISIBLE : View.GONE );
-            viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility() == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
-            viewMapper.etPassword.setSelection( viewMapper.etPassword.length() );
-        } else if( v == viewMapper.btnSubmit ) {
+    public void onClick( View v ) {
+        if ( v == viewMapper.passwordInvisible || v == viewMapper.passwordVisible ) {
+            viewMapper.passwordInvisible.setVisibility( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
+            viewMapper.passwordVisible.setVisibility( viewMapper.passwordVisible.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
+            viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+            viewMapper.etPassword.setSelection( viewMapper.etPassword.length( ) );
+        } else if ( v == viewMapper.btnSubmit ) {
             //Todo 니모닉 및 패스워드 체크후 진행
-            Toast.makeText( getContext( ) , "MnemonicImport" , Toast.LENGTH_SHORT ).show();
+            Toast.makeText( getContext( ), "MnemonicImport", Toast.LENGTH_SHORT ).show( );
         }
 
     }
@@ -94,7 +94,7 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
         View passwordVisible;
         View btnSubmit;
 
-        public ViewMapper ( ) {
+        public ViewMapper( ) {
             etPassword = findViewById( R.id.et_mnemonic_import_password );
             etMnemonic = findViewById( R.id.et_mnemonic_import_mnemonic );
             passwordInvisible = findViewById( R.id.btn_mnemonicImport_password_invisible );

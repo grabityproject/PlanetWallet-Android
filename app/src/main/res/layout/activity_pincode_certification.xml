@@ -23,7 +23,7 @@
         android:textColor="#FFF"
         android:textSize="28dp"
         app:typefaceStyle="bold"
-        app:themeTextColor="#000"  />
+        app:themeTextColor="#000" />
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_pincode_certification_specification"
@@ -277,7 +277,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -286,7 +286,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -295,7 +295,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -304,7 +304,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -313,7 +313,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -322,7 +322,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
 
             <io.grabity.planetwallet.Widgets.FontTextView
@@ -332,7 +332,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
         </LinearLayout>
 
@@ -348,7 +348,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -357,7 +357,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -366,7 +366,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -375,7 +375,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -384,7 +384,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -393,7 +393,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
 
             <io.grabity.planetwallet.Widgets.FontTextView
@@ -403,7 +403,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
 
         </LinearLayout>
@@ -420,7 +420,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -429,7 +429,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -438,7 +438,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -447,7 +447,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -456,7 +456,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -465,7 +465,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
 
             <io.grabity.planetwallet.Widgets.FontTextView
@@ -475,7 +475,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
 
         </LinearLayout>
@@ -497,7 +497,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -506,7 +506,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -515,7 +515,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -524,7 +524,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="0dp"
@@ -533,7 +533,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="28dp"
-                app:themeTextColor="#000"  />
+                app:themeTextColor="#000" />
 
 
             <RelativeLayout

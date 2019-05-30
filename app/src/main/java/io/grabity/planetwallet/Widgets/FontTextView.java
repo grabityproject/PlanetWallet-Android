@@ -30,7 +30,7 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView im
         TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.FontTextView, defStyleAttr, 0 );
         defaultTheme = a.getInt( R.styleable.FontTextView_defaultTheme, 0 );
         themeTextColor = a.getColor( R.styleable.FontTextView_themeTextColor, Color.TRANSPARENT );
-        if( themeTextColor == Color.TRANSPARENT ) themeTextColor = null;
+        if ( themeTextColor == Color.TRANSPARENT ) themeTextColor = null;
         fontStyle = a.getInt( R.styleable.FontTextView_typefaceStyle, 0 );
         if ( getTypeface( ).getStyle( ) != Typeface.NORMAL ) {
             fontStyle = getTypeface( ).getStyle( );

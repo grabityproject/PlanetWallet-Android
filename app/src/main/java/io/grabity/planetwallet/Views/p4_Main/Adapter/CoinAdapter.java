@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Coin;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
 public class CoinAdapter extends AdvanceArrayAdapter< Coin > {
@@ -19,9 +19,9 @@ public class CoinAdapter extends AdvanceArrayAdapter< Coin > {
 
     @Override
     public ViewMapper viewMapping( int position ) {
-        if ( getObjects( ).get( position ).getCoin( ).equals( "ETH" ) ){
+        if ( getObjects( ).get( position ).getCoin( ).equals( "ETH" ) ) {
             return new ETHItems( View.inflate( getContext( ), R.layout.item_main_eth, null ) );
-        } else{
+        } else {
             return new BTCItems( View.inflate( getContext( ), R.layout.item_main_btc, null ) );
         }
     }
@@ -29,7 +29,7 @@ public class CoinAdapter extends AdvanceArrayAdapter< Coin > {
     @Override
     public void bindData( ViewMapper viewMapper, Coin item, int position ) {
 
-        if ( item.getCoin( ).equals( "ETH" ) ){
+        if ( item.getCoin( ).equals( "ETH" ) ) {
             ( ( ETHItems ) viewMapper ).ethIcon.setImageResource( item.getIcon( ) );
             ( ( ETHItems ) viewMapper ).ethName.setText( item.getCoinName( ) == null ? "ETH" : item.getCoinName( ) );
             ( ( ETHItems ) viewMapper ).ethBalance.setText( item.getBalance( ) == null ? "" : item.getBalance( ) );

@@ -2,12 +2,12 @@ package io.grabity.planetwallet.Common.components;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,8 @@ import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Widgets.FontTextView;
+import io.grabity.planetwallet.Widgets.Themeable;
 
 
 /**
@@ -44,6 +46,15 @@ public abstract class PlanetWalletFragment extends Fragment implements NetworkIn
     }
 
     @Override
+    public void onResume( ) {
+        super.onResume( );
+        if ( theme != getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( ) ) {
+            theme = getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( );
+            onUpdateTheme( theme );
+        }
+    }
+
+    @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
 
     }
@@ -61,7 +72,7 @@ public abstract class PlanetWalletFragment extends Fragment implements NetworkIn
 
     public void setContentView( int resId ) {
         this.contentView = View.inflate( getPlanetWalletActivity( ), resId, null );
-        overrideFonts( this.contentView, FontManager.getInstance( ).getFont( ), FontManager.getInstance( ).getBoldFont( ) );
+        overrideFonts( this.contentView );
     }
 
     public < T extends View > T findViewById( int resId ) {
@@ -69,20 +80,18 @@ public abstract class PlanetWalletFragment extends Fragment implements NetworkIn
         else return null;
     }
 
-    protected void overrideFonts( final View v, Typeface font, Typeface bold ) {
+    protected void overrideFonts( final View v ) {
         try {
             if ( v instanceof ViewGroup ) {
                 ViewGroup vg = ( ViewGroup ) v;
                 for ( int i = 0; i < vg.getChildCount( ); i++ ) {
                     View child = vg.getChildAt( i );
-                    overrideFonts( child, font, bold );
+                    overrideFonts( child );
                 }
+            } else if ( v instanceof FontTextView ) {
+                ( ( TextView ) v ).setTypeface( FontManager.getInstance( ).getFont( ( ( FontTextView ) v ).getFontStyle( ) ) );
             } else if ( v instanceof TextView ) {
-                if ( ( ( TextView ) v ).getTypeface( ).getStyle( ) == Typeface.BOLD ) {
-                    ( ( TextView ) v ).setTypeface( bold );
-                } else {
-                    ( ( TextView ) v ).setTypeface( font );
-                }
+                ( ( TextView ) v ).setTypeface( FontManager.getInstance( ).getFont( ( ( TextView ) v ).getTypeface( ).getStyle( ) ) );
             }
         } catch ( Exception e ) {
 
@@ -192,4 +201,48 @@ public abstract class PlanetWalletFragment extends Fragment implements NetworkIn
         }
     }
 
+
+    // Theme Variable & Methods
+    private boolean theme = false;
+
+    public boolean getCurrentTheme( ) {
+        return theme;
+    }
+
+    protected void onUpdateTheme( boolean theme ) {
+        applyTheme( theme );
+    }
+
+    public void setTheme( boolean theme ) {
+        getPlanetWalletActivity( ).getPlanetWalletApplication( ).setTheme( theme );
+        if ( this.theme != getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( ) ) {
+            onUpdateTheme( theme );
+            this.theme = getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( );
+        }
+    }
+
+    private void applyTheme( boolean theme ) {
+        this.theme = theme;
+        findViewAndSetTheme( contentView, theme );
+    }
+
+    protected void findViewAndSetTheme( final View v, boolean theme ) {
+        try {
+            if ( v instanceof ViewGroup && !( v instanceof RecyclerView ) ) {
+                ViewGroup vg = ( ViewGroup ) v;
+                if ( v instanceof Themeable ) {
+                    ( ( Themeable ) v ).setTheme( theme );
+                }
+                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                    View child = vg.getChildAt( i );
+                    findViewAndSetTheme( child, theme );
+                }
+            } else if ( v instanceof Themeable ) {
+                ( ( Themeable ) v ).setTheme( theme );
+            }
+
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
+    }
 }

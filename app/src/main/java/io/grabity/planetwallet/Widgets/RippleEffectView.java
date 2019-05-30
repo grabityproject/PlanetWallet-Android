@@ -9,11 +9,7 @@ import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
-
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 
 public class RippleEffectView extends View implements Themeable {
 
@@ -151,6 +147,6 @@ public class RippleEffectView extends View implements Themeable {
     }
 
     public interface OnRippleEffectListener {
-        void onRippleEffect ( boolean on );
+        void onRippleEffect( boolean on );
     }
 }

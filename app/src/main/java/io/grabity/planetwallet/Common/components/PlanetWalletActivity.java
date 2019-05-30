@@ -29,9 +29,7 @@ import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
-import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout;
@@ -42,7 +40,6 @@ import io.grabity.planetwallet.Widgets.Themeable;
  */
 public abstract class PlanetWalletActivity extends FragmentActivity implements View.OnClickListener, NetworkInterface {
 
-
     public enum Transition {
         NO_ANIMATION,
         SLIDE_SIDE,
@@ -52,9 +49,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     protected Transition transition = Transition.SLIDE_SIDE;
     private Stack< PopupView > popupViewStack;
 
-    private boolean theme = false;
     private View contentView;
-
     private boolean fadeIn = false;
 
     @Override
@@ -65,10 +60,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
             onUpdateTheme( theme );
         }
         PLog.setTAG( this.getClass( ).getSimpleName( ) );
-    }
-
-    protected void onUpdateTheme( boolean theme ) {
-        applyTheme( theme );
     }
 
     @Override
@@ -135,44 +126,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         }
         animatorSet.playTogether( animations );
         animatorSet.start( );
-    }
-
-    public void setTheme( boolean theme ) {
-        getPlanetWalletApplication( ).setTheme( theme );
-        if ( this.theme != getPlanetWalletApplication( ).getCurrentTheme( ) ) {
-            onUpdateTheme( theme );
-            this.theme = getPlanetWalletApplication( ).getCurrentTheme( );
-        }
-    }
-
-    private void applyTheme( boolean theme ) {
-        this.theme = theme;
-        findViewAndSetTheme( contentView, theme );
-        setStatusColor( );
-    }
-
-    protected void findViewAndSetTheme( final View v, boolean theme ) {
-        try {
-            if ( Utils.equals( v.getClass( ), AdvanceRecyclerView.class ) ) {
-                PLog.e( "Advance : " + ( v instanceof ViewGroup ? "Viewgroup" : "No Viewgroup" ) );
-
-            }
-            if ( v instanceof ViewGroup && !( v instanceof RecyclerView ) ) {
-                ViewGroup vg = ( ViewGroup ) v;
-                if ( v instanceof Themeable ) {
-                    ( ( Themeable ) v ).setTheme( theme );
-                }
-                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
-                    View child = vg.getChildAt( i );
-                    findViewAndSetTheme( child, theme );
-                }
-            } else if ( v instanceof Themeable ) {
-                ( ( Themeable ) v ).setTheme( theme );
-            }
-
-        } catch ( Exception e ) {
-            e.printStackTrace( );
-        }
     }
 
     @Override
@@ -511,7 +464,49 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
     }
 
+
+    // Theme Variable & Methods
+    private boolean theme = false;
+
     public boolean getCurrentTheme( ) {
         return theme;
+    }
+
+    protected void onUpdateTheme( boolean theme ) {
+        applyTheme( theme );
+    }
+
+    public void setTheme( boolean theme ) {
+        getPlanetWalletApplication( ).setTheme( theme );
+        if ( this.theme != getPlanetWalletApplication( ).getCurrentTheme( ) ) {
+            onUpdateTheme( theme );
+            this.theme = getPlanetWalletApplication( ).getCurrentTheme( );
+        }
+    }
+
+    private void applyTheme( boolean theme ) {
+        this.theme = theme;
+        findViewAndSetTheme( contentView, theme );
+        setStatusColor( );
+    }
+
+    protected void findViewAndSetTheme( final View v, boolean theme ) {
+        try {
+            if ( v instanceof ViewGroup && !( v instanceof RecyclerView ) ) {
+                ViewGroup vg = ( ViewGroup ) v;
+                if ( v instanceof Themeable ) {
+                    ( ( Themeable ) v ).setTheme( theme );
+                }
+                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                    View child = vg.getChildAt( i );
+                    findViewAndSetTheme( child, theme );
+                }
+            } else if ( v instanceof Themeable ) {
+                ( ( Themeable ) v ).setTheme( theme );
+            }
+
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
     }
 }

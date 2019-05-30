@@ -1,53 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000"
+    app:themeBackground="#FFF">
 
-    <io.grabity.planetwallet.Widgets.RoundEditText
-        android:id="@+id/et_tokenlist_search"
+    <RelativeLayout
+        android:id="@+id/group_tokenlist_search"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:hint="Search"
-        android:paddingStart="60dp"
-        android:textColorHint="#5C5964"
-        android:textSize="14dp"
-        app:defaultTheme="Dark" />
+        android:layout_height="56dp">
 
-    <io.grabity.planetwallet.Widgets.StretchImageView
-        android:id="@+id/image_tokenlist_nosearch_icon"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:padding="16dp"
-        android:src="@drawable/image_search_darkgray" />
+        <EditText
+            android:id="@+id/et_tokenlist_search"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#111117"
+            android:hint="Search"
+            android:paddingStart="60dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#5C5964"
+            android:textSize="14dp" />
 
-    <io.grabity.planetwallet.Widgets.StretchImageView
-        android:id="@+id/image_tokenlist_search_icon"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:padding="16dp"
-        android:src="@drawable/image_search_white"
-        android:visibility="invisible"
-        app:themeSrc="@drawable/image_search_black" />
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/image_tokenlist_nosearch_icon"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="16dp"
+            android:src="@drawable/image_search_darkgray" />
 
-    <io.grabity.planetwallet.Widgets.CircleImageView
-        android:id="@+id/btn_tokenlist_clear"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentRight="true"
-        android:padding="14dp"
-        android:src="@drawable/image_input_clear_blue"
-        android:visibility="gone"
-        app:themeSrc="@drawable/image_input_clear_black" />
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/image_tokenlist_search_icon"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="16dp"
+            android:src="@drawable/image_search_white"
+            android:visibility="invisible"
+            app:themeSrc="@drawable/image_search_black" />
 
+        <io.grabity.planetwallet.Widgets.CircleImageView
+            android:id="@+id/btn_tokenlist_clear"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentRight="true"
+            android:padding="14dp"
+            android:src="@drawable/image_input_clear_blue"
+            android:visibility="gone"
+            app:themeSrc="@drawable/image_input_clear_black" />
 
-    <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
+        <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1E1E28"
+            app:themeBackground="#EDEDED" />
+
+        <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#1E1E28"
+            app:themeBackground="#EDEDED" />
+
+    </RelativeLayout>
+
+    <io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/et_tokenlist_search">
+        android:layout_below="@+id/group_tokenlist_search" />
 
-    </io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView>
+    <io.grabity.planetwallet.Widgets.FontTextView
+        android:id="@+id/text_tokenlist_noitem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/group_tokenlist_search"
+        android:gravity="center_horizontal"
+        android:paddingTop="86dp"
+        android:text="Haven’t found what you’re looking for?"
+        android:textColor="#bcbdd5"
+        android:textSize="14dp"
+        android:visibility="gone"
+        app:themeTextColor="#CFCFCF" />
 
-
-</RelativeLayout>
+</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

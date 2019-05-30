@@ -1,4 +1,5 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Board;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,24 +16,24 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener{
+public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
 
     private ViewMapper viewMapper;
     private WebSettings webSettings;
 
     @Override
-    protected void onCreate ( @Nullable Bundle savedInstanceState ) {
+    protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_detail_board );
 
         viewMapper = new ViewMapper( );
-        viewInit();
-        setData();
+        viewInit( );
+        setData( );
     }
 
     @SuppressLint( "SetJavaScriptEnabled" )
     @Override
-    protected void viewInit ( ) {
+    protected void viewInit( ) {
         super.viewInit( );
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
@@ -47,13 +48,13 @@ public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar
     }
 
     @Override
-    protected void setData ( ) {
+    protected void setData( ) {
         super.setData( );
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
-        if( Utils.equals( tag , C.tag.TOOLBAR_BACK ) ){
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             finish( );
         }
     }
@@ -63,7 +64,8 @@ public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar
         TextView title;
         TextView time;
         WebView webView;
-        public ViewMapper ( ) {
+
+        public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
             title = findViewById( R.id.text_detail_board_title );
             time = findViewById( R.id.text_detail_board_create_time );

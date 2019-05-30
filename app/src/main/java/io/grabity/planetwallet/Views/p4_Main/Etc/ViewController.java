@@ -7,13 +7,12 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import io.grabity.planetwallet.MiniFramework.utils.BlurBuilder;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
-import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.ViewMapper;
-import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.HeaderViewMapper;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.FooterViewMapper;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.HeaderViewMapper;
+import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.ViewMapper;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 
 public class ViewController implements AdvanceRecyclerView.OnScrollListener, SlideDrawerLayout.OnSlideDrawerListener {
@@ -108,8 +107,6 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
     public void setHeaderViewMapper( HeaderViewMapper headerViewMapper ) {
         this.headerViewMapper = headerViewMapper;
     }
-
-
 
 
 }

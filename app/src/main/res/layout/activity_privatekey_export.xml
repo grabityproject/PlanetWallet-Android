@@ -39,6 +39,7 @@
 
 
         <io.grabity.planetwallet.Widgets.RoundEditText
+            android:textCursorDrawable="@null"
             android:id="@+id/et_privatekey_import_privatekey"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -60,8 +61,7 @@
                 android:paddingTop="10dp"
                 android:text="Save the PrivateKey safely."
                 android:textColor="#FF0050"
-                android:textSize="14dp"
-                />
+                android:textSize="14dp" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"

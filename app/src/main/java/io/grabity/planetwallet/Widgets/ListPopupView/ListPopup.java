@@ -10,8 +10,8 @@ import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.MiniFramework.utils.CornerRound;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.Themeable;
 
 public class ListPopup extends AbsSlideUpView implements AdvanceRecyclerView.OnScrollListener, AdvanceRecyclerView.OnEndItemListener, AdvanceRecyclerView.OnItemClickListener {
@@ -61,7 +61,7 @@ public class ListPopup extends AbsSlideUpView implements AdvanceRecyclerView.OnS
             viewMapper.recyclerView.setAdapter( adapter );
         }
 
-        findViewAndSetTheme(viewMapper.groupPopupList, theme );
+        findViewAndSetTheme( viewMapper.groupPopupList, theme );
 
         float dp = Utils.dpToPx( getContext( ), 8 );
         CornerRound.radius( viewMapper.groupPopupList, dp, dp, dp, dp, dp, dp, dp, dp );

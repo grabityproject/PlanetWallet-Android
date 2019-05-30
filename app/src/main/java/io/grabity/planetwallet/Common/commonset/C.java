@@ -30,7 +30,7 @@ public class C {
         public final static String PLANET = "PLANET";
     }
 
-    public static class theme{
+    public static class theme {
 
         public final static String DARK = "DARK";
         public final static String LIGHT = "LIGHT";

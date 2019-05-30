@@ -1,4 +1,5 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Account;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,19 +18,19 @@ public class AccountActivity extends PlanetWalletActivity implements ToolBar.OnT
     ViewMapper viewMapper;
 
     @Override
-    protected void onCreate ( @Nullable Bundle savedInstanceState ) {
+    protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_account );
 
         viewMapper = new ViewMapper( );
-        viewInit();
-        setData();
+        viewInit( );
+        setData( );
 
 
     }
 
     @Override
-    protected void viewInit ( ) {
+    protected void viewInit( ) {
         super.viewInit( );
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
@@ -42,35 +43,35 @@ public class AccountActivity extends PlanetWalletActivity implements ToolBar.OnT
     }
 
     @Override
-    protected void setData ( ) {
+    protected void setData( ) {
         super.setData( );
     }
 
     //ToDo Data Setting
     @Override
-    public void onClick ( View v ) {
+    public void onClick( View v ) {
         super.onClick( v );
-        if( v == viewMapper.btnNickName ){
+        if ( v == viewMapper.btnNickName ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.ACCOUNT_RENAME , NicknameRegistrationActivity.class , Utils.createStringBundle( "name" , viewMapper.nickName.getText( ).toString( ) ) );
-        } else if( v == viewMapper.btnEmail ){
+            sendAction( C.requestCode.ACCOUNT_RENAME, NicknameRegistrationActivity.class, Utils.createStringBundle( "name", viewMapper.nickName.getText( ).toString( ) ) );
+        } else if ( v == viewMapper.btnEmail ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.ACCOUNT_REMAIL , EmailRegistrationActivity.class , Utils.createStringBundle( "mail" , viewMapper.email.getText( ).toString( ) ) );
-        } else if( v == viewMapper.btnPhone ){
+            sendAction( C.requestCode.ACCOUNT_REMAIL, EmailRegistrationActivity.class, Utils.createStringBundle( "mail", viewMapper.email.getText( ).toString( ) ) );
+        } else if ( v == viewMapper.btnPhone ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.ACCOUNT_REPHONE_NUMBER , PhoneRegistrationActivity.class , Utils.createStringBundle( "phone" , viewMapper.phone.getText( ).toString( ) ) );
+            sendAction( C.requestCode.ACCOUNT_REPHONE_NUMBER, PhoneRegistrationActivity.class, Utils.createStringBundle( "phone", viewMapper.phone.getText( ).toString( ) ) );
         }
     }
 
     @Override
-    protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data ) {
+    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
 
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
-        if( Utils.equals( tag , C.tag.TOOLBAR_BACK ) ){
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             finish( );
         }
     }
@@ -85,7 +86,7 @@ public class AccountActivity extends PlanetWalletActivity implements ToolBar.OnT
         TextView email;
         TextView phone;
 
-        public ViewMapper ( ) {
+        public ViewMapper( ) {
 
             toolBar = findViewById( R.id.toolBar );
 

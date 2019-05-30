@@ -18,11 +18,11 @@
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"
         app:whiteThemeRightSrc="@drawable/image_toolbar_add_blue" />
 
-    <io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView
+    <io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolBar"
-        android:paddingTop="22dp"></io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView>
+        android:paddingTop="22dp"></io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView>
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

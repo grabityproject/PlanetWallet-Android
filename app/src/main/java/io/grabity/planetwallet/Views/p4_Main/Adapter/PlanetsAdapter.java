@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.PlanetView;
 
 public class PlanetsAdapter extends AdvanceArrayAdapter< Planet > {
@@ -26,7 +26,7 @@ public class PlanetsAdapter extends AdvanceArrayAdapter< Planet > {
     @Override
     public void bindData( ViewMapper viewMapper, Planet item, int position ) {
         ( ( PlanetsItem ) viewMapper ).planetView.setData( item.getAddress( ) == null ? "" : item.getAddress( ) );
-        ( ( PlanetsItem ) viewMapper ).currency.setText( item.getCurrency( ) == null ? "ETH" : item.getCurrency( )+" Universe" );
+        ( ( PlanetsItem ) viewMapper ).currency.setText( item.getCurrency( ) == null ? "ETH" : item.getCurrency( ) + " Universe" );
         ( ( PlanetsItem ) viewMapper ).walletName.setText( item.getWalletName( ) == null ? "WalletName" : item.getWalletName( ) );
     }
 

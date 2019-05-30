@@ -94,7 +94,7 @@ public class ShadowView extends View {
     }
 
 
-    public void setShadowColor( int startColor, int endColor ){
+    public void setShadowColor( int startColor, int endColor ) {
         this.startColor = startColor;
         this.endColor = endColor;
 

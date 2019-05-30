@@ -23,7 +23,7 @@ import io.grabity.planetwallet.Widgets.TabBar;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
-public class WalletImportActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener , ViewPager.OnPageChangeListener {
+public class WalletImportActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, ViewPager.OnPageChangeListener {
 
     private ViewMapper viewMapper;
     private ViewPagerAdapter< PlanetWalletFragment > adapter;
@@ -52,9 +52,9 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.tabBar.setItems(
-                new TabBar.ButtonItem(  ).setText( "Mnemonic" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) ),
-                new TabBar.ButtonItem(  ).setText( "Json" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) ),
-                new TabBar.ButtonItem(  ).setText( "Private Key" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) )
+                new TabBar.ButtonItem( ).setText( "Mnemonic" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) ),
+                new TabBar.ButtonItem( ).setText( "Json" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) ),
+                new TabBar.ButtonItem( ).setText( "Private Key" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) )
         );
 
         ( ( TextView ) viewMapper.tabBar.getItems( ).get( 0 ).getView( ) ).setTextColor( Color.parseColor( "#FFFFFF" ) );
@@ -67,39 +67,38 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     @Override
     protected void setData( ) {
         super.setData( );
-        fragments = new ArrayList<>(  );
-        fragments.add( mnemonicImportFragment = MnemonicImportFragment.newInstance() );
-        fragments.add( jsonImportFragment = JSONImportFragment.newInstance() );
-        fragments.add( privateKeyImportFragment = PrivateKeyImportFragment.newInstance() );
+        fragments = new ArrayList<>( );
+        fragments.add( mnemonicImportFragment = MnemonicImportFragment.newInstance( ) );
+        fragments.add( jsonImportFragment = JSONImportFragment.newInstance( ) );
+        fragments.add( privateKeyImportFragment = PrivateKeyImportFragment.newInstance( ) );
 
-        adapter = new ViewPagerAdapter<>( getSupportFragmentManager() , fragments );
+        adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
         viewMapper.viewPager.setAdapter( adapter );
     }
 
     @Override
-    public void onPageScrolled ( int i, float v, int i1 ) {
+    public void onPageScrolled( int i, float v, int i1 ) {
 
     }
 
     @Override
-    public void onPageSelected ( int position ) {
+    public void onPageSelected( int position ) {
         for ( int i = 0; i < viewMapper.tabBar.getItems( ).size( ); i++ ) {
             ( ( TextView ) viewMapper.tabBar.getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#FFFFFF" : "#5C5964" ) );
         }
     }
 
     @Override
-    public void onPageScrollStateChanged ( int i ) {
+    public void onPageScrollStateChanged( int i ) {
 
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
-        if( Utils.equals( tag , C.tag.TOOLBAR_BACK ) ){
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             super.onBackPressed( );
         }
     }
-
 
 
     public class ViewMapper {

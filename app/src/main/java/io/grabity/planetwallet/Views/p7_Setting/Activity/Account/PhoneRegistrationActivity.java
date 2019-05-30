@@ -1,32 +1,24 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Account;
+
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Chronometer;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.PhoneCode;
-import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.PopupPhoneCodeAdapter;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.TimerView;
@@ -42,7 +34,7 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     //Todo Server 응답후 타이머
 
     @Override
-    protected void onCreate ( @Nullable Bundle savedInstanceState ) {
+    protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_phone_registration );
         viewMapper = new ViewMapper( );
@@ -52,7 +44,7 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     }
 
     @Override
-    protected void viewInit ( ) {
+    protected void viewInit( ) {
         super.viewInit( );
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
@@ -67,25 +59,25 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     }
 
     @Override
-    protected void setData ( ) {
+    protected void setData( ) {
         super.setData( );
 
-        items = new ArrayList<>(  );
+        items = new ArrayList<>( );
         items.add( new PhoneCode( "Korea", "+ 82" ) );
         items.add( new PhoneCode( "China", "+ 86" ) );
         items.add( new PhoneCode( "Japan", "+ 81" ) );
         items.add( new PhoneCode( "New Zealand", "+ 64" ) );
         items.add( new PhoneCode( "Hongkong", "+ 852" ) );
-        items.add( new PhoneCode( "Hawaii" , "+ 1808" ) );
-        items.add( new PhoneCode( "Grenada" , "+ 1809" ) );
-        items.add( new PhoneCode( "Denmark" , "+ 45" ) );
+        items.add( new PhoneCode( "Hawaii", "+ 1808" ) );
+        items.add( new PhoneCode( "Grenada", "+ 1809" ) );
+        items.add( new PhoneCode( "Denmark", "+ 45" ) );
 
         adapter = new PopupPhoneCodeAdapter( this, items );
 
     }
 
     @Override
-    public void onClick ( View v ) {
+    public void onClick( View v ) {
         super.onClick( v );
 
         if ( v == viewMapper.btnDialCode ) {
@@ -93,17 +85,17 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
                     .setAdapter( adapter )
                     .setOnListPopupItemClickListener( this )
                     .show( );
-        } else if( v == viewMapper.btnSend ) {
+        } else if ( v == viewMapper.btnSend ) {
             viewMapper.groupPhoneCode.setVisibility( View.VISIBLE );
             viewMapper.textTime.Start( 180000 );
-        } else if( v == viewMapper.btnSubmit ) {
+        } else if ( v == viewMapper.btnSubmit ) {
 
-            if( viewMapper.textTime.isCertification( ) ){
+            if ( viewMapper.textTime.isCertification( ) ) {
                 viewMapper.textTime.Stop( );
                 Utils.hideKeyboard( this, getCurrentFocus( ) );
                 super.onBackPressed( );
-            }else{
-                Toast.makeText( this , "인증시간초과", Toast.LENGTH_SHORT).show( );
+            } else {
+                Toast.makeText( this, "인증시간초과", Toast.LENGTH_SHORT ).show( );
             }
         }
     }
@@ -115,24 +107,24 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     }
 
     @Override
-    public void beforeTextChanged ( CharSequence s, int start, int count, int after ) {
+    public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
 
     }
 
     @Override
-    public void onTextChanged ( CharSequence s, int start, int before, int count ) {
+    public void onTextChanged( CharSequence s, int start, int before, int count ) {
         viewMapper.btnSend.setEnabled( viewMapper.etPhone.getText( ).toString( ).trim( ).length( ) >= 10 ? true : false );
-        viewMapper.btnSubmit.setEnabled( viewMapper.etCode.getText( ).toString( ).trim( ).length() == 0 ? false : true );
+        viewMapper.btnSubmit.setEnabled( viewMapper.etCode.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
     }
 
     @Override
-    public void afterTextChanged ( Editable s ) {
+    public void afterTextChanged( Editable s ) {
 
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
-        if( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ){
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
             finish( );
         }
@@ -150,12 +142,12 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
 
         TextView btnDialCode;
 
-        public ViewMapper ( ) {
+        public ViewMapper( ) {
 
             groupPhoneCode = findViewById( R.id.group_phone_registration_code );
             toolBar = findViewById( R.id.toolBar );
 
-            etPhone = findViewById( R.id.et_phone_registration_phone  );
+            etPhone = findViewById( R.id.et_phone_registration_phone );
             btnSend = findViewById( R.id.btn_phone_registration_send );
             btnDialCode = findViewById( R.id.btn_phone_registration_dial_code );
 

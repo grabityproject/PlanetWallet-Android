@@ -1,4 +1,4 @@
-package io.grabity.planetwallet.Widgets.AdavanceRecyclerView;
+package io.grabity.planetwallet.Widgets.AdvanceRecyclerView;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

@@ -12,7 +12,7 @@ import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 
 
 /**

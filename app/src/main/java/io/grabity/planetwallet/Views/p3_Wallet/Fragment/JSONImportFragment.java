@@ -1,4 +1,5 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -15,7 +16,7 @@ public class JSONImportFragment extends PlanetWalletFragment implements View.OnC
 
     private ViewMapper viewMapper;
 
-    public JSONImportFragment ( ) {
+    public JSONImportFragment( ) {
     }
 
     public static JSONImportFragment newInstance( ) {
@@ -24,17 +25,17 @@ public class JSONImportFragment extends PlanetWalletFragment implements View.OnC
     }
 
     @Override
-    public void onCreate ( @Nullable Bundle savedInstanceState ) {
+    public void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.fragment_json_import );
 
         viewMapper = new ViewMapper( );
-        viewInit();
-        setData();
+        viewInit( );
+        setData( );
     }
 
     @Override
-    protected void viewInit ( ) {
+    protected void viewInit( ) {
         super.viewInit( );
         viewMapper.passwordVisible.setOnClickListener( this );
         viewMapper.passwordInvisible.setOnClickListener( this );
@@ -46,19 +47,19 @@ public class JSONImportFragment extends PlanetWalletFragment implements View.OnC
     }
 
     @Override
-    public void setData ( ) {
+    public void setData( ) {
         super.setData( );
     }
 
     @Override
-    public void onClick ( View v ) {
-        if( v == viewMapper.passwordInvisible || v == viewMapper.passwordVisible ){
-            viewMapper.passwordInvisible.setVisibility( viewMapper.passwordInvisible.getVisibility() == View.GONE ? View.VISIBLE : View.GONE );
-            viewMapper.passwordVisible.setVisibility( viewMapper.passwordVisible.getVisibility() == View.GONE ? View.VISIBLE : View.GONE );
-            viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility() == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
-            viewMapper.etPassword.setSelection( viewMapper.etPassword.length() );
-        } else if( v == viewMapper.btnSubmit ) {
-            Toast.makeText( getContext( ) , "JsonImport" , Toast.LENGTH_SHORT ).show();
+    public void onClick( View v ) {
+        if ( v == viewMapper.passwordInvisible || v == viewMapper.passwordVisible ) {
+            viewMapper.passwordInvisible.setVisibility( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
+            viewMapper.passwordVisible.setVisibility( viewMapper.passwordVisible.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
+            viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+            viewMapper.etPassword.setSelection( viewMapper.etPassword.length( ) );
+        } else if ( v == viewMapper.btnSubmit ) {
+            Toast.makeText( getContext( ), "JsonImport", Toast.LENGTH_SHORT ).show( );
         }
     }
 
@@ -86,7 +87,7 @@ public class JSONImportFragment extends PlanetWalletFragment implements View.OnC
         View passwordVisible;
         View btnSubmit;
 
-        public ViewMapper ( ) {
+        public ViewMapper( ) {
             etPassword = findViewById( R.id.et_json_import_password );
             etJson = findViewById( R.id.et_json_import_json );
             passwordInvisible = findViewById( R.id.btn_json_import_password_invisible );

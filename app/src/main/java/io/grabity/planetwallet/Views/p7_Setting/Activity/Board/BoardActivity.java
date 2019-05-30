@@ -1,4 +1,5 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Board;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,10 +12,10 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Board;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.BoardAdapter;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, AdvanceRecyclerView.OnItemClickListener{
+public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, AdvanceRecyclerView.OnItemClickListener {
 
     private ViewMapper viewMapper;
     private ArrayList< Board > items;
@@ -22,7 +23,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
 
 
     @Override
-    protected void onCreate ( @Nullable Bundle savedInstanceState ) {
+    protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_board );
         viewMapper = new ViewMapper( );
@@ -31,7 +32,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
     }
 
     @Override
-    protected void viewInit ( ) {
+    protected void viewInit( ) {
         super.viewInit( );
 
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
@@ -41,32 +42,32 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
     }
 
     @Override
-    protected void setData ( ) {
+    protected void setData( ) {
         super.setData( );
         /**
          * 임시세팅
          */
-        items = new ArrayList<>(  );
-        if( viewMapper.toolBar.getTitle( ).equals( "announcements" ) ){
-            items.add( new Board( "title1" , "2018-05-02" ) );
-            items.add( new Board( "title2" , "2018-05-01" ) );
-            items.add( new Board( "title3" , "2018-05-06" ) );
-            items.add( new Board( "title1" , "2018-05-02" ) );
-            items.add( new Board( "title2" , "2018-05-01" ) );
-            items.add( new Board( "title3" , "2018-05-06" ) );
-            items.add( new Board( "title1" , "2018-05-02" ) );
-            items.add( new Board( "title2" , "2018-05-01" ) );
-            items.add( new Board( "title3" , "2018-05-06" ) );
-        }else{
-            items.add( new Board( "title1" , null ) );
-            items.add( new Board( "title2" , null ) );
-            items.add( new Board( "title3" , null ) );
-            items.add( new Board( "title1" , null ) );
-            items.add( new Board( "title2" , null ) );
-            items.add( new Board( "title3" , null ) );
-            items.add( new Board( "title1" , null ) );
-            items.add( new Board( "title2" , null ) );
-            items.add( new Board( "title3" , null ) );
+        items = new ArrayList<>( );
+        if ( viewMapper.toolBar.getTitle( ).equals( "announcements" ) ) {
+            items.add( new Board( "title1", "2018-05-02" ) );
+            items.add( new Board( "title2", "2018-05-01" ) );
+            items.add( new Board( "title3", "2018-05-06" ) );
+            items.add( new Board( "title1", "2018-05-02" ) );
+            items.add( new Board( "title2", "2018-05-01" ) );
+            items.add( new Board( "title3", "2018-05-06" ) );
+            items.add( new Board( "title1", "2018-05-02" ) );
+            items.add( new Board( "title2", "2018-05-01" ) );
+            items.add( new Board( "title3", "2018-05-06" ) );
+        } else {
+            items.add( new Board( "title1", null ) );
+            items.add( new Board( "title2", null ) );
+            items.add( new Board( "title3", null ) );
+            items.add( new Board( "title1", null ) );
+            items.add( new Board( "title2", null ) );
+            items.add( new Board( "title3", null ) );
+            items.add( new Board( "title1", null ) );
+            items.add( new Board( "title2", null ) );
+            items.add( new Board( "title3", null ) );
         }
 
         adapter = new BoardAdapter( getApplicationContext( ), items );
@@ -75,14 +76,14 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
-        if( Utils.equals( tag , C.tag.TOOLBAR_BACK ) ){
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             finish( );
         }
     }
 
     @Override
-    public void onItemClick ( AdvanceRecyclerView recyclerView, View view, int position ) {
+    public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
         sendAction( DetailBoardActivity.class );
     }
 
@@ -91,7 +92,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
         ToolBar toolBar;
         AdvanceRecyclerView listView;
 
-        public ViewMapper ( ) {
+        public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
             listView = findViewById( R.id.listView );
         }

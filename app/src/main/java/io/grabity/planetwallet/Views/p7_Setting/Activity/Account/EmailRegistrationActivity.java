@@ -1,6 +1,6 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Account;
+
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -13,8 +13,6 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Widgets.CircleImageView;
-import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class EmailRegistrationActivity extends PlanetWalletActivity implements TextWatcher, ToolBar.OnToolBarClickListener {
@@ -22,18 +20,18 @@ public class EmailRegistrationActivity extends PlanetWalletActivity implements T
     ViewMapper viewMapper;
 
     @Override
-    protected void onCreate ( @Nullable Bundle savedInstanceState ) {
+    protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_email_registration );
 
         viewMapper = new ViewMapper( );
-        viewInit();
-        setData();
+        viewInit( );
+        setData( );
 
     }
 
     @Override
-    protected void viewInit ( ) {
+    protected void viewInit( ) {
         super.viewInit( );
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
@@ -43,46 +41,46 @@ public class EmailRegistrationActivity extends PlanetWalletActivity implements T
     }
 
     @Override
-    protected void setData ( ) {
+    protected void setData( ) {
         super.setData( );
         viewMapper.etEmail.setText( getString( "mail" ) );
         viewMapper.etEmail.setSelection( viewMapper.etEmail.length( ) );
     }
 
     @Override
-    public void onClick ( View v ) {
+    public void onClick( View v ) {
         super.onClick( v );
-        if( v == viewMapper.btnClear ){
+        if ( v == viewMapper.btnClear ) {
             viewMapper.etEmail.setText( "" );
-        }else if( v == viewMapper.btnSubmit ){
-            if( viewMapper.etEmail.getText( ) == null ) return;
+        } else if ( v == viewMapper.btnSubmit ) {
+            if ( viewMapper.etEmail.getText( ) == null ) return;
             Utils.hideKeyboard( this, getCurrentFocus( ) );
-            setResult( RESULT_OK , new Intent(  ).putExtra( "mail" , viewMapper.etEmail.getText( ).toString( ) ) );
+            setResult( RESULT_OK, new Intent( ).putExtra( "mail", viewMapper.etEmail.getText( ).toString( ) ) );
             super.onBackPressed( );
         }
     }
 
     @Override
-    public void beforeTextChanged ( CharSequence s, int start, int count, int after ) {
+    public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
 
     }
 
     @Override
-    public void onTextChanged ( CharSequence s, int start, int before, int count ) {
-        if( viewMapper.etEmail.getText( ).toString( ).trim( ).length() != 0 ){
+    public void onTextChanged( CharSequence s, int start, int before, int count ) {
+        if ( viewMapper.etEmail.getText( ).toString( ).trim( ).length( ) != 0 ) {
             viewMapper.btnSubmit.setEnabled( Utils.isValidEmail( viewMapper.etEmail.getText( ).toString( ) ) ? true : false );
         }
-        viewMapper.btnClear.setVisibility( viewMapper.etEmail.getText().length() == 0 ? View.GONE : View.VISIBLE );
+        viewMapper.btnClear.setVisibility( viewMapper.etEmail.getText( ).length( ) == 0 ? View.GONE : View.VISIBLE );
     }
 
     @Override
-    public void afterTextChanged ( Editable s ) {
+    public void afterTextChanged( Editable s ) {
 
     }
 
     @Override
-    public void onToolBarClick ( Object tag, View view ) {
-        if( Utils.equals( tag , C.tag.TOOLBAR_CLOSE ) ){
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
             finish( );
         }
@@ -99,7 +97,7 @@ public class EmailRegistrationActivity extends PlanetWalletActivity implements T
 
         View btnSubmit;
 
-        public ViewMapper ( ) {
+        public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
 
             etEmail = findViewById( R.id.et_email_registration_email );

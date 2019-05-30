@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.OnInsideItemClickListener;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.PlanetView;
 
 public class PlanetManagementAdapter extends AdvanceArrayAdapter< Planet > {

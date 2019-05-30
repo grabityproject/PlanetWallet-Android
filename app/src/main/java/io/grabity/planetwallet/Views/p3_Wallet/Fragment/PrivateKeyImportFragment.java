@@ -1,5 +1,5 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -16,25 +16,25 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
 
     private ViewMapper viewMapper;
 
-    public PrivateKeyImportFragment ( ) {
+    public PrivateKeyImportFragment( ) {
     }
 
-    public static PrivateKeyImportFragment newInstance( ){
+    public static PrivateKeyImportFragment newInstance( ) {
         PrivateKeyImportFragment fragment = new PrivateKeyImportFragment( );
         return fragment;
     }
 
     @Override
-    public void onCreate ( @Nullable Bundle savedInstanceState ) {
+    public void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.fragment_privatekey_import );
         viewMapper = new ViewMapper( );
-        viewInit();
-        setData();
+        viewInit( );
+        setData( );
     }
 
     @Override
-    protected void viewInit ( ) {
+    protected void viewInit( ) {
         super.viewInit( );
 
         viewMapper.passwordVisible.setOnClickListener( this );
@@ -47,19 +47,19 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
     }
 
     @Override
-    public void setData ( ) {
+    public void setData( ) {
         super.setData( );
     }
 
     @Override
-    public void onClick ( View v ) {
-        if( v == viewMapper.passwordInvisible || v == viewMapper.passwordVisible ){
-            viewMapper.passwordInvisible.setVisibility( viewMapper.passwordInvisible.getVisibility() == View.GONE ? View.VISIBLE : View.GONE );
-            viewMapper.passwordVisible.setVisibility( viewMapper.passwordVisible.getVisibility() == View.GONE ? View.VISIBLE : View.GONE );
-            viewMapper.etPrivateKey.setInputType( viewMapper.passwordInvisible.getVisibility() == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
-            viewMapper.etPrivateKey.setSelection( viewMapper.etPrivateKey.length() );
-        } else if( v == viewMapper.btnSubmit ) {
-            Toast.makeText( getContext( ) , "PrivateKeyImport" , Toast.LENGTH_SHORT ).show();
+    public void onClick( View v ) {
+        if ( v == viewMapper.passwordInvisible || v == viewMapper.passwordVisible ) {
+            viewMapper.passwordInvisible.setVisibility( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
+            viewMapper.passwordVisible.setVisibility( viewMapper.passwordVisible.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
+            viewMapper.etPrivateKey.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+            viewMapper.etPrivateKey.setSelection( viewMapper.etPrivateKey.length( ) );
+        } else if ( v == viewMapper.btnSubmit ) {
+            Toast.makeText( getContext( ), "PrivateKeyImport", Toast.LENGTH_SHORT ).show( );
         }
     }
 
@@ -87,7 +87,7 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
         View passwordVisible;
         View btnSubmit;
 
-        public ViewMapper ( ) {
+        public ViewMapper( ) {
             etPrivateKey = findViewById( R.id.et_privatekey_import_privatekey );
             passwordInvisible = findViewById( R.id.btn_privatekey_import_password_invisible );
             passwordVisible = findViewById( R.id.btn_privatekey_import_password_visible );

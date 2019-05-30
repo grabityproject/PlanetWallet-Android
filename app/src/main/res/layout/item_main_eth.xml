@@ -26,7 +26,7 @@
             android:textColor="#FFF"
             android:textSize="16dp"
             app:themeTextColor="#000"
-            app:typefaceStyle="medium"/>
+            app:typefaceStyle="medium" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_main_eth_arrow"
@@ -50,7 +50,7 @@
             android:textColor="#FFF"
             android:textSize="16dp"
             app:themeTextColor="#000"
-            app:typefaceStyle="medium"/>
+            app:typefaceStyle="medium" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_eth_currency"

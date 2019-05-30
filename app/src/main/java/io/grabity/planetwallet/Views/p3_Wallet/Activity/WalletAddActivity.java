@@ -1,7 +1,6 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;

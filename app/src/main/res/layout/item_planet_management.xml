@@ -42,7 +42,7 @@
             android:textColor="#000"
             android:textSize="16dp"
             app:themeTextColor="#FFF"
-            app:typefaceStyle="medium"/>
+            app:typefaceStyle="medium" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_detailplanet_address"

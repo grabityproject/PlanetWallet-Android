@@ -27,8 +27,8 @@ import io.grabity.planetwallet.Views.p4_Main.Adapter.PlanetsAdapter;
 import io.grabity.planetwallet.Views.p4_Main.Etc.ViewController;
 import io.grabity.planetwallet.Views.p5_Token.Activity.TokenAddActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.SettingActivity;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceArrayAdapter;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.BarcodeView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.RippleEffectView;
@@ -168,7 +168,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             footerViewMapper.btnAddToken.setOnClickListener( this );
 
             footerViewMapper.groupAddToken.setVisibility( !coin ? View.VISIBLE : View.GONE );
-            footerViewMapper.groupMessage.setVisibility( items.size() == 0 ? View.VISIBLE : View.GONE );
+            footerViewMapper.groupMessage.setVisibility( items.size( ) == 0 ? View.VISIBLE : View.GONE );
 
 
         }
@@ -265,7 +265,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 items = new ArrayList<>( );
 
 
-                if ( itemss.size( ) -1 != position ){
+                if ( itemss.size( ) - 1 != position ) {
                     items.add( new Coin( "BTC", "0.21352", "choi3950", "April 04, 11:23", R.drawable.image_btc_increase ) );
                     items.add( new Coin( "BTC", "1.65", "choi3950", "April 04, 20:23", R.drawable.image_btc_increase ) );
                     items.add( new Coin( "BTC", "0.422", "choi3950", "April 04, 09:18", R.drawable.image_btc_discrease ) );
@@ -280,7 +280,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             setData( );
             PLog.e( "item click getScrollY : " + viewMapper.listView.getScrollY( ) );
-            PLog.e( "item click shadow get Y : " + viewMapper.groupShadow.getY() );
+            PLog.e( "item click shadow get Y : " + viewMapper.groupShadow.getY( ) );
 
 
         }

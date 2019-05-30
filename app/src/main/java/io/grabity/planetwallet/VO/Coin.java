@@ -41,7 +41,7 @@ public class Coin implements Serializable {
         this.transferTime = transferTime;
     }
 
-    public Coin ( String coin , int icon) {
+    public Coin( String coin, int icon ) {
         this.coin = coin;
         this.icon = icon;
     }

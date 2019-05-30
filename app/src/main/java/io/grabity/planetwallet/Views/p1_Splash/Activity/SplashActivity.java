@@ -1,25 +1,18 @@
 package io.grabity.planetwallet.Views.p1_Splash.Activity;
 
 import android.animation.Animator;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
 import io.grabity.planetwallet.Common.commonset.C;
-import io.grabity.planetwallet.Common.components.AbsPopupView.AbsFadeInView;
-import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
-import io.grabity.planetwallet.Widgets.StretchImageView;
 
 
 public class SplashActivity extends PlanetWalletActivity implements Animator.AnimatorListener {
@@ -57,37 +50,37 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         super.onResume( );
     }
 
-    public void sendActionSwitch( ){
+    public void sendActionSwitch( ) {
         //Todo 쉐어드로 패스워드등록여부 체크 후 PinActivity 분기
-        if( Utils.getPreferenceData( this , C.pref.PASSWORD ).length() > 1 ){
-            new Handler(  ).postDelayed( ( ) -> {
-                    sendAction( PinCodeCertificationActivity.class );
-                    finish( );
-            } , 500);
-        } else{
-            new Handler(  ).postDelayed( ( ) -> {
+        if ( Utils.getPreferenceData( this, C.pref.PASSWORD ).length( ) > 1 ) {
+            new Handler( ).postDelayed( ( ) -> {
+                sendAction( PinCodeCertificationActivity.class );
+                finish( );
+            }, 500 );
+        } else {
+            new Handler( ).postDelayed( ( ) -> {
                 sendAction( PinCodeRegistrationActivity.class );
                 finish( );
-            }, 500);
+            }, 500 );
         }
 
     }
 
     @Override
-    public void onAnimationStart ( Animator animation ) {
+    public void onAnimationStart( Animator animation ) {
     }
 
     @Override
-    public void onAnimationEnd ( Animator animation ) {
+    public void onAnimationEnd( Animator animation ) {
         sendActionSwitch( );
     }
 
     @Override
-    public void onAnimationCancel ( Animator animation ) {
+    public void onAnimationCancel( Animator animation ) {
     }
 
     @Override
-    public void onAnimationRepeat ( Animator animation ) {
+    public void onAnimationRepeat( Animator animation ) {
     }
 
     public class ViewMapper {

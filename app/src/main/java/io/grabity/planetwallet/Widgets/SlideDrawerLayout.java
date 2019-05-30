@@ -412,7 +412,7 @@ public class SlideDrawerLayout extends ViewGroup {
 
 
     public void close( ) {
-        if( currentMovingPosition >= 0 )
+        if ( currentMovingPosition >= 0 )
             this.close( currentMovingPosition );
     }
 

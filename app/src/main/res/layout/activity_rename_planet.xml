@@ -42,6 +42,7 @@
             android:layout_height="56dp">
 
             <io.grabity.planetwallet.Widgets.RoundEditText
+                android:textCursorDrawable="@null"
                 android:id="@+id/et_rename_planet_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -71,8 +72,7 @@
             android:paddingTop="10dp"
             android:text="Your Planet name will be shown to others."
             android:textColor="#FF0050"
-            android:textSize="14dp"
-            />
+            android:textSize="14dp" />
 
     </LinearLayout>
 

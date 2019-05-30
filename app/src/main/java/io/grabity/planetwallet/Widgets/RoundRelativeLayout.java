@@ -32,7 +32,7 @@ public class RoundRelativeLayout extends RelativeLayout {
     float radius;
 
 
-    public RoundRelativeLayout ( Context context ) {
+    public RoundRelativeLayout( Context context ) {
         super( context );
         this.context = context;
 
@@ -45,16 +45,16 @@ public class RoundRelativeLayout extends RelativeLayout {
         this.viewInit( );
     }
 
-    public RoundRelativeLayout ( Context context, AttributeSet attrs ) {
+    public RoundRelativeLayout( Context context, AttributeSet attrs ) {
         this( context, attrs, 0 );
     }
 
-    public RoundRelativeLayout ( Context context, AttributeSet attrs, int defStyleAttr ) {
+    public RoundRelativeLayout( Context context, AttributeSet attrs, int defStyleAttr ) {
         super( context, attrs, defStyleAttr );
         this.context = context;
         TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.RoundRelativeLayout, defStyleAttr, 0 );
 
-        corner_radius = a.getDimensionPixelSize( R.styleable.RoundRelativeLayout_cornerRadius , -1 );
+        corner_radius = a.getDimensionPixelSize( R.styleable.RoundRelativeLayout_cornerRadius, -1 );
 
         border_width = a.getDimensionPixelSize( R.styleable.RoundRelativeLayout_borderWidth, 0 );
 
@@ -135,7 +135,7 @@ public class RoundRelativeLayout extends RelativeLayout {
 
     public void setBorder_color_normal( int border_color_normal ) {
         this.border_color_normal = border_color_normal;
-        invalidate();
+        invalidate( );
     }
 
     public int getBackground_color_normal( ) {

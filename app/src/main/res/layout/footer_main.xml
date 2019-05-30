@@ -50,8 +50,7 @@
                 android:paddingRight="16dp"
                 app:borderColorNormal="#1E1E28"
                 app:borderWidth="1dp"
-                app:cornerRadius="6dp"
-                />
+                app:cornerRadius="6dp" />
 
 
             <io.grabity.planetwallet.Widgets.StretchImageView

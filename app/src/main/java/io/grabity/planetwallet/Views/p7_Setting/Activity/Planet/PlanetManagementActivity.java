@@ -3,7 +3,6 @@ package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -14,7 +13,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.PlanetManagementAdapter;
-import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class PlanetManagementActivity extends PlanetWalletActivity implements AdvanceRecyclerView.OnItemClickListener, ToolBar.OnToolBarClickListener {
@@ -68,7 +67,7 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_ADD ) ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.PLANET_ADD , WalletAddActivity.class );
+            sendAction( C.requestCode.PLANET_ADD, WalletAddActivity.class );
         }
     }
 

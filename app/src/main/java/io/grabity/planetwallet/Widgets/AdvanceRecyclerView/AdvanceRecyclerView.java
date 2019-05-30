@@ -1,4 +1,4 @@
-package io.grabity.planetwallet.Widgets.AdavanceRecyclerView;
+package io.grabity.planetwallet.Widgets.AdvanceRecyclerView;
 
 import android.content.Context;
 import android.graphics.Bitmap;

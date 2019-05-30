@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000"
+    app:themeBackground="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,6 +25,7 @@
             app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.RoundEditText
+            android:textCursorDrawable="@null"
             android:id="@+id/et_custom_token_address"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -39,8 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="This is not a valid Contract address."
                 android:textColor="#FF0050"
-                android:textSize="14dp"
-                />
+                android:textSize="14dp" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"
@@ -62,6 +64,7 @@
             app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.RoundEditText
+            android:textCursorDrawable="@null"
             android:id="@+id/et_customToken_symbol"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -78,6 +81,7 @@
             app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.RoundEditText
+            android:textCursorDrawable="@null"
             android:id="@+id/edit_custom_token_decimals"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -100,4 +104,4 @@
         app:buttonType="A"
         app:defaultTheme="Dark" />
 
-</RelativeLayout>
+</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

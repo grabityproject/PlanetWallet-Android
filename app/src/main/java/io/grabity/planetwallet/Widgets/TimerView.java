@@ -3,14 +3,10 @@ package io.grabity.planetwallet.Widgets;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.animation.LinearInterpolator;
-import android.widget.TextView;
-
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 
 /**
- *  Created by. JeongHyun 2019. 05. 21
+ * Created by. JeongHyun 2019. 05. 21
  **/
 
 public class TimerView extends android.support.v7.widget.AppCompatTextView {

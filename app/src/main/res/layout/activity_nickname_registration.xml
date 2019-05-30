@@ -48,6 +48,7 @@
                 android:paddingLeft="16dp"
                 android:textColor="#000"
                 android:textColorHint="#AAAAAA"
+                android:textCursorDrawable="@null"
                 android:textSize="14dp"
                 app:defaultTheme="Light" />
 

@@ -39,6 +39,7 @@
 
 
         <io.grabity.planetwallet.Widgets.RoundEditText
+            android:textCursorDrawable="@null"
             android:id="@+id/et_mnemonic_export_mnemonic"
             android:layout_width="match_parent"
             android:layout_height="100dp"
