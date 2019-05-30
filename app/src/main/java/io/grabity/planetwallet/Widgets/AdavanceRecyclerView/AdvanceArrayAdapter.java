@@ -5,10 +5,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.Themeable;
 
 /**
@@ -76,6 +79,7 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
     public void onBindViewHolder( final ViewMapper viewMapper, int position ) {
         try {
             findViewAndSetTheme( viewMapper.getView( ), getTheme( ) );
+            overrideFonts( viewMapper.getView( ) );
         } catch ( NullPointerException e ) {
             e.printStackTrace( );
         }
@@ -249,6 +253,24 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
 
         } catch ( Exception e ) {
             e.printStackTrace( );
+        }
+    }
+
+    protected void overrideFonts( final View v ) {
+        try {
+            if ( v instanceof ViewGroup ) {
+                ViewGroup vg = ( ViewGroup ) v;
+                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                    View child = vg.getChildAt( i );
+                    overrideFonts( child );
+                }
+            } else if ( v instanceof FontTextView ) {
+                ( ( TextView ) v ).setTypeface( FontManager.getInstance( ).getFont( ( ( FontTextView ) v ).getFontStyle( ) ) );
+            } else if ( v instanceof TextView ) {
+                ( ( TextView ) v ).setTypeface( FontManager.getInstance( ).getFont( ( ( TextView ) v ).getTypeface( ).getStyle( ) ) );
+            }
+        } catch ( Exception e ) {
+
         }
     }
 }
