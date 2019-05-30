@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,9 @@ import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Widgets.AdavanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout;
@@ -150,7 +153,11 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
     protected void findViewAndSetTheme( final View v, boolean theme ) {
         try {
-            if ( v instanceof ViewGroup ) {
+            if ( Utils.equals( v.getClass( ), AdvanceRecyclerView.class ) ) {
+                PLog.e( "Advance : " + ( v instanceof ViewGroup ? "Viewgroup" : "No Viewgroup" ) );
+
+            }
+            if ( v instanceof ViewGroup && !( v instanceof RecyclerView ) ) {
                 ViewGroup vg = ( ViewGroup ) v;
                 if ( v instanceof Themeable ) {
                     ( ( Themeable ) v ).setTheme( theme );

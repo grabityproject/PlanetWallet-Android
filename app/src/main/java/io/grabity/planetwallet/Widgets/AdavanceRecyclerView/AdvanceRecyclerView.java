@@ -16,12 +16,15 @@ import android.view.View;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.Widgets.Themeable;
 
 /**
  * Created by. JcobPark on 2018. 08. 29
  */
 
-public class AdvanceRecyclerView extends RecyclerView {
+public class AdvanceRecyclerView extends RecyclerView implements Themeable {
+
+    private boolean theme = false;
 
     public static final int VERTICAL = 0x0000;
     public static final int HORIZONTAL = 0x0001;
@@ -115,6 +118,8 @@ public class AdvanceRecyclerView extends RecyclerView {
 
             ( ( AdvanceArrayAdapter ) adapter ).setOnItemLongClickListener( onItemLongClickListener );
 
+            ( ( AdvanceArrayAdapter ) adapter ).setTheme( theme );
+
         }
 
         super.setAdapter( adapter );
@@ -150,7 +155,6 @@ public class AdvanceRecyclerView extends RecyclerView {
     }
 
 
-
     public OnItemClickListener getOnItemClickListener( ) {
         return onItemClickListener;
     }
@@ -170,6 +174,15 @@ public class AdvanceRecyclerView extends RecyclerView {
         this.onItemLongClickListener = onItemLongClickListener;
         if ( getAdapter( ) != null && getAdapter( ) instanceof AdvanceArrayAdapter ) {
             ( ( AdvanceArrayAdapter ) getAdapter( ) ).setOnItemLongClickListener( onItemLongClickListener );
+        }
+    }
+
+    @Override
+    public void setTheme( boolean theme ) {
+        this.theme = theme;
+        if ( getAdapter( ) != null && getAdapter( ) instanceof AdvanceArrayAdapter ) {
+            ( ( AdvanceArrayAdapter ) getAdapter( ) ).setTheme( theme );
+            getAdapter( ).notifyDataSetChanged( );
         }
     }
 

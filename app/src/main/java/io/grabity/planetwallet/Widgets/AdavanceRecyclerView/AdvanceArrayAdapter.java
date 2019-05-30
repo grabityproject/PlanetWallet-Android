@@ -8,11 +8,16 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.Widgets.Themeable;
+
 /**
  * Created by. JcobPark on 2018. 08. 29
  */
 
 public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< AdvanceArrayAdapter< T >.ViewMapper > {
+
+    private boolean theme = false;
 
     private Context context;
     private ArrayList< T > objects;
@@ -69,6 +74,11 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
 
     @Override
     public void onBindViewHolder( final ViewMapper viewMapper, int position ) {
+        try {
+            findViewAndSetTheme( viewMapper.getView( ), getTheme( ) );
+        } catch ( NullPointerException e ) {
+            e.printStackTrace( );
+        }
         if ( position - headerViews.size( ) >= 0 && position - headerViews.size( ) < objects.size( ) ) {
             bindData( viewMapper, objects.get( position - headerViews.size( ) ), position );
         } else if ( 0 <= position && position < headerViews.size( ) ) {
@@ -211,5 +221,34 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
 
     public interface OnAttachViewListener {
         void onAttachView( int resId, int position, View view );
+    }
+
+    public void setTheme( boolean theme ) {
+        this.theme = theme;
+        PLog.e( "adapter theme : " + theme );
+    }
+
+    public boolean getTheme( ) {
+        return theme;
+    }
+
+    protected void findViewAndSetTheme( final View v, boolean theme ) {
+        try {
+            if ( v instanceof ViewGroup ) {
+                ViewGroup vg = ( ViewGroup ) v;
+                if ( v instanceof Themeable ) {
+                    ( ( Themeable ) v ).setTheme( theme );
+                }
+                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                    View child = vg.getChildAt( i );
+                    findViewAndSetTheme( child, theme );
+                }
+            } else if ( v instanceof Themeable ) {
+                ( ( Themeable ) v ).setTheme( theme );
+            }
+
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
     }
 }
