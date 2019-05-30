@@ -19,7 +19,7 @@ import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
-public class WalletAddActivity extends PlanetWalletActivity implements ListPopup.OnListPopupItemClickListener {
+public class WalletAddActivity extends PlanetWalletActivity implements ListPopup.OnListPopupItemClickListener, ToolBar.OnToolBarClickListener {
 
     private ViewMapper viewMapper;
     private PopupWalletAddAdapter adapter;
@@ -40,6 +40,12 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
         super.viewInit( );
         viewMapper.btnCreate.setOnClickListener( this );
         viewMapper.btnImport.setOnClickListener( this );
+
+        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setOnToolBarClickListener( this );
+
+        if ( !Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) )
+            viewMapper.toolBar.getButtonItems( ).get( 0 ).getView( ).setVisibility( View.GONE );
     }
 
     @Override
@@ -60,7 +66,7 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
                 items.add( new Coin( "ETH Universe", R.drawable.icon_eth ) );
 
                 adapter = new PopupWalletAddAdapter( this, items );
-                ListPopup.newInstance( this, true ).
+                ListPopup.newInstance( this, !getPlanetWalletApplication( ).getCurrentTheme( ) ).
                         setAdapter( adapter ).
                         setOnListPopupItemClickListener( this ).
                         show( );
@@ -87,7 +93,17 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
 
     @Override
     public void onListPopupItemClick( PopupView popup, View view, int position ) {
+        //Todo BTC,ETH 분기로 지갑생성처리
+        setTransition( Transition.SLIDE_UP );
+        sendAction( C.requestCode.WALLET_CREATE, PlanetGenerateActivity.class );
         super.onBackPressed( );
+    }
+
+    @Override
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
+            super.onBackPressed( );
+        }
     }
 
     public class ViewMapper {

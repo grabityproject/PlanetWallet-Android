@@ -67,6 +67,7 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_ADD ) ) {
+            setTransition( Transition.SLIDE_UP );
             sendAction( C.requestCode.PLANET_ADD , WalletAddActivity.class );
         }
     }

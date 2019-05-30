@@ -277,7 +277,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 coin = true;
 
             }
+
             setData( );
+            PLog.e( "item click getScrollY : " + viewMapper.listView.getScrollY( ) );
+            PLog.e( "item click shadow get Y : " + viewMapper.groupShadow.getY() );
 
 
         }
@@ -296,6 +299,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onScrolled( RecyclerView recyclerView, int dx, int dy, float scrollX, float scrollY ) {
+
+        PLog.e( "onscrolled : " + scrollY );
+        PLog.e( "onscrolled getY : " + viewMapper.groupShadow.getY( ) );
 
         if ( scrollY > 0 ) {
             viewMapper.groupShadow.setY( -scrollY );

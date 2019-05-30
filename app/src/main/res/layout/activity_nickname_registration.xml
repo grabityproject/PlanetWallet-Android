@@ -10,11 +10,11 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
-        app:blackThemeLeftSrc="@drawable/image_toolbar_close_blue"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
         app:defaultTheme="Light"
         app:toolbarBottomWidth="1dp"
         app:toolbarTitle="Nickname"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_gray" />
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
     <LinearLayout

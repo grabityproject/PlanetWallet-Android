@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +18,6 @@ import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.DotView;
 import io.grabity.planetwallet.Widgets.FontTextView;
-import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
 
 
 public class PinCodeCertificationActivity extends PlanetWalletActivity {
@@ -139,7 +137,8 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                 params = new LinearLayout.LayoutParams( ( int ) Utils.dpToPx( this, 14 ), ( int ) Utils.dpToPx( this, 2 ) );
 
                 passwordViews.get( i ).setDotColor( !getPlanetWalletApplication( ).getCurrentTheme( ) ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#BCBDD5" ) );
-
+                viewMapper.decorationViewHeight.setBackgroundColor( !getPlanetWalletApplication( ).getCurrentTheme( ) ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#BCBDD5" ) );
+                viewMapper.decorationViewWidth.setBackgroundColor( !getPlanetWalletApplication( ).getCurrentTheme( ) ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#BCBDD5" ) );
             }
             params.rightMargin = ( int ) Utils.dpToPx( this, 12 );
             passwordViews.get( i ).setLayoutParams( params );
@@ -178,6 +177,9 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         FontTextView passwordTitle;
         FontTextView passwordSubtitle;
 
+        View decorationViewWidth;
+        View decorationViewHeight;
+
         public ViewMapper( ) {
 
             inputPassword = findViewById( R.id.group_pincode_certification_inputpassword );
@@ -189,6 +191,9 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
 
             passwordTitle = findViewById( R.id.text_pincode_certification_verificationcode );
             passwordSubtitle = findViewById( R.id.text_pincode_certification_specification );
+
+            decorationViewHeight = findViewById( R.id.view_pincode_certification_plus_height );
+            decorationViewWidth = findViewById( R.id.view_pincode_certification_plus_width );
 
         }
 

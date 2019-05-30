@@ -9,14 +9,19 @@
     <io.grabity.planetwallet.Widgets.ToolBar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbarHeight" />
+        android:layout_height="@dimen/toolbarHeight"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:defaultTheme="Dark"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue"
+        />
 
 
     <io.grabity.planetwallet.Widgets.StretchImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolBar"
-        android:src="@drawable/image_walletadd" />
+        android:src="@drawable/image_walletadd_black"
+        app:themeSrc="@drawable/image_walletadd_white"/>
 
 
     <LinearLayout

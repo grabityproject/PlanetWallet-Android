@@ -25,9 +25,9 @@
             android:layout_toRightOf="@id/image_item_popup_wallet_add_icon"
             android:paddingStart="8dp"
             android:text="BTC Universe"
-            android:textColor="#FFF"
+            android:textColor="#000"
             android:textSize="14dp"
-            app:themeTextColor="#000" />
+            app:themeTextColor="#FFF" />
 
 
     </RelativeLayout>

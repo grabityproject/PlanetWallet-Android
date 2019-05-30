@@ -34,8 +34,12 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         super.viewInit( );
         viewMapper.btnSelect.setOnClickListener( this );
         viewMapper.btnRefresh.setOnClickListener( this );
+
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
+
+        if ( !Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) )
+            viewMapper.toolBar.getButtonItems( ).get( 0 ).getView( ).setVisibility( View.GONE );
     }
 
     @Override
