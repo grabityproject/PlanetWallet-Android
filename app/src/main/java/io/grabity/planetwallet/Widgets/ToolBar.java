@@ -89,10 +89,11 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
     public void viewInit( ) {
 
         {
-            if ( !isInEditMode( ) )
-                setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) ) );
+//            if ( !isInEditMode( ) )
+//                setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) ) );
         }
 
+        int height = ( int ) Utils.dpToPx( getContext( ), 68 );
         {
             backgroundView = new View( getContext( ) );
             RelativeLayout.LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
@@ -102,8 +103,9 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
         {
             RelativeLayout relativeLayout = new RelativeLayout( getContext( ) );
-            RelativeLayout.LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
-            params.addRule( CENTER_IN_PARENT );
+            RelativeLayout.LayoutParams params = new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, height );
+            params.addRule( CENTER_HORIZONTAL );
+            params.addRule( ALIGN_PARENT_BOTTOM );
             addView( relativeLayout, params );
 
             textTitle = new TextView( getContext( ) );
@@ -129,6 +131,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         {  //Left
             LayoutParams params = new LayoutParams( getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ), getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) );
             params.addRule( ALIGN_PARENT_LEFT );
+            params.addRule( ALIGN_PARENT_BOTTOM );
             imageViewLeft = new StretchImageView( getContext( ) );
             imageViewLeft.setImageDrawable( getImageLeftDrawable( ) );
             imageViewLeft.setPadding( ( int ) DPToPX( 18 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ) );
@@ -140,6 +143,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         { //Right
             LayoutParams params = new LayoutParams( getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ), getResources( ).getDimensionPixelSize( R.dimen.toolbarHeight ) );
             params.addRule( ALIGN_PARENT_RIGHT );
+            params.addRule( ALIGN_PARENT_BOTTOM );
             imageViewRight = new StretchImageView( getContext( ) );
             imageViewRight.setImageDrawable( getImageRightDrawable( ) );
             imageViewRight.setPadding( ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 18 ), ( int ) DPToPX( 14 ) );

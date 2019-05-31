@@ -3,6 +3,7 @@ package io.grabity.planetwallet.Common.components;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -51,6 +53,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
     private View contentView;
     private boolean fadeIn = false;
+    private boolean statusTransparent = false;
 
     @Override
     protected void onResume( ) {
@@ -378,6 +381,34 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     }
 
 
+    public void setTransparentStatus( ) {
+        if ( Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21 ) {
+            setWindowFlag( WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true );
+        }
+        if ( Build.VERSION.SDK_INT >= 19 ) {
+            getWindow( ).getDecorView( ).setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
+        }
+        if ( Build.VERSION.SDK_INT >= 21 ) {
+            setWindowFlag( WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false );
+            getWindow( ).setStatusBarColor( Color.TRANSPARENT );
+        }
+    }
+
+    protected void setWindowFlag( final int bits, boolean on ) {
+        Window win = getWindow( );
+        WindowManager.LayoutParams winParams = win.getAttributes( );
+        if ( on ) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes( winParams );
+    }
+
+    public void setStatusTransparent( boolean statusTransparent ) {
+        this.statusTransparent = statusTransparent;
+    }
+
     public void setStatusColor( int color ) {
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
             Window window = getWindow( );
@@ -390,7 +421,11 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
             Integer color = ( ( PWRelativeLayout ) this.contentView ).getBackgroundColor( );
             if ( color != null ) {
-                setStatusColor( color );
+                if ( statusTransparent ) {
+                    setTransparentStatus( );
+                } else {
+                    setStatusColor( color );
+                }
                 if ( color > -8421505 ) {
                     setDarkStatusBarTextColor( );
                 } else {
@@ -402,7 +437,11 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
             Integer color = ( ( PWLinearLayout ) this.contentView ).getBackgroundColor( );
             if ( color != null ) {
-                setStatusColor( color );
+                if ( statusTransparent ) {
+                    setTransparentStatus( );
+                } else {
+                    setStatusColor( color );
+                }
                 if ( color > -8421505 ) {
                     setDarkStatusBarTextColor( );
                 } else {
@@ -412,10 +451,18 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
         } else {
             if ( theme ) {
-                setStatusColor( Color.WHITE );
+                if ( statusTransparent ) {
+                    setTransparentStatus( );
+                } else {
+                    setStatusColor( Color.WHITE );
+                }
                 setDarkStatusBarTextColor( );
             } else {
-                setStatusColor( Color.WHITE );
+                if ( statusTransparent ) {
+                    setTransparentStatus( );
+                } else {
+                    setStatusColor( Color.WHITE );
+                }
                 setLightStatusBarTextColor( );
             }
         }
@@ -509,4 +556,5 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
             e.printStackTrace( );
         }
     }
+
 }

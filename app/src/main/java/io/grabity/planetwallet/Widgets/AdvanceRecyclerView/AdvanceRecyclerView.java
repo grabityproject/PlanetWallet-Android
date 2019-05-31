@@ -3,6 +3,7 @@ package io.grabity.planetwallet.Widgets.AdvanceRecyclerView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -294,7 +295,7 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
         void onScrolled( RecyclerView recyclerView, int dx, int dy, float scrollX, float scrollY );
     }
 
-    public Bitmap getScreenshot( ) {
+    public Bitmap getScreenshot( int backgroundColor ) {
         AdvanceArrayAdapter adapter = ( AdvanceArrayAdapter ) this.getAdapter( );
         if ( adapter == null ) return null;
         int size = adapter.getItemCount( );
@@ -326,6 +327,13 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
         Bitmap bigBitmap = Bitmap.createBitmap( this.getMeasuredWidth( ), height, Bitmap.Config.ARGB_8888 );
         Canvas bigCanvas = new Canvas( bigBitmap );
 
+        if ( backgroundColor != Color.TRANSPARENT ) {
+            Paint backgroundPaint = new Paint( );
+            backgroundPaint.setColor( backgroundColor );
+            bigCanvas.drawRect( 0, 0, this.getMeasuredWidth( ), height, backgroundPaint );
+        }
+
+
         for ( int i = 0; i < size; i++ ) {
             Bitmap bitmap = bitmaCache.get( String.valueOf( i ) );
             if ( bitmap != null ) {
@@ -336,6 +344,10 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
         }
 
         return bigBitmap;
+    }
+
+    public Bitmap getScreenshot( ) {
+        return getScreenshot( Color.TRANSPARENT );
     }
 
     public void setOnAttachViewListener( AdvanceArrayAdapter.OnAttachViewListener onAttachViewListener ) {

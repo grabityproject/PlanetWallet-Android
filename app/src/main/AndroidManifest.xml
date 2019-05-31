@@ -28,16 +28,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden">
 
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-
         </activity>
 
 
@@ -71,18 +61,18 @@
         <activity
             android:name=".Views.p4_Main.Activity.MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateHidden">
 
-        <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-        <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-        <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.VIEW" />-->
-        <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
 
-            </activity>
+        </activity>
 
         <activity
             android:name=".Views.p5_Token.Activity.TokenAddActivity"
@@ -159,7 +149,6 @@
             android:name=".Views.p7_Setting.Activity.Planet.RenamePlanetActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
 
 
         <provider

@@ -54,10 +54,13 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     //eth -> false;
     private Boolean coin = false;
 
+    private Planet planet;
+
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        setStatusTransparent( true );
         setContentView( R.layout.activity_main );
         viewMapper = new ViewMapper( );
         viewInit( );
@@ -71,11 +74,12 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         viewController = new ViewController( this, viewMapper );
         viewMapper.rippleView.setOnRippleEffectListener( this );
+        viewMapper.rippleView.setActivity( this );
 
-        viewMapper.listView.setOnAttachViewListener( this );
-        viewMapper.listView.addHeaderView( R.layout.header_main );
-        viewMapper.listView.addFooterView( R.layout.footer_main );
-        viewMapper.listView.addOnScrollListener( this );
+        viewMapper.listMain.setOnAttachViewListener( this );
+        viewMapper.listMain.addHeaderView( R.layout.header_main );
+        viewMapper.listMain.addFooterView( R.layout.footer_main );
+        viewMapper.listMain.addOnScrollListener( this );
 
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MENU ) );
         viewMapper.toolBar.setRightButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MUTIUNIVERSE ) );
@@ -86,11 +90,14 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.slideDrawer.setTrigger( SlideDrawerLayout.Position.TOP, viewMapper.toolBar.getButtonItems( ).get( 1 ).getView( ) );
 
 
-        viewMapper.listView.setOnItemClickListener( this );
-        viewMapper.planetslistView.setOnItemClickListener( this );
+        viewMapper.listMain.setOnItemClickListener( this );
+        viewMapper.listPlanets.setOnItemClickListener( this );
 
         viewMapper.btnCopy.setOnClickListener( this );
         viewMapper.btnSend.setOnClickListener( this );
+
+        ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) ) );
+        viewMapper.toolBar.requestLayout( );
     }
 
     @Override
@@ -118,18 +125,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         }
 
-
-        //BTC
-//            items.add( new Coin( "BTC", "0.21352", "choi3950", "April 04, 11:23", R.drawable.image_btc_increase ) );
-//            items.add( new Coin( "BTC", "1.65", "choi3950", "April 04, 20:23", R.drawable.image_btc_increase ) );
-//            items.add( new Coin( "BTC", "0.422", "choi3950", "April 04, 09:18", R.drawable.image_btc_discrease ) );
-//            items.add( new Coin( "BTC", "0.21352", "choi3950", "April 04, 11:23", R.drawable.image_btc_increase ) );
-//            items.add( new Coin( "BTC", "1.65", "choi3950", "April 04, 20:23", R.drawable.image_btc_increase ) );
-//            items.add( new Coin( "BTC", "0.422", "choi3950", "April 04, 09:18", R.drawable.image_btc_discrease ) );
-
-        coinAdapter = new CoinAdapter( this, items );
-        viewMapper.listView.setAdapter( coinAdapter );
-
         if ( itemss == null ) {
 
 
@@ -143,15 +138,19 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         }
 
+        coinAdapter = new CoinAdapter( this, items );
+        viewMapper.listMain.setAdapter( coinAdapter );
+
+
         planetsAdapter = new PlanetsAdapter( this, itemss );
 
-        viewMapper.planetslistView.setAdapter( planetsAdapter );
-        viewMapper.planetsName.setText( "choi3950 Planet" );
+        viewMapper.listPlanets.setAdapter( planetsAdapter );
+        viewMapper.textPlanetName.setText( "choi3950 Planet" );
 
 
         viewMapper.barcodeView.setData( "0x2133498349813afbrtdfetsff" );
-        viewMapper.coinBalance.setText( "1.245" );
-        viewMapper.coinName.setText( "BTC" );
+        viewMapper.textBalance.setText( "1.245" );
+        viewMapper.textCoinName.setText( "BTC" );
 
     }
 
@@ -159,8 +158,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onAttachView( int resId, int position, View view ) {
         if ( resId == R.layout.header_main && position == 0 ) {
             headerViewMapper = new HeaderViewMapper( view );
+
             headerViewMapper.planetView.setData( "가즈아" );
+            viewMapper.planetBackground.setData( "가즈아" );
             viewMapper.barcodeView.setPlanetView( headerViewMapper.planetView );
+
             if ( viewController != null )
                 viewController.setHeaderViewMapper( headerViewMapper );
         } else if ( resId == R.layout.footer_main ) {
@@ -221,12 +223,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     protected void onResume( ) {
         super.onResume( );
         viewMapper.rippleView.ripple( false );
-
-        if ( !getPlanetWalletApplication( ).getCurrentTheme( ) ) {
-            viewMapper.shadowView.setShadowColor( Color.parseColor( "#000000" ), Color.parseColor( "#7A000000" ) );
-        } else {
-            viewMapper.shadowView.setShadowColor( Color.parseColor( "#FFFFFF" ), Color.parseColor( "#7AFFFFFF" ) );
-        }
+        viewMapper.shadowBackground.setShadowColor(
+                Color.parseColor( getCurrentTheme( ) ? "#FFFFFF" : "#000000" ),
+                Color.parseColor( getCurrentTheme( ) ? "#C8FFFFFF" : "#A8000000" )
+        );
     }
 
     @Override
@@ -239,10 +239,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        if ( recyclerView == viewMapper.listView ) {
+        if ( recyclerView == viewMapper.listMain ) {
             PLog.e( "메인리스트뷰 클릭 : " + position );
-        } else if ( recyclerView == viewMapper.planetslistView ) {
-
+        } else if ( recyclerView == viewMapper.listPlanets ) {
             viewMapper.slideDrawer.close( );
 
             //Test
@@ -277,12 +276,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 coin = true;
 
             }
-
             setData( );
-            PLog.e( "item click getScrollY : " + viewMapper.listView.getScrollY( ) );
-            PLog.e( "item click shadow get Y : " + viewMapper.groupShadow.getY( ) );
-
-
+            viewController.updateBlurView( getCurrentTheme( ) );
         }
     }
 
@@ -290,29 +285,15 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     protected void onUpdateTheme( boolean theme ) {
         super.onUpdateTheme( theme );
-        if ( !theme ) {
-            viewMapper.shadowView.setShadowColor( Color.parseColor( "#000000" ), Color.parseColor( "#7A000000" ) );
-        } else {
-            viewMapper.shadowView.setShadowColor( Color.parseColor( "#FFFFFF" ), Color.parseColor( "#7AFFFFFF" ) );
-        }
+        viewMapper.shadowBackground.setShadowColor(
+                Color.parseColor( theme ? "#FFFFFF" : "#000000" ),
+                Color.parseColor( theme ? "#C8FFFFFF" : "#AA000000" )
+        );
+        viewController.updateBlurView( theme );
     }
 
     @Override
     public void onScrolled( RecyclerView recyclerView, int dx, int dy, float scrollX, float scrollY ) {
-
-        PLog.e( "onscrolled : " + scrollY );
-        PLog.e( "onscrolled getY : " + viewMapper.groupShadow.getY( ) );
-
-        if ( scrollY > 0 ) {
-            viewMapper.groupShadow.setY( -scrollY );
-        } else {
-
-            viewMapper.groupShadow.setScaleX( 1.0f + ( -scrollY * 0.001f ) );
-            viewMapper.groupShadow.setScaleY( 1.0f + ( -scrollY * 0.001f ) );
-
-        }
-
-
     }
 
     public class ViewMapper {
@@ -322,27 +303,28 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         public SlideDrawerLayout slideDrawer;
 
-        public AdvanceRecyclerView listView;
+        public AdvanceRecyclerView listMain;
 
         public TextView textNotice;
         public View viewTrigger;
         public View groupBlur;
-        public StretchImageView blurView;
+        public StretchImageView imageBlurView;
         public View groupBottom;
 
-        AdvanceRecyclerView planetslistView;
-        TextView planetsName;
+        AdvanceRecyclerView listPlanets;
+        TextView textPlanetName;
 
         View btnCopy;
         View btnSend;
         BarcodeView barcodeView;
 
-        TextView coinBalance;
-        TextView coinName;
+        TextView textBalance;
+        TextView textCoinName;
 
-        View groupShadow;
 
-        ShadowView shadowView;
+        public View groupBackground;
+        public PlanetView planetBackground;
+        public ShadowView shadowBackground;
 
         public ViewMapper( ) {
 
@@ -351,26 +333,27 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             slideDrawer = findViewById( R.id.slideDrawer );
 
-            listView = findViewById( R.id.list_main );
+            listMain = findViewById( R.id.list_main );
 
             textNotice = findViewById( R.id.text_main_notice );
             viewTrigger = findViewById( R.id.view_main_bottom_trigger );
             groupBlur = findViewById( R.id.group_main_blur );
-            blurView = findViewById( R.id.image_main_blur );
+            imageBlurView = findViewById( R.id.image_main_blur );
             groupBottom = findViewById( R.id.group_main_bottom );
 
-            planetslistView = findViewById( R.id.list_main_planets_list );
-            planetsName = findViewById( R.id.text_main_planets_name );
+            listPlanets = findViewById( R.id.list_main_planets_list );
+            textPlanetName = findViewById( R.id.text_main_planets_name );
 
             btnCopy = findViewById( R.id.btn_main_bottom_copy );
             btnSend = findViewById( R.id.btn_main_bottom_send );
             barcodeView = findViewById( R.id.barcode_main_bottom_barcodeview );
 
-            coinBalance = findViewById( R.id.text_main_bottom_balance );
-            coinName = findViewById( R.id.text_main_bottom_coin_name );
+            textBalance = findViewById( R.id.text_main_bottom_balance );
+            textCoinName = findViewById( R.id.text_main_bottom_coin_name );
 
-            groupShadow = findViewById( R.id.group_main_shadow );
-            shadowView = findViewById( R.id.shadow_main_shadow_view );
+            planetBackground = findViewById( R.id.planet_main_background );
+            groupBackground = findViewById( R.id.group_main_background );
+            shadowBackground = findViewById( R.id.shadow_main_background );
 
         }
     }
