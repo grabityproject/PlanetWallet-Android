@@ -41,6 +41,9 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
     private OnEndItemListener onEndItemListener;
     private AdvanceArrayAdapter.OnAttachViewListener onAttachViewListener;
 
+    private float scrollX = 0;
+    private float scrollY = 0;
+
     public AdvanceRecyclerView( Context context ) {
         super( context );
         viewInit( );
@@ -122,7 +125,8 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
             ( ( AdvanceArrayAdapter ) adapter ).setTheme( theme );
 
         }
-
+        scrollX = 0;
+        scrollY = 0;
         super.setAdapter( adapter );
     }
 
@@ -250,9 +254,6 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
 
     private class OnDefScrollListener extends RecyclerView.OnScrollListener {
 
-        private float scrollX = 0;
-        private float scrollY = 0;
-
         @Override
         public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
             super.onScrolled( recyclerView, dx, dy );
@@ -264,6 +265,7 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
                 }
             }
         }
+
     }
 
     private OnDefScrollListener defScrollListener;
@@ -323,6 +325,9 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
         }
 
         height += Utils.dpToPx( getContext( ), 130 );
+
+        if ( height < Utils.getScrennHeight( getContext( ) ) )
+            height = Utils.getScrennHeight( getContext( ) );
 
         Bitmap bigBitmap = Bitmap.createBitmap( this.getMeasuredWidth( ), height, Bitmap.Config.ARGB_8888 );
         Canvas bigCanvas = new Canvas( bigBitmap );

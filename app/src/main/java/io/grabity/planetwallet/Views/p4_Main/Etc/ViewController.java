@@ -72,6 +72,8 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
     @Override
     public void onScrolled( RecyclerView recyclerView, int dx, int dy, float scrollX, float scrollY ) {
         this.scrollY = scrollY;
+        PLog.e( "scrollY : " + scrollY );
+
         viewMapper.imageBlurView.setY(
                 ( ( View ) viewMapper.imageBlurView.getParent( ) ).getHeight( ) -
                         viewMapper.listMain.getHeight( ) - ( scrollY > 0 ? scrollY : 0 ) - viewMapper.groupBlur.getHeight( ) / 2.0f );
@@ -111,6 +113,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
     public void onGlobalLayout( ) {
         viewMapper.listMain.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
 
+
         updateBlurView( activity.getCurrentTheme( ) );
 
         viewMapper.textNotice.setY( viewMapper.groupBlur.getY( ) + viewMapper.groupBlur.getHeight( ) - viewMapper.textNotice.getHeight( ) );
@@ -130,9 +133,11 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         ( ( ViewGroup.MarginLayoutParams ) viewMapper.shadowBackground.getLayoutParams( ) ).topMargin = ( int ) -backgroundTopMargin;
         viewMapper.planetBackground.requestLayout( );
         viewMapper.shadowBackground.requestLayout( );
+
     }
 
     public void updateBlurView( boolean theme ) {
         viewMapper.imageBlurView.setImageBitmap( BlurBuilder.blur( activity, viewMapper.listMain.getScreenshot( Color.parseColor( theme ? "#FFFFFF" : "#111117" ) ), 0.25f, 25 ) );
     }
+
 }

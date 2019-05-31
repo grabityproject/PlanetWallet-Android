@@ -10,6 +10,7 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.MainItems.CoinType;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.PlanetManagementAdapter;
@@ -47,16 +48,34 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
         /**
          * 임시작업
          */
-        items = new ArrayList<>( );
-        items.add( new Planet( "111111", "ETH", "choiss" ) );
-        items.add( new Planet( "232323", "BTC", "chois221s" ) );
-        items.add( new Planet( "4342341", "ETH", "choi23ss" ) );
-        items.add( new Planet( "34524", "BTC", "choi26ss" ) );
-        items.add( new Planet( "111111", "ETH", "choiss" ) );
-        items.add( new Planet( "232323", "BTC", "chois221s" ) );
-        items.add( new Planet( "4342341", "ETH", "choi23ss" ) );
-        items.add( new Planet( "34524", "BTC", "choi26ss" ) );
+        setDummy( );
+    }
 
+    void setDummy( ) {
+        items = new ArrayList<>( );
+        { // 1 Planet
+            Planet planet = new Planet( );
+            planet.setCoinType( CoinType.BTC );
+            planet.setName( "Jacob Park" );
+            planet.setAddress( "0x36072b48604d6d83b5bb304d36887b00213433d5" );
+            items.add( planet );
+        }
+
+        {
+            Planet planet = new Planet( );
+            planet.setCoinType( CoinType.ETH );
+            planet.setName( "Choi" );
+            planet.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+            items.add( planet );
+        }
+
+        {
+            Planet planet = new Planet( );
+            planet.setCoinType( CoinType.BTC );
+            planet.setName( "Jacob Park" );
+            planet.setAddress( "0x43fedf6faf58a666b18f8cccebf0787b29591ede" );
+            items.add( planet );
+        }
         adapter = new PlanetManagementAdapter( getApplicationContext( ), items );
         viewMapper.listView.setAdapter( adapter );
     }

@@ -3,7 +3,6 @@ package io.grabity.planetwallet.Common.components;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -61,6 +60,8 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         if ( theme != getPlanetWalletApplication( ).getCurrentTheme( ) ) {
             theme = getPlanetWalletApplication( ).getCurrentTheme( );
             onUpdateTheme( theme );
+        } else {
+            applyTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
         }
         PLog.setTAG( this.getClass( ).getSimpleName( ) );
     }
@@ -161,12 +162,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
             }
         }
     }
-
-//    @Override
-//    public void finish( ) {
-//        setExitTransition( );
-//        super.finish( );
-//    }
 
     @Override
     public void onRequestPermissionsResult( int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults ) {
@@ -418,7 +413,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
     public void setStatusColor( ) {
         if ( this.contentView instanceof PWRelativeLayout ) {
-
             Integer color = ( ( PWRelativeLayout ) this.contentView ).getBackgroundColor( );
             if ( color != null ) {
                 if ( statusTransparent ) {

@@ -11,10 +11,10 @@ import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.PlanetView;
 
-public class PlanetsAdapter extends AdvanceArrayAdapter< Planet > {
+public class PlanetAdapter extends AdvanceArrayAdapter< Planet > {
 
 
-    public PlanetsAdapter( Context context, ArrayList< Planet > objects ) {
+    public PlanetAdapter( Context context, ArrayList< Planet > objects ) {
         super( context, objects );
     }
 
@@ -25,24 +25,24 @@ public class PlanetsAdapter extends AdvanceArrayAdapter< Planet > {
 
     @Override
     public void bindData( ViewMapper viewMapper, Planet item, int position ) {
-        ( ( PlanetsItem ) viewMapper ).planetView.setData( item.getAddress( ) == null ? "" : item.getAddress( ) );
-        ( ( PlanetsItem ) viewMapper ).currency.setText( item.getCurrency( ) == null ? "ETH" : item.getCurrency( ) + " Universe" );
-        ( ( PlanetsItem ) viewMapper ).walletName.setText( item.getWalletName( ) == null ? "WalletName" : item.getWalletName( ) );
+        ( ( PlanetsItem ) viewMapper ).planetView.setData( item.getAddress( ) );
+        ( ( PlanetsItem ) viewMapper ).textType.setText( String.format( "%s Universe", item.getCoinType( ).name( ) ) );
+        ( ( PlanetsItem ) viewMapper ).textName.setText( item.getName( ) );
     }
 
 
     class PlanetsItem extends ViewMapper {
 
         PlanetView planetView;
-        TextView currency;
-        TextView walletName;
+        TextView textType;
+        TextView textName;
 
         public PlanetsItem( View itemView ) {
             super( itemView );
 
             planetView = findViewById( R.id.planetview_item_main_planets );
-            currency = findViewById( R.id.text_item_main_planets_currency );
-            walletName = findViewById( R.id.text_item_main_planets_name );
+            textType = findViewById( R.id.text_item_main_planets_type );
+            textName = findViewById( R.id.text_item_main_planets_name );
 
         }
     }

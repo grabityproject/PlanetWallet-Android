@@ -28,15 +28,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
+            <!--  <intent-filter>
+                  <action android:name="android.intent.action.MAIN" />
+                  <category android:name="android.intent.category.LAUNCHER" />
+              </intent-filter>
 
+              <intent-filter>
+                  <action android:name="android.intent.action.VIEW" />
+              </intent-filter>
+  -->
         </activity>
 
 
@@ -72,14 +73,21 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
 
         </activity>
 
         <activity
             android:name=".Views.p5_Token.Activity.TokenAddActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".Views.p6_Transfer.Activity.TransferActivity"

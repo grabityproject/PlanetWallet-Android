@@ -132,7 +132,8 @@ public class PlanetView extends View {
     @Override
     protected void onDraw( Canvas canvas ) {
         super.onDraw( canvas );
-        drawCanvas( canvas, mWidth, mHeight );
+        if ( mWidth != 0 && mHeight != 0 )
+            drawCanvas( canvas, mWidth, mHeight );
     }
 
     void drawCanvas( Canvas canvas, float width, float height ) {

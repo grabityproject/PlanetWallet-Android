@@ -40,7 +40,7 @@
             app:themeSrc="@drawable/image_arrow_right_gray" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
-            android:id="@+id/text_item_main_planets_currency"
+            android:id="@+id/text_item_main_planets_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/image_item_main_planets_arrow"

@@ -11,8 +11,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
-
 public class RippleEffectView extends View implements Themeable {
 
     private View trigger;

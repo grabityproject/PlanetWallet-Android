@@ -1,6 +1,3 @@
-
-
-
 package io.grabity.planetwallet.Views.p4_Main.Activity;
 
 import android.content.Intent;
@@ -14,16 +11,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.Coin;
+import io.grabity.planetwallet.VO.MainItems.BTC;
+import io.grabity.planetwallet.VO.MainItems.CoinType;
+import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.ETH;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.Views.p4_Main.Adapter.CoinAdapter;
-import io.grabity.planetwallet.Views.p4_Main.Adapter.PlanetsAdapter;
+import io.grabity.planetwallet.Views.p4_Main.Adapter.MainAdapter;
+import io.grabity.planetwallet.Views.p4_Main.Adapter.PlanetAdapter;
 import io.grabity.planetwallet.Views.p4_Main.Etc.ViewController;
 import io.grabity.planetwallet.Views.p5_Token.Activity.TokenAddActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.SettingActivity;
@@ -43,20 +44,13 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     private ViewMapper viewMapper;
     private HeaderViewMapper headerViewMapper;
     private FooterViewMapper footerViewMapper;
-
-    private ArrayList< Coin > items;
-    private CoinAdapter coinAdapter;
-
     private ViewController viewController;
 
-    private ArrayList< Planet > itemss;
-    private PlanetsAdapter planetsAdapter;
+    private Planet selectedPlanet;
 
-    //eth -> false;
-    private Boolean coin = false;
+    private ArrayList< Planet > planetList;
 
-    private Planet planet;
-
+    private PlanetAdapter planetAdapter;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -74,84 +68,56 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         ( ( ViewGroup ) findViewById( android.R.id.content ) ).addView( viewMapper.rippleView );
 
         viewController = new ViewController( this, viewMapper );
-        viewMapper.rippleView.setOnRippleEffectListener( this );
 
-        viewMapper.listMain.setOnAttachViewListener( this );
-        viewMapper.listMain.addHeaderView( R.layout.header_main );
-        viewMapper.listMain.addFooterView( R.layout.footer_main );
-        viewMapper.listMain.addOnScrollListener( this );
-
+        ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) ) );
+        viewMapper.toolBar.requestLayout( );
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MENU ) );
         viewMapper.toolBar.setRightButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MUTIUNIVERSE ) );
         viewMapper.toolBar.setTitle( "ETH" );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
+        viewMapper.rippleView.setOnRippleEffectListener( this );
         viewMapper.rippleView.setTrigger( viewMapper.toolBar.getButtonItems( ).get( 0 ).getView( ) );
-        viewMapper.slideDrawer.setTrigger( SlideDrawerLayout.Position.TOP, viewMapper.toolBar.getButtonItems( ).get( 1 ).getView( ) );
 
-
+        viewMapper.listMain.setOnAttachViewListener( this );
+        viewMapper.listMain.addHeaderView( R.layout.header_main );
+        viewMapper.listMain.addFooterView( R.layout.footer_main );
+        viewMapper.listMain.addOnScrollListener( this );
         viewMapper.listMain.setOnItemClickListener( this );
+
         viewMapper.listPlanets.setOnItemClickListener( this );
+
+        viewMapper.slideDrawer.setTrigger( SlideDrawerLayout.Position.TOP, viewMapper.toolBar.getButtonItems( ).get( 1 ).getView( ) );
 
         viewMapper.btnCopy.setOnClickListener( this );
         viewMapper.btnSend.setOnClickListener( this );
-
-        ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) ) );
-        viewMapper.toolBar.requestLayout( );
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
-
-        /**
-         * Test main item list
-         */
-
-        PLog.e( " setData " );
-
-        if ( items == null ) {
-
-            items = new ArrayList<>( );
-            //ETH
-            items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
-            items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
-            items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
-            items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
-            items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
-            items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
-            items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
-            items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
-
-        }
-
-        if ( itemss == null ) {
+        selectedPlanet = new Planet( );
+        planetList = new ArrayList<>( );
+        viewMapper.listPlanets.setAdapter( planetAdapter = new PlanetAdapter( this, planetList ) );
+        viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) ) );
 
 
-            itemss = new ArrayList<>( );
-            itemss.add( new Planet( "", "ETH", "choi111" ) );
-            itemss.add( new Planet( "2323434", "ETH", "choi222" ) );
-            itemss.add( new Planet( "adwd124", "BTC", "choi333" ) );
-            itemss.add( new Planet( "", "ETH", "choi111" ) );
-            itemss.add( new Planet( "2323434", "ETH", "choi222" ) );
-            itemss.add( new Planet( "adwd124", "BTC", "choi333" ) );
+        setDummy( );
+    }
 
-        }
+    void setUpViews( ) {
+        viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) ) );
 
-        coinAdapter = new CoinAdapter( this, items );
-        viewMapper.listMain.setAdapter( coinAdapter );
-
-
-        planetsAdapter = new PlanetsAdapter( this, itemss );
-
-        viewMapper.listPlanets.setAdapter( planetsAdapter );
-        viewMapper.textPlanetName.setText( "choi3950 Planet" );
-
-
-        viewMapper.barcodeView.setData( "0x2133498349813afbrtdfetsff" );
+        viewMapper.textPlanetName.setText( selectedPlanet.getName( ) );
+        viewMapper.toolBar.setTitle( selectedPlanet.getCoinType( ).name( ) );
+        viewMapper.barcodeView.setData( selectedPlanet.getAddress( ) );
         viewMapper.textBalance.setText( "1.245" );
-        viewMapper.textCoinName.setText( "BTC" );
+        viewMapper.textCoinName.setText( selectedPlanet.getCoinType( ).name( ) );
 
+        headerViewMapper.planetView.setData( selectedPlanet.getAddress( ) );
+        viewMapper.planetBackground.setData( selectedPlanet.getAddress( ) );
+        viewMapper.planetBlur.setData( selectedPlanet.getAddress( ) );
+        viewMapper.barcodeView.setPlanetView( headerViewMapper.planetView );
     }
 
     @Override
@@ -159,18 +125,17 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( resId == R.layout.header_main && position == 0 ) {
             headerViewMapper = new HeaderViewMapper( view );
 
-            headerViewMapper.planetView.setData( "가즈아" );
-            viewMapper.planetBackground.setData( "가즈아" );
-            viewMapper.barcodeView.setPlanetView( headerViewMapper.planetView );
-
+            setUpViews( );
             if ( viewController != null )
                 viewController.setHeaderViewMapper( headerViewMapper );
+
         } else if ( resId == R.layout.footer_main ) {
             footerViewMapper = new FooterViewMapper( view );
             footerViewMapper.btnAddToken.setOnClickListener( this );
 
-            footerViewMapper.groupAddToken.setVisibility( !coin ? View.VISIBLE : View.GONE );
-            footerViewMapper.groupMessage.setVisibility( items.size( ) == 0 ? View.VISIBLE : View.GONE );
+            footerViewMapper.groupAddToken.setVisibility( selectedPlanet.getCoinType( ) == CoinType.ETH ? View.VISIBLE : View.GONE );
+            footerViewMapper.groupMessage.setVisibility( selectedPlanet.getItems( ).size( ) == 0 ? View.VISIBLE : View.GONE );
+
             footerViewMapper.btnAddToken.setBorderColorNormal( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
             footerViewMapper.btnAddToken.setBorderColorHighlight( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
 
@@ -181,11 +146,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     public void onClick( View v ) {
         super.onClick( v );
-        //barcode Test
         if ( v == viewMapper.btnCopy ) {
-            viewMapper.barcodeView.setData( "0x2133498349813afbrtdfetsff" );
+            // TODO: 2019-05-31 ClipToCopy
         } else if ( v == viewMapper.btnSend ) {
-            viewMapper.barcodeView.setData( "0x2234341133498349813afbrtdfefgtsff" );
+            // TODO: 2019-05-31 sendAction Transfer Activity
         } else if ( v == footerViewMapper.btnAddToken ) {
             setTransition( Transition.SLIDE_SIDE );
             sendAction( C.requestCode.MAIN_TOKEN_ADD, TokenAddActivity.class );
@@ -196,7 +160,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.MAIN_TOKEN_ADD && resultCode == RESULT_OK ) {
-            //Todo 토큰추가
+            Toast.makeText( this, "토큰추가확인", Toast.LENGTH_SHORT ).show( );
         }
     }
 
@@ -206,40 +170,37 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( Utils.equals( tag, C.tag.TOOLBAR_MENU ) ) {
             if ( !viewMapper.rippleView.isRippleOn( ) )
                 viewMapper.rippleView.ripple( true );
+
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_MUTIUNIVERSE ) ) {
+
             viewMapper.slideDrawer.open( SlideDrawerLayout.Position.TOP );
+
         }
     }
 
     @Override
     public void onBackPressed( ) {
-
         if ( viewMapper.slideDrawer.isOpen( ) ) {
             viewMapper.slideDrawer.close( );
         } else {
             super.onBackPressed( );
         }
-
     }
 
     @Override
     protected void onResume( ) {
         super.onResume( );
         viewMapper.rippleView.ripple( false );
-        viewMapper.rippleView.setTheme( getCurrentTheme() );
+        viewMapper.rippleView.setTheme( getCurrentTheme( ) );
         viewMapper.shadowBackground.setShadowColor(
                 Color.parseColor( getCurrentTheme( ) ? "#FFFFFF" : "#000000" ),
                 Color.parseColor( getCurrentTheme( ) ? "#C8FFFFFF" : "#A8000000" )
         );
-
-        viewMapper.btnPlanets.setBackgroundColorNormal( Color.parseColor( getCurrentTheme( ) ? "#BCBDD5" : "#5C5964" ) );
-        viewMapper.btnBottomClose.setBackgroundColorNormal( Color.parseColor( getCurrentTheme( ) ? "#BCBDD5" : "#5C5964" ) );
     }
 
     @Override
     public void onRippleEffect( boolean on ) {
         if ( on ) {
-            PLog.e( "onRippleEffect" );
             setTransition( Transition.NO_ANIMATION );
             sendAction( SettingActivity.class );
         }
@@ -247,43 +208,14 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
+
         if ( recyclerView == viewMapper.listMain ) {
+
+
         } else if ( recyclerView == viewMapper.listPlanets ) {
             viewMapper.slideDrawer.close( );
-
-            //Test
-            if ( itemss.get( position ).getCurrency( ).equals( "ETH" ) ) {
-                viewMapper.toolBar.setTitle( "ETH" );
-                items = new ArrayList<>( );
-                items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
-                items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
-                items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
-                items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
-                items.add( new Coin( "ETH", R.drawable.icon_eth, "12.023", "ETH", "1111 USD" ) );
-                items.add( new Coin( "ETH", R.drawable.icon_gbt, "805.023", "GBT", "2222 USD" ) );
-                items.add( new Coin( "ETH", R.drawable.icon_iota, "2.023", "IOTA", "3333 USD" ) );
-                items.add( new Coin( "ETH", R.drawable.icon_omg, "32.023", "OMG", "4444 USD" ) );
-
-                coin = false;
-
-            } else if ( itemss.get( position ).getCurrency( ).equals( "BTC" ) ) {
-                viewMapper.toolBar.setTitle( "BTC" );
-                items = new ArrayList<>( );
-
-
-                if ( itemss.size( ) - 1 != position ) {
-                    items.add( new Coin( "BTC", "0.21352", "choi3950", "April 04, 11:23", R.drawable.image_btc_increase ) );
-                    items.add( new Coin( "BTC", "1.65", "choi3950", "April 04, 20:23", R.drawable.image_btc_increase ) );
-                    items.add( new Coin( "BTC", "0.422", "choi3950", "April 04, 09:18", R.drawable.image_btc_discrease ) );
-                    items.add( new Coin( "BTC", "0.21352", "choi3950", "April 04, 11:23", R.drawable.image_btc_increase ) );
-                    items.add( new Coin( "BTC", "1.65", "choi3950", "April 04, 20:23", R.drawable.image_btc_increase ) );
-                    items.add( new Coin( "BTC", "0.422", "choi3950", "April 04, 09:18", R.drawable.image_btc_discrease ) );
-                }
-
-                coin = true;
-
-            }
-            setData( );
+            selectedPlanet = planetList.get( position );
+            setUpViews( );
             viewController.updateBlurView( getCurrentTheme( ) );
         }
     }
@@ -317,7 +249,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public View groupBlur;
         public StretchImageView imageBlurView;
         public View groupBottom;
-        PlanetView planetBottom;
 
         AdvanceRecyclerView listPlanets;
         TextView textPlanetName;
@@ -334,8 +265,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public PlanetView planetBackground;
         public ShadowView shadowBackground;
 
-        RoundButton btnPlanets;
-        RoundButton btnBottomClose;
+        public PlanetView planetBlur;
 
         public ViewMapper( ) {
 
@@ -351,7 +281,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             groupBlur = findViewById( R.id.group_main_blur );
             imageBlurView = findViewById( R.id.image_main_blur );
             groupBottom = findViewById( R.id.group_main_bottom );
-            planetBottom = findViewById( R.id.planetview_main_blur_planetview );
 
             listPlanets = findViewById( R.id.list_main_planets_list );
             textPlanetName = findViewById( R.id.text_main_planets_name );
@@ -367,8 +296,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             groupBackground = findViewById( R.id.group_main_background );
             shadowBackground = findViewById( R.id.shadow_main_background );
 
-            btnPlanets = findViewById( R.id.btn_main_planets_bottom_btn );
-            btnBottomClose = findViewById( R.id.btn_main_bottom_close );
+            planetBlur = findViewById( R.id.planetview_main_blur_planetview );
 
         }
     }
@@ -409,4 +337,105 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             groupMessage = footerView.findViewById( R.id.group_footer_main_bit_message );
         }
     }
+
+
+    //    DUMMY
+    void setDummy( ) {
+        planetList = new ArrayList<>( );
+        if ( planetAdapter == null ) planetAdapter = new PlanetAdapter( this, planetList );
+
+        { // 1 Planet
+            Planet planet = new Planet( );
+            planet.setCoinType( CoinType.BTC );
+            planet.setName( "Jacob Park" );
+            planet.setAddress( "0x36072b48604d6d83b5bb304d36887b00213433d5" );
+
+            ArrayList< MainItem > items = new ArrayList<>( );
+            for ( int i = 0; i < 10; i++ ) {
+                BTC item = new BTC( );
+                if ( i % 2 == 0 )
+                    item.setBalance( String.valueOf( ( ( ( float ) i + 1 ) * 11.234f ) ) );
+                else
+                    item.setBalance( String.valueOf( ( ( ( float ) i + 1 ) * 2.112f ) ) );
+
+                if ( i % 3 == 1 )
+                    item.setBalance( "-" + item.getBalance( ) );
+                item.setPlanetName( planet.getName( ) );
+                item.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 * i ), "MMMM dd, HH:mm" ) );
+                items.add( item );
+            }
+            planet.setItems( items );
+
+            planetList.add( planet );
+        }
+
+        {
+            Planet planet = new Planet( );
+            planet.setCoinType( CoinType.ETH );
+            planet.setName( "Choi" );
+            planet.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+
+            ArrayList< MainItem > items = new ArrayList<>( );
+            {
+                ETH item = new ETH( );
+                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+                item.setBalance( "12.0" );
+                item.setName( "ETH" );
+                item.setPrice( "3600$" );
+                items.add( item );
+            }
+
+            {
+                ERC20 item = new ERC20( );
+                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+                item.setBalance( "244500" );
+                item.setName( "GBT" );
+                item.setPrice( "0$" );
+                item.setIconRes( R.drawable.icon_gbt );
+                items.add( item );
+            }
+
+            {
+                ERC20 item = new ERC20( );
+                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+                item.setBalance( "50.0" );
+                item.setName( "iOTA" );
+                item.setPrice( "0$" );
+                item.setIconRes( R.drawable.icon_iota );
+                items.add( item );
+            }
+
+            {
+                ERC20 item = new ERC20( );
+                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+                item.setBalance( "0.0" );
+                item.setName( "OMG" );
+                item.setPrice( "0$" );
+                item.setIconRes( R.drawable.icon_omg );
+                items.add( item );
+            }
+            planet.setItems( items );
+
+            planetList.add( planet );
+        }
+
+        {
+            Planet planet = new Planet( );
+            planet.setCoinType( CoinType.BTC );
+            planet.setName( "Jacob Park" );
+            planet.setAddress( "0x43fedf6faf58a666b18f8cccebf0787b29591ede" );
+
+            ArrayList< MainItem > items = new ArrayList<>( );
+            planet.setItems( items );
+
+            planetList.add( planet );
+        }
+
+
+        selectedPlanet = planetList.get( 0 );
+
+        viewMapper.listPlanets.setAdapter( planetAdapter = new PlanetAdapter( this, planetList ) );
+        viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) ) );
+    }
+
 }

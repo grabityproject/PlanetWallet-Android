@@ -3,7 +3,6 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.Random;
 

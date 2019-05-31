@@ -26,6 +26,7 @@
         android:paddingEnd="20dp">
 
         <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_detail_planet_type"
             android:layout_width="match_parent"
             android:layout_height="@dimen/listHeight"
             android:layout_centerVertical="true"

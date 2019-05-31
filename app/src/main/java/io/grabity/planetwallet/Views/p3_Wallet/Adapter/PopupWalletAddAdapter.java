@@ -7,13 +7,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.Coin;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Coin > {
+public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Planet > {
 
-    public PopupWalletAddAdapter( Context context, ArrayList< Coin > objects ) {
+    public PopupWalletAddAdapter( Context context, ArrayList< Planet > objects ) {
         super( context, objects );
     }
 
@@ -23,21 +23,21 @@ public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Coin > {
     }
 
     @Override
-    public void bindData( ViewMapper viewMapper, Coin item, int position ) {
-        ( ( WalletAddItem ) viewMapper ).icon.setImageResource( item.getIcon( ) );
-        ( ( WalletAddItem ) viewMapper ).name.setText( item.getCoin( ) == null ? "" : item.getCoin( ) );
+    public void bindData( ViewMapper viewMapper, Planet item, int position ) {
+        ( ( WalletAddItem ) viewMapper ).imageIcon.setImageResource( item.getIconRes( ) );
+        ( ( WalletAddItem ) viewMapper ).textName.setText( String.format( "%s Universe", item.getCoinType( ).name( ) ) );
     }
 
 
     class WalletAddItem extends ViewMapper {
 
-        StretchImageView icon;
-        TextView name;
+        StretchImageView imageIcon;
+        TextView textName;
 
         public WalletAddItem( View itemView ) {
             super( itemView );
-            icon = findViewById( R.id.image_item_popup_wallet_add_icon );
-            name = findViewById( R.id.text_item_popup_wallet_add_coin_name );
+            imageIcon = findViewById( R.id.image_item_popup_wallet_add_icon );
+            textName = findViewById( R.id.text_item_popup_wallet_add_coin_name );
         }
     }
 

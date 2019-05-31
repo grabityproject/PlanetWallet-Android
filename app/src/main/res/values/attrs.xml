@@ -159,5 +159,18 @@
 
     </declare-styleable>
 
+    <declare-styleable name="PWRelativeLayout">
+
+        <attr name="themeBackground" />
+        <attr name="cornerRadius" />
+        <attr name="cornerRound">
+            <flag name="LT" value="0x1000" />
+            <flag name="RT" value="0x0100" />
+            <flag name="RB" value="0x0010" />
+            <flag name="LB" value="0x0001" />
+        </attr>
+
+    </declare-styleable>
+
 
 </resources>

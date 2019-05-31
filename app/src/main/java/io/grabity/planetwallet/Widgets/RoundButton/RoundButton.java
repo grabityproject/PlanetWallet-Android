@@ -184,7 +184,7 @@ public class RoundButton extends android.support.v7.widget.AppCompatButton imple
         textColorNormal = color;
         textColorHighlight = color;
 
-        setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ), "fonts/WorkSans-SemiBold.otf"  ), Typeface.BOLD );
+        setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ), "fonts/WorkSans-SemiBold.otf" ), Typeface.BOLD );
 
         super.setTextColor( color );
     }

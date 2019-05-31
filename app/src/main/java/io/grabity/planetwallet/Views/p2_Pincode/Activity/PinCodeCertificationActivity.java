@@ -108,7 +108,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                                 //pincode 초기화
 
 
-                            } else{
+                            } else {
                                 sendAction( MainActivity.class );
                             }
 

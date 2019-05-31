@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.Themeable;
 
@@ -229,7 +228,6 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
 
     public void setTheme( boolean theme ) {
         this.theme = theme;
-        PLog.e( "adapter theme : " + theme );
     }
 
     public boolean getTheme( ) {

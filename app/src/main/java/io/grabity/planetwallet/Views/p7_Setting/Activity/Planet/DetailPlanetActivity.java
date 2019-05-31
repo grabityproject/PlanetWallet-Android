@@ -47,10 +47,14 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
     @Override
     protected void setData( ) {
         super.setData( );
-        planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-        viewMapper.address.setText( planet.getAddress( ) );
-        viewMapper.name.setText( planet.getWalletName( ) );
-
+        if ( getSerialize( C.bundleKey.PLANET ) != null ) {
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            viewMapper.textType.setText( String.format( "%s Address", planet.getCoinType( ).name( ) ) );
+            viewMapper.textAddress.setText( planet.getAddress( ) );
+            viewMapper.textName.setText( planet.getName( ) );
+        } else {
+            finish( );
+        }
     }
 
     @Override
@@ -81,7 +85,7 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
         if ( requestCode == C.requestCode.PLANET_RENAME && resultCode == RESULT_OK ) {
             if ( data == null ) return;
             planet = ( Planet ) data.getSerializableExtra( C.bundleKey.PLANET );
-            viewMapper.name.setText( planet.getWalletName( ) );
+            viewMapper.textName.setText( planet.getName( ) );
         }
 
     }
@@ -95,8 +99,11 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
         ToolBar toolBar;
         ToggleButton toggleButton;
-        TextView address;
-        TextView name;
+
+        TextView textType;
+        TextView textAddress;
+        TextView textName;
+
         ViewGroup btnPlanetName;
         ViewGroup btnMnemonic;
         ViewGroup btnPrivateKey;
@@ -105,8 +112,9 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
             toolBar = findViewById( R.id.toolBar );
             toggleButton = findViewById( R.id.toggleBtn );
-            address = findViewById( R.id.text_detail_planet_address );
-            name = findViewById( R.id.text_detail_planet_name );
+            textType = findViewById( R.id.text_detail_planet_type );
+            textAddress = findViewById( R.id.text_detail_planet_address );
+            textName = findViewById( R.id.text_detail_planet_name );
             btnPlanetName = findViewById( R.id.group_detail_planet_name );
             btnMnemonic = findViewById( R.id.group_detail_planet_mnemonic_backup );
             btnPrivateKey = findViewById( R.id.group_detail_planet_privatekey_backup );
