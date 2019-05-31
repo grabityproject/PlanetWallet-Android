@@ -1,6 +1,10 @@
 package io.grabity.planetwallet.VO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import io.grabity.planetwallet.VO.MainItems.CoinType;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 
 public class Planet implements Serializable {
 
@@ -8,27 +12,24 @@ public class Planet implements Serializable {
      * 필요한 부분만 작성
      */
 
-    String address;
-    String currency;
-    String walletName;
+    private CoinType coinType;
+    private String address;
+    private String name;
 
-    boolean isCheck;
+    private int iconRes;
+
+    private ArrayList< MainItem > items;
 
     public Planet( ) {
 
     }
 
-    public Planet( String address, String currency, String walletName ) {
-        this.address = address;
-        this.currency = currency;
-        this.walletName = walletName;
+    public CoinType getCoinType( ) {
+        return coinType;
     }
 
-    public Planet( String address, String currency, String walletName, boolean isCheck ) {
-        this.address = address;
-        this.currency = currency;
-        this.walletName = walletName;
-        this.isCheck = isCheck;
+    public void setCoinType( CoinType coinType ) {
+        this.coinType = coinType;
     }
 
     public String getAddress( ) {
@@ -39,27 +40,28 @@ public class Planet implements Serializable {
         this.address = address;
     }
 
-    public String getCurrency( ) {
-        return currency;
+    public String getName( ) {
+        return name;
     }
 
-    public void setCurrency( String currency ) {
-        this.currency = currency;
+    public void setName( String name ) {
+        this.name = name;
     }
 
-    public String getWalletName( ) {
-        return walletName;
+    public ArrayList< MainItem > getItems( ) {
+        if ( items == null ) items = new ArrayList<>( );
+        return items;
     }
 
-    public void setWalletName( String walletName ) {
-        this.walletName = walletName;
+    public void setItems( ArrayList< MainItem > items ) {
+        this.items = items;
     }
 
-    public boolean isCheck( ) {
-        return isCheck;
+    public int getIconRes( ) {
+        return iconRes;
     }
 
-    public void setCheck( boolean check ) {
-        isCheck = check;
+    public void setIconRes( int iconRes ) {
+        this.iconRes = iconRes;
     }
 }

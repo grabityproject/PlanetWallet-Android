@@ -44,7 +44,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
     protected void setData( ) {
         super.setData( );
         planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-        viewMapper.etName.setText( planet.getWalletName( ) );
+        viewMapper.etName.setText( planet.getName( ) );
         viewMapper.etName.setSelection( viewMapper.etName.length( ) );
 
     }
@@ -55,7 +55,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
         if ( v == viewMapper.btnSubmit ) {
             if ( viewMapper.etName.getText( ) == null ) return;
             Utils.hideKeyboard( this, getCurrentFocus( ) );
-            planet.setWalletName( viewMapper.etName.getText( ).toString( ) );
+            planet.setName( viewMapper.etName.getText( ).toString( ) );
             setResult( RESULT_OK, new Intent( ).putExtra( C.bundleKey.PLANET, planet ) );
             super.onBackPressed( );
 

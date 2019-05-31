@@ -28,8 +28,8 @@
 
                 <io.grabity.planetwallet.Widgets.ShadowView
                     android:id="@+id/shadow_main_background"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
                     app:direction="BOTTOM_TOP"
                     app:end="#C8000000"
                     app:start="#000000" />
@@ -157,50 +157,60 @@
 
         </RelativeLayout>
 
-
-        <io.grabity.planetwallet.Widgets.RoundRelativeLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:background="#000"
-            app:backgroundColor="#1E1E28"
-            app:cornerRadius="24dp"
+            android:layout_height="340dp"
             app:position="top"
-            app:themeBackground="#FFF"
             tools:ignore="MissingPrefix">
 
-            <View
-                android:id="@+id/views"
+            <io.grabity.planetwallet.Widgets.ShadowView
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="#1E1E28" />
-
-            <io.grabity.planetwallet.Widgets.FontTextView
-                android:id="@+id/text_main_planets_name"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_below="@id/views"
-                android:paddingStart="20dp"
-                android:text="names"
-                android:textColor="#5C5964"
-                android:textSize="16dp"
-                app:themeTextColor="#FFF" />
-
-            <io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView
-                android:id="@+id/list_main_planets_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/text_main_planets_name"
-                android:layout_marginBottom="40dp" />
-
-            <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
-                android:layout_width="40dp"
-                android:layout_height="4dp"
+                android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp"
-                app:backgroundColorNormal="#5c5964" />
+                app:direction="TOP_BOTTOM" />
 
-        </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
+            <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:background="#1E1E28"
+                app:cornerRadius="24dp"
+                app:cornerRound="LB|RB"
+                app:themeBackground="#FFF"
+                tools:ignore="MissingPrefix">
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_main_planets_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="20dp"
+                    android:paddingTop="45dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="4dp"
+                    android:text="names"
+                    android:textColor="#5C5964"
+                    android:textSize="16dp"
+                    app:themeTextColor="#FFF" />
+
+                <io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView
+                    android:id="@+id/list_main_planets_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/text_main_planets_name"
+                    android:layout_marginBottom="40dp" />
+
+                <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+                    android:layout_width="40dp"
+                    android:layout_height="4dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="18dp"
+                    app:backgroundColorNormal="#5c5964" />
+
+
+            </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
+
+
+        </RelativeLayout>
 
 
         <RelativeLayout

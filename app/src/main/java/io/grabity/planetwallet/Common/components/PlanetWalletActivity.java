@@ -61,6 +61,8 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         if ( theme != getPlanetWalletApplication( ).getCurrentTheme( ) ) {
             theme = getPlanetWalletApplication( ).getCurrentTheme( );
             onUpdateTheme( theme );
+        } else {
+            applyTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
         }
         PLog.setTAG( this.getClass( ).getSimpleName( ) );
     }
@@ -161,12 +163,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
             }
         }
     }
-
-//    @Override
-//    public void finish( ) {
-//        setExitTransition( );
-//        super.finish( );
-//    }
 
     @Override
     public void onRequestPermissionsResult( int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults ) {
@@ -418,7 +414,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
 
     public void setStatusColor( ) {
         if ( this.contentView instanceof PWRelativeLayout ) {
-
             Integer color = ( ( PWRelativeLayout ) this.contentView ).getBackgroundColor( );
             if ( color != null ) {
                 if ( statusTransparent ) {

@@ -9,33 +9,31 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.Eth;
+import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class TokenAdapter extends AdvanceArrayAdapter< Eth > {
+public class TokenAdapter extends AdvanceArrayAdapter< ETH > {
 
-    OnInsideItemClickListener onInsideItemClickListener;
+    private OnInsideItemClickListener onInsideItemClickListener;
 
-    public TokenAdapter( Context context, ArrayList< Eth > objects ) {
+    public TokenAdapter( Context context, ArrayList< ETH > objects ) {
         super( context, objects );
     }
 
     @Override
     public ViewMapper viewMapping( int position ) {
         return new EthItem( View.inflate( getContext( ), R.layout.item_token_add, null ) );
-
-
     }
 
     @Override
-    public void bindData( ViewMapper viewMapper, Eth item, int position ) {
+    public void bindData( ViewMapper viewMapper, ETH item, int position ) {
 
 
-        ( ( EthItem ) viewMapper ).icon.setImageResource( item.getIcon( ) );
-        ( ( EthItem ) viewMapper ).name.setText( item.getName( ) == null ? "" : item.getName( ) );
+        ( ( EthItem ) viewMapper ).icon.setImageResource( item.getIconRes( ) );
+        ( ( EthItem ) viewMapper ).name.setText( item.getName( ) );
 
         if ( item.isCheck( ) ) {
             ( ( EthItem ) viewMapper ).btnTokenAddORremove.setImageResource( R.drawable.image_checkbox_on );

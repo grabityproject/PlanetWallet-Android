@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.Eth;
+import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.Views.p5_Token.Adapter.TokenAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
@@ -23,10 +23,8 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
 
     private ViewMapper viewMapper;
     private TokenAdapter adapter;
-    private ArrayList< Eth > items;
-//    private ArrayList< Eth > allItems;
-
-    private ArrayList< Eth > filterItems;
+    private ArrayList< ETH > items;
+    private ArrayList< ETH > filterItems;
 
     public TokenListFragment( ) {
     }
@@ -60,20 +58,46 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
          * 임시작업
          */
         items = new ArrayList<>( );
-        items.add( new Eth( R.drawable.icon_eth, "1", false ) );
-        items.add( new Eth( R.drawable.icon_gbt, "2", false ) );
-        items.add( new Eth( R.drawable.icon_omg, "3", false ) );
-        items.add( new Eth( R.drawable.icon_iota, "4", false ) );
-        items.add( new Eth( R.drawable.icon_eth, "5", false ) );
-        items.add( new Eth( R.drawable.icon_gbt, "6", false ) );
-        items.add( new Eth( R.drawable.icon_omg, "7", false ) );
-        items.add( new Eth( R.drawable.icon_iota, "8", false ) );
-        items.add( new Eth( R.drawable.icon_eth, "9", false ) );
-        items.add( new Eth( R.drawable.icon_gbt, "10", false ) );
 
+        {
+            ETH item = new ETH( );
+            item.setName( "iOTA" );
+            item.setIconRes( R.drawable.icon_iota );
+            items.add( item );
+        }
+
+
+        {
+            ETH item = new ETH( );
+            item.setName( "GBT" );
+            item.setIconRes( R.drawable.icon_gbt );
+            items.add( item );
+        }
+
+
+        {
+            ETH item = new ETH( );
+            item.setName( "Omisego" );
+            item.setIconRes( R.drawable.icon_omg );
+            items.add( item );
+        }
+
+
+        {
+            ETH item = new ETH( );
+            item.setName( "Ethereum" );
+            item.setIconRes( R.drawable.icon_eth );
+            items.add( item );
+        }
+
+        {
+            ETH item = new ETH( );
+            item.setName( "Bitcoin" );
+            item.setIconRes( R.drawable.icon_bit );
+            items.add( item );
+        }
 
         filterItems = new ArrayList<>( items );
-
         adapter = new TokenAdapter( getContext( ), filterItems );
         adapter.setOnInsideItemClickListener( this );
         viewMapper.listView.setAdapter( adapter );
@@ -148,7 +172,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
         //Todo DB갱신
     }
 
-    public ArrayList< Eth > getItems( ) {
+    public ArrayList< ETH > getItems( ) {
         return items;
     }
 

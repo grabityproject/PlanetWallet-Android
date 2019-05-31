@@ -12,7 +12,8 @@ import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.Coin;
+import io.grabity.planetwallet.VO.MainItems.CoinType;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p3_Wallet.Adapter.PopupWalletAddAdapter;
 import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -22,7 +23,7 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
 
     private ViewMapper viewMapper;
     private PopupWalletAddAdapter adapter;
-    private ArrayList< Coin > items;
+    private ArrayList< Planet > items;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -61,8 +62,18 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
             if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {
 
                 items = new ArrayList<>( );
-                items.add( new Coin( "BTC Universe", R.drawable.icon_bit ) );
-                items.add( new Coin( "ETH Universe", R.drawable.icon_eth ) );
+                {
+                    Planet item = new Planet( );
+                    item.setCoinType( CoinType.BTC );
+                    item.setIconRes( R.drawable.icon_bit );
+                    items.add( item );
+                }
+                {
+                    Planet item = new Planet( );
+                    item.setCoinType( CoinType.ETH );
+                    item.setIconRes( R.drawable.icon_eth );
+                    items.add( item );
+                }
 
                 adapter = new PopupWalletAddAdapter( this, items );
                 ListPopup.newInstance( this, !getPlanetWalletApplication( ).getCurrentTheme( ) ).
