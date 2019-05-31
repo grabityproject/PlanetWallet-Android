@@ -38,6 +38,8 @@ public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
+        viewMapper.toolBar.setTitle( getString( "title" ) );
+
         webSettings = viewMapper.webView.getSettings( );
         webSettings.setJavaScriptEnabled( true );
         viewMapper.webView.setWebChromeClient( new WebChromeClient( ) );

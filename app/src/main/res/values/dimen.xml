@@ -6,7 +6,7 @@
 
     <!-- TabBar -->
     <dimen name="tabbarHeight">44dp</dimen>
-    <dimen name="tabbarIndicatorHeight">3dp</dimen>
+    <dimen name="tabbarIndicatorHeight">1dp</dimen>
 
     <dimen name="listHeight">56dp</dimen>
 

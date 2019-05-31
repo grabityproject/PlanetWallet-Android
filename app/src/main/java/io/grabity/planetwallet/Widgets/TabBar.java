@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.support.annotation.Px;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
@@ -30,7 +32,7 @@ import io.grabity.planetwallet.R;
  * Created by. JcobPark on 2018. 08. 29
  */
 
-public class TabBar extends HorizontalScrollView implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class TabBar extends HorizontalScrollView implements View.OnClickListener, ViewPager.OnPageChangeListener, Themeable {
 
     private RelativeLayout wrapper;
     private LinearLayout container;
@@ -43,11 +45,13 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
 
     private int currentPosition = 0;
 
-    private int indicatorColor = Color.WHITE;
+    private int indicatorColor;
 
     private OnTabBarItemClickListener onTabBarItemClickListener;
 
     private int paddingLeft = 0;
+
+    private boolean tabBarTheme;
 
     public TabBar( Context context, AttributeSet attrs ) {
         this( context, attrs, 0 );
@@ -58,6 +62,7 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
 
         TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.TabBar, defStyleAttr, 0 );
         indicatorColor = a.getColor( R.styleable.TabBar_tabBarIndicatorColor, Color.WHITE );
+
         a.recycle( );
         viewInit( );
     }
@@ -180,6 +185,7 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
                 textView.setTextColor( item.getTextColor( ) );
                 textView.setOnClickListener( this );
                 textView.setPadding( ( int ) DPToPX( 8 ), 0, ( int ) DPToPX( 8 ), 0 );
+                textView.setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ), "fonts/WorkSans-Bold.otf" ), Typeface.BOLD );
                 item.setView( textView );
                 container.addView( textView, new LinearLayout.LayoutParams( 0, ViewGroup.LayoutParams.MATCH_PARENT, 1 ) );
                 buttonItems.add( item );
@@ -203,6 +209,7 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
                 indicator.requestLayout( );
             }
         }
+
 
     }
 
@@ -291,6 +298,16 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
     @Override
     public void onPageSelected( int position ) {
         currentPosition = position;
+
+        for ( int i = 0; i < getItems( ).size( ); i++ ) {
+            if ( !getItems( ).get( i ).getView( ).getClass( ).equals( TextView.class ) ) return;
+                if ( !tabBarTheme ) {
+                    ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#FFFFFF" : "#5C5964" ) );
+                } else {
+                    ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#000000" : "#aaaaaa" ) );
+                }
+        }
+
     }
 
     @Override
@@ -382,6 +399,8 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
         public void setView( View view ) {
             this.view = view;
         }
+
+
     }
 
     public float DPToPX( int dp ) {
@@ -414,5 +433,31 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
         void onTabBarItemClick( ButtonItem item );
     }
 
+    @Override
+    public void setTheme( boolean theme ) {
+        if ( !theme ) { //Dark
+            tabBarTheme = false;
+            setIndicatorColor( Color.argb( 255, 255, 255, 255 ) );
+
+            if ( getItems( ) != null ) {
+                for ( int i = 0; i < getItems( ).size( ); i++ ) {
+                    ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( "#5C5964" ) );
+                }
+                ( ( TextView ) getItems( ).get( 0 ).getView( ) ).setTextColor( Color.WHITE );
+            }
+        } else { // white
+            tabBarTheme = true;
+            setIndicatorColor( Color.argb( 255, 0, 0, 0 ) );
+
+            if ( getItems( ) != null ) {
+                for ( int i = 0; i < getItems( ).size( ); i++ ) {
+                    ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( "#aaaaaa" ) );
+                }
+                ( ( TextView ) getItems( ).get( 0 ).getView( ) ).setTextColor( Color.BLACK );
+            }
+        }
+
+
+    }
 
 }

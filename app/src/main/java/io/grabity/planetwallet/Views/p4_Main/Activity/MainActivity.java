@@ -32,6 +32,7 @@ import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.BarcodeView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.RippleEffectView;
+import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
 import io.grabity.planetwallet.Widgets.ShadowView;
 import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 import io.grabity.planetwallet.Widgets.StretchImageView;
@@ -74,7 +75,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         viewController = new ViewController( this, viewMapper );
         viewMapper.rippleView.setOnRippleEffectListener( this );
-        viewMapper.rippleView.setActivity( this );
 
         viewMapper.listMain.setOnAttachViewListener( this );
         viewMapper.listMain.addHeaderView( R.layout.header_main );
@@ -171,6 +171,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             footerViewMapper.groupAddToken.setVisibility( !coin ? View.VISIBLE : View.GONE );
             footerViewMapper.groupMessage.setVisibility( items.size( ) == 0 ? View.VISIBLE : View.GONE );
+            footerViewMapper.btnAddToken.setBorderColorNormal( Color.parseColor( getCurrentTheme() ? "#EDEDED" : "#1E1E28" )  );
+            footerViewMapper.btnAddToken.setBorderColorHighlight( Color.parseColor( getCurrentTheme() ? "#EDEDED" : "#1E1E28" ) );
 
 
         }
@@ -381,7 +383,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public class FooterViewMapper {
 
         public View footerView;
-        View btnAddToken;
+        RoundButton btnAddToken;
 
         ViewGroup groupAddToken;
         ViewGroup groupMessage;

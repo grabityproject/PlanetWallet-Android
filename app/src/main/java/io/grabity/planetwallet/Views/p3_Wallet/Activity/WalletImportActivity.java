@@ -52,16 +52,17 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.tabBar.setItems(
-                new TabBar.ButtonItem( ).setText( "Mnemonic" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) ),
-                new TabBar.ButtonItem( ).setText( "Json" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) ),
-                new TabBar.ButtonItem( ).setText( "Private Key" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) )
+                new TabBar.ButtonItem( ).setText( "Mnemonic" ).setTextSize( 14 ),
+                new TabBar.ButtonItem( ).setText( "Json" ).setTextSize( 14 ),
+                new TabBar.ButtonItem( ).setText( "Private Key" ).setTextSize( 14 )
         );
 
-        ( ( TextView ) viewMapper.tabBar.getItems( ).get( 0 ).getView( ) ).setTextColor( Color.parseColor( "#FFFFFF" ) );
-        viewMapper.tabBar.setIndicatorColor( Color.parseColor( "#FFFFFF" ) );
+        viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
+
 
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );
         viewMapper.viewPager.addOnPageChangeListener( this );
+//        viewMapper.viewPager.setOffscreenPageLimit( 3 );
     }
 
     @Override
@@ -83,9 +84,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
     @Override
     public void onPageSelected( int position ) {
-        for ( int i = 0; i < viewMapper.tabBar.getItems( ).size( ); i++ ) {
-            ( ( TextView ) viewMapper.tabBar.getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#FFFFFF" : "#5C5964" ) );
-        }
+
     }
 
     @Override
@@ -96,6 +95,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
         }
     }

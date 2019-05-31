@@ -31,9 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:inputType="textPassword"
-                android:letterSpacing="1.0"
                 android:paddingLeft="14dp"
-                android:textColor="#FFFFFF"
                 app:defaultTheme="Dark" />
 
 

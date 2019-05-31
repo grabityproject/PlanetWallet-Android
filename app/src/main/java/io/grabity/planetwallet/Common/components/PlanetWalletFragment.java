@@ -51,6 +51,8 @@ public abstract class PlanetWalletFragment extends Fragment implements NetworkIn
         if ( theme != getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( ) ) {
             theme = getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( );
             onUpdateTheme( theme );
+        }else{
+            applyTheme( getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( ) );
         }
     }
 

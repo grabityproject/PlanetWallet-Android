@@ -26,8 +26,8 @@
             android:text="ETH"
             android:textColor="#FFF"
             android:textSize="16dp"
-            android:textStyle="bold"
-            app:themeTextColor="#000" />
+            app:themeTextColor="#000"
+            app:typefaceStyle="medium"/>
 
 
         <io.grabity.planetwallet.Widgets.CircleImageView

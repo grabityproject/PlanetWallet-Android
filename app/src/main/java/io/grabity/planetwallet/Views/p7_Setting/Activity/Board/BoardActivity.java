@@ -84,7 +84,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        sendAction( DetailBoardActivity.class );
+        sendAction( DetailBoardActivity.class, Utils.createStringBundle( "title", Utils.equals( getString( "board" ), "announcements" ) ? "announcements" : "faq" ) );
     }
 
     public class ViewMapper {

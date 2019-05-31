@@ -22,8 +22,8 @@
         android:text="Verification Code"
         android:textColor="#FFFFFF"
         android:textSize="28dp"
-        android:textStyle="bold"
-        app:themeTextColor="#000" />
+        app:themeTextColor="#000"
+        app:typefaceStyle="bold"/>
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_pincode_registration_specification"

@@ -49,6 +49,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 app:borderColorNormal="#1E1E28"
+                app:borderColorHighlight="#1E1E28"
                 app:borderWidth="1dp"
                 app:cornerRadius="6dp" />
 

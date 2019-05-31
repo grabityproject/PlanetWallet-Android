@@ -13,6 +13,7 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p5_Token.Fragment.CustomTokenFragment;
@@ -48,14 +49,10 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.tabBar.setItems(
-                new TabBar.ButtonItem( ).setText( "Add Token" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) ),
-                new TabBar.ButtonItem( ).setText( "Custom Token" ).setTextSize( 14 ).setTextColor( Color.parseColor( "#5C5964" ) )
+                new TabBar.ButtonItem( ).setText( "Add Token" ).setTextSize( 14 ),
+                new TabBar.ButtonItem( ).setText( "Custom Token" ).setTextSize( 14 )
         );
-
-
-        ( ( TextView ) viewMapper.tabBar.getItems( ).get( 0 ).getView( ) ).setTextColor( Color.parseColor( "#FFFFFF" ) );
-        viewMapper.tabBar.setIndicatorColor( Color.parseColor( "#FFFFFF" ) );
-
+//        viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
 
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );
         viewMapper.viewPager.addOnPageChangeListener( this );
@@ -80,11 +77,7 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
 
     @Override
     public void onPageSelected( int position ) {
-        for ( int i = 0; i < viewMapper.tabBar.getItems( ).size( ); i++ ) {
-            ( ( TextView ) viewMapper.tabBar.getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#FFFFFF" : "#5C5964" ) );
-        }
-
-
+        Utils.hideKeyboard( this, getCurrentFocus( ) );
     }
 
     @Override
@@ -95,6 +88,7 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
     public void onToolBarClick( Object tag, View view ) {
         //Todo 토큰추가를 확인후 setResult 분기
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
             setResult( RESULT_OK );
             super.onBackPressed( );
         }

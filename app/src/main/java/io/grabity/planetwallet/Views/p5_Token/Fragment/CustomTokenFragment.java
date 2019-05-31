@@ -44,6 +44,8 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
         super.viewInit( );
         viewMapper.btnSubmit.setOnClickListener( this );
         viewMapper.etAddress.addTextChangedListener( this );
+
+        viewMapper.btnSubmit.setEnabled( false );
     }
 
     @Override
@@ -89,8 +91,12 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
 
     @Override
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
-
+        if ( viewMapper.etAddress.getText( ) == null || viewMapper.etSymbol.getText( ) == null )
+            return;
+        viewMapper.btnSubmit.setEnabled( viewMapper.etAddress.getText( ).toString( ).trim( ).length( ) == 0 &&
+                viewMapper.etSymbol.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
     }
+
 
     @Override
     public void afterTextChanged( Editable s ) {

@@ -73,6 +73,7 @@
 
     <declare-styleable name="TabBar">
         <attr name="tabBarIndicatorColor" format="color" />
+        <attr name="defaultTheme" />
     </declare-styleable>
 
 
@@ -156,7 +157,7 @@
 
         <attr name="defaultTheme" />
 
-
     </declare-styleable>
+
 
 </resources>

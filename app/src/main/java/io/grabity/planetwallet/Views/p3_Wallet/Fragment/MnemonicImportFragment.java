@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -68,6 +69,21 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
         }
 
     }
+
+    @Override
+    protected void onUpdateTheme( boolean theme ) {
+        super.onUpdateTheme( theme );
+        if ( theme ) {
+            viewMapper.etMnemonic.setTextColor( Color.parseColor( "#000000" ) );
+            viewMapper.etMnemonic.setHintTextColor( Color.parseColor( "#aaaaaa" ) );
+            viewMapper.etMnemonic.setBackgroundColor( Color.parseColor( "#FCFCFC" ) );
+        } else {
+            viewMapper.etMnemonic.setTextColor( Color.parseColor( "#FFFFFF" ) );
+            viewMapper.etMnemonic.setHintTextColor( Color.parseColor( "#5C5964" ) );
+            viewMapper.etMnemonic.setBackgroundColor( Color.parseColor( "#111117" ) );
+        }
+    }
+
 
     @Override
     public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
