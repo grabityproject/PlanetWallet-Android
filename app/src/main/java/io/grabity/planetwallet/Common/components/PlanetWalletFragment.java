@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.MissingFormatArgumentException;
@@ -51,7 +52,7 @@ public abstract class PlanetWalletFragment extends Fragment implements NetworkIn
         if ( theme != getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( ) ) {
             theme = getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( );
             onUpdateTheme( theme );
-        }else{
+        } else {
             applyTheme( getPlanetWalletActivity( ).getPlanetWalletApplication( ).getCurrentTheme( ) );
         }
     }

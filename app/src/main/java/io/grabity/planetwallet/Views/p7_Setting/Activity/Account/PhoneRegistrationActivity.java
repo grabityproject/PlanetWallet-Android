@@ -71,6 +71,21 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
         items.add( new PhoneCode( "Hawaii", "+ 1808" ) );
         items.add( new PhoneCode( "Grenada", "+ 1809" ) );
         items.add( new PhoneCode( "Denmark", "+ 45" ) );
+        items.add( new PhoneCode( "China", "+ 86" ) );
+        items.add( new PhoneCode( "Japan", "+ 81" ) );
+        items.add( new PhoneCode( "New Zealand", "+ 64" ) );
+        items.add( new PhoneCode( "Hongkong", "+ 852" ) );
+        items.add( new PhoneCode( "Hawaii", "+ 1808" ) );
+        items.add( new PhoneCode( "Grenada", "+ 1809" ) );
+        items.add( new PhoneCode( "Denmark", "+ 45" ) );
+        items.add( new PhoneCode( "China", "+ 86" ) );
+        items.add( new PhoneCode( "Japan", "+ 81" ) );
+        items.add( new PhoneCode( "New Zealand", "+ 64" ) );
+        items.add( new PhoneCode( "Hongkong", "+ 852" ) );
+        items.add( new PhoneCode( "Hawaii", "+ 1808" ) );
+        items.add( new PhoneCode( "Grenada", "+ 1809" ) );
+        items.add( new PhoneCode( "Denmark", "+ 45" ) );
+        items.add( new PhoneCode( "China", "+ 86" ) );
 
         adapter = new PopupPhoneCodeAdapter( this, items );
 
@@ -84,12 +99,13 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
             ListPopup.newInstance( this )
                     .setAdapter( adapter )
                     .setOnListPopupItemClickListener( this )
+                    .setShowShadow( true )
                     .show( );
         } else if ( v == viewMapper.btnSend ) {
             viewMapper.groupPhoneCode.setVisibility( View.VISIBLE );
             viewMapper.textTime.Start( 180000 );
         } else if ( v == viewMapper.btnSubmit ) {
-
+            //Todo 인증후 번호변경으로 변경
             if ( viewMapper.textTime.isCertification( ) ) {
                 viewMapper.textTime.Stop( );
                 Utils.hideKeyboard( this, getCurrentFocus( ) );
@@ -125,8 +141,8 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
-            finish( );
         }
     }
 

@@ -28,6 +28,7 @@ public class C {
 
     public static class bundleKey {
         public final static String PLANET = "PLANET";
+        public final static String PINCODE = "PINCODE";
     }
 
     public static class theme {

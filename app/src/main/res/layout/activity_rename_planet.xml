@@ -48,9 +48,8 @@
                 android:layout_height="match_parent"
                 android:hint="name"
                 android:paddingLeft="16dp"
-                android:textColor="#000"
-                android:textColorHint="#AAAAAA"
                 android:textSize="14dp"
+                android:singleLine="true"
                 app:defaultTheme="Light" />
 
             <io.grabity.planetwallet.Widgets.CircleImageView

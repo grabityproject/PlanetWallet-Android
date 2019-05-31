@@ -57,12 +57,15 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
                 new TabBar.ButtonItem( ).setText( "Private Key" ).setTextSize( 14 )
         );
 
-        viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
-
-
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );
         viewMapper.viewPager.addOnPageChangeListener( this );
 //        viewMapper.viewPager.setOffscreenPageLimit( 3 );
+    }
+
+    @Override
+    protected void onResume( ) {
+        super.onResume( );
+        viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
     }
 
     @Override
@@ -84,7 +87,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
     @Override
     public void onPageSelected( int position ) {
-
+        Utils.hideKeyboard( this, getCurrentFocus( ) );
     }
 
     @Override

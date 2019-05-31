@@ -28,26 +28,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Is that your"
+            android:text="Is that your \n planet?"
             android:textColor="#FFFFFF"
             android:textSize="28dp"
-            app:themeTextColor="#000"
-            app:typefaceStyle="bold" />
-
-        <io.grabity.planetwallet.Widgets.FontTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="planet?"
-            android:textColor="#FFFFFF"
-            android:textSize="28dp"
+            android:lineSpacingExtra="6dp"
             app:themeTextColor="#000"
             app:typefaceStyle="bold" />
     </LinearLayout>
 
 
     <io.grabity.planetwallet.Widgets.PlanetView
-        android:id="@+id/image_planet_generate_icon"
+        android:id="@+id/planet_generate_icon"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_below="@id/group_planet_generate_title"
@@ -57,7 +48,7 @@
     <io.grabity.planetwallet.Widgets.FontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image_planet_generate_icon"
+        android:layout_below="@id/planet_generate_icon"
         android:layout_centerHorizontal="true"
         android:paddingTop="20dp"
         android:text="Planet IIV"
@@ -91,7 +82,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/image_generate_refresh_white" />
+                android:src="@drawable/image_generate_refresh_white"
+                app:themeSrc="@drawable/image_generate_refresh_blue"/>
 
         </RelativeLayout>
 
@@ -113,7 +105,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/image_generate_select_white" />
+                android:src="@drawable/image_generate_select_white"
+                app:themeSrc="@drawable/image_generate_select_blue"/>
 
         </RelativeLayout>
 

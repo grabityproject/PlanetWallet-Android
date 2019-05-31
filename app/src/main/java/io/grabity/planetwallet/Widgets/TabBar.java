@@ -301,11 +301,11 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
 
         for ( int i = 0; i < getItems( ).size( ); i++ ) {
             if ( !getItems( ).get( i ).getView( ).getClass( ).equals( TextView.class ) ) return;
-                if ( !tabBarTheme ) {
-                    ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#FFFFFF" : "#5C5964" ) );
-                } else {
-                    ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#000000" : "#aaaaaa" ) );
-                }
+            if ( !tabBarTheme ) {
+                ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#FFFFFF" : "#5C5964" ) );
+            } else {
+                ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( i == position ? "#000000" : "#aaaaaa" ) );
+            }
         }
 
     }

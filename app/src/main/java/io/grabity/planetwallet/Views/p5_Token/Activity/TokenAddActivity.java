@@ -1,11 +1,9 @@
 package io.grabity.planetwallet.Views.p5_Token.Activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -13,7 +11,6 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p5_Token.Fragment.CustomTokenFragment;
@@ -52,11 +49,16 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
                 new TabBar.ButtonItem( ).setText( "Add Token" ).setTextSize( 14 ),
                 new TabBar.ButtonItem( ).setText( "Custom Token" ).setTextSize( 14 )
         );
-//        viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
 
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );
         viewMapper.viewPager.addOnPageChangeListener( this );
 
+    }
+
+    @Override
+    protected void onResume( ) {
+        super.onResume( );
+        viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
     }
 
     @Override

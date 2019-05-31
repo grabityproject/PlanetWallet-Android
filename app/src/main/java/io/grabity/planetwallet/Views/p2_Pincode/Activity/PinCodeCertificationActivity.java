@@ -22,6 +22,8 @@ import io.grabity.planetwallet.Widgets.FontTextView;
 
 public class PinCodeCertificationActivity extends PlanetWalletActivity {
 
+    public static int CHANGE = 10;
+
     private ViewMapper viewMapper;
     private ArrayList< DotView > passwordViews;
     private ArrayList< FontTextView > numberButtons;
@@ -96,16 +98,29 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                     }
                     strKeyList = stringBuffer.toString( );
 
+//                    Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE )
+//                    Utils.equals( Utils.getPreferenceData( this, C.pref.PASSWORD ), strKeyList )
                     if ( Utils.equals( Utils.getPreferenceData( this, C.pref.PASSWORD ), strKeyList ) ) {
 
                         if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {
-                            sendAction( MainActivity.class );
+
+                            if ( Utils.equals( getInt( C.bundleKey.PINCODE, CHANGE ), CHANGE ) ) {
+                                //pincode 초기화
+
+
+                            } else{
+                                sendAction( MainActivity.class );
+                            }
+
+
                         } else {
                             sendAction( WalletAddActivity.class );
                         }
                         finish( );
 
                     } else {
+
+
                         keyList.clear( );
                         setPasswordMessage( false );
                     }

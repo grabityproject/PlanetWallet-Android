@@ -53,19 +53,26 @@ public class AccountActivity extends PlanetWalletActivity implements ToolBar.OnT
         super.onClick( v );
         if ( v == viewMapper.btnNickName ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.ACCOUNT_RENAME, NicknameRegistrationActivity.class, Utils.createStringBundle( "name", viewMapper.nickName.getText( ).toString( ) ) );
+            sendAction( C.requestCode.ACCOUNT_RENAME, NicknameRegistrationActivity.class, Utils.createStringBundle( "name", viewMapper.textNickName.getText( ).toString( ) ) );
         } else if ( v == viewMapper.btnEmail ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.ACCOUNT_REMAIL, EmailRegistrationActivity.class, Utils.createStringBundle( "mail", viewMapper.email.getText( ).toString( ) ) );
+            sendAction( C.requestCode.ACCOUNT_REMAIL, EmailRegistrationActivity.class, Utils.createStringBundle( "mail", viewMapper.textEmail.getText( ).toString( ) ) );
         } else if ( v == viewMapper.btnPhone ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.ACCOUNT_REPHONE_NUMBER, PhoneRegistrationActivity.class, Utils.createStringBundle( "phone", viewMapper.phone.getText( ).toString( ) ) );
+            sendAction( C.requestCode.ACCOUNT_REPHONE_NUMBER, PhoneRegistrationActivity.class, Utils.createStringBundle( "phone", viewMapper.textPhone.getText( ).toString( ) ) );
         }
     }
 
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
+        if ( requestCode == C.requestCode.ACCOUNT_RENAME && resultCode == RESULT_OK ) {
+            viewMapper.textNickName.setText( data != null ? data.getStringExtra( "name" ) : "" );
+        } else if ( requestCode == C.requestCode.ACCOUNT_REMAIL && resultCode == RESULT_OK ) {
+            viewMapper.textEmail.setText( data != null ? data.getStringExtra( "mail" ) : "" );
+        } else if ( requestCode == C.requestCode.ACCOUNT_REPHONE_NUMBER && resultCode == RESULT_OK ) {
+            viewMapper.textPhone.setText( data != null ? data.getStringExtra( "phone" ) : "" );
+        }
 
     }
 
@@ -82,9 +89,9 @@ public class AccountActivity extends PlanetWalletActivity implements ToolBar.OnT
         ViewGroup btnEmail;
         ViewGroup btnPhone;
         ViewGroup btnConnectManager;
-        TextView nickName;
-        TextView email;
-        TextView phone;
+        TextView textNickName;
+        TextView textEmail;
+        TextView textPhone;
 
         public ViewMapper( ) {
 
@@ -95,9 +102,9 @@ public class AccountActivity extends PlanetWalletActivity implements ToolBar.OnT
             btnPhone = findViewById( R.id.group_account_phone );
             btnConnectManager = findViewById( R.id.group_account_connect_manager );
 
-            nickName = findViewById( R.id.text_account_nickname );
-            email = findViewById( R.id.text_account_email );
-            phone = findViewById( R.id.text_account_phone );
+            textNickName = findViewById( R.id.text_account_nickname );
+            textEmail = findViewById( R.id.text_account_email );
+            textPhone = findViewById( R.id.text_account_phone );
 
         }
     }

@@ -34,7 +34,8 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         super.viewInit( );
 
         viewMapper.view.addAnimatorListener( this );
-        viewMapper.view.setAnimation( "lottie/splash.json" );
+
+        viewMapper.view.setAnimation( !getCurrentTheme( ) ? "lottie/splash_black.json" : "lottie/splash_white.json" );
         viewMapper.view.setRepeatCount( 0 );
         viewMapper.view.playAnimation( );
 

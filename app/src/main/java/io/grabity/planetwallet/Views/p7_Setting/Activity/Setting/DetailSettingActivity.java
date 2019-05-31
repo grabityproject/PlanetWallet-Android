@@ -75,7 +75,7 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnPinCode ) {
-            sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeCertificationActivity.class );
+            sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ) );
         } else if ( v == viewMapper.btnCurrency ) {
             //Todo popup list
 

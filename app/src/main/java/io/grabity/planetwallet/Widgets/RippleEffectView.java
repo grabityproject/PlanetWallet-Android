@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+
 public class RippleEffectView extends View implements Themeable {
 
     private View trigger;
@@ -75,8 +77,12 @@ public class RippleEffectView extends View implements Themeable {
             centerY = triggerLocation[ 1 ] - thisLocation[ 1 ] + trigger.getHeight( ) / 2.0f;
             isSetLocation = true;
         }
-        ripplePaint.setColor( Color.argb( ( int ) ( 255.0f * percent / 100.0f ), 255, 255, 255 ) );
+
+        ripplePaint.setColor( rippleColor == Color.WHITE ? Color.argb( ( int ) ( 255.0f * percent / 100.0f ), 255, 255, 255 )
+                : Color.argb( ( int ) ( 255.0f * percent / 100.0f ), 0, 0, 0 ) );
         canvas.drawCircle( centerX, centerY, ( float ) Math.sqrt( Math.pow( width, 2 ) + Math.pow( height, 2 ) ) * percent / 100.0f, ripplePaint );
+
+
     }
 
     @Override

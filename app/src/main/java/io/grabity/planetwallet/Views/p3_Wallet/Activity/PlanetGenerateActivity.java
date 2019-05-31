@@ -5,11 +5,14 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Random;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
+import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
@@ -57,7 +60,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnRefresh ) {
-            Toast.makeText( this, "새로운 이미지 교체", Toast.LENGTH_SHORT ).show( );
+            viewMapper.planetView.setData( randomString( ) );
         } else if ( v == viewMapper.btnSelect ) {
             Utils.setPreferenceData( this, C.pref.WALLET_GENERATE, C.wallet.CREATE );
             sendAction( MainActivity.class );
@@ -66,13 +69,27 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         }
     }
 
+    /**
+     * planetView Change Test
+     */
+    String randomString( ) {
+        Random random = new Random( );
+        StringBuffer buffer = new StringBuffer( );
+        for ( int i = 0; i < 25; i++ ) {
+            buffer.append( ( char ) ( random.nextInt( 26 ) ) + 97 );
+        }
+        return buffer.toString( );
+    }
+
     public class ViewMapper {
 
         View btnRefresh;
         View btnSelect;
         ToolBar toolBar;
+        PlanetView planetView;
 
         public ViewMapper( ) {
+            planetView = findViewById( R.id.planet_generate_icon );
             toolBar = findViewById( R.id.toolBar );
             btnRefresh = findViewById( R.id.btn_planet_generate_refresh );
             btnSelect = findViewById( R.id.btn_planet_generate_select );

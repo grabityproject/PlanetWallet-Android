@@ -60,16 +60,16 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
          * 임시작업
          */
         items = new ArrayList<>( );
-        items.add( new Eth( R.drawable.icon_eth, "1", false ) );
-        items.add( new Eth( R.drawable.icon_gbt, "2", false ) );
-        items.add( new Eth( R.drawable.icon_omg, "3", false ) );
-        items.add( new Eth( R.drawable.icon_iota, "4", false ) );
-        items.add( new Eth( R.drawable.icon_eth, "5", false ) );
-        items.add( new Eth( R.drawable.icon_gbt, "6", false ) );
-        items.add( new Eth( R.drawable.icon_omg, "7", false ) );
-        items.add( new Eth( R.drawable.icon_iota, "8", false ) );
-        items.add( new Eth( R.drawable.icon_eth, "9", false ) );
-        items.add( new Eth( R.drawable.icon_gbt, "10", false ) );
+        items.add( new Eth( R.drawable.icon_eth, "ETH", false ) );
+        items.add( new Eth( R.drawable.icon_gbt, "GBT", false ) );
+        items.add( new Eth( R.drawable.icon_omg, "OMG", false ) );
+        items.add( new Eth( R.drawable.icon_iota, "IOTA", false ) );
+        items.add( new Eth( R.drawable.icon_eth, "ETH", false ) );
+        items.add( new Eth( R.drawable.icon_gbt, "GBT", false ) );
+        items.add( new Eth( R.drawable.icon_omg, "OMG", false ) );
+        items.add( new Eth( R.drawable.icon_iota, "IOTA", false ) );
+        items.add( new Eth( R.drawable.icon_eth, "ETH", false ) );
+        items.add( new Eth( R.drawable.icon_gbt, "GBT", false ) );
 
 
         filterItems = new ArrayList<>( items );

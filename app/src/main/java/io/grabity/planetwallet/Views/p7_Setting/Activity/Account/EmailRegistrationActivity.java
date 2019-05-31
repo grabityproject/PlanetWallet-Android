@@ -43,8 +43,7 @@ public class EmailRegistrationActivity extends PlanetWalletActivity implements T
     @Override
     protected void setData( ) {
         super.setData( );
-        viewMapper.etEmail.setText( getString( "mail" ) );
-        viewMapper.etEmail.setSelection( viewMapper.etEmail.length( ) );
+        viewMapper.etEmail.setHint( getString( "mail" ) );
     }
 
     @Override
@@ -69,6 +68,8 @@ public class EmailRegistrationActivity extends PlanetWalletActivity implements T
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
         if ( viewMapper.etEmail.getText( ).toString( ).trim( ).length( ) != 0 ) {
             viewMapper.btnSubmit.setEnabled( Utils.isValidEmail( viewMapper.etEmail.getText( ).toString( ) ) ? true : false );
+        } else {
+            viewMapper.btnSubmit.setEnabled( false );
         }
         viewMapper.btnClear.setVisibility( viewMapper.etEmail.getText( ).length( ) == 0 ? View.GONE : View.VISIBLE );
     }
@@ -81,8 +82,9 @@ public class EmailRegistrationActivity extends PlanetWalletActivity implements T
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
-            finish( );
+
         }
     }
 

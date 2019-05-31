@@ -39,13 +39,15 @@ public class NicknameRegistrationActivity extends PlanetWalletActivity implement
         viewMapper.etNickName.addTextChangedListener( this );
         viewMapper.btnNameClear.setOnClickListener( this );
         viewMapper.btnSubmit.setOnClickListener( this );
+
+        viewMapper.btnSubmit.setEnabled( false );
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
-        viewMapper.etNickName.setText( getString( "name" ) );
-        viewMapper.etNickName.setSelection( viewMapper.etNickName.length( ) );
+        viewMapper.etNickName.setHint( getString( "name" ) );
+
     }
 
 
@@ -89,8 +91,8 @@ public class NicknameRegistrationActivity extends PlanetWalletActivity implement
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
-            finish( );
         }
     }
 

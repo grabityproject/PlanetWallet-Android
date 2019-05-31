@@ -171,8 +171,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             footerViewMapper.groupAddToken.setVisibility( !coin ? View.VISIBLE : View.GONE );
             footerViewMapper.groupMessage.setVisibility( items.size( ) == 0 ? View.VISIBLE : View.GONE );
-            footerViewMapper.btnAddToken.setBorderColorNormal( Color.parseColor( getCurrentTheme() ? "#EDEDED" : "#1E1E28" )  );
-            footerViewMapper.btnAddToken.setBorderColorHighlight( Color.parseColor( getCurrentTheme() ? "#EDEDED" : "#1E1E28" ) );
+            footerViewMapper.btnAddToken.setBorderColorNormal( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
+            footerViewMapper.btnAddToken.setBorderColorHighlight( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
 
 
         }
@@ -196,7 +196,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.MAIN_TOKEN_ADD && resultCode == RESULT_OK ) {
-            Toast.makeText( this, "토큰추가확인", Toast.LENGTH_SHORT ).show( );
+            //Todo 토큰추가
         }
     }
 
@@ -204,7 +204,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onToolBarClick( Object tag, View view ) {
 
         if ( Utils.equals( tag, C.tag.TOOLBAR_MENU ) ) {
-            viewMapper.rippleView.ripple( true );
+            if ( !viewMapper.rippleView.isRippleOn( ) )
+                viewMapper.rippleView.ripple( true );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_MUTIUNIVERSE ) ) {
             viewMapper.slideDrawer.open( SlideDrawerLayout.Position.TOP );
         }
@@ -225,15 +226,20 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     protected void onResume( ) {
         super.onResume( );
         viewMapper.rippleView.ripple( false );
+        viewMapper.rippleView.setTheme( getCurrentTheme() );
         viewMapper.shadowBackground.setShadowColor(
                 Color.parseColor( getCurrentTheme( ) ? "#FFFFFF" : "#000000" ),
                 Color.parseColor( getCurrentTheme( ) ? "#C8FFFFFF" : "#A8000000" )
         );
+
+        viewMapper.btnPlanets.setBackgroundColorNormal( Color.parseColor( getCurrentTheme( ) ? "#BCBDD5" : "#5C5964" ) );
+        viewMapper.btnBottomClose.setBackgroundColorNormal( Color.parseColor( getCurrentTheme( ) ? "#BCBDD5" : "#5C5964" ) );
     }
 
     @Override
     public void onRippleEffect( boolean on ) {
         if ( on ) {
+            PLog.e( "onRippleEffect" );
             setTransition( Transition.NO_ANIMATION );
             sendAction( SettingActivity.class );
         }
@@ -242,7 +248,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
         if ( recyclerView == viewMapper.listMain ) {
-            PLog.e( "메인리스트뷰 클릭 : " + position );
         } else if ( recyclerView == viewMapper.listPlanets ) {
             viewMapper.slideDrawer.close( );
 
@@ -312,6 +317,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public View groupBlur;
         public StretchImageView imageBlurView;
         public View groupBottom;
+        PlanetView planetBottom;
 
         AdvanceRecyclerView listPlanets;
         TextView textPlanetName;
@@ -328,6 +334,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public PlanetView planetBackground;
         public ShadowView shadowBackground;
 
+        RoundButton btnPlanets;
+        RoundButton btnBottomClose;
+
         public ViewMapper( ) {
 
             toolBar = findViewById( R.id.toolBar );
@@ -342,6 +351,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             groupBlur = findViewById( R.id.group_main_blur );
             imageBlurView = findViewById( R.id.image_main_blur );
             groupBottom = findViewById( R.id.group_main_bottom );
+            planetBottom = findViewById( R.id.planetview_main_blur_planetview );
 
             listPlanets = findViewById( R.id.list_main_planets_list );
             textPlanetName = findViewById( R.id.text_main_planets_name );
@@ -356,6 +366,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             planetBackground = findViewById( R.id.planet_main_background );
             groupBackground = findViewById( R.id.group_main_background );
             shadowBackground = findViewById( R.id.shadow_main_background );
+
+            btnPlanets = findViewById( R.id.btn_main_planets_bottom_btn );
+            btnBottomClose = findViewById( R.id.btn_main_bottom_close );
 
         }
     }

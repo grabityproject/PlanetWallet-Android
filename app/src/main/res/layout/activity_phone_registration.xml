@@ -64,9 +64,8 @@
                 android:hint="phone"
                 android:inputType="number"
                 android:paddingStart="68dp"
-                android:textColor="#000"
-                android:textColorHint="#AAAAAA"
                 android:textSize="14dp"
+                android:singleLine="true"
                 app:defaultTheme="Light" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
@@ -119,8 +118,6 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="72dp"
                     android:singleLine="true"
-                    android:textColor="#000"
-                    android:textColorHint="#AAAAAA"
                     app:defaultTheme="Light" />
 
                 <io.grabity.planetwallet.Widgets.TimerView

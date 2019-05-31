@@ -47,9 +47,9 @@
                 android:hint="E-mail"
                 android:paddingStart="12dp"
                 android:paddingEnd="56dp"
-                android:textColor="#000"
-                android:textColorHint="#AAAAAA"
                 android:textSize="14dp"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
                 app:defaultTheme="Light" />
 
             <io.grabity.planetwallet.Widgets.CircleImageView

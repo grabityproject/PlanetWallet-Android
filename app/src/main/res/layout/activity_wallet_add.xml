@@ -40,7 +40,6 @@
             android:gravity="center"
             android:text="Crate Planet"
             android:textSize="16dp"
-            android:textStyle="bold"
             app:buttonType="A"
             app:defaultTheme="Dark" />
 
@@ -51,7 +50,6 @@
             android:gravity="center"
             android:text="Import Another Planet"
             android:textSize="16dp"
-            android:textStyle="bold"
             app:buttonType="C"
             app:defaultTheme="Dark" />
 
