@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
@@ -244,6 +245,14 @@ public class SlideDrawerLayout extends ViewGroup {
             if ( onTrigger ) isGoToOutside = false;
             return onTrigger;
         }
+    }
+
+    public void setCurrentMovingPosition( int currentMovingPosition ) {
+        this.currentMovingPosition = currentMovingPosition;
+    }
+
+    public void bottomTouch( ) {
+        setCurrentMovingPosition( 3 );
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
@@ -75,6 +76,7 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnPinCode ) {
+            setTransition( Transition.NO_ANIMATION );
             sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ) );
         } else if ( v == viewMapper.btnCurrency ) {
             //Todo popup list
@@ -91,6 +93,8 @@ public class DetailSettingActivity extends PlanetWalletActivity implements ToolB
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_OK ) {
             Toast.makeText( this, "PinCode Change Success", Toast.LENGTH_SHORT ).show( );
+        } else if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_CANCELED ) {
+            Toast.makeText( this, "PinCode Change Cancel", Toast.LENGTH_SHORT ).show( );
         }
     }
 

@@ -5,16 +5,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.BTC;
@@ -39,7 +43,7 @@ import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, AdvanceRecyclerView.OnScrollListener {
+public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, AdvanceRecyclerView.OnScrollListener, View.OnTouchListener {
 
     private ViewMapper viewMapper;
     private HeaderViewMapper headerViewMapper;
@@ -91,6 +95,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         viewMapper.btnCopy.setOnClickListener( this );
         viewMapper.btnSend.setOnClickListener( this );
+        viewMapper.btnBottomBlur.setOnTouchListener( this );
+
     }
 
     @Override
@@ -156,6 +162,17 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         }
     }
 
+
+    @Override
+    public boolean onTouch( View v, MotionEvent event ) {
+        if ( v == viewMapper.btnBottomBlur ) {
+            viewMapper.slideDrawer.bottomTouch( );
+            viewMapper.slideDrawer.open( SlideDrawerLayout.Position.BOTTOM );
+            viewMapper.slideDrawer.onTouchEvent( event );
+        }
+        return true;
+    }
+
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
@@ -183,6 +200,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( viewMapper.slideDrawer.isOpen( ) ) {
             viewMapper.slideDrawer.close( );
         } else {
+            setTransition( Transition.NO_ANIMATION );
             super.onBackPressed( );
         }
     }
@@ -233,7 +251,13 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onScrolled( RecyclerView recyclerView, int dx, int dy, float scrollX, float scrollY ) {
+
     }
+
+    public void startRefresh ( ) {
+
+    }
+
 
     public class ViewMapper {
 
@@ -267,6 +291,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         public PlanetView planetBlur;
 
+        View btnBottomBlur;
+
+        public LottieAnimationView lottiePullToRefresh;
+
         public ViewMapper( ) {
 
             toolBar = findViewById( R.id.toolBar );
@@ -296,7 +324,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             groupBackground = findViewById( R.id.group_main_background );
             shadowBackground = findViewById( R.id.shadow_main_background );
 
-            planetBlur = findViewById( R.id.planetview_main_blur_planetview );
+            planetBlur = findViewById( R.id.planet_main_blur_planetview );
+
+            btnBottomBlur = findViewById( R.id.btn_main_blur );
+
+            lottiePullToRefresh = findViewById( R.id.lottie_main_pull_to_refresh );
 
         }
     }
@@ -306,6 +338,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public View groupHeaderPlanet;
         public View headerView;
         public PlanetView planetView;
+
         TextView textName;
         TextView textAddress;
         View btnCopy;

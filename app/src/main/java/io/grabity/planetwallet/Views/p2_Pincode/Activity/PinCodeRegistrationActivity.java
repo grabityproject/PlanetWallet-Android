@@ -6,12 +6,14 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.DotView;
@@ -97,6 +99,13 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
                     for ( int i = 0; i < keyList.size( ); i++ ) {
                         stringBuffer.append( keyList.get( i ) );
                     }
+
+                    if ( Utils.equals( getInt( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ), PinCodeCertificationActivity.CHANGE ) ) {
+                        Utils.setPreferenceData( this, C.pref.PASSWORD, stringBuffer.toString( ) );
+                        setResult( RESULT_OK );
+                        super.onBackPressed( );
+                    }
+
                     strKeyList = stringBuffer.toString( );
                     checkKeyList = stringBuffer.toString( );
                     keyList.clear( );
@@ -165,6 +174,9 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
     @Override
     public void onBackPressed( ) {
         if ( keyList.size( ) == 0 ) {
+            if ( Utils.equals( getInt( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ), PinCodeCertificationActivity.CHANGE ) ) {
+                setResult( RESULT_CANCELED );
+            }
             super.onBackPressed( );
         } else {
             keyList.remove( keyList.size( ) - 1 );

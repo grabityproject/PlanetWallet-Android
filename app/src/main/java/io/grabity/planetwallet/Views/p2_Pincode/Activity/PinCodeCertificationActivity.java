@@ -1,17 +1,20 @@
 package io.grabity.planetwallet.Views.p2_Pincode.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
@@ -105,13 +108,12 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                         if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {
 
                             if ( Utils.equals( getInt( C.bundleKey.PINCODE, CHANGE ), CHANGE ) ) {
-                                //pincode 초기화
-
-
+                                setTransition( Transition.NO_ANIMATION );
+                                sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, Utils.createIntBundle( C.bundleKey.PINCODE, CHANGE ) );
+                                return;
                             } else {
                                 sendAction( MainActivity.class );
                             }
-
 
                         } else {
                             sendAction( WalletAddActivity.class );
@@ -119,8 +121,6 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                         finish( );
 
                     } else {
-
-
                         keyList.clear( );
                         setPasswordMessage( false );
                     }
@@ -179,6 +179,17 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
+        super.onActivityResult( requestCode, resultCode, data );
+        if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_OK ) {
+            setResult( RESULT_OK );
+
+        } else if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_CANCELED ) {
+            setResult( RESULT_CANCELED );
+        }
+        super.onBackPressed( );
+    }
 
     public class ViewMapper {
 

@@ -65,7 +65,7 @@
                     android:layout_height="80dp">
 
                     <io.grabity.planetwallet.Widgets.PlanetView
-                        android:id="@+id/planetview_main_blur_planetview"
+                        android:id="@+id/planet_main_blur_planetview"
                         android:layout_width="46dp"
                         android:layout_height="46dp"
                         android:layout_centerVertical="true"
@@ -76,8 +76,8 @@
                         android:id="@+id/text_main_blur_wallet_name_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignTop="@id/planetview_main_blur_planetview"
-                        android:layout_toRightOf="@id/planetview_main_blur_planetview"
+                        android:layout_alignTop="@id/planet_main_blur_planetview"
+                        android:layout_toRightOf="@id/planet_main_blur_planetview"
                         android:paddingStart="10dp"
                         android:text="Wallet Balance"
                         android:textColor="#5C5964"
@@ -111,13 +111,21 @@
                         app:typefaceStyle="semibold" />
 
                     <io.grabity.planetwallet.Widgets.StretchImageView
-                        android:id="@+id/btn_main_blur_transfer"
+                        android:id="@+id/btn_main_blur"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_alignParentRight="true"
                         android:padding="20dp"
+                        app:position="bottom"
                         android:src="@drawable/image_main_bottom_transfer_gray"
                         app:themeSrc="@drawable/image_main_bottom_transfer_blue" />
+
+                    <View
+                        android:id="@+id/view_main_bottom_trigger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:layout_toLeftOf="@id/btn_main_blur"
+                        />
 
 
                 </RelativeLayout>
@@ -125,11 +133,11 @@
 
             </RelativeLayout>
 
-            <View
-                android:id="@+id/view_main_bottom_trigger"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_alignParentBottom="true" />
+            <!--<View-->
+                <!--android:id="@+id/view_main_bottom_trigger"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="80dp"-->
+                <!--android:layout_alignParentBottom="true" />-->
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_main_notice"
@@ -154,6 +162,15 @@
                 app:toolbarTitle="MAIN"
                 app:whiteThemeLeftSrc="@drawable/image_toolbar_planetmenu_blue"
                 app:whiteThemeRightSrc="@drawable/image_toolbar_mutiuniverse_blue" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_main_pull_to_refresh"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/toolBar"
+                android:layout_centerHorizontal="true"
+                android:visibility="visible"/>
+
 
         </RelativeLayout>
 
@@ -232,12 +249,17 @@
                 app:backgroundColor="#FFF"
                 app:cornerRadius="20dp">
 
-                <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+                <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout
+                    android:id="@+id/btn_main_bottom_close"
                     android:layout_width="40dp"
                     android:layout_height="4dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
-                    app:backgroundColorNormal="#5c5964" />
+                    android:background="#5C5964"
+                    app:themeBackground="#BCBDD5"
+                    app:cornerRadius="6dp"
+                    app:cornerRound="LB|RB|LT|RT"
+                    />
 
                 <View
                     android:layout_width="match_parent"
