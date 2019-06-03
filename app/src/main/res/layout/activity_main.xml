@@ -37,6 +37,7 @@
             </FrameLayout>
 
             <io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper
+                android:id="@+id/refresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -116,16 +117,15 @@
                         android:layout_height="80dp"
                         android:layout_alignParentRight="true"
                         android:padding="20dp"
-                        app:position="bottom"
                         android:src="@drawable/image_main_bottom_transfer_gray"
+                        app:position="bottom"
                         app:themeSrc="@drawable/image_main_bottom_transfer_blue" />
 
                     <View
                         android:id="@+id/view_main_bottom_trigger"
                         android:layout_width="wrap_content"
                         android:layout_height="80dp"
-                        android:layout_toLeftOf="@id/btn_main_blur"
-                        />
+                        android:layout_toLeftOf="@id/btn_main_blur" />
 
 
                 </RelativeLayout>
@@ -134,10 +134,10 @@
             </RelativeLayout>
 
             <!--<View-->
-                <!--android:id="@+id/view_main_bottom_trigger"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="80dp"-->
-                <!--android:layout_alignParentBottom="true" />-->
+            <!--android:id="@+id/view_main_bottom_trigger"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_alignParentBottom="true" />-->
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_main_notice"
@@ -169,7 +169,7 @@
                 android:layout_height="60dp"
                 android:layout_below="@id/toolBar"
                 android:layout_centerHorizontal="true"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
 
         </RelativeLayout>
@@ -256,10 +256,9 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
                     android:background="#5C5964"
-                    app:themeBackground="#BCBDD5"
                     app:cornerRadius="6dp"
                     app:cornerRound="LB|RB|LT|RT"
-                    />
+                    app:themeBackground="#BCBDD5" />
 
                 <View
                     android:layout_width="match_parent"

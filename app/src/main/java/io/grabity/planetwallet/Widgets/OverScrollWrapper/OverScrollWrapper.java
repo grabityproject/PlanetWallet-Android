@@ -12,6 +12,9 @@ import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
+
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 
 
@@ -27,6 +30,7 @@ public class OverScrollWrapper extends RelativeLayout {
         touchSlop = ViewConfiguration.get( context ).getScaledTouchSlop( );
         setWillNotDraw( false );
         setOnHierarchyChangeListener( onHierarchyChangeListener );
+        onRefreshListeners = new ArrayList<>( );
     }
 
     public OverScrollWrapper( Context context, AttributeSet attrs ) {
@@ -34,6 +38,7 @@ public class OverScrollWrapper extends RelativeLayout {
         touchSlop = ViewConfiguration.get( context ).getScaledTouchSlop( );
         setWillNotDraw( false );
         setOnHierarchyChangeListener( onHierarchyChangeListener );
+        onRefreshListeners = new ArrayList<>( );
     }
 
     OnHierarchyChangeListener onHierarchyChangeListener = new OnHierarchyChangeListener( ) {
@@ -53,7 +58,6 @@ public class OverScrollWrapper extends RelativeLayout {
     private static final int INVALID_POINTER = 48 * 4;
     private static final float DRAG_RATE = .5f;
 
-    private boolean refreshing = false;
     private int touchSlop;
 
     private float initialMotionY;
@@ -77,6 +81,11 @@ public class OverScrollWrapper extends RelativeLayout {
     private boolean multiTouch = false;
     private boolean multiTouchAgain = false;
 
+    private boolean isRefreshing = false;
+    private boolean viberate = false;
+
+    private ArrayList< OnRefreshListener > onRefreshListeners;
+
 
     public boolean canChildScrollUp( ) {
         if ( this.listView != null )
@@ -87,13 +96,16 @@ public class OverScrollWrapper extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent( MotionEvent ev ) {
+        if ( isRefreshing ) return true;
+        viberate = false;
+
         final int action = ev.getActionMasked( );
 
         if ( returningToStart && action == MotionEvent.ACTION_DOWN ) {
             returningToStart = false;
         }
 
-        if ( !isEnabled( ) || returningToStart || canChildScrollUp( ) || refreshing ) {
+        if ( !isEnabled( ) || returningToStart || canChildScrollUp( ) ) {
             return false;
         }
 
@@ -153,6 +165,8 @@ public class OverScrollWrapper extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent( MotionEvent ev ) {
+        if ( isRefreshing ) return false;
+
         final int action = ev.getActionMasked( );
         if ( returningToStart && action == MotionEvent.ACTION_DOWN ) {
             returningToStart = false;
@@ -173,10 +187,6 @@ public class OverScrollWrapper extends RelativeLayout {
                 ev.findPointerIndex( activePointerId );
                 if ( pointerIndex < 0 ) {
                     return false;
-                }
-
-                for ( int i = 0; i < ev.getPointerCount( ); i++ ) {
-//                    Log.e( "ev.getY( " + i + " ) : " ," " + ev.getY( i ) );
                 }
 
                 final float y = ev.getY( pointerIndex );
@@ -201,7 +211,7 @@ public class OverScrollWrapper extends RelativeLayout {
 
                     }
                 }
-                float overscrollTop;
+                float overscrollTop = 0;
 
                 if ( multiTouch ) {
                     if ( !multiTouchAgain ) {
@@ -212,6 +222,7 @@ public class OverScrollWrapper extends RelativeLayout {
                 } else {
                     overscrollTop = ( y - initialMotionY ) * DRAG_RATE;
                 }
+
                 if ( isDragged ) {
                     if ( this.getChildAt( 0 ) != null ) {
                         if ( this.getChildAt( 0 ).getTop( ) >= 0 ) {
@@ -226,6 +237,14 @@ public class OverScrollWrapper extends RelativeLayout {
                         }
                     }
                 }
+
+                if ( Utils.dpToPx( getContext( ), 120 ) < overscrollTop ) {
+                    if ( !viberate ) {
+                        Utils.vibrate( getContext( ), 25 );
+                        viberate = true;
+                    }
+                }
+
                 break;
             }
             case MotionEvent.ACTION_POINTER_DOWN: {
@@ -263,6 +282,12 @@ public class OverScrollWrapper extends RelativeLayout {
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL: {
+
+                if ( Utils.dpToPx( getContext( ), 120 ) < this.getChildAt( 0 ).getTop( ) ) {
+                    isRefreshing = true;
+                }
+
+
                 singleTouchLastY = 0;
                 multiTouchLastY = 0;
                 multiTouchStartY = 0;
@@ -282,7 +307,6 @@ public class OverScrollWrapper extends RelativeLayout {
                 }
                 isDragged = false;
                 startRestorePosition( this.getChildAt( 0 ).getTop( ) );
-                refreshing = false;
                 activePointerId = INVALID_POINTER;
 
 
@@ -307,7 +331,16 @@ public class OverScrollWrapper extends RelativeLayout {
 
     private void startRestorePosition( float yPosition ) {
 
-        ObjectAnimator animator = ObjectAnimator.ofInt( this.getChildAt( 0 ), "top", ( int ) yPosition, 0 );
+        if ( isRefreshing ) {
+            if ( onRefreshListeners != null ) {
+                for ( int i = 0; i < onRefreshListeners.size( ); i++ ) {
+                    onRefreshListeners.get( i ).onRefresh( );
+                }
+
+            }
+        }
+
+        ObjectAnimator animator = ObjectAnimator.ofInt( this.getChildAt( 0 ), "top", ( int ) yPosition, isRefreshing ? ( int ) Utils.dpToPx( getContext( ), 80 ) : 0 );
         animator.setDuration( 300 );
         animator.setStartDelay( 0 );
         animator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener( ) {
@@ -346,5 +379,31 @@ public class OverScrollWrapper extends RelativeLayout {
         } );
         animator.start( );
 
+    }
+
+    public boolean isRefreshing( ) {
+        return isRefreshing;
+    }
+
+    public void completeRefresh( ) {
+        this.isRefreshing = false;
+        startRestorePosition( Utils.dpToPx( getContext( ), 80 ) );
+    }
+
+    public OnRefreshListener getOnRefreshListener( int index ) {
+        if ( onRefreshListeners != null )
+            return onRefreshListeners.get( index );
+        else
+            return null;
+    }
+
+    public void addOnRefreshListener( OnRefreshListener onRefreshListener ) {
+        if ( onRefreshListeners == null ) onRefreshListeners = new ArrayList<>( );
+        if ( onRefreshListener != null )
+            this.onRefreshListeners.add( onRefreshListener );
+    }
+
+    public interface OnRefreshListener {
+        void onRefresh( );
     }
 }

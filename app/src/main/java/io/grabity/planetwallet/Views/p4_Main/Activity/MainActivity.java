@@ -3,6 +3,7 @@ package io.grabity.planetwallet.Views.p4_Main.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -18,7 +19,6 @@ import java.util.Date;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.BTC;
@@ -35,6 +35,7 @@ import io.grabity.planetwallet.Views.p7_Setting.Activity.SettingActivity;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.BarcodeView;
+import io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.RippleEffectView;
 import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
@@ -43,7 +44,7 @@ import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, AdvanceRecyclerView.OnScrollListener, View.OnTouchListener {
+public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, AdvanceRecyclerView.OnScrollListener, View.OnTouchListener, OverScrollWrapper.OnRefreshListener {
 
     private ViewMapper viewMapper;
     private HeaderViewMapper headerViewMapper;
@@ -70,6 +71,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     protected void viewInit( ) {
         super.viewInit( );
         ( ( ViewGroup ) findViewById( android.R.id.content ) ).addView( viewMapper.rippleView );
+
+        viewMapper.refresh.addOnRefreshListener( this );
 
         viewController = new ViewController( this, viewMapper );
 
@@ -254,12 +257,20 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     }
 
-    public void startRefresh ( ) {
-
+    @Override
+    public void onRefresh( ) {
+        new Handler( ).postDelayed( new Runnable( ) {
+            @Override
+            public void run( ) {
+                viewMapper.refresh.completeRefresh( );
+            }
+        }, 2500 );
     }
 
 
     public class ViewMapper {
+
+        public OverScrollWrapper refresh;
 
         public ToolBar toolBar;
         public RippleEffectView rippleView;
@@ -296,6 +307,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public LottieAnimationView lottiePullToRefresh;
 
         public ViewMapper( ) {
+
+            refresh = findViewById( R.id.refresh );
 
             toolBar = findViewById( R.id.toolBar );
             rippleView = new RippleEffectView( MainActivity.this );

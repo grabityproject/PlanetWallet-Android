@@ -6,17 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.airbnb.lottie.LottieDrawable;
+
 import io.grabity.planetwallet.MiniFramework.utils.BlurBuilder;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.FooterViewMapper;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.HeaderViewMapper;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.ViewMapper;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper;
 import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 
-public class ViewController implements AdvanceRecyclerView.OnScrollListener, SlideDrawerLayout.OnSlideDrawerListener, ViewTreeObserver.OnGlobalLayoutListener {
+public class ViewController implements AdvanceRecyclerView.OnScrollListener, SlideDrawerLayout.OnSlideDrawerListener, ViewTreeObserver.OnGlobalLayoutListener, OverScrollWrapper.OnRefreshListener {
 
     MainActivity activity;
     ViewMapper viewMapper;
@@ -24,9 +26,9 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
     FooterViewMapper footerViewMapper;
 
     float scrollY = 0.0f;
-
     float backgroundTopMargin = 0.0f;
 
+    boolean loaderStart = false;
 
     public ViewController( MainActivity activity, ViewMapper viewMapper ) {
         this.activity = activity;
@@ -38,7 +40,10 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         viewMapper.slideDrawer.getTrigger( SlideDrawerLayout.Position.BOTTOM ).setOffset( -Utils.dpToPx( activity, 100 ) );
 
         viewMapper.listMain.getViewTreeObserver( ).addOnGlobalLayoutListener( this );
+        viewMapper.refresh.addOnRefreshListener( this );
 
+        viewMapper.lottiePullToRefresh.setAnimation( "lottie/loader_loading.json" );
+        viewMapper.lottiePullToRefresh.setProgress( 0.0f );
     }
 
     @Override
@@ -72,8 +77,6 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
     @Override
     public void onScrolled( RecyclerView recyclerView, int dx, int dy, float scrollX, float scrollY ) {
         this.scrollY = scrollY;
-        PLog.e( "scrollY : " + scrollY );
-
         viewMapper.imageBlurView.setY(
                 ( ( View ) viewMapper.imageBlurView.getParent( ) ).getHeight( ) -
                         viewMapper.listMain.getHeight( ) - ( scrollY > 0 ? scrollY : 0 ) - viewMapper.groupBlur.getHeight( ) / 2.0f );
@@ -97,10 +100,30 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
             viewMapper.groupBackground.setTop( ( int ) -scrollY );
             viewMapper.groupBackground.setScaleX( 1.0f );
             viewMapper.groupBackground.setScaleY( 1.0f );
+
         } else {
             viewMapper.groupBackground.setTop( 0 );
             viewMapper.groupBackground.setScaleX( 1.0f + ( -scrollY * 0.001f ) );
             viewMapper.groupBackground.setScaleY( 1.0f + ( -scrollY * 0.001f ) );
+
+        }
+
+        if ( !viewMapper.refresh.isRefreshing( ) ) {
+            if ( loaderStart ) {
+                viewMapper.lottiePullToRefresh.setAnimation( "lottie/loader_loading.json" );
+                viewMapper.lottiePullToRefresh.setRepeatCount( 0 );
+                loaderStart = false;
+            }
+            float refreshPercent = ( -scrollY ) / Utils.dpToPx( activity, 80 );
+            if ( 0 <= refreshPercent ) {
+                if ( refreshPercent < 1.0f ) {
+                    viewMapper.lottiePullToRefresh.setAlpha( refreshPercent );
+                }
+                if ( refreshPercent > 1.0f ) {
+                    refreshPercent -= 1.0f;
+                }
+                viewMapper.lottiePullToRefresh.setProgress( refreshPercent );
+            }
         }
     }
 
@@ -138,6 +161,15 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
 
     public void updateBlurView( boolean theme ) {
         viewMapper.imageBlurView.setImageBitmap( BlurBuilder.blur( activity, viewMapper.listMain.getScreenshot( Color.parseColor( theme ? "#FFFFFF" : "#111117" ) ), 0.25f, 25 ) );
+    }
+
+    @Override
+    public void onRefresh( ) {
+        viewMapper.lottiePullToRefresh.setAnimation( "lottie/loader_start.json" );
+        viewMapper.lottiePullToRefresh.setRepeatCount( LottieDrawable.INFINITE );
+        viewMapper.lottiePullToRefresh.setRepeatMode( LottieDrawable.RESTART );
+        viewMapper.lottiePullToRefresh.playAnimation( );
+        loaderStart = true;
     }
 
 }
