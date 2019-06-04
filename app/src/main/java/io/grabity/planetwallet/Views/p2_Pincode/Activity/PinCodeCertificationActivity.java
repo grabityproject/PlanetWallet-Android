@@ -101,8 +101,6 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                     }
                     strKeyList = stringBuffer.toString( );
 
-//                    Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE )
-//                    Utils.equals( Utils.getPreferenceData( this, C.pref.PASSWORD ), strKeyList )
                     if ( Utils.equals( Utils.getPreferenceData( this, C.pref.PASSWORD ), strKeyList ) ) {
 
                         if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {

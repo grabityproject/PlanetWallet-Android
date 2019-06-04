@@ -75,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="#111117"
+                app:themeSrc="#FCFCFC"
                 app:borderColor="#1E1E28"
                 app:borderWidth="2dp" />
 
@@ -98,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="#111117"
+                app:themeSrc="#FCFCFC"
                 app:borderColor="#1E1E28"
                 app:borderWidth="2dp" />
 

@@ -96,6 +96,7 @@ public class PhoneRegistrationActivity extends PlanetWalletActivity implements T
         super.onClick( v );
 
         if ( v == viewMapper.btnDialCode ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
             ListPopup.newInstance( this )
                     .setAdapter( adapter )
                     .setOnListPopupItemClickListener( this )

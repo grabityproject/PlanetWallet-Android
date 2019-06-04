@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,6 +12,8 @@ import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
+import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.PlanetManagementActivity;
+import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -40,6 +43,9 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
         if ( !Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) )
             viewMapper.toolBar.getButtonItems( ).get( 0 ).getView( ).setVisibility( View.GONE );
+
+        viewMapper.btnRefresh.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
+        viewMapper.btnSelect.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
     }
 
     @Override
@@ -62,9 +68,16 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             viewMapper.planetView.setData( randomString( ) );
         } else if ( v == viewMapper.btnSelect ) {
             Utils.setPreferenceData( this, C.pref.WALLET_GENERATE, C.wallet.CREATE );
-            sendAction( MainActivity.class );
-            setResult( RESULT_OK );
-            finish( );
+
+            if ( Utils.equals( getInt( C.bundleKey.PLANETADD, PlanetManagementActivity.PLANETADD ), PlanetManagementActivity.PLANETADD ) ) {
+                setResult( RESULT_OK );
+                super.onBackPressed( );
+            } else {
+                sendAction( MainActivity.class );
+                setResult( RESULT_OK );
+                finish( );
+            }
+
         }
     }
 
@@ -82,8 +95,8 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
     public class ViewMapper {
 
-        View btnRefresh;
-        View btnSelect;
+        CircleImageView btnRefresh;
+        CircleImageView btnSelect;
         ToolBar toolBar;
         PlanetView planetView;
 

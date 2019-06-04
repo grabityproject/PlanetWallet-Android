@@ -1,6 +1,7 @@
 package io.grabity.planetwallet.Views.p5_Token.Fragment;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -56,30 +57,32 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
     @Override
     public void onClick( View v ) {
         if ( v == viewMapper.btnSubmit ) {
-
+            if ( getActivity( ) == null ) return;
+            getActivity( ).setResult( Activity.RESULT_OK );
+            getActivity( ).onBackPressed( );
             //애니메이션 테스트
 
-            PLog.e( "not ani viewHeight : " + viewMapper.addressWaring.getHeight( ) );
-            new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ) ).start( );
-
-            ValueAnimator animator = ValueAnimator.ofInt( ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ) );
-            animator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener( ) {
-                @Override
-                public void onAnimationUpdate( ValueAnimator animation ) {
-                    int val = ( int ) animation.getAnimatedValue( );
-
-                    //같은기능
-                    viewMapper.addressWaring.getLayoutParams( ).height = val;
-                    viewMapper.addressWaring.requestLayout( );
-
-                    //같은기능
-//                    ViewGroup.LayoutParams params = viewMapper.addressWaring.getLayoutParams();
-//                    params.height = val;
-//                    viewMapper.addressWaring.setLayoutParams( params );
-                }
-            } );
-            animator.setDuration( 500 );
-            animator.start( );
+//            PLog.e( "not ani viewHeight : " + viewMapper.addressWaring.getHeight( ) );
+//            new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ) ).start( );
+//
+//            ValueAnimator animator = ValueAnimator.ofInt( ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ) );
+//            animator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener( ) {
+//                @Override
+//                public void onAnimationUpdate( ValueAnimator animation ) {
+//                    int val = ( int ) animation.getAnimatedValue( );
+//
+//                    //같은기능
+//                    viewMapper.addressWaring.getLayoutParams( ).height = val;
+//                    viewMapper.addressWaring.requestLayout( );
+//
+//                    //같은기능
+////                    ViewGroup.LayoutParams params = viewMapper.addressWaring.getLayoutParams();
+////                    params.height = val;
+////                    viewMapper.addressWaring.setLayoutParams( params );
+//                }
+//            } );
+//            animator.setDuration( 500 );
+//            animator.start( );
 
         }
     }
@@ -95,6 +98,15 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
             return;
         viewMapper.btnSubmit.setEnabled( viewMapper.etAddress.getText( ).toString( ).trim( ).length( ) == 0 &&
                 viewMapper.etSymbol.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
+
+        if ( viewMapper.etAddress.getText( ).length( ) >= 1 ) {
+            if ( viewMapper.addressWaring.getHeight( ) == 0 ) {
+                new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ) ).start( );
+            }
+        } else {
+            new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ) ).start( );
+        }
+
     }
 
 

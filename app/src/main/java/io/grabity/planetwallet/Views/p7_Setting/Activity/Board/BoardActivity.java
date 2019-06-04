@@ -36,7 +36,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
         super.viewInit( );
 
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
-        viewMapper.toolBar.setTitle( Utils.equals( getString( "board" ), "announcements" ) ? "announcements" : "faq" );
+        viewMapper.toolBar.setTitle( Utils.equals( getString( "board" ), "announcements" ) ? "Announcements" : "FAQ" );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.listView.setOnItemClickListener( this );
     }
@@ -84,7 +84,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        sendAction( DetailBoardActivity.class, Utils.createStringBundle( "title", Utils.equals( getString( "board" ), "announcements" ) ? "announcements" : "faq" ) );
+        sendAction( DetailBoardActivity.class, Utils.createStringBundle( "title", Utils.equals( getString( "board" ), "Announcements" ) ? "Announcements" : "FAQ" ) );
     }
 
     public class ViewMapper {

@@ -1,8 +1,10 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,9 +21,12 @@ import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class PlanetManagementActivity extends PlanetWalletActivity implements AdvanceRecyclerView.OnItemClickListener, ToolBar.OnToolBarClickListener {
 
+    public static int PLANETADD = 20;
+
     private ViewMapper viewMapper;
     private ArrayList< Planet > items;
     private PlanetManagementAdapter adapter;
+
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -86,7 +91,15 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_ADD ) ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.PLANET_ADD, WalletAddActivity.class );
+            sendAction( C.requestCode.PLANET_ADD, WalletAddActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, PLANETADD ) );
+        }
+    }
+
+    @Override
+    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
+        super.onActivityResult( requestCode, resultCode, data );
+        if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
+            Toast.makeText( this, "Planet Add", Toast.LENGTH_SHORT ).show( );
         }
     }
 

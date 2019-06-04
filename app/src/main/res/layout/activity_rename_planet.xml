@@ -59,9 +59,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:padding="16dp"
-                android:src="@drawable/image_input_clear_blue"
+                android:src="@drawable/image_input_clear_black"
                 android:visibility="gone"
-                app:themeSrc="@drawable/image_input_clear_black" />
+                app:themeSrc="@drawable/image_input_clear_blue" />
         </RelativeLayout>
 
         <io.grabity.planetwallet.Widgets.FontTextView

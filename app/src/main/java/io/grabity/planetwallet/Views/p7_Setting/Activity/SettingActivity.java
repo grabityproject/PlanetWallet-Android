@@ -81,9 +81,9 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         } else if ( v == viewMapper.btnSetting ) {
             sendAction( DetailSettingActivity.class );
         } else if ( v == viewMapper.btnAnnouncements ) {
-            sendAction( BoardActivity.class, Utils.createStringBundle( "board", "announcements" ) );
+            sendAction( BoardActivity.class, Utils.createStringBundle( "board", "Announcements" ) );
         } else if ( v == viewMapper.btnFaq ) {
-            sendAction( BoardActivity.class, Utils.createStringBundle( "board", "faq" ) );
+            sendAction( BoardActivity.class, Utils.createStringBundle( "board", "FAQ" ) );
         } else if ( v == viewMapper.btnThemeBlack ) {
 
             getPlanetWalletApplication( ).setTheme( false );

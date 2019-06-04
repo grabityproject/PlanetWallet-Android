@@ -19,6 +19,7 @@ import java.util.Date;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.BTC;
@@ -180,7 +181,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.MAIN_TOKEN_ADD && resultCode == RESULT_OK ) {
-            Toast.makeText( this, "토큰추가확인", Toast.LENGTH_SHORT ).show( );
+            Toast.makeText( this, "Token Add", Toast.LENGTH_SHORT ).show( );
+            setUpViews( );
         }
     }
 

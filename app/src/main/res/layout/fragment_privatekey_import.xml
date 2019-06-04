@@ -53,7 +53,7 @@
                 android:layout_alignTop="@id/et_privatekey_import_privatekey"
                 android:layout_alignEnd="@id/et_privatekey_import_privatekey"
                 android:layout_alignBottom="@id/et_privatekey_import_privatekey"
-                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
                 android:src="@drawable/image_input_visible"
                 android:visibility="gone" />
 

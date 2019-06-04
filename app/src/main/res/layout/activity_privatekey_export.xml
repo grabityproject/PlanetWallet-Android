@@ -38,17 +38,28 @@
             app:themeTextColor="#5c5964" />
 
 
-        <io.grabity.planetwallet.Widgets.RoundEditText
-            android:textCursorDrawable="@null"
-            android:id="@+id/et_privatekey_import_privatekey"
+        <io.grabity.planetwallet.Widgets.RoundRelativeLayout
+            android:id="@+id/group_privatekey_export_privatekey"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@null"
-            android:enabled="false"
-            android:lineSpacingExtra="8dp"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
-            app:defaultTheme="Light" />
+            app:borderWidth="1dp"
+            app:cornerRadius="6dp">
+
+            <EditText
+                android:id="@+id/et_privatekey_export_privatekey"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:enabled="false"
+                android:focusable="false"
+                android:textColorHint="#5C5964"
+                android:lineSpacingExtra="8dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                />
+
+
+        </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

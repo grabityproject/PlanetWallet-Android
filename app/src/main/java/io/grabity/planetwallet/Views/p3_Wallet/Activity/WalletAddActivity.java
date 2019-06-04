@@ -15,6 +15,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.CoinType;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p3_Wallet.Adapter.PopupWalletAddAdapter;
+import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.PlanetManagementActivity;
 import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -84,6 +85,13 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
             } else {
                 setTransition( Transition.SLIDE_UP );
                 sendAction( C.requestCode.WALLET_CREATE, PlanetGenerateActivity.class );
+
+//                if ( Utils.equals( getInt( C.bundleKey.PLANETADD, PlanetManagementActivity.PLANETADD ), PlanetManagementActivity.PLANETADD ) ) {
+//                    sendAction( C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, PlanetManagementActivity.PLANETADD ) );
+//                } else {
+//
+//                }
+
             }
 
 
@@ -98,6 +106,9 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.WALLET_CREATE && resultCode == RESULT_OK ) {
             finish( );
+        } else if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
+            setResult( RESULT_OK );
+            finish( );
         }
     }
 
@@ -105,8 +116,8 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     public void onListPopupItemClick( PopupView popup, View view, int position ) {
         //Todo BTC,ETH 분기로 지갑생성처리
         setTransition( Transition.SLIDE_UP );
-        sendAction( C.requestCode.WALLET_CREATE, PlanetGenerateActivity.class );
-        super.onBackPressed( );
+        sendAction( C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, PlanetManagementActivity.PLANETADD ) );
+//        super.onBackPressed( );
     }
 
     @Override
