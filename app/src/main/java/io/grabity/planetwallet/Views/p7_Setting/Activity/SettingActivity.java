@@ -6,12 +6,12 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Views.p7_Setting.Activity.Account.AccountActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Board.BoardActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.PlanetManagementActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Setting.DetailSettingActivity;
@@ -77,7 +77,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         if ( v == viewMapper.btnPlanet ) {
             sendAction( PlanetManagementActivity.class );
         } else if ( v == viewMapper.btnAccount ) {
-            sendAction( AccountActivity.class );
+            Toast.makeText( this, "기획변경", Toast.LENGTH_SHORT ).show( );
         } else if ( v == viewMapper.btnSetting ) {
             sendAction( DetailSettingActivity.class );
         } else if ( v == viewMapper.btnAnnouncements ) {

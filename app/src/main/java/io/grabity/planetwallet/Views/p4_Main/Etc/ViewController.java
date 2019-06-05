@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver;
 import com.airbnb.lottie.LottieDrawable;
 
 import io.grabity.planetwallet.MiniFramework.utils.BlurBuilder;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.FooterViewMapper;
@@ -105,7 +106,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
             viewMapper.groupBackground.setTop( 0 );
             viewMapper.groupBackground.setScaleX( 1.0f + ( -scrollY * 0.001f ) );
             viewMapper.groupBackground.setScaleY( 1.0f + ( -scrollY * 0.001f ) );
-
+            PLog.e( "ViewContorller Y : " + scrollY );
         }
 
         if ( !viewMapper.refresh.isRefreshing( ) ) {

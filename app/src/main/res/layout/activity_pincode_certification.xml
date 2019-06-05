@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:paddingTop="42dp"
-        android:text="Verification Code"
+        android:text="@string/pincode_certification_title"
         android:textColor="#FFF"
         android:textSize="28dp"
         app:typefaceStyle="bold"

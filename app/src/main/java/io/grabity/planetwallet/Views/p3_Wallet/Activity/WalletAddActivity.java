@@ -45,8 +45,6 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
-        if ( !Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) )
-            viewMapper.toolBar.getButtonItems( ).get( 0 ).getView( ).setVisibility( View.GONE );
     }
 
     @Override
@@ -85,13 +83,6 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
             } else {
                 setTransition( Transition.SLIDE_UP );
                 sendAction( C.requestCode.WALLET_CREATE, PlanetGenerateActivity.class );
-
-//                if ( Utils.equals( getInt( C.bundleKey.PLANETADD, PlanetManagementActivity.PLANETADD ), PlanetManagementActivity.PLANETADD ) ) {
-//                    sendAction( C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, PlanetManagementActivity.PLANETADD ) );
-//                } else {
-//
-//                }
-
             }
 
 
@@ -104,9 +95,7 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.WALLET_CREATE && resultCode == RESULT_OK ) {
-            finish( );
-        } else if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
+        if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
             setResult( RESULT_OK );
             finish( );
         }

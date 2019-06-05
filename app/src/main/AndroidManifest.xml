@@ -66,6 +66,11 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <activity
+            android:name=".Views.p3_Wallet.Activity.PlanetNameActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+
+        <activity
             android:name=".Views.p4_Main.Activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden">
@@ -89,30 +94,10 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:name=".Views.p7_Setting.Activity.Account.AccountActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-
-        <activity
-            android:name=".Views.p7_Setting.Activity.Account.EmailRegistrationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-
-        <activity
-            android:name=".Views.p7_Setting.Activity.Account.NicknameRegistrationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-
-        <activity
             android:name=".Views.p7_Setting.Activity.Setting.DetailSettingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
-
-        <activity
-            android:name=".Views.p7_Setting.Activity.Account.PhoneRegistrationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".Views.p7_Setting.Activity.Board.BoardActivity"

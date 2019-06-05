@@ -14,14 +14,15 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+
 /**
  * Created by. JcobPark on 2019. 05. 14
  */
-public class ToggleButton extends View implements View.OnClickListener {
+public class ToggleButton extends View implements View.OnClickListener, Themeable {
 
     private float width;
     private float height;
-
 
     private Canvas originalCanvas;
     private Paint shaderPaint;
@@ -37,6 +38,8 @@ public class ToggleButton extends View implements View.OnClickListener {
     private float percent = 0.0f;
 
     private OnToggleListener onToggleListener;
+
+    private int defaultTheme = 0;
 
     public ToggleButton( Context context ) {
         super( context );
@@ -83,14 +86,17 @@ public class ToggleButton extends View implements View.OnClickListener {
         float gap = height * ( 5.0f / 30.0f );
         float radius = height * ( 10.0f / 30.0f );
         float maskGap = height * ( 13.0f / 30.0f );
-        float r = 92.0f;
-        float g = 89.0f;
-        float b = 100.0f;
-        maskPaint.setColor( Color.argb(
+
+        maskPaint.setColor( defaultTheme == 1 ? Color.argb(
                 255,
-                ( int ) ( r + ( 255.0f - r ) * percent / 100.0f ),
-                ( int ) ( g + ( 0.0f - g ) * percent / 100.0f ),
-                ( int ) ( b + ( 80.0f - b ) * percent / 100.0f ) )
+                ( int ) ( 255.0f * percent / 100.0f ),
+                ( int ) ( 0.0f * percent / 100.0f ),
+                ( int ) ( 80.0f * percent / 100.0f ) ) :
+                Color.argb(
+                        255,
+                        ( int ) ( 92.0f + ( ( 255.0f - 92.0f ) * percent / 100.0f ) ),
+                        ( int ) ( 89.0f + ( ( 0.0f - 89.0f ) * percent / 100.0f ) ),
+                        ( int ) ( 100.0f + ( ( 80.0f - 100.0f ) * percent / 100.0f ) ) )
         );
 
         originalCanvas.drawRoundRect( clipRectF, height / 2.0f, height / 2.0f, maskPaint );
@@ -135,5 +141,15 @@ public class ToggleButton extends View implements View.OnClickListener {
 
     public interface OnToggleListener {
         void onToggle( ToggleButton toggleButton, boolean isOn );
+    }
+
+    @Override
+    public void setTheme( boolean theme ) {
+        if ( !theme ){
+            defaultTheme = 1;
+        } else{
+            defaultTheme = 2;
+        }
+
     }
 }

@@ -69,7 +69,8 @@
                 android:layout_width="52dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                app:defaultTheme="Light"/>
 
 
         </RelativeLayout>
