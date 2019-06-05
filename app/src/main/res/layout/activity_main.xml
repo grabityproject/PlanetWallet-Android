@@ -165,8 +165,8 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_main_pull_to_refresh"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_below="@id/toolBar"
                 android:layout_centerHorizontal="true"
                 android:visibility="visible" />
@@ -190,9 +190,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
                 android:background="#1E1E28"
-                app:themeBackground="#FFF"
                 app:cornerRadius="24dp"
                 app:cornerRound="LB|RB"
+                app:themeBackground="#FFF"
                 tools:ignore="MissingPrefix">
 
                 <io.grabity.planetwallet.Widgets.FontTextView
@@ -225,7 +225,6 @@
                     app:cornerRadius="6dp"
                     app:cornerRound="LB|RB|LT|RT"
                     app:themeBackground="#BCBDD5" />
-
 
 
             </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
