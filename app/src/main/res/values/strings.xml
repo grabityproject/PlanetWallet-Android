@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PlanetWallet</string>
+
+
+    <string name="pincode_certification_title">Verification Code</string>
+
+
 </resources>

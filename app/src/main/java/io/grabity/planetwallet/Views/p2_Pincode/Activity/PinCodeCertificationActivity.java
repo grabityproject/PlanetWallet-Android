@@ -17,6 +17,7 @@ import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetGenerateActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.DotView;
@@ -26,6 +27,8 @@ import io.grabity.planetwallet.Widgets.FontTextView;
 public class PinCodeCertificationActivity extends PlanetWalletActivity {
 
     public static int CHANGE = 10;
+    public static int MNEMONIC = 11;
+    public static int PRIVATEKEY = 12;
 
     private ViewMapper viewMapper;
     private ArrayList< DotView > passwordViews;
@@ -109,12 +112,17 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                                 setTransition( Transition.NO_ANIMATION );
                                 sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, Utils.createIntBundle( C.bundleKey.PINCODE, CHANGE ) );
                                 return;
+                            } else if ( Utils.equals( getInt( C.bundleKey.MNEMONIC, MNEMONIC ), MNEMONIC ) ) {
+                                setResult( RESULT_OK );
+                            } else if ( Utils.equals( getInt( C.bundleKey.PRIVATEKEY, PRIVATEKEY ), PRIVATEKEY ) ) {
+                                setResult( RESULT_OK );
                             } else {
                                 sendAction( MainActivity.class );
                             }
 
                         } else {
-                            sendAction( WalletAddActivity.class );
+                            setTransition( Transition.SLIDE_UP );
+                            sendAction( PlanetGenerateActivity.class );
                         }
                         finish( );
 
@@ -182,7 +190,6 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_OK ) {
             setResult( RESULT_OK );
-
         } else if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_CANCELED ) {
             setResult( RESULT_CANCELED );
         }

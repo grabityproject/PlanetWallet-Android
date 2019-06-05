@@ -9,6 +9,7 @@ import java.util.Random;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
@@ -41,9 +42,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
-        if ( !Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) )
-            viewMapper.toolBar.getButtonItems( ).get( 0 ).getView( ).setVisibility( View.GONE );
-
         viewMapper.btnRefresh.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
         viewMapper.btnSelect.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
     }
@@ -53,13 +51,20 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         super.setData( );
     }
 
+
+
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
-            super.onBackPressed( );
+            this.onBackPressed( );
         }
     }
 
+    @Override
+    public void onBackPressed( ) {
+        setTransition( Transition.NO_ANIMATION );
+        super.onBackPressed( );
+    }
 
     @Override
     public void onClick( View v ) {
@@ -74,7 +79,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 super.onBackPressed( );
             } else {
                 sendAction( MainActivity.class );
-                setResult( RESULT_OK );
                 finish( );
             }
 

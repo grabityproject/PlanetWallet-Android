@@ -13,6 +13,7 @@ import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Widgets.ToggleButton;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -71,11 +72,11 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             setTransition( Transition.SLIDE_UP );
             sendAction( C.requestCode.PLANET_RENAME, RenamePlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
         } else if ( v == viewMapper.btnMnemonic ) {
-            setTransition( Transition.SLIDE_UP );
-            sendAction( MnemonicExportActivity.class );
+            setTransition( Transition.NO_ANIMATION );
+            sendAction( C.requestCode.PLANET_MNEMONIC_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.MNEMONIC, PinCodeCertificationActivity.MNEMONIC ) );
         } else if ( v == viewMapper.btnPrivateKey ) {
-            setTransition( Transition.SLIDE_UP );
-            sendAction( PrivateKeyExportActivity.class );
+            setTransition( Transition.NO_ANIMATION );
+            sendAction( C.requestCode.PLANET_PRIVATEKEY_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.PRIVATEKEY, PinCodeCertificationActivity.PRIVATEKEY ) );
         }
     }
 
@@ -86,6 +87,12 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             if ( data == null ) return;
             planet = ( Planet ) data.getSerializableExtra( C.bundleKey.PLANET );
             viewMapper.textName.setText( planet.getName( ) );
+        } else if ( requestCode == C.requestCode.PLANET_MNEMONIC_EXPORT && resultCode == RESULT_OK ) {
+            setTransition( Transition.SLIDE_UP );
+            sendAction( MnemonicExportActivity.class );
+        } else if ( requestCode == C.requestCode.PLANET_PRIVATEKEY_EXPORT && resultCode == RESULT_OK ) {
+            setTransition( Transition.SLIDE_UP );
+            sendAction( PrivateKeyExportActivity.class );
         }
 
     }
