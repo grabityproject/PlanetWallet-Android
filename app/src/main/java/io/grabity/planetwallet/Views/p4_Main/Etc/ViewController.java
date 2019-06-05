@@ -81,6 +81,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         viewMapper.imageBlurView.setY(
                 ( ( View ) viewMapper.imageBlurView.getParent( ) ).getHeight( ) -
                         viewMapper.listMain.getHeight( ) - ( scrollY > 0 ? scrollY : 0 ) - viewMapper.groupBlur.getHeight( ) / 2.0f );
+
         if ( headerViewMapper != null ) {
 
             float start = ( headerViewMapper.groupHeaderPlanet.getTop( ) + headerViewMapper.groupHeaderPlanet.getHeight( ) / 3.0f - viewMapper.toolBar.getHeight( ) );
@@ -103,10 +104,11 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
             viewMapper.groupBackground.setScaleY( 1.0f );
 
         } else {
+
+            float scale = ( float ) ( 1.0 - scrollY / ( Utils.getScreenWidth( activity ) / 2.0f ) * 0.5f );
             viewMapper.groupBackground.setTop( 0 );
-            viewMapper.groupBackground.setScaleX( 1.0f + ( -scrollY * 0.001f ) );
-            viewMapper.groupBackground.setScaleY( 1.0f + ( -scrollY * 0.001f ) );
-            PLog.e( "ViewContorller Y : " + scrollY );
+            viewMapper.groupBackground.setScaleX( scale );
+            viewMapper.groupBackground.setScaleY( scale );
         }
 
         if ( !viewMapper.refresh.isRefreshing( ) ) {

@@ -45,7 +45,7 @@ import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, AdvanceRecyclerView.OnScrollListener, View.OnTouchListener, OverScrollWrapper.OnRefreshListener {
+public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, AdvanceRecyclerView.OnScrollListener, OverScrollWrapper.OnRefreshListener {
 
     private ViewMapper viewMapper;
     private HeaderViewMapper headerViewMapper;
@@ -99,7 +99,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         viewMapper.btnCopy.setOnClickListener( this );
         viewMapper.btnSend.setOnClickListener( this );
-        viewMapper.btnBottomBlur.setOnTouchListener( this );
+        viewMapper.btnBottomBlur.setOnClickListener( this );
+
+        viewMapper.slideDrawer.addBypassArea( viewMapper.btnBottomBlur );
 
     }
 
@@ -163,18 +165,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         } else if ( v == footerViewMapper.btnAddToken ) {
             setTransition( Transition.SLIDE_SIDE );
             sendAction( C.requestCode.MAIN_TOKEN_ADD, TokenAddActivity.class );
-        }
-    }
-
-
-    @Override
-    public boolean onTouch( View v, MotionEvent event ) {
-        if ( v == viewMapper.btnBottomBlur ) {
-            viewMapper.slideDrawer.bottomTouch( );
+        } else if ( v == viewMapper.btnBottomBlur ) {
             viewMapper.slideDrawer.open( SlideDrawerLayout.Position.BOTTOM );
-            viewMapper.slideDrawer.onTouchEvent( event );
         }
-        return true;
     }
 
     @Override

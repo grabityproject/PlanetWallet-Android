@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
@@ -42,6 +44,8 @@ public class SlideDrawerLayout extends ViewGroup {
     private int currentMovingPosition = -1;
 
     private OnSlideDrawerListener onSlideDrawerListener;
+
+    private ArrayList< View > bypassAreaViews;
 
     public SlideDrawerLayout( @NonNull Context context ) {
         super( context );
@@ -216,6 +220,19 @@ public class SlideDrawerLayout extends ViewGroup {
         beforeTouchPositionX = ( ev.getRawX( ) - thisLocations[ 0 ] );
         beforeTouchPositionY = ( ev.getRawY( ) - thisLocations[ 1 ] );
 
+        if ( bypassAreaViews != null ) {
+            for ( int i = 0; i < bypassAreaViews.size( ); i++ ) {
+                int[] cood = new int[]{ -1, -1 };
+                bypassAreaViews.get( i ).getLocationOnScreen( cood );
+                if ( cood[ 0 ] != -1 && cood[ 1 ] != -1 ) {
+                    if ( ( cood[ 0 ] < beforeTouchPositionX && beforeTouchPositionX < cood[ 0 ] + bypassAreaViews.get( i ).getWidth( ) )
+                            && ( cood[ 1 ] < beforeTouchPositionY && beforeTouchPositionY < cood[ 1 ] + bypassAreaViews.get( i ).getHeight( ) ) ) {
+                        return false;
+                    }
+                }
+            }
+        }
+
         if ( isOpen ) {
 
             if ( currentMovingPosition > -1 ) {
@@ -251,12 +268,9 @@ public class SlideDrawerLayout extends ViewGroup {
         this.currentMovingPosition = currentMovingPosition;
     }
 
-    public void bottomTouch( ) {
-        setCurrentMovingPosition( 3 );
-    }
-
     @Override
     public boolean onTouchEvent( MotionEvent event ) {
+        if ( currentMovingPosition == -1 ) return false;
         View getCurrentPositionView = triggers.get( currentMovingPosition ).view;
 
         if ( !isOpen ) {
@@ -607,4 +621,10 @@ public class SlideDrawerLayout extends ViewGroup {
             super( source );
         }
     }
+
+    public void addBypassArea( View view ) {
+        if ( bypassAreaViews == null ) bypassAreaViews = new ArrayList<>( );
+        bypassAreaViews.add( view );
+    }
+
 }
