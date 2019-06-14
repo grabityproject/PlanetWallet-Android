@@ -13,7 +13,7 @@
         app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
         app:defaultTheme="Light"
         app:toolbarBottomWidth="1dp"
-        app:toolbarTitle="Planet Name"
+        app:toolbarTitle="@string/rename_planet_toolbar_title"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
 
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/toolBar"
             android:paddingBottom="10dp"
-            android:text="Enter Planet name"
+            android:text="@string/rename_planet_enter_planet_name_title"
             android:textColor="#AAAAAA"
             android:textSize="14dp"
             app:themeTextColor="#5c5964" />
@@ -46,7 +46,7 @@
                 android:id="@+id/et_rename_planet_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="name"
+                android:hint="@string/rename_planet_name_title"
                 android:paddingLeft="16dp"
                 android:textSize="14dp"
                 android:singleLine="true"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/group_renamePlanet_name"
             android:paddingTop="10dp"
-            android:text="Your Planet name will be shown to others."
+            android:text="@string/rename_planet_message_title"
             android:textColor="#FF0050"
             android:textSize="14dp" />
 
@@ -82,7 +82,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="Save"
+        android:text="@string/rename_planet_btn_title"
         android:textSize="18dp"
         app:buttonType="A"
         app:defaultTheme="Light" />

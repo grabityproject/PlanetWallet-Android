@@ -12,7 +12,7 @@
         android:layout_height="@dimen/toolbarHeight"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
         app:defaultTheme="Dark"
-        app:toolbarTitle="Import Planet"
+        app:toolbarTitle="@string/wallet_import_toolbar_title"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
 

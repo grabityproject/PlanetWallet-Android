@@ -52,6 +52,9 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         if ( position == SlideDrawerLayout.Position.BOTTOM ) {
             float blurTop = viewMapper.slideDrawer.getHeight( ) - viewMapper.groupBlur.getHeight( ) / 2.0f;
             float movePoint = ( ( ( viewMapper.slideDrawer.getHeight( ) - viewMapper.groupBlur.getHeight( ) / 2.0f - Utils.dpToPx( activity, 20 ) ) - y ) / ( ( float ) viewMapper.groupBlur.getHeight( ) / 2.0f ) );
+
+            viewMapper.groupBottom.setClickable( movePoint != 0 );
+
             viewMapper.textNotice.setAlpha( 1.0f - movePoint );
             viewMapper.groupBlur.setAlpha( 1.0f - movePoint );
             viewMapper.groupBottom.setAlpha( movePoint * 1.2f );
@@ -150,7 +153,6 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
 
         float backgroundSize = ( Utils.getScreenWidth( activity ) * 410.0f / 375.0f );
         backgroundTopMargin = ( ( Utils.getScreenWidth( activity ) - Utils.dpToPx( activity, 120 - 30 ) - Utils.getScreenWidth( activity ) * 170.0f / 375.0f ) );
-
         viewMapper.planetBackground.getLayoutParams( ).width = ( int ) backgroundSize;
         viewMapper.planetBackground.getLayoutParams( ).height = ( int ) backgroundSize;
         viewMapper.shadowBackground.getLayoutParams( ).width = ( int ) backgroundSize;

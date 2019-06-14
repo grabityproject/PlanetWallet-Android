@@ -94,7 +94,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:name=".Views.p7_Setting.Activity.Setting.DetailSettingActivity"
+            android:name=".Views.p7_Setting.Activity.Setting.SecurityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 

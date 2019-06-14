@@ -14,7 +14,7 @@
         app:blackThemeRightSrc="@drawable/image_toolbar_add_gray"
         app:defaultTheme="Light"
         app:toolbarBottomWidth="1dp"
-        app:toolbarTitle="Planet"
+        app:toolbarTitle="@string/planet_management_toolbar_title"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"
         app:whiteThemeRightSrc="@drawable/image_toolbar_add_blue" />
 
@@ -23,6 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolBar"
-        android:paddingTop="22dp"></io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView>
+        android:paddingTop="22dp"/>
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

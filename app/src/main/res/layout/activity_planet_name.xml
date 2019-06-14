@@ -8,12 +8,12 @@
 
 
     <io.grabity.planetwallet.Widgets.PlanetView
-        android:id="@+id/planet_planet_generate_background"
+        android:id="@+id/planet_planet_name_background"
         android:layout_width="0dp"
         android:layout_height="0dp" />
 
     <io.grabity.planetwallet.Widgets.ShadowView
-        android:id="@+id/shadow_planet_generate_background"
+        android:id="@+id/shadow_planet_name_background"
         android:layout_width="1dp"
         android:layout_height="1dp"
         app:direction="BOTTOM_TOP"
@@ -30,13 +30,14 @@
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
     <LinearLayout
-        android:id="@+id/group_planet_generate_title"
+        android:id="@+id/group_planet_name_title"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         android:layout_below="@id/toolBar"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
         android:paddingTop="28dp">
+
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:layout_width="match_parent"
@@ -55,11 +56,11 @@
             android:orientation="vertical">
 
             <io.grabity.planetwallet.Widgets.ActionEditText
-                android:id="@+id/et_planet_generate_name"
+                android:id="@+id/et_planet_name_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="18dp"
                 android:background="@null"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -79,73 +80,16 @@
 
 
     <io.grabity.planetwallet.Widgets.PlanetView
-        android:id="@+id/planet_generate_icon"
+        android:id="@+id/planet_name_icon"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:layout_below="@id/group_planet_generate_title"
+        android:layout_below="@id/group_planet_name_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginTop="80dp" />
 
-
-    <LinearLayout
-        android:id="@+id/group_planet_generate_refresh_select_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="62dp">
-
-        <RelativeLayout
-            android:layout_width="82dp"
-            android:layout_height="82dp"
-            android:layout_marginEnd="16dp">
-
-            <io.grabity.planetwallet.Widgets.CircleImageView
-                android:id="@+id/btn_planet_generate_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="#111117"
-                app:borderColor="#1E1E28"
-                app:borderWidth="2dp"
-                app:themeSrc="#FCFCFC" />
-
-            <io.grabity.planetwallet.Widgets.StretchImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/image_generate_refresh_white"
-                app:themeSrc="@drawable/image_generate_refresh_blue" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="82dp"
-            android:layout_height="82dp"
-            android:layout_marginStart="16dp">
-
-            <io.grabity.planetwallet.Widgets.CircleImageView
-                android:id="@+id/btn_planet_generate_select"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="#111117"
-                app:borderColor="#1E1E28"
-                app:borderWidth="2dp"
-                app:themeSrc="#FCFCFC" />
-
-            <io.grabity.planetwallet.Widgets.StretchImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/image_generate_select_white"
-                app:themeSrc="@drawable/image_generate_select_blue" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
 
     <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
-        android:id="@+id/btn_planet_generate_add"
+        android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
@@ -155,8 +99,8 @@
         android:gravity="center"
         android:text="@string/planet_generate_add_title"
         android:textSize="18dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:buttonType="C"
         app:defaultTheme="Dark" />
 
-    </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
+</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

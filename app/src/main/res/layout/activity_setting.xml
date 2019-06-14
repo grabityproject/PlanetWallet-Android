@@ -22,10 +22,10 @@
         android:layout_below="@id/toolBar"
         android:gravity="center"
         android:lineSpacingMultiplier="1.3"
-        android:text="Hello,\n"
+        android:text="@string/setting_planet_main_title"
         android:textColor="#000"
-        android:textSize="28dp"
-        app:typefaceStyle="bold"
+        android:textSize="24dp"
+        app:typefaceStyle="semibold"
         app:themeTextColor="#FFF" />
 
     <LinearLayout
@@ -41,12 +41,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <io.grabity.planetwallet.Widgets.StretchImageView
-                android:layout_width="106dp"
-                android:layout_height="100dp"
+            <io.grabity.planetwallet.Widgets.PlanetView
+                android:id="@+id/planet_setting_planetview"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/image_setting_planet_black"
-                app:themeSrc="@drawable/image_setting_planet_white" />
+                android:layout_marginTop="22dp"/>
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="22dp"
-                android:text="Planet"
+                android:text="@string/setting_planet_title"
                 android:textColor="#000"
                 android:textSize="14dp"
                 app:themeTextColor="#FFF" />
@@ -62,7 +62,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/group_setting_account"
+            android:id="@+id/group_setting_universe"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -71,8 +71,8 @@
                 android:layout_width="106dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/image_setting_account_black"
-                app:themeSrc="@drawable/image_setting_account_white" />
+                android:src="@drawable/image_setting_manage_planets_black"
+                app:themeSrc="@drawable/image_setting_manage_planets_white" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="22dp"
-                android:text="Account"
+                android:text="@string/setting_universe_title"
                 android:textColor="#000"
                 android:textSize="14dp"
                 app:themeTextColor="#FFF" />
@@ -88,7 +88,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/group_setting_setting"
+            android:id="@+id/group_setting_security"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -97,8 +97,8 @@
                 android:layout_width="106dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/image_setting_setting_black"
-                app:themeSrc="@drawable/image_setting_setting_white" />
+                android:src="@drawable/image_setting_security_black"
+                app:themeSrc="@drawable/image_setting_security_white" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="22dp"
-                android:text="Setting"
+                android:text="@string/setting_security_title"
                 android:textColor="#000"
                 android:textSize="14dp"
                 app:themeTextColor="#FFF" />
@@ -148,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Announcements"
+                    android:text="@string/setting_announcements_title"
                     android:textColor="#000"
                     android:textSize="14dp"
                     app:themeTextColor="#FFF" />
@@ -171,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="FAQ"
+                    android:text="@string/setting_faq_title"
                     android:textColor="#000"
                     android:textSize="14dp"
                     app:themeTextColor="#FFF" />
@@ -186,7 +186,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/group_setting_how"
+                android:id="@+id/group_setting_currency"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listHeight">
 
@@ -194,18 +194,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="How to use"
+                    android:text="@string/setting_currency_title"
                     android:textColor="#000"
                     android:textSize="14dp"
                     app:themeTextColor="#FFF" />
 
                 <io.grabity.planetwallet.Widgets.StretchImageView
+                    android:id="@+id/image_setting_currency_arrow"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/image_arrow_right_blue"
                     app:themeSrc="@drawable/image_arrow_right_gray" />
+
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_setting_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingEnd="12dp"
+                    android:layout_toLeftOf="@id/image_setting_currency_arrow"
+                    android:text="@string/setting_currency_value_title"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14dp"
+                    app:themeTextColor="#5c5964" />
+
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -216,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Theme Setting"
+                    android:text="@string/setting_theme_setting_title"
                     android:textColor="#000"
                     android:textSize="14dp"
                     app:themeTextColor="#FFF" />
@@ -265,7 +281,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Version"
+                    android:text="@string/setting_version_title"
                     android:textColor="#000"
                     android:textSize="14dp"
                     app:themeTextColor="#FFF" />

@@ -69,6 +69,21 @@ public class Utils {
             err = true;
         }
         return err;
+
+    }
+
+    public static boolean isPlanetName( String name ) {
+        boolean err = false;
+        if ( name.matches( "[^ㄱ-ㅎㅏ-ㅣ가-힣]+$" ) ){
+            String regex = "^[a-zA-Z0-9\\w]+$";
+            Pattern p = Pattern.compile( regex );
+            Matcher m = p.matcher( name );
+            if ( m.matches( ) ) {
+                err = true;
+            }
+            return err;
+        }
+        return false;
     }
 
     public static < T > T jsonToVO( String jsonString, Class< T > type ) {

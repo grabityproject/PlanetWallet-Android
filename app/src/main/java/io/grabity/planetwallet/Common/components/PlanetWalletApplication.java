@@ -11,6 +11,11 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+
+import java.security.Provider;
+import java.security.Security;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
@@ -25,6 +30,7 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 public class PlanetWalletApplication extends MultiDexApplication {
 
     private boolean theme = false;
+
 
     @Override
     public void onCreate( ) {
@@ -63,7 +69,12 @@ public class PlanetWalletApplication extends MultiDexApplication {
                 .build( );
         ImageLoader.getInstance( ).init( config );
 //        DataBaseManager.init( this );
+
+        Security.addProvider( new org.spongycastle.jce.provider.BouncyCastleProvider( ) );
+
     }
+
+
 
     public boolean getCurrentTheme( ) {
         return theme;

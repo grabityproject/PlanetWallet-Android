@@ -450,6 +450,7 @@ public class SlideDrawerLayout extends ViewGroup {
 
     public void open( int position ) {
         if ( !isOpen ) {
+            setCurrentMovingPosition( position );
             slideAnimation( position, true );
             onTrigger = false;
             isOpen = true;

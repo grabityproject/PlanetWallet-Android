@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
-        app:toolbarTitle="Manage Tokens"
+        app:toolbarTitle="@string/token_add_toolbar_title"
         app:defaultTheme="Dark"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 

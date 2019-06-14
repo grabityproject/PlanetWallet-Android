@@ -13,6 +13,8 @@ import io.grabity.planetwallet.Widgets.StretchImageView;
 
 public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Planet > {
 
+    private int choice;
+
     public PopupWalletAddAdapter( Context context, ArrayList< Planet > objects ) {
         super( context, objects );
     }
@@ -28,6 +30,13 @@ public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Planet > {
         ( ( WalletAddItem ) viewMapper ).textName.setText( String.format( "%s Universe", item.getCoinType( ).name( ) ) );
     }
 
+    public void setOnWalletAddORImportCheck( int choice ){
+        this.choice = choice;
+    }
+
+    public int getChoice( ) {
+        return choice;
+    }
 
     class WalletAddItem extends ViewMapper {
 
@@ -40,5 +49,7 @@ public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Planet > {
             textName = findViewById( R.id.text_item_popup_wallet_add_coin_name );
         }
     }
+
+
 
 }

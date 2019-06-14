@@ -14,6 +14,7 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
+import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToggleButton;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -39,9 +40,9 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
-        viewMapper.btnPlanetName.setOnClickListener( this );
         viewMapper.btnMnemonic.setOnClickListener( this );
         viewMapper.btnPrivateKey.setOnClickListener( this );
+        viewMapper.btnName.setOnClickListener( this );
         viewMapper.toggleButton.setOnToggleListener( this );
     }
 
@@ -50,7 +51,9 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
         super.setData( );
         if ( getSerialize( C.bundleKey.PLANET ) != null ) {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-            viewMapper.textType.setText( String.format( "%s Address", planet.getCoinType( ).name( ) ) );
+            viewMapper.textType.setText( String.format( "%s Universe", planet.getCoinType( ).name( ) ) );
+            viewMapper.textAddressType.setText( String.format( "%s Address", planet.getCoinType( ).name( ) ) );
+            viewMapper.planetView.setData( planet.getAddress( ) );
             viewMapper.textAddress.setText( planet.getAddress( ) );
             viewMapper.textName.setText( planet.getName( ) );
         } else {
@@ -68,15 +71,15 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
     @Override
     public void onClick( View v ) {
         super.onClick( v );
-        if ( v == viewMapper.btnPlanetName ) {
-            setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.PLANET_RENAME, RenamePlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
-        } else if ( v == viewMapper.btnMnemonic ) {
+        if ( v == viewMapper.btnMnemonic ) {
             setTransition( Transition.NO_ANIMATION );
             sendAction( C.requestCode.PLANET_MNEMONIC_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.MNEMONIC, PinCodeCertificationActivity.MNEMONIC ) );
         } else if ( v == viewMapper.btnPrivateKey ) {
             setTransition( Transition.NO_ANIMATION );
             sendAction( C.requestCode.PLANET_PRIVATEKEY_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.PRIVATEKEY, PinCodeCertificationActivity.PRIVATEKEY ) );
+        } else if ( v == viewMapper.btnName ) {
+            setTransition( Transition.SLIDE_UP );
+            sendAction( C.requestCode.PLANET_RENAME, RenamePlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
         }
     }
 
@@ -109,11 +112,15 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
         TextView textType;
         TextView textAddress;
+        TextView textAddressType;
         TextView textName;
 
-        ViewGroup btnPlanetName;
+        View btnName;
+
         ViewGroup btnMnemonic;
         ViewGroup btnPrivateKey;
+
+        PlanetView planetView;
 
         public ViewMapper( ) {
 
@@ -121,10 +128,16 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             toggleButton = findViewById( R.id.toggleBtn );
             textType = findViewById( R.id.text_detail_planet_type );
             textAddress = findViewById( R.id.text_detail_planet_address );
+            textAddressType = findViewById( R.id.text_detail_planet_address_type );
             textName = findViewById( R.id.text_detail_planet_name );
-            btnPlanetName = findViewById( R.id.group_detail_planet_name );
+            textType = findViewById( R.id.text_detail_planet_type );
+
+
+            btnName = findViewById( R.id.btn_detail_planet_name_change );
             btnMnemonic = findViewById( R.id.group_detail_planet_mnemonic_backup );
             btnPrivateKey = findViewById( R.id.group_detail_planet_privatekey_backup );
+
+            planetView = findViewById( R.id.planet_detail_planet_planetview );
 
         }
     }

@@ -1,6 +1,8 @@
 package io.grabity.planetwallet.VO.MainItems;
 
-public class BTC implements MainItem {
+import java.io.Serializable;
+
+public class BTC implements MainItem, Serializable {
 
     private String planetName;
     private String balance;

@@ -33,7 +33,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:paddingTop="8dp"
-        android:text="Enter the 4 digit + alphabet"
+        android:text="@string/pincode_certification_subtitle"
         android:textColor="#5C5964"
         android:textSize="16dp"
         app:themeTextColor="#aaaaaa" />

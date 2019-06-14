@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -123,8 +125,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.textPlanetName.setText( selectedPlanet.getName( ) );
         viewMapper.toolBar.setTitle( selectedPlanet.getCoinType( ).name( ) );
         viewMapper.barcodeView.setData( selectedPlanet.getAddress( ) );
-        viewMapper.textBalance.setText( "1.245" );
-        viewMapper.textCoinName.setText( selectedPlanet.getCoinType( ).name( ) );
+        viewMapper.textBottomPlanetName.setText( selectedPlanet.getName( ) );
+        viewMapper.textBottomAddress.setText( selectedPlanet.getAddress( ) );
 
         headerViewMapper.planetView.setData( selectedPlanet.getAddress( ) );
         viewMapper.planetBackground.setData( selectedPlanet.getAddress( ) );
@@ -218,7 +220,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onRippleEffect( boolean on ) {
         if ( on ) {
             setTransition( Transition.NO_ANIMATION );
-            sendAction( SettingActivity.class );
+            sendAction( SettingActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ) );
         }
     }
 
@@ -279,6 +281,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public View groupBlur;
         public StretchImageView imageBlurView;
         public View groupBottom;
+        public View groupSubBottom;
 
         AdvanceRecyclerView listPlanets;
         TextView textPlanetName;
@@ -287,8 +290,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         View btnSend;
         BarcodeView barcodeView;
 
-        TextView textBalance;
-        TextView textCoinName;
+        TextView textBottomPlanetName;
+        TextView textBottomAddress;
 
 
         public View groupBackground;
@@ -317,6 +320,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             groupBlur = findViewById( R.id.group_main_blur );
             imageBlurView = findViewById( R.id.image_main_blur );
             groupBottom = findViewById( R.id.group_main_bottom );
+            groupSubBottom = findViewById( R.id.group_main_sub_bottom );
 
             listPlanets = findViewById( R.id.list_main_planets_list );
             textPlanetName = findViewById( R.id.text_main_planets_name );
@@ -324,9 +328,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             btnCopy = findViewById( R.id.btn_main_bottom_copy );
             btnSend = findViewById( R.id.btn_main_bottom_send );
             barcodeView = findViewById( R.id.barcode_main_bottom_barcodeview );
-
-            textBalance = findViewById( R.id.text_main_bottom_balance );
-            textCoinName = findViewById( R.id.text_main_bottom_coin_name );
 
             planetBackground = findViewById( R.id.planet_main_background );
             groupBackground = findViewById( R.id.group_main_background );
@@ -337,6 +338,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             btnBottomBlur = findViewById( R.id.btn_main_blur );
 
             lottiePullToRefresh = findViewById( R.id.lottie_main_pull_to_refresh );
+
+            textBottomPlanetName = findViewById( R.id.text_main_bottom_name );
+            textBottomAddress = findViewById( R.id.text_main_bottom_address );
 
         }
     }

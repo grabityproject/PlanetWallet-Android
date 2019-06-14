@@ -2,6 +2,7 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -10,10 +11,12 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.CoinType;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Adapter.PopupWalletAddAdapter;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.PlanetManagementActivity;
 import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
@@ -21,6 +24,9 @@ import io.grabity.planetwallet.Widgets.ToolBar;
 
 
 public class WalletAddActivity extends PlanetWalletActivity implements ListPopup.OnListPopupItemClickListener, ToolBar.OnToolBarClickListener {
+
+    public static int PLANETADD = 20;
+    public static int PLANETIMPORT = 21;
 
     private ViewMapper viewMapper;
     private PopupWalletAddAdapter adapter;
@@ -50,6 +56,23 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     @Override
     protected void setData( ) {
         super.setData( );
+
+        items = new ArrayList<>( );
+        {
+            Planet item = new Planet( );
+            item.setCoinType( CoinType.BTC );
+            item.setIconRes( R.drawable.icon_bit );
+            items.add( item );
+        }
+        {
+            Planet item = new Planet( );
+            item.setCoinType( CoinType.ETH );
+            item.setIconRes( R.drawable.icon_eth );
+            items.add( item );
+        }
+
+        adapter = new PopupWalletAddAdapter( this, items );
+
     }
 
 
@@ -57,39 +80,19 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnCreate ) {
-
-            if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {
-
-                items = new ArrayList<>( );
-                {
-                    Planet item = new Planet( );
-                    item.setCoinType( CoinType.BTC );
-                    item.setIconRes( R.drawable.icon_bit );
-                    items.add( item );
-                }
-                {
-                    Planet item = new Planet( );
-                    item.setCoinType( CoinType.ETH );
-                    item.setIconRes( R.drawable.icon_eth );
-                    items.add( item );
-                }
-
-                adapter = new PopupWalletAddAdapter( this, items );
-                ListPopup.newInstance( this, !getPlanetWalletApplication( ).getCurrentTheme( ) ).
-                        setAdapter( adapter ).
-                        setOnListPopupItemClickListener( this ).
-                        show( );
-
-            } else {
-                setTransition( Transition.SLIDE_UP );
-                sendAction( C.requestCode.WALLET_CREATE, PlanetGenerateActivity.class );
-            }
-
-
+            adapter.setOnWalletAddORImportCheck( PLANETADD );
+            setPopup( );
         } else if ( v == viewMapper.btnImport ) {
-            setTransition( Transition.SLIDE_SIDE );
-            sendAction( WalletImportActivity.class );
+            adapter.setOnWalletAddORImportCheck( PLANETIMPORT );
+            setPopup( );
         }
+    }
+
+    public void setPopup( ) {
+        ListPopup.newInstance( this, !getPlanetWalletApplication( ).getCurrentTheme( ) ).
+                setAdapter( adapter ).
+                setOnListPopupItemClickListener( this ).
+                show( );
     }
 
     @Override
@@ -104,9 +107,18 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     @Override
     public void onListPopupItemClick( PopupView popup, View view, int position ) {
         //Todo BTC,ETH 분기로 지갑생성처리
-        setTransition( Transition.SLIDE_UP );
-        sendAction( C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, PlanetManagementActivity.PLANETADD ) );
-//        super.onBackPressed( );
+        super.onBackPressed( );
+        if ( adapter.getChoice( ) == PLANETADD ) {
+            new Handler(  ).postDelayed( ( ) -> {
+                setTransition( Transition.SLIDE_UP );
+                sendAction( C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, PLANETADD ) );
+            },200 );
+        } else if ( adapter.getChoice( ) == PLANETIMPORT ) {
+            new Handler(  ).postDelayed( ( ) -> {
+                setTransition( Transition.SLIDE_SIDE );
+                sendAction( C.requestCode.PLANET_ADD, WalletImportActivity.class );
+            },200 );
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -8,13 +9,21 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
+import io.grabity.planetwallet.Common.commonset.C;
+import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetGenerateActivity;
+import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetNameActivity;
+import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
+import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletImportActivity;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 
 public class JSONImportFragment extends PlanetWalletFragment implements View.OnClickListener, TextWatcher {
 
     private ViewMapper viewMapper;
+    private WalletImportActivity walletImportActivity;
 
     public JSONImportFragment( ) {
     }
@@ -49,6 +58,7 @@ public class JSONImportFragment extends PlanetWalletFragment implements View.OnC
     @Override
     public void setData( ) {
         super.setData( );
+        walletImportActivity = ( WalletImportActivity ) getPlanetWalletActivity( );
     }
 
     @Override
@@ -59,7 +69,8 @@ public class JSONImportFragment extends PlanetWalletFragment implements View.OnC
             viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
             viewMapper.etPassword.setSelection( viewMapper.etPassword.length( ) );
         } else if ( v == viewMapper.btnSubmit ) {
-            Toast.makeText( getContext( ), "JsonImport", Toast.LENGTH_SHORT ).show( );
+            walletImportActivity.setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
+            walletImportActivity.sendAction( C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, WalletAddActivity.PLANETIMPORT ) );
         }
     }
 

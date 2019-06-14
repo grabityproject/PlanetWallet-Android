@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="Contract Address"
+            android:text="@string/custom_token_contract_address_title"
             android:textColor="#5C5964"
             android:textSize="16dp"
             app:themeTextColor="#aaaaaa" />
@@ -41,7 +41,7 @@
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is not a valid Contract address."
+                android:text="@string/custom_token_contract_error_title"
                 android:textColor="#FF0050"
                 android:textSize="14dp" />
 
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="12dp"
             android:paddingBottom="10dp"
-            android:text="Token Symbol"
+            android:text="@string/custom_token_token_symbol_title"
             android:textColor="#5C5964"
             android:textSize="16dp"
             app:themeTextColor="#aaaaaa" />
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="12dp"
             android:paddingBottom="10dp"
-            android:text="Decimals of Precision"
+            android:text="@string/custom_token_decimals_title"
             android:textColor="#5C5964"
             android:textSize="16dp"
             app:themeTextColor="#aaaaaa" />
@@ -104,7 +104,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="Add Token"
+        android:text="@string/custom_token_btn_title"
         android:textSize="18dp"
         app:buttonType="A"
         app:defaultTheme="Dark" />

@@ -1,8 +1,10 @@
 package io.grabity.planetwallet.VO.MainItems;
 
+import java.io.Serializable;
+
 import io.grabity.planetwallet.R;
 
-public class ETH implements MainItem {
+public class ETH implements MainItem, Serializable {
 
     private String name;
     private String symbol;

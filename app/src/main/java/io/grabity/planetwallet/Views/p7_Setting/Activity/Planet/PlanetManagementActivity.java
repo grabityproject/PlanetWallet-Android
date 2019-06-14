@@ -21,12 +21,13 @@ import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class PlanetManagementActivity extends PlanetWalletActivity implements AdvanceRecyclerView.OnItemClickListener, ToolBar.OnToolBarClickListener {
 
-    public static int PLANETADD = 20;
+
 
     private ViewMapper viewMapper;
     private ArrayList< Planet > items;
     private PlanetManagementAdapter adapter;
 
+    private Planet planet;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -53,6 +54,12 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
         /**
          * 임시작업
          */
+        if ( getSerialize( C.bundleKey.PLANET ) != null ) {
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+        } else {
+            finish( );
+        }
+
         setDummy( );
     }
 
@@ -81,6 +88,17 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
             planet.setAddress( "0x43fedf6faf58a666b18f8cccebf0787b29591ede" );
             items.add( planet );
         }
+
+        /**
+         * 임시작업 자기자신플레닛 제거
+         */
+        for ( int i=0; i<items.size(); i++ ){
+            if ( items.get( i ).getAddress().equals( planet.getAddress() ) ){
+                items.remove( i );
+                break;
+            }
+        }
+
         adapter = new PlanetManagementAdapter( getApplicationContext( ), items );
         viewMapper.listView.setAdapter( adapter );
     }
@@ -91,7 +109,7 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_ADD ) ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.PLANET_ADD, WalletAddActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, PLANETADD ) );
+            sendAction( C.requestCode.PLANET_ADD, WalletAddActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, WalletAddActivity.PLANETADD ) );
         }
     }
 

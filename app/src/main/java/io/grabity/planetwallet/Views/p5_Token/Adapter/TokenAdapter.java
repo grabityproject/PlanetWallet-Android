@@ -6,20 +6,24 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.ERC20Token;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class TokenAdapter extends AdvanceArrayAdapter< ETH > {
+public class TokenAdapter extends AdvanceArrayAdapter< ERC20Token > {
 
     private OnInsideItemClickListener onInsideItemClickListener;
 
-    public TokenAdapter( Context context, ArrayList< ETH > objects ) {
+    public TokenAdapter( Context context, ArrayList< ERC20Token > objects ) {
         super( context, objects );
     }
 
@@ -29,10 +33,11 @@ public class TokenAdapter extends AdvanceArrayAdapter< ETH > {
     }
 
     @Override
-    public void bindData( ViewMapper viewMapper, ETH item, int position ) {
+    public void bindData( ViewMapper viewMapper, ERC20Token item, int position ) {
 
 
-        ( ( EthItem ) viewMapper ).icon.setImageResource( item.getIconRes( ) );
+//        ( ( EthItem ) viewMapper ).icon.setImageResource( item.getIconRes( ) );
+        ImageLoader.getInstance( ).displayImage( "http://test.planetwallet.io" + item.getImg_path( ), ( ( EthItem ) viewMapper ).icon );
         ( ( EthItem ) viewMapper ).name.setText( item.getName( ) );
 
         if ( item.isCheck( ) ) {

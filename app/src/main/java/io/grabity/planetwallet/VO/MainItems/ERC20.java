@@ -1,6 +1,8 @@
 package io.grabity.planetwallet.VO.MainItems;
 
-public class ERC20 extends ETH implements MainItem {
+import java.io.Serializable;
+
+public class ERC20 extends ETH implements MainItem, Serializable {
 
     private String name;
     private String symbol;

@@ -38,7 +38,7 @@
             android:layout_height="56dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="Crate Planet"
+            android:text="@string/wallet_add_btn_create_title"
             android:textSize="16dp"
             app:buttonType="A"
             app:defaultTheme="Dark" />
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center"
-            android:text="Import Another Planet"
+            android:text="@string/wallet_add_btn_import_title"
             android:textSize="16dp"
             app:buttonType="C"
             app:defaultTheme="Dark" />

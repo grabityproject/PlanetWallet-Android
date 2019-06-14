@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -11,6 +12,7 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.JSONImportFragment;
@@ -63,6 +65,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     @Override
     protected void onResume( ) {
         super.onResume( );
+        PLog.e( "Import Resume : "  );
         viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
     }
 
@@ -76,6 +79,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
         adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
         viewMapper.viewPager.setAdapter( adapter );
+
     }
 
     @Override
@@ -85,12 +89,22 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
     @Override
     public void onPageSelected( int position ) {
+        PLog.e( "onPageSelected position : " + position );
         Utils.hideKeyboard( this, getCurrentFocus( ) );
     }
 
     @Override
     public void onPageScrollStateChanged( int i ) {
 
+    }
+
+    @Override
+    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
+        super.onActivityResult( requestCode, resultCode, data );
+        if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
+            setResult( RESULT_OK );
+            super.onBackPressed( );
+        }
     }
 
     @Override
