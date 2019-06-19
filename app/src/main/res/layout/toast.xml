@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/group_toast">
+
+
+    <io.grabity.planetwallet.Widgets.RoundRelativeLayout
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        app:backgroundColor="#CC1E1E28"
+        app:cornerRadius="4dp"
+        >
+
+        <TextView
+            android:id="@+id/text_toast_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Copied to Clipboard"
+            android:textColor="#FFF"
+            android:gravity="center"
+            android:textSize="16dp"/>
+    </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
+
+
+</RelativeLayout>
