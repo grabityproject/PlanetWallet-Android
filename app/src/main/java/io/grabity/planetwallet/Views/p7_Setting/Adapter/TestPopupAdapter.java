@@ -32,8 +32,8 @@ public class TestPopupAdapter extends AdvanceArrayAdapter< String > {
 
         public TestItem( View itemView ) {
             super( itemView );
-            textName = findViewById( R.id.text_name );
-            textCoin = findViewById( R.id.text_coin );
+//            textName = findViewById( R.id.text_name );
+//            textCoin = findViewById( R.id.text_coin );
 
         }
     }

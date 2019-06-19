@@ -115,6 +115,8 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             textTitle.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 18 );
             textTitle.setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ), "fonts/WorkSans-SemiBold.otf" ), Typeface.BOLD );
             textTitle.setText( title );
+            textTitle.setBackgroundColor( Color.RED );
+            textTitle.setAlpha( 0.3f );
 
             relativeLayout.addView( textTitle );
         }
@@ -189,6 +191,17 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         items.add( button );
     }
 
+    public void addLeftButton( ButtonItem button ) {
+
+        if ( button.getResource( ) > 0 ) {
+            imageViewLeft.setOnClickListener( this );
+            imageViewLeft.setImageResource( button.getResource() );
+            button.setView( imageViewLeft );
+            items.add( button );
+        }
+
+    }
+
     public ArrayList< ButtonItem > getButtonItems( ) {
         return items;
     }
@@ -197,9 +210,22 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
         private Object tag;
         private View view;
+        private int resource = -1;
 
         public ButtonItem( ) {
 
+        }
+
+        public int getResource( ) {
+            return resource;
+        }
+
+        public void setResource( int resource ) {
+            this.resource = resource;
+        }
+
+        public ButtonItem( int resource ) {
+            this.resource = resource;
         }
 
         public Object getTag( ) {

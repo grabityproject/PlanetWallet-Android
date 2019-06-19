@@ -2,6 +2,8 @@ package io.grabity.planetwallet.MiniFramework.utils;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -52,6 +54,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 public class Utils {
 
@@ -723,11 +727,11 @@ public class Utils {
         int sdk = Build.VERSION.SDK_INT;
         if ( sdk < Build.VERSION_CODES.HONEYCOMB ) {
             android.text.ClipboardManager clipboard = ( android.text.ClipboardManager )
-                    context.getSystemService( Context.CLIPBOARD_SERVICE );
+                    context.getSystemService( CLIPBOARD_SERVICE );
             clipboard.setText( copyText );
         } else {
             android.content.ClipboardManager clipboard = ( android.content.ClipboardManager )
-                    context.getSystemService( Context.CLIPBOARD_SERVICE );
+                    context.getSystemService( CLIPBOARD_SERVICE );
             android.content.ClipData clip = android.content.ClipData.newPlainText( "Copy to clipboard", copyText );
             clipboard.setPrimaryClip( clip );
         }
@@ -735,6 +739,12 @@ public class Utils {
             Toast toast = Toast.makeText( context.getApplicationContext( ), toastMsg, Toast.LENGTH_SHORT );
             toast.show( );
         }
+    }
+
+    public static void copyToClipboard( Context context , String copyText ){
+        ClipboardManager clipboardManager = ( ClipboardManager ) context.getSystemService( CLIPBOARD_SERVICE );
+        ClipData clipData = ClipData.newPlainText( "Copy to clipboard", copyText );
+        clipboardManager.setPrimaryClip( clipData );
     }
 
     public static int getResource( Context context, String resourceType, String resName ) {
@@ -958,6 +968,12 @@ public class Utils {
         }
 
         return items;
+    }
+
+    public static String addressReduction( String address ) {
+        if ( address == null ) return "";
+        String endString = address.substring( address.length( ) - 4 );
+        return address.substring( 0, 2 ).equals( "0x" ) ? address.substring( 0, 6 ) + "..." + endString : address.substring( 0, 4 ) + "..." + endString;
     }
 
 }

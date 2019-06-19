@@ -8,17 +8,12 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
-import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ERC20Token;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.ReturnVO;
@@ -73,7 +68,6 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
             ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ERC20Token.class );
             if ( returnVO.isSuccess( ) ) {
                 tokens = ( ArrayList< ERC20Token > ) returnVO.getResult( );
-
                 setData( );
             }
 
@@ -174,7 +168,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     }
 
     private void updateSearchView( ) {
-        viewMapper.ImageNotSearch.setVisibility( viewMapper.etSearch.getText( ).length( ) == 0 ? View.VISIBLE : View.INVISIBLE );
+        viewMapper.imageNotSearch.setVisibility( viewMapper.etSearch.getText( ).length( ) == 0 ? View.VISIBLE : View.INVISIBLE );
         viewMapper.btnClear.setVisibility( viewMapper.etSearch.getText( ).length( ) == 0 ? View.GONE : View.VISIBLE );
         viewMapper.imageSearch.setVisibility( viewMapper.etSearch.getText( ).length( ) >= 1 ? View.VISIBLE : View.INVISIBLE );
     }
@@ -236,7 +230,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     public class ViewMapper {
 
         EditText etSearch;
-        StretchImageView ImageNotSearch;
+        StretchImageView imageNotSearch;
         StretchImageView imageSearch;
         CircleImageView btnClear;
 
@@ -247,7 +241,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
         public ViewMapper( ) {
 
             etSearch = findViewById( R.id.et_tokenlist_search );
-            ImageNotSearch = findViewById( R.id.image_tokenlist_nosearch_icon );
+            imageNotSearch = findViewById( R.id.image_tokenlist_nosearch_icon );
             imageSearch = findViewById( R.id.image_tokenlist_search_icon );
             btnClear = findViewById( R.id.btn_tokenlist_clear );
 

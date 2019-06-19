@@ -61,6 +61,8 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_splash );
 
+//        setContentView( R.layout.item_test );
+
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );

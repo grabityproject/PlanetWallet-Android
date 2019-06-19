@@ -176,5 +176,14 @@
         <attr name="defaultTheme" />
     </declare-styleable>
 
+    <declare-styleable name="UnderlineTextView">
+        <attr name="underlineColor" format="color" />
+        <attr name="underlineWidth" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="BarcodeFrameView" >
+        <attr name="borderWidth" />
+        <attr name="borderColor" />
+    </declare-styleable>
 
 </resources>

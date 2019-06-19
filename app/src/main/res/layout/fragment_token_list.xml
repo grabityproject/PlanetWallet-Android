@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="#111117"
-            android:hint="@string/token_list_search_title"
+            android:hint="@string/search_title"
             android:singleLine="true"
             android:paddingStart="60dp"
             android:textColor="#FFFFFF"

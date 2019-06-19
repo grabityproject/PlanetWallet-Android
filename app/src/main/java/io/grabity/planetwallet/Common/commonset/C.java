@@ -22,6 +22,8 @@ public class C {
 
         public final static int SETTING_CHANGE_PINCODE = 240;
 
+        public final static int QR_CODE = 250;
+
 
     }
 
@@ -37,6 +39,12 @@ public class C {
 
         public final static String MNEMONIC = "MNEMONIC";
         public final static String PRIVATEKEY = "PRIVATEKEY";
+
+        public final static String BTC = "BTC";
+        public final static String ETH = "ETH";
+        public final static String ERC20 = "ERC20";
+
+        public final static String QRCODE = "QRCODE";
     }
 
     public static class theme {
@@ -52,6 +60,7 @@ public class C {
         public final static int TOOLBAR_ADD = 102;
         public final static int TOOLBAR_MENU = 103;
         public final static int TOOLBAR_MUTIUNIVERSE = 104;
+        public final static int TOOLBAR_TRANSFER_QRCODE = 105;
 
     }
 

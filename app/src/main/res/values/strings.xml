@@ -19,7 +19,7 @@
     <string name="main_blur_wallet_balance_title">Wallet Balance</string>
     <string name="main_notice_title">Blah</string>
     <string name="main_btn_bottom_copy_title">Copy</string>
-    <string name="main_btn_bottom_send_title">Send</string>
+    <string name="main_btn_bottom_transfer_title">Transfer</string>
     
     <string name="token_add_toolbar_title">Manage Tokens</string>
     
@@ -29,7 +29,7 @@
     <string name="custom_token_btn_title">Add Token</string>
     <string name="custom_token_contract_error_title">This is not a valid Contract address.</string>
     
-    <string name="token_list_search_title">Search</string>
+    <string name="search_title">Search</string>
     
     <string name="detail_planet_toolbar_title">Satrini</string>
     <string name="detail_planet_universe_title">ETH Universe</string>
@@ -71,6 +71,8 @@
     <string name="setting_currency_value_title">USD</string>
     <string name="setting_theme_setting_title">Theme Setting</string>
     <string name="setting_version_title">Version</string>
+
+    <string name="transfer_clip_board_title">Paste from Clipboard</string>
 
     
 </resources>

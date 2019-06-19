@@ -300,7 +300,6 @@ public class SlideDrawerLayout extends ViewGroup {
                     } else if ( currentMovingPosition == Position.BOTTOM ) {
 
                         float moveY = ( event.getRawY( ) - thisLocations[ 1 ] ) + triggers.get( Position.BOTTOM ).getOffset( ) + ( triggers.get( Position.BOTTOM ).isSticky( ) ? 0 : ( getHeight( ) - beforeTouchPositionY ) );
-
                         if ( getHeight( ) - getCurrentPositionView.getHeight( ) < moveY ) {
                             getCurrentPositionView.setY( moveY );
                             if ( onSlideDrawerListener != null ) {
@@ -362,6 +361,15 @@ public class SlideDrawerLayout extends ViewGroup {
                 } else if ( currentMovingPosition == Position.BOTTOM ) {
 
                     float moveY = ( getHeight( ) - getCurrentPositionView.getHeight( ) ) + ( event.getRawY( ) - thisLocations[ 1 ] ) - beforeTouchPositionY;
+
+                    PLog.e( "getHeight : " + getHeight( ) );
+                    PLog.e( " getCurrentPositionView.getHeight( ) : " + getCurrentPositionView.getHeight( ) );
+                    PLog.e( "event.getRawY( ): " + event.getRawY( ) );
+                    PLog.e( "thisLocations[ 1 ] : " + thisLocations[ 1 ] );
+                    PLog.e( "beforeTouchPositionY : " + beforeTouchPositionY );
+
+
+                    PLog.e( "moveY : " + moveY );
                     if ( getHeight( ) - getCurrentPositionView.getHeight( ) <= moveY ) {
                         getCurrentPositionView.setY( moveY );
                         if ( onSlideDrawerListener != null ) {
@@ -462,6 +470,7 @@ public class SlideDrawerLayout extends ViewGroup {
         return isOpen;
     }
 
+
     public OnSlideDrawerListener getOnSlideDrawerListener( ) {
         return onSlideDrawerListener;
     }
@@ -469,6 +478,7 @@ public class SlideDrawerLayout extends ViewGroup {
     public void setOnSlideDrawerListener( OnSlideDrawerListener onSlideDrawerListener ) {
         this.onSlideDrawerListener = onSlideDrawerListener;
     }
+
 
     private void slideAnimation( final int position, boolean open ) {
         View target = triggers.get( position ).getView( );

@@ -1,6 +1,5 @@
 package io.grabity.planetwallet.Views.p5_Token.Fragment;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

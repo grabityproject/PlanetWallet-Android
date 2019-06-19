@@ -23,6 +23,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="InnerclassSeparator">
 
+
+
         <activity
             android:name=".Views.p1_Splash.Activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -36,6 +38,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
+
 
 
         </activity>
@@ -85,6 +89,11 @@
 
         <activity
             android:name=".Views.p6_Transfer.Activity.TransferActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".Views.p6_Transfer.Activity.ScanQRActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 

@@ -38,6 +38,7 @@
         app:typefaceStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/group_main_header_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/text_main_header_planet_name"
@@ -49,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="0x1234123123123"
+            android:text="0x12341231231232342343"
             android:textColor="#5c5964"
             android:textSize="16dp"
             app:themeTextColor="#aaaaaa" />

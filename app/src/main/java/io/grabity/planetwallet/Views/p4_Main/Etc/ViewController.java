@@ -47,6 +47,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         viewMapper.lottiePullToRefresh.setProgress( 0.0f );
     }
 
+
     @Override
     public void onSlide( int position, float percent, float x, float y ) {
         if ( position == SlideDrawerLayout.Position.BOTTOM ) {
@@ -57,6 +58,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
 
             viewMapper.textNotice.setAlpha( 1.0f - movePoint );
             viewMapper.groupBlur.setAlpha( 1.0f - movePoint );
+
             viewMapper.groupBottom.setAlpha( movePoint * 1.2f );
 
             if ( ( y - ( viewMapper.slideDrawer.getHeight( ) - viewMapper.groupBlur.getHeight( ) / 2.0f ) + Utils.dpToPx( activity, 20 ) ) > 0 ) {

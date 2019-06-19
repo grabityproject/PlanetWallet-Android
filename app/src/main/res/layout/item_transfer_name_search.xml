@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="18dp"
+        >
+
+        <io.grabity.planetwallet.Widgets.PlanetView
+            android:id="@+id/planet_item_transfer_name_search_planetview"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            />
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_transfer_name_search_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="Name"
+            android:textColor="#FFF"
+            app:themeTextColor="#000"
+            app:typefaceStyle="medium"
+            android:layout_alignTop="@id/planet_item_transfer_name_search_planetview"
+            android:layout_toRightOf="@id/planet_item_transfer_name_search_planetview"
+            android:paddingStart="20dp"/>
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_transfer_name_search_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/planet_item_transfer_name_search_planetview"
+            android:layout_toRightOf="@id/planet_item_transfer_name_search_planetview"
+            android:paddingStart="20dp"
+            android:textSize="14dp"
+            android:text="0x5632...123f"
+            android:textColor="#5C5964"
+            app:themeTextColor="#AAAAAA"/>
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+</RelativeLayout>

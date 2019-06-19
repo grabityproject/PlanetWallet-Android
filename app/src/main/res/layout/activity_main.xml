@@ -226,7 +226,6 @@
 
         </RelativeLayout>
 
-
         <RelativeLayout
             android:id="@+id/group_main_bottom"
             android:layout_width="match_parent"
@@ -240,7 +239,6 @@
                 app:direction="BOTTOM_TOP" />
 
             <io.grabity.planetwallet.Widgets.RoundRelativeLayout
-                android:id="@+id/group_main_sub_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="472dp"
                 android:layout_marginTop="20dp"
@@ -328,13 +326,13 @@
                         app:textColorNormal="#000" />
 
                     <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
-                        android:id="@+id/btn_main_bottom_send"
+                        android:id="@+id/btn_main_bottom_transfer"
                         android:layout_width="0dp"
                         android:layout_height="56dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/main_btn_bottom_send_title"
+                        android:text="@string/main_btn_bottom_transfer_title"
                         android:textSize="20dp"
                         android:textStyle="bold"
                         app:backgroundColorHighlight="#111117"
