@@ -44,10 +44,10 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.barcodeReaderView.setOnBarcodeDetectListener( this );
 
-        viewMapper.toolBar.getViewTreeObserver().addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
+        viewMapper.toolBar.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
             @Override
             public void onGlobalLayout( ) {
-                viewMapper.toolBar.getViewTreeObserver().removeOnGlobalLayoutListener( this );
+                viewMapper.toolBar.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
                 ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( ScanQRActivity.this, 68 ) + getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) ) );
                 viewMapper.toolBar.requestLayout( );
             }
@@ -74,16 +74,13 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
 //        Pattern p = Pattern.compile( "0x[0-9a-fA-F]{40}$" );
 //        Matcher m = p.matcher( contents );
 //        String address;
-//
 //        if ( m.find( ) ) {
 //            address = m.group( 0 );
 //            PLog.e( "adderss : " + address );
 //        }
 
-
         setResult( RESULT_OK, new Intent( ).putExtra( C.bundleKey.QRCODE, contents ) );
-        viewMapper.barcodeReaderView.setOnBarcodeDetectListener( null );
-        super.onBackPressed( );
+        runOnUiThread( ScanQRActivity.super::onBackPressed );
 
 
     }

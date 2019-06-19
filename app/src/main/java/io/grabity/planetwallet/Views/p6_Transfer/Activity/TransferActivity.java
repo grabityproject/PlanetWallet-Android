@@ -10,30 +10,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.MainItems.BTC;
 import io.grabity.planetwallet.VO.MainItems.CoinType;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p6_Transfer.Adapter.TransferAdapter;
+import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.DetailPlanetActivity;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.BarcodeReaderView;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class TransferActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, TextWatcher {
+public class TransferActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener {
 
     private ViewMapper viewMapper;
-    private Planet planet;
-    private ERC20 erc20;
+
 
     //Dummy
     private ArrayList< Planet > allPlanets;
@@ -62,16 +65,10 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         viewMapper.btnClip.setOnClickListener( this );
         viewMapper.btnClear.setOnClickListener( this );
 
-        viewMapper.etSearch.addTextChangedListener( this );
+        viewMapper.listView.setOnItemClickListener( this );
+        viewMapper.groupSearchAddress.setOnClickListener( this );
 
-        if ( getSerialize( C.bundleKey.ETH ) != null ) {
-            planet = ( Planet ) getSerialize( C.bundleKey.ETH );
-        } else if ( getSerialize( C.bundleKey.BTC ) != null ) {
-            planet = ( Planet ) getSerialize( C.bundleKey.BTC );
-        } else if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-            erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-        }
-        viewMapper.toolBar.setTitle( planet != null ? "Transfer " + planet.getCoinType( ).name( ) : "Transfer " + erc20.getName( ) );
+        viewMapper.etSearch.addTextChangedListener( this );
 
         searchViewThemeSet( );
     }
@@ -82,9 +79,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
         allPlanets = new ArrayList<>( );
         filterPlanets = new ArrayList<>( );
-//
-//        adapter = new TransferAdapter( this, filterPlanets );
-//        viewMapper.listView.setAdapter( adapter );
 
         setDummy( );
 
@@ -114,6 +108,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         }
     }
 
+
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
@@ -122,17 +117,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_TRANSFER_QRCODE ) ) {
             Utils.hideKeyboard( this, getCurrentFocus( ) );
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.QR_CODE , ScanQRActivity.class );
-        }
-    }
-
-    @Override
-    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
-        super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.QR_CODE && resultCode == RESULT_OK ){
-            if ( data == null ) return;
-            String address = data.getStringExtra( C.bundleKey.QRCODE );
-            viewMapper.etSearch.setText( address );
+            sendAction( C.requestCode.QR_CODE, ScanQRActivity.class );
         }
     }
 
@@ -142,7 +127,19 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         if ( v == viewMapper.btnClear ) {
             viewMapper.etSearch.setText( "" );
             updateSearchView( );
+        } else if ( v == viewMapper.groupSearchAddress ) {
+            //Todo 임시
+            setTransition( Transition.SLIDE_SIDE );
+            sendAction( TransferAmountActivity.class, Utils.createStringBundle( "address", viewMapper.textAddress.getText( ).toString( ) ) );
         }
+    }
+
+    @Override
+    public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
+        //Todo 임시
+        setTransition( Transition.SLIDE_SIDE );
+        sendAction( TransferAmountActivity.class, Utils.createStringBundle( "planet", filterPlanets.get( position ).getAddress( ) ) );
+
     }
 
     @Override
@@ -152,22 +149,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
     @Override
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
-//        filterPlanets.clear( );
-//        for ( int i = 0; i < allPlanets.size( ); i++ ) {
-//            if ( allPlanets.get( i ).getName( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) ) ) {
-//                filterPlanets.add( allPlanets.get( i ) );
-//                PLog.e( "filterPlanets add" );
-//            }
-//        }
-//
-//        if ( filterPlanets.size( ) == 0 ) {
-//            viewMapper.textNoItem.setVisibility( View.VISIBLE );
-//        } else {
-//            viewMapper.textNoItem.setVisibility( View.GONE );
-//        }
-//
-//        adapter.notifyDataSetChanged( );
-//        updateSearchView( );
     }
 
     @Override
@@ -197,6 +178,17 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
     }
 
+
+    @Override
+    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
+        super.onActivityResult( requestCode, resultCode, data );
+        if ( requestCode == C.requestCode.QR_CODE && resultCode == RESULT_OK ) {
+            if ( data == null ) return;
+            String address = data.getStringExtra( C.bundleKey.QRCODE );
+            viewMapper.etSearch.setText( address );
+        }
+    }
+
     public class ViewMapper {
 
         ViewGroup groupSearchAddress;
@@ -213,12 +205,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         View textNoItem;
         TextView btnClip;
 
-//        //QR
-//        View groupBarcodeReader;
-//        ToolBar barcodeToolBar;
-//        BarcodeReaderView barcodeReaderView;
-
-
         public ViewMapper( ) {
 
             groupSearchAddress = findViewById( R.id.group_transfer_address_search );
@@ -233,11 +219,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             listView = findViewById( R.id.listView );
             textNoItem = findViewById( R.id.text_transfer_noitem );
             btnClip = findViewById( R.id.btn_transfer_clip );
-
-//            //QR
-//            groupBarcodeReader = View.inflate( TransferActivity.this, R.layout.activity_scan_qr, null );
-//            barcodeToolBar = groupBarcodeReader.findViewById( R.id.toolBar );
-//            barcodeReaderView = groupBarcodeReader.findViewById( R.id.barcodeReaderView );
 
         }
     }
@@ -337,7 +318,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             allPlanets.add( planet );
         }
 
-//        filterPlanets = new ArrayList<>( allPlanets );
         adapter = new TransferAdapter( this, filterPlanets );
         viewMapper.listView.setAdapter( adapter );
     }

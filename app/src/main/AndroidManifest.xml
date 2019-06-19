@@ -40,8 +40,6 @@
             </intent-filter>
 
 
-
-
         </activity>
 
         <activity
@@ -94,6 +92,21 @@
 
         <activity
             android:name=".Views.p6_Transfer.Activity.ScanQRActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".Views.p6_Transfer.Activity.TransferAmountActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".Views.p6_Transfer.Activity.TransferConfimrActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".Views.p6_Transfer.Activity.TxReceiptActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 

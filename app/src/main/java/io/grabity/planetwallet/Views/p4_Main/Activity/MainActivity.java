@@ -192,9 +192,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             new Handler( ).postDelayed( ( ) -> {
                 setTransition( Transition.SLIDE_SIDE );
-                sendAction( TransferActivity.class, Utils.createSerializableBundle( selectedPlanet.getName( ).equals( C.bundleKey.BTC ) ? C.bundleKey.BTC : C.bundleKey.ETH, selectedPlanet ) );
+                sendAction( TransferActivity.class );
             }, 250 );
-
 
         } else if ( v == footerViewMapper.btnAddToken ) {
             setTransition( Transition.SLIDE_SIDE );
@@ -202,7 +201,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         } else if ( v == viewMapper.btnBottomBlur ) {
             viewMapper.slideDrawer.open( SlideDrawerLayout.Position.BOTTOM );
         } else if ( v == headerViewMapper.groupAddress ) {
-//            Utils.copyToClipboard( this, headerViewMapper.textAddress.getText( ).toString( ) );
             Utils.copyToClipboard( this, selectedPlanet.getAddress( ) );
             CustomToast.newInstance( this )
                     .setText( "Copied to Clipboard" )
@@ -211,7 +209,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             ercPopupView.dismiss( );
             new Handler( ).postDelayed( ( ) -> {
                 setTransition( Transition.SLIDE_SIDE );
-                sendAction( TransferActivity.class, Utils.createSerializableBundle( C.bundleKey.ERC20, erc20 ) );
+                sendAction( TransferActivity.class );
             }, 250 );
         } else if ( v == viewMapper.btnERCCopy ) {
             Utils.copyToClipboard( this, selectedPlanet.getAddress( ) );
@@ -219,13 +217,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                     .setText( "Copied to Clipboard" )
                     .show( );
         } else if ( v == viewMapper.groupERCBottom ) {
+
         } else if ( v == viewMapper.btnERCPopupClose ) {
             ercPopupView.dismiss( );
         }
-//        else if ( v == viewMapper.btnERCTransfer ) {
-//            PLog.e( "btnERCTransfer" );
-//
-//        }
+
     }
 
     @Override
