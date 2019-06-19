@@ -38,14 +38,11 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     protected void viewInit( ) {
         super.viewInit( );
 
-
-
         viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_close_white ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setTitle( "Scan QR code" );
         viewMapper.toolBar.setTitleColor( Color.parseColor( "#FFFFFF" ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.barcodeReaderView.setOnBarcodeDetectListener( this );
-
 
         viewMapper.toolBar.getViewTreeObserver().addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
             @Override
@@ -62,8 +59,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
-//            super.onBackPressed( );
-            viewMapper.toolBar.requestLayout( );
+            super.onBackPressed( );
         }
     }
 

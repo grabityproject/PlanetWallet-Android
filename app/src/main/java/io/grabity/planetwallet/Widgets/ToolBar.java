@@ -115,8 +115,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             textTitle.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 18 );
             textTitle.setTypeface( Typeface.createFromAsset( getContext( ).getAssets( ), "fonts/WorkSans-SemiBold.otf" ), Typeface.BOLD );
             textTitle.setText( title );
-            textTitle.setBackgroundColor( Color.RED );
-            textTitle.setAlpha( 0.3f );
+
 
             relativeLayout.addView( textTitle );
         }
