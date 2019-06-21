@@ -8,9 +8,13 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Board;
+import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.BoardAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -19,7 +23,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
 
     private ViewMapper viewMapper;
     private ArrayList< Board > items;
-    private BoardAdapter adapter;
+    private Board board;
 
 
     @Override
@@ -34,9 +38,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
-        viewMapper.toolBar.setTitle( Utils.equals( getString( "board" ), "announcements" ) ? "Announcements" : "FAQ" );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.listView.setOnItemClickListener( this );
     }
@@ -44,47 +46,46 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
     @Override
     protected void setData( ) {
         super.setData( );
-        /**
-         * 임시세팅
-         */
-        items = new ArrayList<>( );
-        if ( viewMapper.toolBar.getTitle( ).equals( "announcements" ) ) {
-            items.add( new Board( "title1", "2018-05-02" ) );
-            items.add( new Board( "title2", "2018-05-01" ) );
-            items.add( new Board( "title3", "2018-05-06" ) );
-            items.add( new Board( "title1", "2018-05-02" ) );
-            items.add( new Board( "title2", "2018-05-01" ) );
-            items.add( new Board( "title3", "2018-05-06" ) );
-            items.add( new Board( "title1", "2018-05-02" ) );
-            items.add( new Board( "title2", "2018-05-01" ) );
-            items.add( new Board( "title3", "2018-05-06" ) );
+        if ( getSerialize( C.bundleKey.BOARD ) == null ) {
+            onBackPressed( );
         } else {
-            items.add( new Board( "title1", null ) );
-            items.add( new Board( "title2", null ) );
-            items.add( new Board( "title3", null ) );
-            items.add( new Board( "title1", null ) );
-            items.add( new Board( "title2", null ) );
-            items.add( new Board( "title3", null ) );
-            items.add( new Board( "title1", null ) );
-            items.add( new Board( "title2", null ) );
-            items.add( new Board( "title3", null ) );
+            board = ( Board ) getSerialize( C.bundleKey.BOARD );
+            if ( board.getType( ) == null ) {
+                onBackPressed( );
+            } else {
+                viewMapper.toolBar.setTitle( board.getType( ) );
+                if ( Utils.equals( board.getType( ), "FAQ" ) ) {
+                    new Get( this ).action( Route.URL( "board", "faq", "list" ), 0, 0, null );
+                } else {
+                    new Get( this ).action( Route.URL( "board", "notice", "list" ), 0, 0, null );
+                }
+            }
         }
+    }
 
-        adapter = new BoardAdapter( getApplicationContext( ), items );
-        viewMapper.listView.setAdapter( adapter );
-
+    @Override
+    public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
+        super.onReceive( error, requestCode, resultCode, statusCode, result );
+        if ( !error ) {
+            ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Board.class );
+            if ( returnVO.isSuccess( ) ) {
+                items = ( ArrayList< Board > ) returnVO.getResult( );
+                viewMapper.listView.setAdapter( new BoardAdapter( getApplicationContext( ), items ) );
+            }
+        }
     }
 
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            finish( );
+            onBackPressed( );
         }
     }
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        sendAction( DetailBoardActivity.class, Utils.createStringBundle( "title", Utils.equals( getString( "board" ), "Announcements" ) ? "Announcements" : "FAQ" ) );
+        items.get( position ).setType( board.getType( ) );
+        sendAction( DetailBoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, items.get( position ) ) );
     }
 
     public class ViewMapper {

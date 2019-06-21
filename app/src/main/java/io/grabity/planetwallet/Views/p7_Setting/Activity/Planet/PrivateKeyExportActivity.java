@@ -9,7 +9,9 @@ import android.widget.EditText;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -38,10 +40,17 @@ public class PrivateKeyExportActivity extends PlanetWalletActivity implements To
     protected void setData( ) {
         super.setData( );
 
-        //Data setting
-        viewMapper.etPrivateKey.setHint( "3QSfDbpgf1sysw73Hm9CDBHoVe54MVujQ73253434QSfDbpgf1sysw73Hm9CDBHoVe54MVujQ7" );
-        viewMapper.groupPrivateKey.setBackground_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#F5F5F5" ) );
-        viewMapper.groupPrivateKey.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
+        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+            onBackPressed( );
+        } else {
+
+            Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            String privateKey = planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+            viewMapper.etPrivateKey.setHint( privateKey );
+            viewMapper.groupPrivateKey.setBackground_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#F5F5F5" ) );
+            viewMapper.groupPrivateKey.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
+        }
+
     }
 
     @Override

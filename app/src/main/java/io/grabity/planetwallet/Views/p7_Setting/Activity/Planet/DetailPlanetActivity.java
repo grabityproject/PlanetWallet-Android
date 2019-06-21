@@ -11,6 +11,10 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
@@ -23,7 +27,6 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
     private ViewMapper viewMapper;
     private Planet planet;
 
-
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -31,6 +34,11 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
         viewMapper = new ViewMapper( );
         viewInit( );
+    }
+
+    @Override
+    protected void onResume( ) {
+        super.onResume( );
         setData( );
     }
 
@@ -49,15 +57,24 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
     @Override
     protected void setData( ) {
         super.setData( );
-        if ( getSerialize( C.bundleKey.PLANET ) != null ) {
+        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+            finish( );
+        } else {
+
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-            viewMapper.textType.setText( String.format( "%s Universe", planet.getCoinType( ).name( ) ) );
-            viewMapper.textAddressType.setText( String.format( "%s Address", planet.getCoinType( ).name( ) ) );
+            planet = PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) );
+
+            PLog.e( "planet.getPathIndex( ) : " + planet.getPathIndex( ) );
+            viewMapper.btnMnemonic.setVisibility( planet.getPathIndex( ) != -1 ? View.VISIBLE : View.GONE );
+
+            viewMapper.textType.setText( String.format( "%s Universe", CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            viewMapper.textAddressType.setText( String.format( "%s Address", CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            viewMapper.toolBar.setTitle( planet.getName( ) );
             viewMapper.planetView.setData( planet.getAddress( ) );
             viewMapper.textAddress.setText( planet.getAddress( ) );
             viewMapper.textName.setText( planet.getName( ) );
-        } else {
-            finish( );
+            viewMapper.toggleButton.setOn( Utils.equals( planet.getHide( ), "Y" ) );
+
         }
     }
 
@@ -73,36 +90,69 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
         super.onClick( v );
         if ( v == viewMapper.btnMnemonic ) {
             setTransition( Transition.NO_ANIMATION );
-            sendAction( C.requestCode.PLANET_MNEMONIC_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.MNEMONIC, PinCodeCertificationActivity.MNEMONIC ) );
+            sendAction(
+                    C.requestCode.PLANET_MNEMONIC_EXPORT,
+                    PinCodeCertificationActivity.class );
+
         } else if ( v == viewMapper.btnPrivateKey ) {
             setTransition( Transition.NO_ANIMATION );
-            sendAction( C.requestCode.PLANET_PRIVATEKEY_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.PRIVATEKEY, PinCodeCertificationActivity.PRIVATEKEY ) );
+            sendAction(
+                    C.requestCode.PLANET_PRIVATEKEY_EXPORT,
+                    PinCodeCertificationActivity.class );
+
         } else if ( v == viewMapper.btnName ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.PLANET_RENAME, RenamePlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+            sendAction( C.requestCode.PLANET_RENAME, RenamePlanetActivity.class,
+                    Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+
         }
+
     }
 
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.PLANET_RENAME && resultCode == RESULT_OK ) {
-            if ( data == null ) return;
-            planet = ( Planet ) data.getSerializableExtra( C.bundleKey.PLANET );
-            viewMapper.textName.setText( planet.getName( ) );
-        } else if ( requestCode == C.requestCode.PLANET_MNEMONIC_EXPORT && resultCode == RESULT_OK ) {
-            setTransition( Transition.SLIDE_UP );
-            sendAction( MnemonicExportActivity.class );
+        if ( requestCode == C.requestCode.PLANET_MNEMONIC_EXPORT && resultCode == RESULT_OK ) {
+
+            assert data != null;
+            char[] pinCode = data.getCharArrayExtra( C.bundleKey.PINCODE );
+            if ( pinCode != null ) {
+                StringBuilder pinCodeString = new StringBuilder( );
+                for ( char c : pinCode ) {
+                    pinCodeString.append( c );
+                }
+                if ( Utils.equals( Utils.sha256( pinCodeString.toString( ) ), KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD, pinCodeString.toString( ).toCharArray( ) ) ) ) {
+                    setTransition( Transition.SLIDE_UP );
+                    sendAction( MnemonicExportActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+                }
+            }
+
+
         } else if ( requestCode == C.requestCode.PLANET_PRIVATEKEY_EXPORT && resultCode == RESULT_OK ) {
-            setTransition( Transition.SLIDE_UP );
-            sendAction( PrivateKeyExportActivity.class );
+
+            assert data != null;
+            char[] pinCode = data.getCharArrayExtra( C.bundleKey.PINCODE );
+            if ( pinCode != null ) {
+                StringBuilder pinCodeString = new StringBuilder( );
+                for ( char c : pinCode ) {
+                    pinCodeString.append( c );
+                }
+                if ( Utils.equals( Utils.sha256( pinCodeString.toString( ) ), KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD, pinCodeString.toString( ).toCharArray( ) ) ) ) {
+                    setTransition( Transition.SLIDE_UP );
+                    sendAction( PrivateKeyExportActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+                }
+            }
+
         }
 
     }
 
     @Override
     public void onToggle( ToggleButton toggleButton, boolean isOn ) {
-        PLog.e( "토글버튼클릭 : " + isOn );
+        Planet planet = new Planet( );
+        planet.setKeyId( this.planet.getKeyId( ) );
+        planet.setHide( isOn ? "Y" : "N" );
+        PlanetStore.getInstance( ).update( planet );
     }
 
     public class ViewMapper {

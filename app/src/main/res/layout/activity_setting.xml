@@ -25,8 +25,8 @@
         android:text="@string/setting_planet_main_title"
         android:textColor="#000"
         android:textSize="24dp"
-        app:typefaceStyle="semibold"
-        app:themeTextColor="#FFF" />
+        app:themeTextColor="#FFF"
+        app:typefaceStyle="semibold" />
 
     <LinearLayout
         android:id="@+id/group_setting_image"
@@ -46,7 +46,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="22dp"/>
+                android:layout_marginTop="22dp" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="wrap_content"
@@ -214,8 +214,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:paddingEnd="12dp"
                     android:layout_toLeftOf="@id/image_setting_currency_arrow"
+                    android:paddingEnd="12dp"
                     android:text="@string/setting_currency_value_title"
                     android:textColor="#AAAAAA"
                     android:textSize="14dp"

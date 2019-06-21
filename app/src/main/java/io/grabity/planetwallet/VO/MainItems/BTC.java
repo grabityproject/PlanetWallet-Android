@@ -36,7 +36,7 @@ public class BTC implements MainItem, Serializable {
     }
 
     @Override
-    public CoinType getCoinType( ) {
-        return CoinType.BTC;
+    public Integer getCoinType( ) {
+        return 0;
     }
 }

@@ -22,8 +22,8 @@
         android:text="@string/pincode_certification_title"
         android:textColor="#FFF"
         android:textSize="28dp"
-        app:typefaceStyle="bold"
-        app:themeTextColor="#000" />
+        app:themeTextColor="#000"
+        app:typefaceStyle="bold" />
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_pincode_certification_specification"
@@ -38,77 +38,84 @@
         android:textSize="16dp"
         app:themeTextColor="#aaaaaa" />
 
-    <LinearLayout
-        android:id="@+id/group_pincode_certification_inputpassword"
+    <RelativeLayout
+        android:id="@+id/group_pincode_certification_inputpassword_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/text_pincode_certification_specification"
-        android:gravity="center"
-        android:orientation="horizontal"
         android:padding="84dp">
 
+        <LinearLayout
+            android:id="@+id/group_pincode_certification_inputpassword"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <io.grabity.planetwallet.Widgets.DotView
-            android:layout_width="14dp"
-            android:layout_height="2dp"
-            android:layout_marginRight="12dp"
-            app:dotColor="#5C5964" />
-
-        <io.grabity.planetwallet.Widgets.DotView
-            android:layout_width="14dp"
-            android:layout_height="2dp"
-            android:layout_marginRight="12dp"
-            app:dotColor="#5C5964" />
-
-        <io.grabity.planetwallet.Widgets.DotView
-            android:layout_width="14dp"
-            android:layout_height="2dp"
-            android:layout_marginRight="12dp"
-            app:dotColor="#5C5964" />
-
-        <io.grabity.planetwallet.Widgets.DotView
-            android:layout_width="14dp"
-            android:layout_height="2dp"
-            android:layout_marginRight="12dp"
-            app:dotColor="#5C5964" />
-
-
-        <RelativeLayout
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginRight="12dp">
-
-            <View
-                android:id="@+id/view_pincode_certification_plus_height"
-                android:layout_width="12dp"
+            <io.grabity.planetwallet.Widgets.DotView
+                android:layout_width="14dp"
                 android:layout_height="2dp"
-                android:layout_centerInParent="true"
-                android:background="#5C5964" />
+                android:layout_marginRight="12dp"
+                app:dotColor="#5C5964" />
 
-            <View
-                android:id="@+id/view_pincode_certification_plus_width"
-                android:layout_width="2dp"
+            <io.grabity.planetwallet.Widgets.DotView
+                android:layout_width="14dp"
+                android:layout_height="2dp"
+                android:layout_marginRight="12dp"
+                app:dotColor="#5C5964" />
+
+            <io.grabity.planetwallet.Widgets.DotView
+                android:layout_width="14dp"
+                android:layout_height="2dp"
+                android:layout_marginRight="12dp"
+                app:dotColor="#5C5964" />
+
+            <io.grabity.planetwallet.Widgets.DotView
+                android:layout_width="14dp"
+                android:layout_height="2dp"
+                android:layout_marginRight="12dp"
+                app:dotColor="#5C5964" />
+
+
+            <RelativeLayout
+                android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:layout_centerInParent="true"
-                android:background="#5C5964" />
+                android:layout_marginRight="12dp">
 
-        </RelativeLayout>
+                <View
+                    android:id="@+id/view_pincode_certification_plus_height"
+                    android:layout_width="12dp"
+                    android:layout_height="2dp"
+                    android:layout_centerInParent="true"
+                    android:background="#5C5964" />
 
-        <io.grabity.planetwallet.Widgets.DotView
-            android:layout_width="14dp"
-            android:layout_height="2dp"
-            android:layout_marginRight="12dp"
-            app:dotColor="#5C5964" />
+                <View
+                    android:id="@+id/view_pincode_certification_plus_width"
+                    android:layout_width="2dp"
+                    android:layout_height="12dp"
+                    android:layout_centerInParent="true"
+                    android:background="#5C5964" />
+
+            </RelativeLayout>
+
+            <io.grabity.planetwallet.Widgets.DotView
+                android:layout_width="14dp"
+                android:layout_height="2dp"
+                app:dotColor="#5C5964" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
 
     <LinearLayout
         android:id="@+id/group_pincode_certification_inputnumber"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/group_pincode_certification_inputpassword"
+        android:layout_below="@id/group_pincode_certification_inputpassword_wrapper"
         android:layout_marginBottom="60dp"
         android:orientation="vertical"
         android:visibility="visible">

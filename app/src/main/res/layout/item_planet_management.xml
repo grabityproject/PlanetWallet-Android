@@ -27,23 +27,22 @@
             android:layout_marginTop="6dp"
             android:layout_toRightOf="@id/planetview_item_detailplanet"
             android:background="#000"
-            app:themeBackground="#FFF"
             app:cornerRadius="6dp"
-            app:cornerRound="LB|LT|RB|RT">
+            app:cornerRound="LB|LT|RB|RT"
+            app:themeBackground="#FFF">
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_item_detailplanet_currencyname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="ETH"
                 android:textColor="#FFF"
                 android:textSize="14dp"
-                android:gravity="center"
                 app:themeTextColor="#000"
-                app:typefaceStyle="medium"
-                />
+                app:typefaceStyle="medium" />
 
-    </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
+        </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
 
 
         <io.grabity.planetwallet.Widgets.FontTextView

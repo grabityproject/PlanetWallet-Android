@@ -56,20 +56,19 @@
                 android:id="@+id/btn_detail_planet_name_change"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_toRightOf="@id/text_detail_planet_name"
-                android:layout_alignBottom="@id/text_detail_planet_name"
                 android:layout_alignTop="@id/text_detail_planet_name"
+                android:layout_alignBottom="@id/text_detail_planet_name"
+                android:layout_toRightOf="@id/text_detail_planet_name"
                 android:src="@drawable/image_detail_planet_edit_black"
-                app:themeSrc="@drawable/image_detail_planet_edit_blue"/>
+                app:themeSrc="@drawable/image_detail_planet_edit_blue" />
 
             <io.grabity.planetwallet.Widgets.PlanetView
                 android:id="@+id/planet_detail_planet_planetview"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignBottom="@id/text_detail_planet_name"
                 android:layout_alignTop="@id/text_detail_planet_name"
-                />
+                android:layout_alignBottom="@id/text_detail_planet_name"
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
 
@@ -82,11 +81,11 @@
                 android:id="@+id/text_detail_planet_address_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:paddingEnd="26dp"
                 android:text="@string/detail_planet_address_title"
                 android:textColor="#000"
-                android:paddingEnd="26dp"
-                app:themeTextColor="#FFF"/>
+                android:textSize="14dp"
+                app:themeTextColor="#FFF" />
 
 
             <io.grabity.planetwallet.Widgets.FontTextView
@@ -137,14 +136,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/toolBar"
+            android:layout_marginBottom="20dp"
             android:background="#EDEDED"
             app:themeBackground="#1E1E28" />
 
         <RelativeLayout
             android:id="@+id/group_detail_planet_mnemonic_backup"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/listHeight"
-            android:layout_marginTop="20dp">
+            android:layout_height="@dimen/listHeight">
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_detail_planet_text1"

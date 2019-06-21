@@ -70,7 +70,7 @@ public class JSONImportFragment extends PlanetWalletFragment implements View.OnC
             viewMapper.etPassword.setSelection( viewMapper.etPassword.length( ) );
         } else if ( v == viewMapper.btnSubmit ) {
             walletImportActivity.setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
-            walletImportActivity.sendAction( C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, WalletAddActivity.PLANETIMPORT ) );
+            walletImportActivity.sendAction( C.requestCode.PLANET_ADD, PlanetNameActivity.class );
         }
     }
 
@@ -82,7 +82,7 @@ public class JSONImportFragment extends PlanetWalletFragment implements View.OnC
     @Override
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
         if ( viewMapper.etJson.getText( ) == null ) return;
-        viewMapper.btnSubmit.setEnabled( viewMapper.etJson.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
+        viewMapper.btnSubmit.setEnabled( viewMapper.etJson.getText( ).toString( ).trim( ).length( ) != 0 );
     }
 
     @Override

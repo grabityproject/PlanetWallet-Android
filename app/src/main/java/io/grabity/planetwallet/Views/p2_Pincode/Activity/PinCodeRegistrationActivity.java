@@ -6,15 +6,16 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.DotView;
 import io.grabity.planetwallet.Widgets.FontTextView;
@@ -45,16 +46,21 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-
         viewMapper.btnDeleteNumber.setOnClickListener( this );
         viewMapper.btnDeleteAlphabet.setOnClickListener( this );
 
         passwordViews = Utils.getAllViewsFromParentView( viewMapper.inputPassword, DotView.class );
         numberButtons = Utils.getAllViewsFromParentView( viewMapper.inputNumber, FontTextView.class );
         alphabetButtons = Utils.getAllViewsFromParentView( viewMapper.inputAlphabet, FontTextView.class );
+
         Collections.shuffle( numberButtons );
         Collections.shuffle( alphabetButtons );
 
+        if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
+            viewMapper.passwordTitle.setText( "Change PIN Code" );
+        } else {
+            viewMapper.passwordTitle.setText( "Registration Code" );
+        }
     }
 
     @Override
@@ -74,7 +80,6 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
 
         setPasswordView( );
 
-        viewMapper.passwordTitle.setText( "Verification Code" );
         viewMapper.passwordSubtitle.setText( "Enter the 4 digit + alphabet" );
     }
 
@@ -89,38 +94,52 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
             }
         } else {
             String tag = String.valueOf( v.getTag( ) );
-            if ( tag != null ) {
+            if ( v.getTag( ) != null ) {
                 keyList.add( tag );
                 setPasswordMessage( true );
 
                 if ( keyList.size( ) == 5 && strKeyList == null ) {
                     //Todo 임시작업
-                    StringBuffer stringBuffer = new StringBuffer( );
+                    StringBuilder stringBuffer = new StringBuilder( );
                     for ( int i = 0; i < keyList.size( ); i++ ) {
                         stringBuffer.append( keyList.get( i ) );
                     }
-
-                    if ( Utils.equals( getInt( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ), PinCodeCertificationActivity.CHANGE ) ) {
-                        Utils.setPreferenceData( this, C.pref.PASSWORD, stringBuffer.toString( ) );
-                        setResult( RESULT_OK );
-                        super.onBackPressed( );
-                    }
-
                     strKeyList = stringBuffer.toString( );
                     checkKeyList = stringBuffer.toString( );
                     keyList.clear( );
+
                 } else if ( keyList.size( ) == 5 && checkKeyList != null ) {
-                    StringBuffer stringBuffer = new StringBuffer( );
+
+                    StringBuilder stringBuffer = new StringBuilder( );
                     for ( int i = 0; i < keyList.size( ); i++ ) {
                         stringBuffer.append( keyList.get( i ) );
                     }
                     strKeyList = stringBuffer.toString( );
 
                     if ( strKeyList.equals( checkKeyList ) ) {
-                        Utils.setPreferenceData( this, C.pref.PASSWORD, strKeyList );
-                        setTransition( Transition.NO_ANIMATION );
-                        sendAction( PinCodeCertificationActivity.class );
-                        finish( );
+
+                        if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
+
+                            char[] beforePinCode = getIntent( ).getCharArrayExtra( C.bundleKey.PINCODE );
+                            //Todo DataBase 전체 교체
+                            PLog.e( "beforePinCode : " + Arrays.toString( beforePinCode ) );
+
+                            String value = Utils.sha256( strKeyList );
+                            KeyValueStore.getInstance( ).setValue( C.pref.PASSWORD, value, checkKeyList.toCharArray( ) );
+
+                            setResult( RESULT_OK );
+                            super.onBackPressed( );
+
+                        } else {
+
+                            String value = Utils.sha256( strKeyList );
+                            KeyValueStore.getInstance( ).setValue( C.pref.PASSWORD, value, checkKeyList.toCharArray( ) );
+
+                            setTransition( Transition.NO_ANIMATION );
+                            sendAction( PinCodeCertificationActivity.class );
+                            finish( );
+                        }
+
                     } else {
                         keyList.clear( );
                         setPasswordMessage( false );
@@ -174,9 +193,6 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
     @Override
     public void onBackPressed( ) {
         if ( keyList.size( ) == 0 ) {
-            if ( Utils.equals( getInt( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ), PinCodeCertificationActivity.CHANGE ) ) {
-                setResult( RESULT_CANCELED );
-            }
             super.onBackPressed( );
         } else {
             keyList.remove( keyList.size( ) - 1 );

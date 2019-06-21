@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.ClientProtocolException;
@@ -95,6 +96,7 @@ public class Patch extends AbstractNetworkTask {
                 }
 
                 httpPatch.setURI( URI.create( url ) );
+                httpPatch.setHeader( "locale", Locale.getDefault().getLanguage() );
 
                 if ( token != null ) {
                     httpPatch.setHeader( "Authorization", "Bearer " + token );
@@ -128,11 +130,7 @@ public class Patch extends AbstractNetworkTask {
                     "<--------- HTTP Patch Method---------> \n" +
                             "<--------- StatusCode : " + result[ 0 ] + "--------->\n" +
                             "<--------- Time : " + this.netWorkTime + " ms--------->" );
-            if ( Boolean.parseBoolean( result[ 2 ] ) ) {
-                in.onReceive( true, requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
-            } else {
-                in.onReceive( false, requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
-            }
+            in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
         }
     }
 }

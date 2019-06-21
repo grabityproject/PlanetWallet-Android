@@ -24,6 +24,8 @@ public class C {
 
         public final static int QR_CODE = 250;
 
+        public final static int PINCODE_IS_NULL = 100;
+
 
     }
 
@@ -45,6 +47,11 @@ public class C {
         public final static String ERC20 = "ERC20";
 
         public final static String QRCODE = "QRCODE";
+
+
+        public final static String BOARD = "board";
+
+        public final static String COINTYPE = "cointype";
     }
 
     public static class theme {
@@ -71,6 +78,9 @@ public class C {
         public final static String THEME = "theme";
         public final static String PASSWORD = "PinPassword";
         public final static String WALLET_GENERATE = "WalletGenerate";
+
+        public final static String LAST_PLANET_KEYID = "lastPlanetKeyId";
+
 
     }
 

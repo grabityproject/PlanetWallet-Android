@@ -9,7 +9,9 @@ import android.widget.EditText;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -38,11 +40,17 @@ public class MnemonicExportActivity extends PlanetWalletActivity implements Tool
     protected void setData( ) {
         super.setData( );
 
-        //Data setting
-        String mnemonic = "industry choose outer tilt task copy wing spread company shoot clump general";
-        viewMapper.etMnemonic.setHint( mnemonic );
-        viewMapper.groupMnemonic.setBackground_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#F5F5F5" ) );
-        viewMapper.groupMnemonic.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
+        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+            onBackPressed( );
+        } else {
+
+            Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            String mnemonic = planet.getMnemonic( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+            viewMapper.etMnemonic.setHint( mnemonic );
+            viewMapper.groupMnemonic.setBackground_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#F5F5F5" ) );
+            viewMapper.groupMnemonic.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
+        }
+
 
     }
 

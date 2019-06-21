@@ -167,7 +167,9 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
     }
 
     public void updateBlurView( boolean theme ) {
-        viewMapper.imageBlurView.setImageBitmap( BlurBuilder.blur( activity, viewMapper.listMain.getScreenshot( Color.parseColor( theme ? "#FFFFFF" : "#111117" ) ), 0.25f, 25 ) );
+        if ( viewMapper.listMain.getAdapter( ) != null ) {
+            viewMapper.imageBlurView.setImageBitmap( BlurBuilder.blur( activity, viewMapper.listMain.getScreenshot( Color.parseColor( theme ? "#FFFFFF" : "#111117" ) ), 0.25f, 25 ) );
+        }
     }
 
     @Override

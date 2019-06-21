@@ -4,11 +4,17 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.BTC;
-import io.grabity.planetwallet.VO.MainItems.CoinType;
+import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
@@ -22,9 +28,9 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
 
     @Override
     public ViewMapper viewMapping( int position ) {
-        if ( getObjects( ).get( position ).getCoinType( ).equals( CoinType.BTC ) ) {
+        if ( getObjects( ).get( position ).getCoinType( ).equals( 0 ) ) {
             return new BTCItem( View.inflate( getContext( ), R.layout.item_main_btc, null ) );
-        } else if ( getObjects( ).get( position ).getCoinType( ).equals( CoinType.ETH ) || getObjects( ).get( position ).getCoinType( ).equals( CoinType.ERC20 ) ) {
+        } else if ( getObjects( ).get( position ).getCoinType( ).equals( 60 ) ) {
             return new ETHItem( View.inflate( getContext( ), R.layout.item_main_eth, null ) );
         } else {
             return null;
@@ -34,7 +40,7 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
     @Override
     public void bindData( ViewMapper viewMapper, MainItem item, int position ) {
 
-        if ( item.getCoinType( ).equals( CoinType.BTC ) ) {
+        if ( Utils.equals( CoinType.BTC.getCoinType( ), item.getCoinType( ) ) ) {
 
             BTC btc = ( BTC ) item;
             ( ( BTCItem ) viewMapper ).imageIcon.setImageResource(
@@ -44,13 +50,13 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
             ( ( BTCItem ) viewMapper ).textBalance.setText( btc.getBalance( ).replace( "-", "" ) );
             ( ( BTCItem ) viewMapper ).textTime.setText( btc.getDate( ) );
 
-        } else if ( item.getCoinType( ).equals( CoinType.ETH ) || item.getCoinType( ).equals( CoinType.ERC20 ) ) {
+        } else if ( Utils.equals( CoinType.ETH.getCoinType( ), item.getCoinType( ) ) ) {
 
-            ETH eth = ( ETH ) item;
-            ( ( ETHItem ) viewMapper ).imageIcon.setImageResource( eth.getIconRes( ) );
-            ( ( ETHItem ) viewMapper ).textName.setText( eth.getName( ) );
-            ( ( ETHItem ) viewMapper ).textBalance.setText( eth.getBalance( ) );
-            ( ( ETHItem ) viewMapper ).textPrice.setText( eth.getPrice( ) );
+            ERC20 erc20 = ( ERC20 ) item;
+            ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), ( ( ETHItem ) viewMapper ).imageIcon );
+            ( ( ETHItem ) viewMapper ).textName.setText( erc20.getName( ) );
+            ( ( ETHItem ) viewMapper ).textBalance.setText( erc20.getBalance( ) );
+            ( ( ETHItem ) viewMapper ).textPrice.setText( "" );
 
         }
 

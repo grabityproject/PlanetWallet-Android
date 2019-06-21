@@ -24,6 +24,12 @@ public class CustomToast extends View {
         return toast;
     }
 
+    public static CustomToast makeText( Context context, String text ) {
+        CustomToast toast = new CustomToast( context );
+        toast.setText( text );
+        return toast;
+    }
+
     public CustomToast setText( String s ) {
         this.s = s;
         return this;

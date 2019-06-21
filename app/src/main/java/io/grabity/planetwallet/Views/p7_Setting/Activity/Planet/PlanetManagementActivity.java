@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.CoinType;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.PlanetManagementAdapter;
@@ -20,7 +21,6 @@ import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class PlanetManagementActivity extends PlanetWalletActivity implements AdvanceRecyclerView.OnItemClickListener, ToolBar.OnToolBarClickListener {
-
 
 
     private ViewMapper viewMapper;
@@ -35,13 +35,11 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
         setContentView( R.layout.activity_planet_management );
         viewMapper = new ViewMapper( );
         viewInit( );
-        setData( );
     }
 
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setRightButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_ADD ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
@@ -51,56 +49,18 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
     @Override
     protected void setData( ) {
         super.setData( );
-        /**
-         * 임시작업
-         */
         if ( getSerialize( C.bundleKey.PLANET ) != null ) {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            setUpList( );
         } else {
             finish( );
         }
-
-        setDummy( );
     }
 
-    void setDummy( ) {
-        items = new ArrayList<>( );
-        { // 1 Planet
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC );
-            planet.setName( "Jacob Park" );
-            planet.setAddress( "0x36072b48604d6d83b5bb304d36887b00213433d5" );
-            items.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.ETH );
-            planet.setName( "Choi" );
-            planet.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-            items.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC );
-            planet.setName( "Jacob Park" );
-            planet.setAddress( "0x43fedf6faf58a666b18f8cccebf0787b29591ede" );
-            items.add( planet );
-        }
-
-        /**
-         * 임시작업 자기자신플레닛 제거
-         */
-        for ( int i=0; i<items.size(); i++ ){
-            if ( items.get( i ).getAddress().equals( planet.getAddress() ) ){
-                items.remove( i );
-                break;
-            }
-        }
-
-        adapter = new PlanetManagementAdapter( getApplicationContext( ), items );
-        viewMapper.listView.setAdapter( adapter );
+    @Override
+    protected void onResume( ) {
+        super.onResume( );
+        setData( );
     }
 
     @Override
@@ -109,7 +69,7 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_ADD ) ) {
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.PLANET_ADD, WalletAddActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, WalletAddActivity.PLANETADD ) );
+            sendAction( C.requestCode.PLANET_ADD, WalletAddActivity.class );
         }
     }
 
@@ -126,8 +86,23 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
         sendAction( DetailPlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, items.get( position ) ) );
     }
 
+    private void setUpList( ) {
+        items = PlanetStore.getInstance( ).getPlanetList( );
+        int removeIndex = -1;
+        for ( int i = 0; i < items.size( ); i++ ) {
+            if ( Utils.equals( items.get( i ).getKeyId( ), planet.getKeyId( ) ) ) {
+                removeIndex = i;
+            }
+        }
+        if ( removeIndex >= 0 ) {
+            items.remove( removeIndex );
+        }
+        adapter = new PlanetManagementAdapter( this, items );
+        viewMapper.listView.setAdapter( adapter );
+    }
 
     public class ViewMapper {
+
         ToolBar toolBar;
         AdvanceRecyclerView listView;
 
@@ -136,4 +111,5 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
             listView = findViewById( R.id.listView );
         }
     }
+
 }

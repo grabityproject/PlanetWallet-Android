@@ -1,41 +1,45 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
-import android.app.Service;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Random;
+import com.pentasecurity.cryptowallet.exceptions.DecryptionErrorException;
+
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.managers.KeyboardManager;
+import io.grabity.planetwallet.MiniFramework.networktask.Post;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
+import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
+import io.grabity.planetwallet.MiniFramework.wallet.signer.Signer;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
-import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.PlanetManagementActivity;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.PlanetView;
-import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
-import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.ShadowView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -47,6 +51,8 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
     private String plantName;
     private int cursor;
+
+    private Planet planet;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -81,7 +87,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 Color.parseColor( getCurrentTheme( ) ? "#C8FFFFFF" : "#A8000000" )
         );
 
-        viewMapper.etPlanetName.setTypeface( Typeface.createFromAsset( getAssets( ), "fonts/WorkSans-Bold.otf" ) );
+        viewMapper.etPlanetName.setTypeface( FontManager.getInstance( ).getFont( FontManager.BOLD ) );
         viewMapper.etPlanetName.setSelection( viewMapper.etPlanetName.getText( ).length( ) );
 
         viewMapper.etPlanetName.setOnEditorActionListener( this );
@@ -92,6 +98,33 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     @Override
     protected void setData( ) {
         super.setData( );
+
+        try {
+            if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+
+                if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
+
+                    if ( PlanetStore.getInstance( ).getPlanetList( CoinType.BTC.name( ) ).size( ) == 0 ) {
+                        generateBtcPlanet( );
+                    } else {
+                        addBtcPlanet( );
+                    }
+
+                } else if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
+
+                    addEthPlanet( );
+
+                } else {
+                    finish( );
+                }
+
+            } else {
+                generateEthPlanet( );
+            }
+        } catch ( DecryptionErrorException e ) {
+            e.printStackTrace( );
+        }
+
     }
 
     @Override
@@ -128,35 +161,126 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnRefresh ) {
-            viewMapper.planetView.setData( randomString( ) );
-            viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
-        } else if ( v == viewMapper.btnSelect ) {
-            if ( Utils.equals( getInt( C.bundleKey.PLANETADD, WalletAddActivity.PLANETADD ), WalletAddActivity.PLANETADD ) ) {
-                setResult( RESULT_OK );
-                super.onBackPressed( );
-            } else {
 
-                Utils.setPreferenceData( this, C.pref.WALLET_GENERATE, C.wallet.CREATE );
-                sendAction( MainActivity.class );
-                finish( );
+            try {
+                if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+                    if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
+                        addBtcPlanet( );
+                    } else if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
+                        addEthPlanet( );
+                    }
+                } else {
+                    generateEthPlanet( );
+                }
+            } catch ( DecryptionErrorException e ) {
+                e.printStackTrace( );
+            }
+
+        } else if ( v == viewMapper.btnSelect ) {
+
+            // Todo Network 통신 다음 저장 기능 구현 현재는 그냥 저장
+            if ( planet != null ) {
+
+                planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+
+                Planet request = new Planet( );
+                request.setPlanet( planet.getName( ) );
+                request.setSignature(
+                        Signer.getInstance( ).sign( planet.getName( ),
+                                planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
+                request.setAddress( planet.getAddress( ) );
+
+                new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
 
             }
 
         }
     }
 
-    /**
-     * planetView Change Test
-     */
-    String randomString( ) {
-        Random random = new Random( );
-        StringBuffer buffer = new StringBuffer( );
-        for ( int i = 0; i < 25; i++ ) {
-            buffer.append( ( char ) ( random.nextInt( 26 ) ) + 97 );
+    @Override
+    public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
+        super.onReceive( error, requestCode, resultCode, statusCode, result );
+        if ( statusCode == 200 ) {
+            if ( requestCode == 0 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+                if ( returnVO.isSuccess( ) ) {
+
+
+                    PlanetStore.getInstance( ).save( planet );
+
+                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+                        setResult( RESULT_OK );
+                        super.onBackPressed( );
+
+                    } else {
+                        sendAction( MainActivity.class );
+                        finish( );
+
+                    }
+
+                } else {
+                    PLog.e( result );
+                }
+            }
         }
-        return buffer.toString( );
     }
 
+    @Override
+    public void onSetPinCode( ) {
+        super.onSetPinCode( );
+        setData( );
+    }
+
+    void addBtcPlanet( ) {
+        if ( planet != null ) {
+            KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
+            planet = BitCoinManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
+        } else {
+            planet = BitCoinManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
+        }
+        planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+        viewMapper.planetView.setData( planet.getAddress( ) );
+        viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
+    }
+
+
+    void generateBtcPlanet( ) {
+        char[] pinCode = getPlanetWalletApplication( ).getPINCODE( );
+        if ( pinCode == null ) {
+            return;
+        }
+        BitCoinManager.getInstance( ).generateMaster( pinCode );
+
+        planet = BitCoinManager.getInstance( ).addPlanet( pinCode );
+        planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+
+        viewMapper.planetView.setData( planet.getAddress( ) );
+        viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
+    }
+
+
+    void addEthPlanet( ) {
+        if ( planet != null ) {
+            KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
+            planet = EthereumManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
+        } else {
+            planet = EthereumManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
+        }
+        planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+        viewMapper.planetView.setData( planet.getAddress( ) );
+        viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
+    }
+
+    void generateEthPlanet( ) {
+        char[] pinCode = getIntent( ).getCharArrayExtra( C.bundleKey.PINCODE );
+        EthereumManager.getInstance( ).generateMaster( pinCode );
+
+        planet = EthereumManager.getInstance( ).addPlanet( pinCode );
+        planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+
+        viewMapper.planetView.setData( planet.getAddress( ) );
+        viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
+    }
 
     @Override
     public void onVisibilityChanged( boolean isOpen, float oldHeight, float keyboardHeight ) {

@@ -7,28 +7,23 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetGenerateActivity;
-import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.DotView;
 import io.grabity.planetwallet.Widgets.FontTextView;
 
 
 public class PinCodeCertificationActivity extends PlanetWalletActivity {
-
-    public static int CHANGE = 10;
-    public static int MNEMONIC = 11;
-    public static int PRIVATEKEY = 12;
 
     private ViewMapper viewMapper;
     private ArrayList< DotView > passwordViews;
@@ -45,7 +40,6 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );
-
     }
 
     @Override
@@ -57,10 +51,9 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         passwordViews = Utils.getAllViewsFromParentView( viewMapper.inputPassword, DotView.class );
         numberButtons = Utils.getAllViewsFromParentView( viewMapper.inputNumber, FontTextView.class );
         alphabetButtons = Utils.getAllViewsFromParentView( viewMapper.inputAlphabet, FontTextView.class );
+
         Collections.shuffle( numberButtons );
         Collections.shuffle( alphabetButtons );
-
-
     }
 
     @Override
@@ -92,37 +85,52 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
             }
         } else {
             String tag = String.valueOf( v.getTag( ) );
-            if ( tag != null ) {
+            if ( v.getTag( ) != null ) {
                 keyList.add( tag );
                 setPasswordMessage( true );
 
                 //Todo 여러 액티비티에서 넘어오게되는 핀화면 , 각 액티비티별로 받아서 분기처리
                 if ( keyList.size( ) == 5 ) {
-                    StringBuffer stringBuffer = new StringBuffer( );
+                    StringBuilder stringBuffer = new StringBuilder( );
                     for ( int i = 0; i < keyList.size( ); i++ ) {
                         stringBuffer.append( keyList.get( i ) );
                     }
                     strKeyList = stringBuffer.toString( );
 
-                    if ( Utils.equals( Utils.getPreferenceData( this, C.pref.PASSWORD ), strKeyList ) ) {
+                    if ( Utils.equals( Utils.sha256( strKeyList ), KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD, strKeyList.toCharArray( ) ) ) ) {
 
-                        if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {
+                        getPlanetWalletApplication( ).setPINCODE( strKeyList.toCharArray( ) );
 
-                            if ( Utils.equals( getInt( C.bundleKey.PINCODE, CHANGE ), CHANGE ) ) {
-                                setTransition( Transition.NO_ANIMATION );
-                                sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, Utils.createIntBundle( C.bundleKey.PINCODE, CHANGE ) );
-                                return;
-                            } else if ( Utils.equals( getInt( C.bundleKey.MNEMONIC, MNEMONIC ), MNEMONIC ) ) {
-                                setResult( RESULT_OK );
-                            } else if ( Utils.equals( getInt( C.bundleKey.PRIVATEKEY, PRIVATEKEY ), PRIVATEKEY ) ) {
-                                setResult( RESULT_OK );
-                            } else {
-                                sendAction( MainActivity.class );
-                            }
+                        if ( getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT ) {
+
+                            Intent intent = new Intent( );
+                            intent.putExtra( C.bundleKey.PINCODE, strKeyList.toCharArray( ) );
+                            setResult( RESULT_OK, intent );
+
+                        } else if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
+
+                            Bundle bundle = new Bundle( );
+                            bundle.putCharArray( C.bundleKey.PINCODE, strKeyList.toCharArray( ) );
+                            sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, bundle );
+
+                        } else if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
+
+                            setResult( RESULT_OK );
 
                         } else {
-                            setTransition( Transition.SLIDE_UP );
-                            sendAction( PlanetGenerateActivity.class );
+
+                            if ( PlanetStore.getInstance( ).getPlanetList( ).size( ) == 0 ) {
+
+                                Bundle bundle = new Bundle( );
+                                bundle.putCharArray( C.bundleKey.PINCODE, strKeyList.toCharArray( ) );
+                                sendAction( PlanetGenerateActivity.class, bundle );
+
+                            } else {
+
+                                sendAction( MainActivity.class );
+
+                            }
+
                         }
                         finish( );
 

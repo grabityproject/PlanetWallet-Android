@@ -1,6 +1,5 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,16 +7,17 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Toast;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
-import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
+import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetGenerateActivity;
+import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetNameActivity;
-import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletImportActivity;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 
@@ -74,8 +74,30 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
             viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
             viewMapper.etPassword.setSelection( viewMapper.etPassword.length( ) );
         } else if ( v == viewMapper.btnSubmit ) {
-            walletImportActivity.setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
-            walletImportActivity.sendAction( C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, WalletAddActivity.PLANETIMPORT ) );
+
+            if ( getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) != null ) {
+
+
+                if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
+
+                    try {
+                        walletImportActivity.setPlanet( BitCoinManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), viewMapper.etPassword.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) ) );
+                    } catch ( Exception e ) {
+                        PLog.e( "Fail" );
+                    }
+
+                } else if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
+                    try {
+                        walletImportActivity.setPlanet( EthereumManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), viewMapper.etPassword.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) ) );
+                    } catch ( Exception e ) {
+                        PLog.e( "Fail" );
+                    }
+                }
+
+            } else {
+                getPlanetWalletActivity( ).sendAction( C.requestCode.PINCODE_IS_NULL, PinCodeCertificationActivity.class );
+            }
+
         }
 
     }

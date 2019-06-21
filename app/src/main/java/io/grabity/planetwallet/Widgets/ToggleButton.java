@@ -122,6 +122,16 @@ public class ToggleButton extends View implements View.OnClickListener, Themeabl
         }
     }
 
+    public boolean isOn( ) {
+        return isOn;
+    }
+
+    public void setOn( boolean on ) {
+        isOn = on;
+        percent = on ? 100.0f : 0.0f;
+        invalidate( );
+    }
+
     public float getPercent( ) {
         return percent;
     }
@@ -145,9 +155,9 @@ public class ToggleButton extends View implements View.OnClickListener, Themeabl
 
     @Override
     public void setTheme( boolean theme ) {
-        if ( !theme ){
+        if ( !theme ) {
             defaultTheme = 1;
-        } else{
+        } else {
             defaultTheme = 2;
         }
 

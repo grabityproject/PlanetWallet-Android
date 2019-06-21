@@ -32,6 +32,8 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
 
     private OnAttachViewListener onAttachViewListener;
 
+    public boolean screenshotFlag = false;
+
     public AdvanceArrayAdapter( Context context, ArrayList< T > objects ) {
         this.context = context;
         this.objects = objects;
@@ -86,11 +88,11 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
             bindData( viewMapper, objects.get( position - headerViews.size( ) ), position );
         } else if ( 0 <= position && position < headerViews.size( ) ) {
             if ( onAttachViewListener != null )
-                onAttachViewListener.onAttachView( viewMapper.getResId( ), position, viewMapper.itemView );
+                onAttachViewListener.onAttachView( viewMapper.getResId( ), position, viewMapper.itemView, screenshotFlag );
             onHeaderView( viewMapper );
         } else if ( objects.size( ) + headerViews.size( ) <= position && position < objects.size( ) + headerViews.size( ) + footerViews.size( ) ) {
             if ( onAttachViewListener != null )
-                onAttachViewListener.onAttachView( viewMapper.getResId( ), position, viewMapper.itemView );
+                onAttachViewListener.onAttachView( viewMapper.getResId( ), position, viewMapper.itemView, screenshotFlag );
             onFooterView( viewMapper );
         }
     }
@@ -223,7 +225,7 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
     }
 
     public interface OnAttachViewListener {
-        void onAttachView( int resId, int position, View view );
+        void onAttachView( int resId, int position, View view, boolean screenshotFlag );
     }
 
     public void setTheme( boolean theme ) {

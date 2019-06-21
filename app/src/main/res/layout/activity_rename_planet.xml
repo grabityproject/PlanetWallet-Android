@@ -42,14 +42,14 @@
             android:layout_height="56dp">
 
             <io.grabity.planetwallet.Widgets.RoundEditText
-                android:textCursorDrawable="@null"
                 android:id="@+id/et_rename_planet_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/rename_planet_name_title"
                 android:paddingLeft="16dp"
-                android:textSize="14dp"
                 android:singleLine="true"
+                android:textCursorDrawable="@null"
+                android:textSize="14dp"
                 app:defaultTheme="Light" />
 
             <io.grabity.planetwallet.Widgets.CircleImageView
@@ -65,11 +65,11 @@
         </RelativeLayout>
 
         <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/group_renamePlanet_name"
             android:paddingTop="10dp"
-            android:text="@string/rename_planet_message_title"
             android:textColor="#FF0050"
             android:textSize="14dp" />
 

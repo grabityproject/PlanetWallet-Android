@@ -1,44 +1,56 @@
 package io.grabity.planetwallet.Views.p5_Token.Fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20Token;
-import io.grabity.planetwallet.VO.MainItems.ETH;
+import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
+import io.grabity.planetwallet.Views.p5_Token.Activity.TokenAddActivity;
 import io.grabity.planetwallet.Views.p5_Token.Adapter.TokenAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class TokenListFragment extends PlanetWalletFragment implements View.OnClickListener, TextWatcher, OnInsideItemClickListener, AdvanceRecyclerView.OnItemClickListener {
+public class TokenListFragment extends PlanetWalletFragment implements View.OnClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< ERC20 > {
 
     private ViewMapper viewMapper;
     private TokenAdapter adapter;
-    private ArrayList< ETH > items;
-    private ArrayList< ETH > filterItems;
-
-    private ArrayList< ERC20Token > tokens;
-    private ArrayList< ERC20Token > filterTokens;
+    private ArrayList< ERC20 > items;
+    private ArrayList< ERC20 > filterItems;
+    private Planet planet;
 
     public TokenListFragment( ) {
+
     }
 
     public static TokenListFragment newInstance( ) {
-        TokenListFragment fragment = new TokenListFragment( );
-        return fragment;
+        return new TokenListFragment( );
+    }
+
+    @Override
+    public void onAttach( Context context ) {
+        super.onAttach( context );
+        planet = ( ( TokenAddActivity ) getPlanetWalletActivity( ) ).getPlanet( );
     }
 
     @Override
@@ -46,10 +58,8 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
         super.onCreate( savedInstanceState );
         setContentView( R.layout.fragment_token_list );
         viewMapper = new ViewMapper( );
-
         viewInit( );
-        new Get( this ).action( "http://test.planetwallet.io/erc20", 0, 0, null );
-//        setData( );
+        setData( );
     }
 
     @Override
@@ -57,87 +67,46 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
         super.viewInit( );
         viewMapper.etSearch.addTextChangedListener( this );
         viewMapper.btnClear.setOnClickListener( this );
+    }
 
-
+    @Override
+    public void setData( ) {
+        super.setData( );
+        new Get( this ).action( Route.URL( "erc20" ), 0, 0, null );
     }
 
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( resultCode == 0 && statusCode == 200 ) {
-            ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ERC20Token.class );
+            ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ERC20.class );
             if ( returnVO.isSuccess( ) ) {
-                tokens = ( ArrayList< ERC20Token > ) returnVO.getResult( );
-                setData( );
+                items = new ArrayList<>( );
+                ArrayList< ERC20 > erc20list = ( ArrayList< ERC20 > ) returnVO.getResult( );
+                ArrayList< ERC20 > currentUseId = ERC20Store.getInstance( ).getTokenList( planet.getKeyId( ) );
+                HashMap< String, ERC20 > currentMap = new HashMap<>( );
+
+                for ( ERC20 erc20 : currentUseId ) {
+                    currentMap.put( erc20.getContract( ), erc20 );
+                }
+
+                for ( int i = 0; i < erc20list.size( ); i++ ) {
+                    if ( currentMap.containsKey( erc20list.get( i ).getContract( ) ) ) {
+                        if ( currentMap.get( erc20list.get( i ).getContract( ) ).getHide( ).equals( "N" ) )
+                            erc20list.get( i ).setCheck( true );
+                    }
+                    items.add( erc20list.get( i ) );
+                }
+
+                filterItems = new ArrayList<>( items );
+
+                adapter = new TokenAdapter( getContext( ), filterItems );
+                adapter.setOnInsideItemClickListener( this );
+
+                viewMapper.listView.setAdapter( adapter );
+                viewMapper.listView.setOnItemClickListener( this );
             }
-
         }
-    }
-
-    @Override
-    public void setData( ) {
-        super.setData( );
-
-
-
-        if ( tokens != null ) {
-
-            filterTokens = new ArrayList<>( tokens );
-            adapter = new TokenAdapter( getContext( ), filterTokens );
-            adapter.setOnInsideItemClickListener( this );
-            viewMapper.listView.setAdapter( adapter );
-            viewMapper.listView.setOnItemClickListener( this );
-        }
-
-        /**
-         * 임시작업
-         */
-//        items = new ArrayList<>( );
-//
-//        {
-//            ETH item = new ETH( );
-//            item.setName( "iOTA" );
-//            item.setIconRes( R.drawable.icon_iota );
-//            items.add( item );
-//        }
-//
-//
-//        {
-//            ETH item = new ETH( );
-//            item.setName( "GBT" );
-//            item.setIconRes( R.drawable.icon_gbt );
-//            items.add( item );
-//        }
-//
-//
-//        {
-//            ETH item = new ETH( );
-//            item.setName( "Omisego" );
-//            item.setIconRes( R.drawable.icon_omg );
-//            items.add( item );
-//        }
-//
-//
-//        {
-//            ETH item = new ETH( );
-//            item.setName( "Ethereum" );
-//            item.setIconRes( R.drawable.icon_eth );
-//            items.add( item );
-//        }
-//
-//        {
-//            ETH item = new ETH( );
-//            item.setName( "Bitcoin" );
-//            item.setIconRes( R.drawable.icon_bit );
-//            items.add( item );
-//        }
-//
-//        filterItems = new ArrayList<>( items );
-//        adapter = new TokenAdapter( getContext( ), filterItems );
-//        adapter.setOnInsideItemClickListener( this );
-//        viewMapper.listView.setAdapter( adapter );
-//        viewMapper.listView.setOnItemClickListener( this );
-
     }
 
     @Override
@@ -180,30 +149,14 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
 
     @Override
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
-//        filterItems.clear( );
-//        for ( int i = 0; i < items.size( ); i++ ) {
-//            if ( items.get( i ).getName( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) ) ) {
-//                filterItems.add( items.get( i ) );
-//            }
-//        }
-//
-//        if ( filterItems.size( ) == 0 ) {
-//            viewMapper.textNoItem.setVisibility( View.VISIBLE );
-//        } else {
-//            viewMapper.textNoItem.setVisibility( View.GONE );
-//        }
-//        adapter.notifyDataSetChanged( );
-//        updateSearchView( );
-
-
-        filterTokens.clear( );
-        for ( int i = 0; i < tokens.size( ); i++ ) {
-            if ( tokens.get( i ).getName( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) ) ) {
-                filterTokens.add( tokens.get( i ) );
+        filterItems.clear( );
+        for ( int i = 0; i < items.size( ); i++ ) {
+            if ( items.get( i ).getName( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) ) ) {
+                filterItems.add( items.get( i ) );
             }
         }
 
-        if ( filterTokens.size( ) == 0 ) {
+        if ( filterItems.size( ) == 0 ) {
             viewMapper.textNoItem.setVisibility( View.VISIBLE );
         } else {
             viewMapper.textNoItem.setVisibility( View.GONE );
@@ -217,14 +170,23 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
 
     }
 
-
     @Override
-    public void onInsideItemClick( int position ) {
-        //Todo DB갱신
-    }
+    public void onInsideItemClick( ERC20 item, int position ) {
+        try {
+            ERC20 erc20 = new ERC20( );
+            erc20.setKeyId( planet.getKeyId( ) );
+            erc20.setContract( item.getContract( ) );
+            erc20.setSymbol( item.getSymbol( ) );
+            erc20.setDecimal( item.getDecimal( ) );
+            erc20.setName( item.getName( ) );
+            erc20.setImg_path( item.getImg_path( ) );
+            erc20.setHide( item.isCheck( ) ? "N" : "Y" );
+            PLog.e( "erc20 : " + erc20 );
+            ERC20Store.getInstance( ).save( erc20 );
 
-    public ArrayList< ETH > getItems( ) {
-        return items;
+        } catch ( ClassCastException e ) {
+
+        }
     }
 
     public class ViewMapper {

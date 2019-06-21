@@ -11,26 +11,23 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.CoinType;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Adapter.PopupWalletAddAdapter;
-import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.PlanetManagementActivity;
 import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
 public class WalletAddActivity extends PlanetWalletActivity implements ListPopup.OnListPopupItemClickListener, ToolBar.OnToolBarClickListener {
 
-    public static int PLANETADD = 20;
-    public static int PLANETIMPORT = 21;
-
     private ViewMapper viewMapper;
     private PopupWalletAddAdapter adapter;
     private ArrayList< Planet > items;
+
+    private ListPopup popupCreate;
+    private ListPopup popupImport;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -39,40 +36,33 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );
-
     }
 
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        viewMapper.btnCreate.setOnClickListener( this );
-        viewMapper.btnImport.setOnClickListener( this );
-
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
+        viewMapper.btnCreate.setOnClickListener( this );
+        viewMapper.btnImport.setOnClickListener( this );
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
-
         items = new ArrayList<>( );
         {
             Planet item = new Planet( );
-            item.setCoinType( CoinType.BTC );
-            item.setIconRes( R.drawable.icon_bit );
+            item.setCoinType( CoinType.BTC.getCoinType( ) );
             items.add( item );
         }
         {
             Planet item = new Planet( );
-            item.setCoinType( CoinType.ETH );
-            item.setIconRes( R.drawable.icon_eth );
+            item.setCoinType( CoinType.ETH.getCoinType( ) );
             items.add( item );
         }
-
         adapter = new PopupWalletAddAdapter( this, items );
-
     }
 
 
@@ -80,19 +70,22 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnCreate ) {
-            adapter.setOnWalletAddORImportCheck( PLANETADD );
-            setPopup( );
-        } else if ( v == viewMapper.btnImport ) {
-            adapter.setOnWalletAddORImportCheck( PLANETIMPORT );
-            setPopup( );
-        }
-    }
 
-    public void setPopup( ) {
-        ListPopup.newInstance( this, !getPlanetWalletApplication( ).getCurrentTheme( ) ).
-                setAdapter( adapter ).
-                setOnListPopupItemClickListener( this ).
-                show( );
+            popupCreate = ListPopup.newInstance( this,
+                    !getPlanetWalletApplication( ).getCurrentTheme( ) ).
+                    setAdapter( adapter ).
+                    setOnListPopupItemClickListener( this );
+            popupCreate.show( );
+
+        } else if ( v == viewMapper.btnImport ) {
+
+            popupImport = ListPopup.newInstance( this,
+                    !getPlanetWalletApplication( ).getCurrentTheme( ) ).
+                    setAdapter( adapter ).
+                    setOnListPopupItemClickListener( this );
+            popupImport.show( );
+
+        }
     }
 
     @Override
@@ -100,7 +93,7 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
             setResult( RESULT_OK );
-            finish( );
+            onBackPressed( );
         }
     }
 
@@ -108,16 +101,16 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     public void onListPopupItemClick( PopupView popup, View view, int position ) {
         //Todo BTC,ETH 분기로 지갑생성처리
         super.onBackPressed( );
-        if ( adapter.getChoice( ) == PLANETADD ) {
-            new Handler(  ).postDelayed( ( ) -> {
+        if ( popup == popupCreate ) {
+            new Handler( ).postDelayed( ( ) -> {
                 setTransition( Transition.SLIDE_UP );
-                sendAction( C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.PLANETADD, PLANETADD ) );
-            },200 );
-        } else if ( adapter.getChoice( ) == PLANETIMPORT ) {
-            new Handler(  ).postDelayed( ( ) -> {
+                sendAction( C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.COINTYPE, items.get( position ).getCoinType( ) ) );
+            }, 200 );
+        } else if ( popup == popupImport ) {
+            new Handler( ).postDelayed( ( ) -> {
                 setTransition( Transition.SLIDE_SIDE );
-                sendAction( C.requestCode.PLANET_ADD, WalletImportActivity.class );
-            },200 );
+                sendAction( C.requestCode.PLANET_ADD, WalletImportActivity.class, Utils.createIntBundle( C.bundleKey.COINTYPE, items.get( position ).getCoinType( ) ) );
+            }, 200 );
         }
     }
 
@@ -135,8 +128,8 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
 
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
-            btnCreate = findViewById( R.id.btn_wallet_add_createSubmit );
-            btnImport = findViewById( R.id.btn_wallet_add_importSubmit );
+            btnCreate = findViewById( R.id.btn_wallet_add );
+            btnImport = findViewById( R.id.btn_wallet_add_import );
 
         }
 

@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
@@ -24,8 +27,10 @@ public class PlanetManagementAdapter extends AdvanceArrayAdapter< Planet > {
 
     @Override
     public void bindData( ViewMapper viewMapper, Planet item, int position ) {
+
+        if ( Utils.equals( item.getHide( ), "Y" ) ) viewMapper.getView( ).setAlpha( 0.5f );
         ( ( PlanetItem ) viewMapper ).planetView.setData( item.getAddress( ) );
-        ( ( PlanetItem ) viewMapper ).textType.setText( item.getCoinType( ).name( ) );
+        ( ( PlanetItem ) viewMapper ).textType.setText( CoinType.of( item.getCoinType( ) ).name( ) );
         ( ( PlanetItem ) viewMapper ).textName.setText( item.getName( ) );
         ( ( PlanetItem ) viewMapper ).textAddress.setText( getShortAddress( item.getAddress( ) ) );
 

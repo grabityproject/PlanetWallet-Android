@@ -2,6 +2,7 @@ package io.grabity.planetwallet.VO.MainItems;
 
 import java.io.Serializable;
 
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 
 public class ETH implements MainItem, Serializable {
@@ -86,7 +87,8 @@ public class ETH implements MainItem, Serializable {
     }
 
     @Override
-    public CoinType getCoinType( ) {
-        return CoinType.ETH;
+    public Integer getCoinType( ) {
+        return CoinType.ETH.getCoinType( );
     }
+
 }

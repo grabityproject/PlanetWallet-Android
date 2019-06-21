@@ -17,8 +17,18 @@ import android.widget.TextView;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.KeyboardManager;
+import io.grabity.planetwallet.MiniFramework.networktask.Post;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.signer.Signer;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.VO.ReturnVO;
+import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ShadowView;
@@ -28,6 +38,8 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
 
     private ViewMapper viewMapper;
     boolean first = true;
+
+    private Planet planet;
 
     private String plantName;
     private int cursor;
@@ -71,14 +83,64 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
     @Override
     protected void setData( ) {
         super.setData( );
+        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+            onBackPressed( );
+        } else {
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+
+            planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+            viewMapper.planetView.setData( planet.getAddress( ) );
+            viewMapper.planetBackground.setData( planet.getAddress( ) );
+
+        }
     }
 
     @Override
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnSubmit ) {
-            setResult( RESULT_OK );
-            super.onBackPressed( );
+            planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+
+            Planet request = new Planet( );
+            request.setPlanet( planet.getName( ) );
+            request.setSignature(
+                    Signer.getInstance( ).sign( planet.getName( ),
+                            planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
+            request.setAddress( planet.getAddress( ) );
+
+            new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
+
+        }
+    }
+
+
+    @Override
+    public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
+        super.onReceive( error, requestCode, resultCode, statusCode, result );
+        if ( statusCode == 200 ) {
+            if ( requestCode == 0 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+                if ( returnVO.isSuccess( ) ) {
+
+                    PlanetStore.getInstance( ).save( planet );
+
+                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+                        setResult( RESULT_OK );
+                        super.onBackPressed( );
+
+                    } else {
+                        sendAction( MainActivity.class );
+                        finish( );
+
+                    }
+
+                } else {
+
+                    PLog.e( "returnVO.getResult( ) : " + returnVO.getResult( ).getClass( ) );
+                    PLog.e( result );
+
+                }
+            }
         }
     }
 

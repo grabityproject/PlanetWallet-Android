@@ -6,14 +6,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
 public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Planet > {
-
-    private int choice;
 
     public PopupWalletAddAdapter( Context context, ArrayList< Planet > objects ) {
         super( context, objects );
@@ -27,15 +26,7 @@ public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Planet > {
     @Override
     public void bindData( ViewMapper viewMapper, Planet item, int position ) {
         ( ( WalletAddItem ) viewMapper ).imageIcon.setImageResource( item.getIconRes( ) );
-        ( ( WalletAddItem ) viewMapper ).textName.setText( String.format( "%s Universe", item.getCoinType( ).name( ) ) );
-    }
-
-    public void setOnWalletAddORImportCheck( int choice ){
-        this.choice = choice;
-    }
-
-    public int getChoice( ) {
-        return choice;
+        ( ( WalletAddItem ) viewMapper ).textName.setText( String.format( "%s Universe", CoinType.of( item.getCoinType( ) ).name( ) ) );
     }
 
     class WalletAddItem extends ViewMapper {
@@ -49,7 +40,4 @@ public class PopupWalletAddAdapter extends AdvanceArrayAdapter< Planet > {
             textName = findViewById( R.id.text_item_popup_wallet_add_coin_name );
         }
     }
-
-
-
 }

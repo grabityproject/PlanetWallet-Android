@@ -95,8 +95,9 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
         if ( viewMapper.etAddress.getText( ) == null || viewMapper.etSymbol.getText( ) == null )
             return;
-        viewMapper.btnSubmit.setEnabled( viewMapper.etAddress.getText( ).toString( ).trim( ).length( ) == 0 &&
-                viewMapper.etSymbol.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
+        viewMapper.btnSubmit.setEnabled(
+                viewMapper.etAddress.getText( ).toString( ).trim( ).length( ) != 0 ||
+                        viewMapper.etSymbol.getText( ).toString( ).trim( ).length( ) != 0 );
 
         if ( viewMapper.etAddress.getText( ).length( ) >= 1 ) {
             if ( viewMapper.addressWaring.getHeight( ) == 0 ) {
@@ -105,15 +106,12 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
         } else {
             new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ) ).start( );
         }
-
     }
-
 
     @Override
     public void afterTextChanged( Editable s ) {
 
     }
-
 
     public class ViewMapper {
 

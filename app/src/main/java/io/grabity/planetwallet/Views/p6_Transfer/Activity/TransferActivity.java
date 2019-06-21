@@ -17,14 +17,12 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.CoinType;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p6_Transfer.Adapter.TransferAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
-import io.grabity.planetwallet.Widgets.BarcodeReaderView;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -71,7 +69,8 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         } else if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
             erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
         }
-        viewMapper.toolBar.setTitle( planet != null ? "Transfer " + planet.getCoinType( ).name( ) : "Transfer " + erc20.getName( ) );
+//        planet.getCoinType( ).name( )
+        viewMapper.toolBar.setTitle( planet != null ? "Transfer " + "" : "Transfer " + erc20.getName( ) );
 
         searchViewThemeSet( );
     }
@@ -86,7 +85,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 //        adapter = new TransferAdapter( this, filterPlanets );
 //        viewMapper.listView.setAdapter( adapter );
 
-        setDummy( );
+//        setDummy( );
 
     }
 
@@ -122,14 +121,14 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_TRANSFER_QRCODE ) ) {
             Utils.hideKeyboard( this, getCurrentFocus( ) );
             setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.QR_CODE , ScanQRActivity.class );
+            sendAction( C.requestCode.QR_CODE, ScanQRActivity.class );
         }
     }
 
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.QR_CODE && resultCode == RESULT_OK ){
+        if ( requestCode == C.requestCode.QR_CODE && resultCode == RESULT_OK ) {
             if ( data == null ) return;
             String address = data.getStringExtra( C.bundleKey.QRCODE );
             viewMapper.etSearch.setText( address );
@@ -243,102 +242,102 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     }
 
 
-    void setDummy( ) {
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC );
-            planet.setName( "Jacob Park" );
-            planet.setAddress( "n1XYu73xiYzzPeeXNRighWHVRHsNrCXPAF" );
-
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC );
-            planet.setName( "choi" );
-            planet.setAddress( "3QSfDbpgf1sysw73Hm9CDBHoVe54MVujQ7" );
-
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC );
-            planet.setName( "Park" );
-            planet.setAddress( "4QSfDbpgf1sysw72Am9CDBHoVe54MVujQ7" );
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC );
-            planet.setName( "JeongHyun" );
-            planet.setAddress( "1QSfDbpgf1sysw73Hm9CDBHoVe54MVujQ7" );
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.ETH );
-            planet.setName( "JeongHyun" );
-            planet.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-            allPlanets.add( planet );
-
-            ArrayList< MainItem > items = new ArrayList<>( );
-            {
-                ETH item = new ETH( );
-                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-                item.setBalance( "12.0" );
-                item.setName( "ETH" );
-                item.setPrice( "3600$" );
-                items.add( item );
-            }
-
-            {
-                ERC20 item = new ERC20( );
-                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-                item.setBalance( "244500" );
-                item.setName( "GBT" );
-                item.setPrice( "0$" );
-                item.setIconRes( R.drawable.icon_gbt );
-                items.add( item );
-            }
-
-            {
-                ERC20 item = new ERC20( );
-                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-                item.setBalance( "50.0" );
-                item.setName( "iOTA" );
-                item.setPrice( "0$" );
-                item.setIconRes( R.drawable.icon_iota );
-                items.add( item );
-            }
-
-            {
-                ERC20 item = new ERC20( );
-                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-                item.setBalance( "0.0" );
-                item.setName( "OMG" );
-                item.setPrice( "0$" );
-                item.setIconRes( R.drawable.icon_omg );
-                items.add( item );
-            }
-            planet.setItems( items );
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.ETH );
-            planet.setName( "JeongHyun" );
-            planet.setAddress( "0x9f1c94659d2c00b134a9ba418aa182f14bf72e56" );
-            allPlanets.add( planet );
-        }
-
-//        filterPlanets = new ArrayList<>( allPlanets );
-        adapter = new TransferAdapter( this, filterPlanets );
-        viewMapper.listView.setAdapter( adapter );
-    }
+//    void setDummy( ) {
+//
+//        {
+//            Planet planet = new Planet( );
+//            planet.setCoinType( CoinType.BTC );
+//            planet.setName( "Jacob Park" );
+//            planet.setAddress( "n1XYu73xiYzzPeeXNRighWHVRHsNrCXPAF" );
+//
+//            allPlanets.add( planet );
+//        }
+//
+//        {
+//            Planet planet = new Planet( );
+//            planet.setCoinType( CoinType.BTC );
+//            planet.setName( "choi" );
+//            planet.setAddress( "3QSfDbpgf1sysw73Hm9CDBHoVe54MVujQ7" );
+//
+//            allPlanets.add( planet );
+//        }
+//
+//        {
+//            Planet planet = new Planet( );
+//            planet.setCoinType( CoinType.BTC );
+//            planet.setName( "Park" );
+//            planet.setAddress( "4QSfDbpgf1sysw72Am9CDBHoVe54MVujQ7" );
+//            allPlanets.add( planet );
+//        }
+//
+//        {
+//            Planet planet = new Planet( );
+//            planet.setCoinType( CoinType.BTC );
+//            planet.setName( "JeongHyun" );
+//            planet.setAddress( "1QSfDbpgf1sysw73Hm9CDBHoVe54MVujQ7" );
+//            allPlanets.add( planet );
+//        }
+//
+//        {
+//            Planet planet = new Planet( );
+//            planet.setCoinType( CoinType.ETH );
+//            planet.setName( "JeongHyun" );
+//            planet.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+//            allPlanets.add( planet );
+//
+//            ArrayList< MainItem > items = new ArrayList<>( );
+//            {
+//                ETH item = new ETH( );
+//                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+//                item.setBalance( "12.0" );
+//                item.setName( "ETH" );
+//                item.setPrice( "3600$" );
+//                items.add( item );
+//            }
+//
+//            {
+//                ERC20 item = new ERC20( );
+//                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+//                item.setBalance( "244500" );
+//                item.setName( "GBT" );
+//                item.setPrice( "0$" );
+//                item.setIconRes( R.drawable.icon_gbt );
+//                items.add( item );
+//            }
+//
+//            {
+//                ERC20 item = new ERC20( );
+//                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+//                item.setBalance( "50.0" );
+//                item.setName( "iOTA" );
+//                item.setPrice( "0$" );
+//                item.setIconRes( R.drawable.icon_iota );
+//                items.add( item );
+//            }
+//
+//            {
+//                ERC20 item = new ERC20( );
+//                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+//                item.setBalance( "0.0" );
+//                item.setName( "OMG" );
+//                item.setPrice( "0$" );
+//                item.setIconRes( R.drawable.icon_omg );
+//                items.add( item );
+//            }
+//            planet.setItems( items );
+//            allPlanets.add( planet );
+//        }
+//
+//        {
+//            Planet planet = new Planet( );
+//            planet.setCoinType( CoinType.ETH );
+//            planet.setName( "JeongHyun" );
+//            planet.setAddress( "0x9f1c94659d2c00b134a9ba418aa182f14bf72e56" );
+//            allPlanets.add( planet );
+//        }
+//
+////        filterPlanets = new ArrayList<>( allPlanets );
+//        adapter = new TransferAdapter( this, filterPlanets );
+//        viewMapper.listView.setAdapter( adapter );
+//    }
 }

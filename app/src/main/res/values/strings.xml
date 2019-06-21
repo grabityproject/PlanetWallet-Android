@@ -7,30 +7,30 @@
 
     <string name="pincode_registration_title">Verification Code</string>
     <string name="pincode_registration_subtitle">Enter the 4 digit + alphabet</string>
-    
+
     <string name="planet_generate_title">Make your\nOwn planet</string>
     <string name="planet_generate_add_title">Add Planet</string>
-    
-    <string name="wallet_add_btn_create_title">Crate Planet</string>
+
+    <string name="wallet_add_btn_create_title">Add Planet</string>
     <string name="wallet_add_btn_import_title">Import Another Planet</string>
 
     <string name="wallet_import_toolbar_title">Import Planet</string>
-    
+
     <string name="main_blur_wallet_balance_title">Wallet Balance</string>
     <string name="main_notice_title">Blah</string>
     <string name="main_btn_bottom_copy_title">Copy</string>
     <string name="main_btn_bottom_transfer_title">Transfer</string>
-    
+
     <string name="token_add_toolbar_title">Manage Tokens</string>
-    
+
     <string name="custom_token_contract_address_title">Contract Address</string>
     <string name="custom_token_token_symbol_title">Token Symbol</string>
     <string name="custom_token_decimals_title">Decimals of Precision</string>
     <string name="custom_token_btn_title">Add Token</string>
     <string name="custom_token_contract_error_title">This is not a valid Contract address.</string>
-    
+
     <string name="search_title">Search</string>
-    
+
     <string name="detail_planet_toolbar_title">Satrini</string>
     <string name="detail_planet_universe_title">ETH Universe</string>
     <string name="detail_planet_address_title">ETH Address</string>
@@ -39,28 +39,28 @@
     <string name="detail_planet_backup_mnemonic_phrase_title">Backup Mnemonic Phrase</string>
     <string name="detail_planet_backup_privatekey_title">Backup Private Key</string>
 
-    
+
     <string name="mnemonic_export_toolbar_title">Mnemonic Phrase</string>
     <string name="mnemonic_export_backup_mnemonic_phrase_title">Backup Mnemonic Phrase</string>
     <string name="mnemonic_export_message_title">Save the Mnemonic Phrase safely.</string>
-    
+
     <string name="planet_management_toolbar_title">Universe</string>
-    
+
     <string name="privatekey_export_toolbar_title">PrivateKey</string>
     <string name="privatekey_export_backup_privatekey_title">Backup PrivateKey</string>
     <string name="privatekey_export_message_title">Save the PrivateKey safely.</string>
-    
+
     <string name="rename_planet_toolbar_title">Planet Name</string>
     <string name="rename_planet_enter_planet_name_title">Enter Planet name</string>
     <string name="rename_planet_name_title">name</string>
     <string name="rename_planet_message_title">Your Planet name will be shown to others.</string>
     <string name="rename_planet_btn_title">Save</string>
-    
+
     <string name="detail_setting_toolbar_title">Security</string>
     <string name="detail_setting_change_pincode_title">Change pincode</string>
     <string name="detail_setting_touch_or_face_title">Touch or Face ID</string>
 
-    <string name="setting_planet_main_title">You\'\r on \n</string>
+    <string name="setting_planet_main_title">You\'\r on \n %s</string>
     <string name="setting_planet_title">Planet</string>
     <string name="setting_universe_title">Universe</string>
     <string name="setting_security_title">Security</string>
@@ -74,5 +74,7 @@
 
     <string name="transfer_clip_board_title">Paste from Clipboard</string>
 
-    
+    <string name="copy_to_clipboard">Copy To Clipboard</string>
+
+
 </resources>

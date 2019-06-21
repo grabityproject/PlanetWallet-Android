@@ -12,8 +12,11 @@ import android.widget.TextView;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Board;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
@@ -38,26 +41,32 @@ public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
-        viewMapper.toolBar.setTitle( getString( "title" ) );
-
         webSettings = viewMapper.webView.getSettings( );
         webSettings.setJavaScriptEnabled( true );
         viewMapper.webView.setWebChromeClient( new WebChromeClient( ) );
         viewMapper.webView.setWebViewClient( new WebViewClient( ) );
-
-        viewMapper.webView.loadUrl( "http://www.naver.com" );
-
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
+        if ( getSerialize( C.bundleKey.BOARD ) == null ) {
+            onBackPressed( );
+        } else {
+            Board board = ( Board ) getSerialize( C.bundleKey.BOARD );
+            viewMapper.toolBar.setTitle( board.getSubject( ) );
+            if ( Utils.equals( board.getType( ), "FAQ" ) ) {
+                viewMapper.webView.loadUrl( Route.URL( "board", "faq", board.getId( ) ) );
+            } else {
+                viewMapper.webView.loadUrl( Route.URL( "board", "notice", board.getId( ) ) );
+            }
+        }
     }
 
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            finish( );
+            onBackPressed( );
         }
     }
 

@@ -12,18 +12,16 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
-import io.grabity.planetwallet.VO.MainItems.ERC20Token;
-import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class TokenAdapter extends AdvanceArrayAdapter< ERC20Token > {
+public class TokenAdapter extends AdvanceArrayAdapter< ERC20 > {
 
     private OnInsideItemClickListener onInsideItemClickListener;
 
-    public TokenAdapter( Context context, ArrayList< ERC20Token > objects ) {
+    public TokenAdapter( Context context, ArrayList< ERC20 > objects ) {
         super( context, objects );
     }
 
@@ -33,10 +31,8 @@ public class TokenAdapter extends AdvanceArrayAdapter< ERC20Token > {
     }
 
     @Override
-    public void bindData( ViewMapper viewMapper, ERC20Token item, int position ) {
+    public void bindData( ViewMapper viewMapper, ERC20 item, int position ) {
 
-
-//        ( ( EthItem ) viewMapper ).icon.setImageResource( item.getIconRes( ) );
         ImageLoader.getInstance( ).displayImage( "http://test.planetwallet.io" + item.getImg_path( ), ( ( EthItem ) viewMapper ).icon );
         ( ( EthItem ) viewMapper ).name.setText( item.getName( ) );
 
@@ -67,8 +63,7 @@ public class TokenAdapter extends AdvanceArrayAdapter< ERC20Token > {
                     ( ( EthItem ) viewMapper ).btnTokenAddORremove.setBorderColor( Color.parseColor( "#5C5964" ) );
                 }
             }
-
-            onInsideItemClickListener.onInsideItemClick( position );
+            onInsideItemClickListener.onInsideItemClick( item, position );
         } );
     }
 

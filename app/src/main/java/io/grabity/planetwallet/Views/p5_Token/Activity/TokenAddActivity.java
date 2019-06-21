@@ -13,6 +13,7 @@ import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p5_Token.Fragment.CustomTokenFragment;
 import io.grabity.planetwallet.Views.p5_Token.Fragment.TokenListFragment;
 import io.grabity.planetwallet.Widgets.LockableViewPager;
@@ -28,6 +29,8 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
 
     private TokenListFragment tokenListFragment;
     private CustomTokenFragment customTokenFragment;
+
+    private Planet planet;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -52,7 +55,6 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
 
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );
         viewMapper.viewPager.addOnPageChangeListener( this );
-
     }
 
     @Override
@@ -64,13 +66,24 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
     @Override
     protected void setData( ) {
         super.setData( );
-        fragments = new ArrayList<>( );
-        fragments.add( tokenListFragment = TokenListFragment.newInstance( ) );
-        fragments.add( customTokenFragment = CustomTokenFragment.newInstance( ) );
 
-        adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
-        viewMapper.viewPager.setAdapter( adapter );
+        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+            onBackPressed( );
+        } else {
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
 
+            fragments = new ArrayList<>( );
+            fragments.add( tokenListFragment = TokenListFragment.newInstance( ) );
+            fragments.add( customTokenFragment = CustomTokenFragment.newInstance( ) );
+
+            adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
+            viewMapper.viewPager.setAdapter( adapter );
+        }
+
+    }
+
+    public Planet getPlanet( ) {
+        return planet;
     }
 
     @Override
@@ -88,7 +101,6 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
 
     @Override
     public void onToolBarClick( Object tag, View view ) {
-        //Todo 토큰추가를 확인후 setResult 분기
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             Utils.hideKeyboard( this, getCurrentFocus( ) );
             setResult( RESULT_OK );

@@ -4,31 +4,48 @@ import java.io.Serializable;
 
 public class Board implements Serializable {
 
+    String id;
+    String subject;
+    String created_at;
 
-    /**
-     * 임시
-     */
-    String title;
-    String date;
+    String type;
 
-    public Board( String title, String date ) {
-        this.title = title;
-        this.date = date;
+    public Board( ) {
     }
 
-    public String getTitle( ) {
-        return title;
+    public Board( String type ) {
+        this.type = type;
     }
 
-    public void setTitle( String title ) {
-        this.title = title;
+    public String getId( ) {
+        return id;
     }
 
-    public String getDate( ) {
-        return date;
+    public void setId( String id ) {
+        this.id = id;
     }
 
-    public void setDate( String date ) {
-        this.date = date;
+    public String getSubject( ) {
+        return subject;
+    }
+
+    public void setSubject( String subject ) {
+        this.subject = subject;
+    }
+
+    public String getCreated_at( ) {
+        return created_at;
+    }
+
+    public void setCreated_at( String created_at ) {
+        this.created_at = created_at;
+    }
+
+    public String getType( ) {
+        return type;
+    }
+
+    public void setType( String type ) {
+        this.type = type;
     }
 }

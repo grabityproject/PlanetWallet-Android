@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Board;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Board.BoardActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.DetailPlanetActivity;
@@ -43,36 +46,28 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         setContentView( R.layout.activity_setting, true );
         viewMapper = new ViewMapper( );
         viewInit( );
-        setData( );
-
-//        setTheme( true );
     }
 
     @Override
     protected void onResume( ) {
         super.onResume( );
+        setData( );
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
-        //Todo 번역기능 고려
-        items = new ArrayList<>( );
-        items.add( "한국어" );
-        items.add( "English" );
-        items.add( "中國語" );
-
-        adapter = new PopupCurrencyAdapter( this, items );
-
-
-        if ( getSerialize( C.bundleKey.PLANET ) != null ) {
-            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-            viewMapper.name.setText( viewMapper.name.getText( ) + planet.getName( ) );
-            viewMapper.planetView.setData( planet.getAddress( ) );
-        } else {
+        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
             finish( );
+        } else {
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            planet = PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) );
+            viewMapper.textName.setText( localized( R.string.setting_planet_main_title, planet.getName( ) ) );
+            viewMapper.planetView.setData( planet.getAddress( ) );
         }
 
+        items = new ArrayList<>( Arrays.asList( "USD", "KRW", "CNY" ) );
+        adapter = new PopupCurrencyAdapter( this, items );
     }
 
     @Override
@@ -93,8 +88,6 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         viewMapper.btnCurrency.setOnClickListener( this );
 
         btnThemeSetting( );
-
-
     }
 
     void btnThemeSetting( ) {
@@ -107,7 +100,6 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnPlanet ) {
-            PLog.e( "btn My 클릭" );
             sendAction( DetailPlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
         } else if ( v == viewMapper.btnUniverse ) {
             //Todo 자기자신 제거한 리스트출력
@@ -115,9 +107,9 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         } else if ( v == viewMapper.btnSecurity ) {
             sendAction( SecurityActivity.class );
         } else if ( v == viewMapper.btnAnnouncements ) {
-            sendAction( BoardActivity.class, Utils.createStringBundle( "board", "Announcements" ) );
+            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( "Announcements" ) ) );
         } else if ( v == viewMapper.btnFaq ) {
-            sendAction( BoardActivity.class, Utils.createStringBundle( "board", "FAQ" ) );
+            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( "FAQ" ) ) );
         } else if ( v == viewMapper.btnThemeBlack ) {
 
             getPlanetWalletApplication( ).setTheme( false );
@@ -160,7 +152,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
 
         ToolBar toolBar;
 
-        TextView name;
+        TextView textName;
         TextView textCurrency;
 
         ViewGroup btnPlanet;
@@ -178,7 +170,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
 
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
-            name = findViewById( R.id.text_setting_name );
+            textName = findViewById( R.id.text_setting_name );
             btnPlanet = findViewById( R.id.group_setting_planet );
             btnUniverse = findViewById( R.id.group_setting_universe );
             btnSecurity = findViewById( R.id.group_setting_security );

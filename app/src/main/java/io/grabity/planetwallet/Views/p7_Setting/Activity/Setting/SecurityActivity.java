@@ -61,7 +61,9 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
         super.onClick( v );
         if ( v == viewMapper.btnPinCode ) {
             setTransition( Transition.NO_ANIMATION );
-            sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ) );
+            sendAction(
+                    C.requestCode.SETTING_CHANGE_PINCODE,
+                    PinCodeCertificationActivity.class );
         }
     }
 

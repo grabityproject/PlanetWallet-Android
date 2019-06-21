@@ -299,6 +299,7 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
 
     public Bitmap getScreenshot( int backgroundColor ) {
         AdvanceArrayAdapter adapter = ( AdvanceArrayAdapter ) this.getAdapter( );
+        adapter.screenshotFlag = true;
         if ( adapter == null ) return null;
         int size = adapter.getItemCount( );
         int height = 0;
@@ -347,7 +348,7 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
                 bitmap.recycle( );
             }
         }
-
+        adapter.screenshotFlag = false;
         return bigBitmap;
     }
 

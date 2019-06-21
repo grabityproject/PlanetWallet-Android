@@ -14,7 +14,10 @@ import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.JSONImportFragment;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.MnemonicImportFragment;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.PrivateKeyImportFragment;
@@ -41,7 +44,6 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
         viewInit( );
         setData( );
-
     }
 
     @Override
@@ -53,7 +55,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
         viewMapper.tabBar.setItems(
                 new TabBar.ButtonItem( ).setText( "Mnemonic" ).setTextSize( 14 ),
-                new TabBar.ButtonItem( ).setText( "Json" ).setTextSize( 14 ),
+//                new TabBar.ButtonItem( ).setText( "Json" ).setTextSize( 14 ),
                 new TabBar.ButtonItem( ).setText( "Private Key" ).setTextSize( 14 )
         );
 
@@ -65,7 +67,6 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     @Override
     protected void onResume( ) {
         super.onResume( );
-        PLog.e( "Import Resume : "  );
         viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
     }
 
@@ -74,12 +75,11 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
         super.setData( );
         fragments = new ArrayList<>( );
         fragments.add( mnemonicImportFragment = MnemonicImportFragment.newInstance( ) );
-        fragments.add( jsonImportFragment = JSONImportFragment.newInstance( ) );
+//        fragments.add( jsonImportFragment = JSONImportFragment.newInstance( ) );
         fragments.add( privateKeyImportFragment = PrivateKeyImportFragment.newInstance( ) );
 
         adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
         viewMapper.viewPager.setAdapter( adapter );
-
     }
 
     @Override
@@ -89,12 +89,20 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
     @Override
     public void onPageSelected( int position ) {
-        PLog.e( "onPageSelected position : " + position );
         Utils.hideKeyboard( this, getCurrentFocus( ) );
     }
 
     @Override
     public void onPageScrollStateChanged( int i ) {
+
+    }
+
+    public void setPlanet( Planet planet ) {
+
+        if ( planet != null ) {
+            setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
+            sendAction( C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+        }
 
     }
 

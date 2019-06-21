@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -99,6 +100,7 @@ public class Post extends AbstractNetworkTask {
                 HttpPost httpPost;
 
                 httpPost = new HttpPost( this.url );
+                httpPost.setHeader( "locale", Locale.getDefault().getLanguage() );
 
                 if ( token != null ) {
                     httpPost.setHeader( "Authorization", "Bearer " + token );
@@ -184,11 +186,7 @@ public class Post extends AbstractNetworkTask {
                             "<---------StatusCode :" + result[ 0 ] + "--------->\n" +
                             "< ---------Time :" + this.netWorkTime + "ms--------->" );
 
-            if ( Boolean.parseBoolean( result[ 2 ] ) ) {
-                in.onReceive( true, requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
-            } else {
-                in.onReceive( false, requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
-            }
+            in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
         }
     }
 }

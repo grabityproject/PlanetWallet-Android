@@ -4,19 +4,26 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "io.grabity.planetwallet"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets.main {
+        // wallet-core library path.
+        jniLibs.srcDir 'libs'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -26,6 +33,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation files('libs/android_crypto.aar')
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'
     testImplementation 'junit:junit:4.12'

@@ -9,7 +9,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -23,14 +25,17 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.MissingFormatArgumentException;
 import java.util.Stack;
 
+import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout;
@@ -64,6 +69,23 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
             applyTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
         }
         PLog.setTAG( this.getClass( ).getSimpleName( ) );
+    }
+
+    @Override
+    protected void onPause( ) {
+        super.onPause( );
+    }
+
+    @Override
+    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
+        super.onActivityResult( requestCode, resultCode, data );
+        if ( requestCode == C.requestCode.PINCODE_IS_NULL && resultCode == RESULT_OK ) {
+            onSetPinCode( );
+        }
+    }
+
+    public void onSetPinCode( ) {
+
     }
 
     @Override
@@ -502,7 +524,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode,
                            int statusCode, String result ) {
-
+        PLog.e( result );
     }
 
 
@@ -551,4 +573,13 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         }
     }
 
+    @Override
+    public void startActivityForResult( Intent intent, int requestCode ) {
+        intent.putExtra( "REQUEST_CODE", requestCode );
+        super.startActivityForResult( intent, requestCode );
+    }
+
+    public int getRequestCode( ) {
+        return getInt( "REQUEST_CODE", -1 );
+    }
 }

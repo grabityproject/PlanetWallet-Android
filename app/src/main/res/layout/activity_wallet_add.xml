@@ -33,7 +33,7 @@
         android:paddingBottom="20dp">
 
         <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
-            android:id="@+id/btn_wallet_add_createSubmit"
+            android:id="@+id/btn_wallet_add"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginBottom="20dp"
@@ -44,7 +44,7 @@
             app:defaultTheme="Dark" />
 
         <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
-            android:id="@+id/btn_wallet_add_importSubmit"
+            android:id="@+id/btn_wallet_add_import"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center"

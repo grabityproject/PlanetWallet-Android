@@ -8,7 +8,7 @@ public class Route {
 
     public static String URL( Object... segments ) {
 
-        String URL = "";
+        String URL = "https://test.planetwallet.io";
         if ( segments != null ) {
             for ( Object segment : segments ) {
                 if ( segment != null )
