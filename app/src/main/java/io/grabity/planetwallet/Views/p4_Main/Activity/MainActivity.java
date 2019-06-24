@@ -302,7 +302,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             } else if ( Utils.equals( selectedPlanet.getItems( ).get( position ).getCoinType( ), CoinType.ERC20.getCoinType( ) ) ) {
 
-                new ERC20Popup( this, selectedPlanet, ( ERC20 ) selectedPlanet.getItems( ).get( position ) )
+                ERC20Popup.newInstance( this )
+                        .setPlanet( selectedPlanet )
+                        .setErc20( ( ERC20 ) selectedPlanet.getItems( ).get( position ) )
                         .setOnERC20PopupClickListener( ( planet, erc20, button ) -> {
                             if ( button == ERC20Popup.COPY ) {
 
@@ -314,8 +316,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                                 sendAction( TransferActivity.class );
 
                             }
-                        } )
-                        .show( );
+                        } ).show( );
 
             }
 

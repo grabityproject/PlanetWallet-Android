@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
@@ -32,6 +31,14 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
     private float defaultTop = -1.0f;
     private float defaultY = -1.0f;
     private boolean isMove = false;
+
+    public static ERC20Popup newInstance( Context context, Planet planet, ERC20 erc20 ) {
+        return new ERC20Popup( context, planet, erc20 );
+    }
+
+    public static ERC20Popup newInstance( Context context ) {
+        return new ERC20Popup( context, null, null );
+    }
 
     public ERC20Popup( Context context, Planet planet, ERC20 erc20 ) {
         super( context );
@@ -158,6 +165,24 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
 
 
         }
+    }
+
+    public Planet getPlanet( ) {
+        return planet;
+    }
+
+    public ERC20Popup setPlanet( Planet planet ) {
+        this.planet = planet;
+        return this;
+    }
+
+    public ERC20 getErc20( ) {
+        return erc20;
+    }
+
+    public ERC20Popup setErc20( ERC20 erc20 ) {
+        this.erc20 = erc20;
+        return this;
     }
 
     public OnERC20PopupClickListener getOnERC20PopupClickListener( ) {
