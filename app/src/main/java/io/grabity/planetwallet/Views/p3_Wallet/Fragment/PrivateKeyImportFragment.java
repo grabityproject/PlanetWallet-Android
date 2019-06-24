@@ -7,20 +7,14 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 
-import com.pentasecurity.cryptowallet.exceptions.DecryptionErrorException;
-
 import io.grabity.planetwallet.Common.commonset.C;
-import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
-import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
-import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetNameActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletImportActivity;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 
@@ -97,8 +91,6 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
             } else {
                 getPlanetWalletActivity( ).sendAction( C.requestCode.PINCODE_IS_NULL, PinCodeCertificationActivity.class );
             }
-//            walletImportActivity.setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
-//            walletImportActivity.sendAction( C.requestCode.PLANET_ADD, PlanetNameActivity.class );
         }
     }
 
