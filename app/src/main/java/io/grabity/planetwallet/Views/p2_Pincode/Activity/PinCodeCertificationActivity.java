@@ -23,12 +23,8 @@ import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.DotView;
 import io.grabity.planetwallet.Widgets.FontTextView;
 
-
 public class PinCodeCertificationActivity extends PlanetWalletActivity {
 
-    public static int CHANGE = 10;
-    public static int MNEMONIC = 11;
-    public static int PRIVATEKEY = 12;
 
     private ViewMapper viewMapper;
     private ArrayList< DotView > passwordViews;
@@ -108,13 +104,15 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
 
                         if ( Utils.getPreferenceData( this, C.pref.WALLET_GENERATE, "" ).equals( C.wallet.CREATE ) ) {
 
-                            if ( Utils.equals( getInt( C.bundleKey.PINCODE, CHANGE ), CHANGE ) ) {
+                            if ( Utils.equals( getInt( C.bundleKey.PINCODE, C.pincertification.CHANGE ), C.pincertification.CHANGE ) ) {
                                 setTransition( Transition.NO_ANIMATION );
-                                sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, Utils.createIntBundle( C.bundleKey.PINCODE, CHANGE ) );
+                                sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, Utils.createIntBundle( C.bundleKey.PINCODE, C.pincertification.CHANGE ) );
                                 return;
-                            } else if ( Utils.equals( getInt( C.bundleKey.MNEMONIC, MNEMONIC ), MNEMONIC ) ) {
+                            } else if ( Utils.equals( getInt( C.bundleKey.MNEMONIC, C.pincertification.MNEMONIC ), C.pincertification.MNEMONIC ) ) {
                                 setResult( RESULT_OK );
-                            } else if ( Utils.equals( getInt( C.bundleKey.PRIVATEKEY, PRIVATEKEY ), PRIVATEKEY ) ) {
+                            } else if ( Utils.equals( getInt( C.bundleKey.PRIVATEKEY, C.pincertification.PRIVATEKEY ), C.pincertification.PRIVATEKEY ) ) {
+                                setResult( RESULT_OK );
+                            } else if ( Utils.equals( getInt( C.bundleKey.TRANSFER, C.pincertification.TRANSFER ), C.pincertification.TRANSFER ) ) {
                                 setResult( RESULT_OK );
                             } else {
                                 sendAction( MainActivity.class );

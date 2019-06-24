@@ -2,10 +2,13 @@ package io.grabity.planetwallet.Views.p1_Splash.Activity;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Preconditions;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -46,6 +49,7 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
+import io.grabity.planetwallet.Widgets.FontTextView;
 
 import static android.support.v4.util.Preconditions.checkArgument;
 
@@ -66,6 +70,21 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );
+
+//        SpannableString content = new SpannableString( viewMapper.textView.getText( ).toString( ) );
+//        content.setSpan( new UnderlineSpan(  ),0,content.length(), 0 );
+//        viewMapper.textView.setText( content );
+
+//        Rect bounds = new Rect();
+//        viewMapper.text1.getPaint().getTextBounds( viewMapper.text1.getText().toString() , 0 , viewMapper.text1.getText().length(),bounds );
+//        PLog.e( "bounds1 : " + bounds.width() );
+//        viewMapper.text2.getPaint().getTextBounds( viewMapper.text2.getText().toString() , 0 , viewMapper.text2.getText().length(),bounds );
+//        PLog.e( "bounds2 : " + bounds.width() );
+//        viewMapper.text3.getPaint().getTextBounds( viewMapper.text3.getText().toString() , 0 , viewMapper.text3.getText().length(),bounds );
+//        PLog.e( "bounds3 : " + bounds.width() );
+//        viewMapper.text4.getPaint().getTextBounds( viewMapper.text4.getText().toString() , 0 , viewMapper.text4.getText().length(),bounds );
+//        PLog.e( "bounds4 : " + bounds.width() );
+
     }
 
     @Override
@@ -87,15 +106,11 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
 //        sign( "hello", prKey );
 
 
-
-
         viewMapper.view.addAnimatorListener( this );
 
         viewMapper.view.setAnimation( !getCurrentTheme( ) ? "lottie/splash_black.json" : "lottie/splash_white.json" );
         viewMapper.view.setRepeatCount( 0 );
         viewMapper.view.playAnimation( );
-
-
 
 
     }
@@ -158,107 +173,7 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         return stringBuffer.toString( );
     }
 
-    //Test 메소드
-    public static String encodeChecked( int version, byte[] payload ) {
-        if ( version < 0 || version > 255 )
-            throw new IllegalArgumentException( "Version not in range." );
-
-        // A stringified buffer is:
-        // 1 byte version + data bytes + 4 bytes check code (a truncated hash)
-        byte[] addressBytes = new byte[ 1 + payload.length + 4 ];
-        addressBytes[ 0 ] = ( byte ) version;
-        System.arraycopy( payload, 0, addressBytes, 1, payload.length );
-        byte[] checksum = hashTwice( addressBytes, 0, payload.length + 1 );
-        System.arraycopy( checksum, 0, addressBytes, payload.length + 1, 4 );
-        return encode( addressBytes );
-    }
-    public static byte[] hashTwice(byte[] input, int offset, int length) {
-        try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(input, offset, length);
-            return digest.digest(digest.digest());
-        }
-        catch ( NoSuchAlgorithmException e ){}
-        return null;
-    }
-    public static String encode( byte[] input ) {
-          final char[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray( );
-          final char ENCODED_ZERO = ALPHABET[ 0 ];
-        if ( input.length == 0 ) {
-            return "";
-        }
-        // Count leading zeros.
-        int zeros = 0;
-        while ( zeros < input.length && input[ zeros ] == 0 ) {
-            ++zeros;
-        }
-        // Convert base-256 digits to base-58 digits (plus conversion to ASCII characters)
-        input = Arrays.copyOf( input, input.length ); // since we modify it in-place
-        char[] encoded = new char[ input.length * 2 ]; // upper bound
-        int outputStart = encoded.length;
-        for ( int inputStart = zeros; inputStart < input.length; ) {
-            encoded[ --outputStart ] = ALPHABET[ divmod( input, inputStart, 256, 58 ) ];
-            if ( input[ inputStart ] == 0 ) {
-                ++inputStart; // optimization - skip leading zeros
-            }
-        }
-        // Preserve exactly as many leading encoded zeros in output as there were leading zeros in input.
-        while ( outputStart < encoded.length && encoded[ outputStart ] == ENCODED_ZERO ) {
-            ++outputStart;
-        }
-        while ( --zeros >= 0 ) {
-            encoded[ --outputStart ] = ENCODED_ZERO;
-        }
-        // Return encoded string (including encoded leading zeros).
-        return new String( encoded, outputStart, encoded.length - outputStart );
-    }
-    private static byte divmod( byte[] number, int firstDigit, int base, int divisor ) {
-        // this is just long division which accounts for the base of the input digits
-        int remainder = 0;
-        for ( int i = firstDigit; i < number.length; i++ ) {
-            int digit = ( int ) number[ i ] & 0xFF;
-            int temp = remainder * base + digit;
-            number[ i ] = ( byte ) ( temp / divisor );
-            remainder = temp % divisor;
-        }
-        return ( byte ) remainder;
-    }
-
-    public byte[] publicKeyFromPrivateCCC( BigInteger privateKey, boolean compressed ) {
-        ECPoint point = publicPointFromPrivate( privateKey );
-        return point.getEncoded( compressed );
-    }
-    public ECPoint publicPointFromPrivate(BigInteger privKey) {
-        /*
-         * TODO: FixedPointCombMultiplier currently doesn't support scalars longer than the group
-         * order, but that could change in future versions.
-         */
-        if (privKey.bitLength() > CURVE.getN().bitLength()) {
-            privKey = privKey.mod(CURVE.getN());
-        }
-        return new FixedPointCombMultiplier().multiply(CURVE.getG(), privKey);
-    }
-    public static byte[] privateByteToEncode( byte[] keyBytes, boolean compressed ) {
-        if ( !compressed ) {
-            return keyBytes;
-        } else {
-            // Keys that have compressed public components have an extra 1 byte on the end in dumped form.
-            byte[] bytes = new byte[ 33 ];
-            System.arraycopy( keyBytes, 0, bytes, 0, 32 );
-            bytes[ 32 ] = 1;
-            return bytes;
-        }
-    }
-
-//        PLog.e( "pubkey : " + bytesToHexString( publickeyByte ) );
-//        PLog.e( "pubkey.size : " + bytesToHexString( publickeyByte ).length() );
-//        PLog.e( "pubkey 1 : " + bytesToHexString( publicKeyFromPrivateCCC( new BigInteger( privatekey, 16 ), true ) ) );
-//        PLog.e( "pubkey 1.size : " + bytesToHexString( publicKeyFromPrivateCCC( new BigInteger( privatekey, 16 ), true ) ).length() );
-//    PLog.e( "real prKey : " + encodeChecked( 239 , privateByteToEncode( bigIntegerToBytes( new BigInteger( privatekey , 16 ), 32 ), true ) ) );
-    // 테스트넷 실제 prkey 확인
-    //
-
-
+    //Todo 밖으로 빼서 정리
     public static byte[] bigIntegerToBytes( BigInteger b, int numBytes ) {
         byte[] src = b.toByteArray( );
         byte[] dest = new byte[ numBytes ];
@@ -277,13 +192,10 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         return sb.toString( );
     }
 
-
     public byte[] publicKeyFromPrivate( BigInteger privKey, boolean compressed ) {
         ECPoint point = CURVE.getG( ).multiply( privKey );
         return point.getEncoded( compressed );
     }
-
-
 
     public byte[] recoverPubBytesFromSignature( int recId, BigInteger[] b, byte[] messageHash ) {
         BigInteger n = CURVE.getN( );
@@ -316,7 +228,6 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         compEnc[ 0 ] = ( byte ) ( yBit ? 3 : 2 );
         return CURVE.getCurve( ).decodePoint( compEnc );
     }
-
 
     public String sha256( String str ) {
         String SHA = "";
@@ -390,6 +301,7 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
 
         public ViewMapper( ) {
             view = findViewById( R.id.lottie_splash );
+
         }
 
     }

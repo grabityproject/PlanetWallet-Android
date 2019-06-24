@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    app:themeBackground="#FFF">
+
+    <io.grabity.planetwallet.Widgets.ToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
+        app:defaultTheme="Dark"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolBar"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="84dp">
+
+            <RelativeLayout
+                android:id="@+id/group_tx_receipt_planet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="82dp"
+                android:paddingTop="10dp"
+                android:visibility="visible">
+
+                <io.grabity.planetwallet.Widgets.PlanetView
+                    android:id="@+id/planet_tx_receipt_planetview"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_tx_receipt_planet_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/planet_tx_receipt_planetview"
+                    android:paddingStart="20dp"
+                    android:text="Choi3950"
+                    android:textColor="#FFF"
+                    android:textSize="18dp"
+                    app:themeTextColor="#000"
+                    app:typefaceStyle="semibold" />
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_tx_receipt_planet_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_tx_receipt_planet_name"
+                    android:layout_toRightOf="@id/planet_tx_receipt_planetview"
+                    android:paddingStart="20dp"
+                    android:text="0x2341...3452"
+                    android:textColor="#5C5964"
+                    android:textSize="14dp"
+                    app:themeTextColor="#aaaaaa" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/group_tx_receipt_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <io.grabity.planetwallet.Widgets.CircleImageView
+                    android:id="@+id/image_tx_receipt_address_background"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="#1E1E28"
+                    app:borderColor="#1E1E28"
+                    app:borderWidth="1dp"
+                    app:themeSrc="#F9F9F9" />
+
+                <io.grabity.planetwallet.Widgets.StretchImageView
+                    android:id="@+id/image_tx_receipt_address_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:src="@drawable/icon_transfer_eth_black" />
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/image_tx_receipt_address_background"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingStart="20dp"
+                    android:text="0xf291b69799516156fAA7F9ed4c39536335Ab797A"
+                    android:textColor="#FFF"
+                    android:textSize="18dp"
+                    app:themeTextColor="#000"
+                    app:typefaceStyle="semibold" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_tx_receipt_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="84dp"
+            android:paddingBottom="30dp"
+            android:text="194.2341234 GBT"
+            android:textColor="#FFF"
+            android:textSize="28dp"
+            app:themeTextColor="#000"
+            app:typefaceStyle="semibold" />
+
+        <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/text_tx_receipt_amount"
+            android:background="#1E1E28"
+            app:themeBackground="#EDEDED" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view"
+            android:orientation="vertical"
+            android:paddingTop="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listHeight">
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="from"
+                    android:textColor="#5c5964"
+                    android:textSize="14dp"
+                    app:themeTextColor="#aaaaaa" />
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_tx_receipt_from_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="Choi3950"
+                    android:textColor="#FFF"
+                    android:textSize="16dp"
+                    app:themeTextColor="#000" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listHeight">
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Amount"
+                    android:textColor="#5c5964"
+                    android:textSize="14dp"
+                    app:themeTextColor="#aaaaaa" />
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_tx_receipt_amount_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="192.42342314 GBT"
+                    android:textColor="#FF0050"
+                    android:textSize="16dp"
+                    app:themeTextColor="#FF0050" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listHeight">
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Fee"
+                    android:textColor="#5c5964"
+                    android:textSize="14dp"
+                    app:themeTextColor="#aaaaaa" />
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_tx_receipt_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="0.03 ETH"
+                    android:textColor="#FFF"
+                    android:textSize="16dp"
+                    app:themeTextColor="#000" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listHeight">
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Date"
+                    android:textColor="#5c5964"
+                    android:textSize="14dp"
+                    app:themeTextColor="#aaaaaa" />
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_tx_receipt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="2019. 06. 13 13:02:14"
+                    android:textColor="#FFF"
+                    android:textSize="16dp"
+                    app:themeTextColor="#000" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:paddingTop="10dp">
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/views"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TXHash"
+                    android:textColor="#5c5964"
+                    android:textSize="14dp"
+                    app:themeTextColor="#aaaaaa"
+                    android:paddingEnd="54dp"/>
+
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_tx_receipt_txhash"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/views"
+                    android:text="0x1507f1c7fba98b4ab985a4de07fd476920009a94401641b68249deec0f077cf7"
+                    android:textColor="#FFF"
+                    android:textSize="16dp"
+                    app:themeTextColor="#000"
+                    app:underLine="Line"
+                    />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp">
+
+        <io.grabity.planetwallet.Widgets.RoundRelativeLayout
+            android:id="@+id/group_tx_receipt_share"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:borderColor="#FFF"
+            app:borderWidth="1dp"
+            app:cornerRadius="6dp">
+
+            <io.grabity.planetwallet.Widgets.StretchImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/image_tx_receipt_share_white"
+                app:themeSrc="@drawable/image_tx_receipt_share_black" />
+
+        </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
+
+
+        <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+            android:id="@+id/btn_submit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:text="OK"
+            android:textSize="18dp"
+            app:buttonType="A"
+            app:defaultTheme="Dark" />
+
+    </LinearLayout>
+
+
+</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

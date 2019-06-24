@@ -70,6 +70,8 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
         viewMapper.etSearch.addTextChangedListener( this );
 
+        viewMapper.imageIconBackground.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
+
         searchViewThemeSet( );
     }
 
@@ -200,6 +202,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         StretchImageView imageNotSearch;
         StretchImageView imageSearch;
         CircleImageView btnClear;
+        CircleImageView imageIconBackground;
         AdvanceRecyclerView listView;
 
         View textNoItem;
@@ -215,6 +218,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             etSearch = findViewById( R.id.et_transfer_search );
             imageNotSearch = findViewById( R.id.image_transfer_nosearch_icon );
             imageSearch = findViewById( R.id.image_transfer_search_icon );
+            imageIconBackground = findViewById( R.id.image_transfer_address_search_background );
             btnClear = findViewById( R.id.btn_transfer_clear );
             listView = findViewById( R.id.listView );
             textNoItem = findViewById( R.id.text_transfer_noitem );

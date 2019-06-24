@@ -100,7 +100,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
                         stringBuffer.append( keyList.get( i ) );
                     }
 
-                    if ( Utils.equals( getInt( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ), PinCodeCertificationActivity.CHANGE ) ) {
+                    if ( Utils.equals( getInt( C.bundleKey.PINCODE, C.pincertification.CHANGE ), C.pincertification.CHANGE ) ) {
                         Utils.setPreferenceData( this, C.pref.PASSWORD, stringBuffer.toString( ) );
                         setResult( RESULT_OK );
                         super.onBackPressed( );
@@ -174,7 +174,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
     @Override
     public void onBackPressed( ) {
         if ( keyList.size( ) == 0 ) {
-            if ( Utils.equals( getInt( C.bundleKey.PINCODE, PinCodeCertificationActivity.CHANGE ), PinCodeCertificationActivity.CHANGE ) ) {
+            if ( Utils.equals( getInt( C.bundleKey.PINCODE, C.pincertification.CHANGE ), C.pincertification.CHANGE ) ) {
                 setResult( RESULT_CANCELED );
             }
             super.onBackPressed( );

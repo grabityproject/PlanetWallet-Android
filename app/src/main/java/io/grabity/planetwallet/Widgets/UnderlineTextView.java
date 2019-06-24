@@ -72,6 +72,8 @@ public class UnderlineTextView extends TextView {
          * 그리는 위치는 텍스트뷰의 하단부(height)로 그린다.
          */
 
+
+
         canvas.drawLine(0,height,width,height,paint);
 
         super.onDraw(canvas);

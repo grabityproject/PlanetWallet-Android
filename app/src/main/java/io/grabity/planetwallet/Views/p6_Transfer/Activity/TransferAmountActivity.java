@@ -5,17 +5,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
-import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -45,7 +41,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
-        amountButtons = Utils.getAllViewsFromParentView( viewMapper.inputAmonut, FontTextView.class );
+        amountButtons = Utils.getAllViewsFromParentView( viewMapper.groupInputAmount, FontTextView.class );
         viewMapper.btnAmonutDelete.setOnClickListener( this );
         viewMapper.btnSubmit.setOnClickListener( this );
         viewMapper.btnSubmit.setEnabled( false );
@@ -77,7 +73,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnSubmit ) {
-
+            sendAction( TransferConfirmActivity.class );
         } else if ( v == viewMapper.btnAmonutDelete ) {
             if ( amount.size( ) > 0 ) {
                 amount.remove( amount.size( ) - 1 );
@@ -134,7 +130,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         TextView textAmountUSD;
         TextView texterror;
 
-        ViewGroup inputAmonut;
+        ViewGroup groupInputAmount;
         View btnAmonutDelete;
         View btnSubmit;
 
@@ -150,7 +146,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             textAmount = findViewById( R.id.text_transfer_amount_amount );
             textAmountUSD = findViewById( R.id.text_transfer_amount_amount_usd );
             texterror = findViewById( R.id.text_transfer_amount_error_message );
-            inputAmonut = findViewById( R.id.group_transfer_amount_input_amount );
+            groupInputAmount = findViewById( R.id.group_transfer_amount_input_amount );
             btnAmonutDelete = findViewById( R.id.group_transfer_amount_delete );
             btnSubmit = findViewById( R.id.btn_submit );
 

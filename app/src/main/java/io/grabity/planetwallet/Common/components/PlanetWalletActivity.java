@@ -490,6 +490,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
             popupViewStack = new Stack<>( );
         }
         popupViewStack.push( popupView );
+
     }
 
     public void onRemovePopup( PopupView popupView ) {

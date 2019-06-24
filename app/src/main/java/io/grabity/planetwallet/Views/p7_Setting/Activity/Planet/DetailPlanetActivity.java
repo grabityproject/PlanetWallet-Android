@@ -73,10 +73,10 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
         super.onClick( v );
         if ( v == viewMapper.btnMnemonic ) {
             setTransition( Transition.NO_ANIMATION );
-            sendAction( C.requestCode.PLANET_MNEMONIC_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.MNEMONIC, PinCodeCertificationActivity.MNEMONIC ) );
+            sendAction( C.requestCode.PLANET_MNEMONIC_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.MNEMONIC, C.pincertification.MNEMONIC ) );
         } else if ( v == viewMapper.btnPrivateKey ) {
             setTransition( Transition.NO_ANIMATION );
-            sendAction( C.requestCode.PLANET_PRIVATEKEY_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.PRIVATEKEY, PinCodeCertificationActivity.PRIVATEKEY ) );
+            sendAction( C.requestCode.PLANET_PRIVATEKEY_EXPORT, PinCodeCertificationActivity.class, Utils.createIntBundle( C.bundleKey.PRIVATEKEY, C.pincertification.PRIVATEKEY ) );
         } else if ( v == viewMapper.btnName ) {
             setTransition( Transition.SLIDE_UP );
             sendAction( C.requestCode.PLANET_RENAME, RenamePlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
