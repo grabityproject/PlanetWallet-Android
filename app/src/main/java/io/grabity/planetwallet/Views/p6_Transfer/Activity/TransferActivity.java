@@ -74,6 +74,29 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     protected void setData( ) {
         super.setData( );
 
+        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+            finish( );
+        } else {
+
+            Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+
+            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+                // BTC Transfer
+
+            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+
+                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+                    ERC20 erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                    // ERC Transfer
+
+                } else {
+                    // ETH Transfer
+
+                }
+            }
+
+        }
+
         allPlanets = new ArrayList<>( );
         filterPlanets = new ArrayList<>( );
 

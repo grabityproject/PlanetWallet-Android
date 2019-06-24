@@ -219,7 +219,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             new Handler( ).postDelayed( ( ) -> {
                 setTransition( Transition.SLIDE_SIDE );
                 sendAction( TransferActivity.class,
-                        Utils.createSerializableBundle( selectedPlanet.getName( ).equals( C.bundleKey.BTC ) ? C.bundleKey.BTC : C.bundleKey.ETH, selectedPlanet ) );
+                        Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ) );
             }, 250 );
 
 
@@ -313,7 +313,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
                             } else if ( button == ERC20Popup.TRANSFER ) {
 
-                                sendAction( TransferActivity.class );
+                                Bundle bundle = new Bundle( );
+                                bundle.putSerializable( C.bundleKey.PLANET, planet );
+                                bundle.putSerializable( C.bundleKey.ERC20, erc20 );
+
+                                sendAction( C.requestCode.TRANSFER, TransferActivity.class, bundle );
 
                             }
                         } ).show( );
