@@ -4,7 +4,7 @@ public enum CoinType {
     NULL( null, null, null, null, null ),
     BTC( 0, "BitCoin", "BTC", "satoshi", 9 ),
     ETH( 60, "Ethereum", "ETH", "satoshi", 18 ),
-    ERC20( 60, "ERC20 Token", null, null, null );
+    ERC20( -60, "ERC20 Token", null, null, null );
 
     private Integer coinType;
     private String coinName;

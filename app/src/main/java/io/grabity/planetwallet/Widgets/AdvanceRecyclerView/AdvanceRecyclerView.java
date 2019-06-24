@@ -330,13 +330,22 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
         if ( height < Utils.getScrennHeight( getContext( ) ) )
             height = Utils.getScrennHeight( getContext( ) );
 
-        Bitmap bigBitmap = Bitmap.createBitmap( this.getMeasuredWidth( ), height, Bitmap.Config.ARGB_8888 );
+        if ( height == 0 ) {
+            height = 1;
+        }
+
+        float width = this.getMeasuredWidth( );
+
+        if ( width == 0 ) {
+            width = 1;
+        }
+        Bitmap bigBitmap = Bitmap.createBitmap( ( int ) width, height, Bitmap.Config.ARGB_8888 );
         Canvas bigCanvas = new Canvas( bigBitmap );
 
         if ( backgroundColor != Color.TRANSPARENT ) {
             Paint backgroundPaint = new Paint( );
             backgroundPaint.setColor( backgroundColor );
-            bigCanvas.drawRect( 0, 0, this.getMeasuredWidth( ), height, backgroundPaint );
+            bigCanvas.drawRect( 0, 0, width, height, backgroundPaint );
         }
 
 

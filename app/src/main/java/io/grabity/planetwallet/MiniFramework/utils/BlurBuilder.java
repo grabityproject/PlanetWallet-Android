@@ -34,7 +34,7 @@ public class BlurBuilder {
         return outputBitmap;
     }
 
-    public static Bitmap blur( Context context, Bitmap image, float scale, float radius ) {
+    public static Bitmap blur( Context context, Bitmap image, float scale, float radius ) throws IllegalArgumentException {
         int width = Math.round( image.getWidth( ) * scale );
         int height = Math.round( image.getHeight( ) * scale );
 

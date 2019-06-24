@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/group_erc_main_bottom"
+        android:id="@+id/group_popup_erc20"
         android:layout_width="match_parent"
         android:layout_height="580dp"
         android:layout_alignParentBottom="true">
@@ -16,8 +16,13 @@
             android:layout_height="40dp"
             app:direction="BOTTOM_TOP" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_alignParentBottom="true"
+            android:background="#FFF" />
+
         <io.grabity.planetwallet.Widgets.RoundRelativeLayout
-            android:id="@+id/group_erc_main_sub_bottom"
             android:layout_width="match_parent"
             android:layout_height="560dp"
             android:layout_marginTop="20dp"
@@ -25,9 +30,9 @@
             app:cornerRadius="20dp">
 
             <View
-                android:id="@+id/btn_erc_main_bottom_btn_close"
+                android:id="@+id/btn_popup_erc20_close"
                 android:layout_width="match_parent"
-                android:layout_height="28dp"/>
+                android:layout_height="24dp" />
 
             <LinearLayout
                 android:id="@+id/group_erc_main_bottom_name"
@@ -35,52 +40,46 @@
                 android:layout_height="78dp"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical">
+
                 <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout
-                    android:id="@+id/views"
                     android:layout_width="36dp"
                     android:layout_height="4dp"
+                    android:layout_gravity="center"
                     android:background="#CCCCCC"
                     app:cornerRadius="6dp"
                     app:cornerRound="LB|RB|LT|RT"
-                    app:themeBackground="#CCCCCC"
-                    android:layout_gravity="center"/>
+                    app:themeBackground="#CCCCCC" />
 
                 <io.grabity.planetwallet.Widgets.FontTextView
-                    android:id="@+id/text_erc_main_bottom_token_name"
+                    android:id="@+id/text_popup_erc20_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="GBT"
+                    android:layout_gravity="center"
+                    android:gravity="bottom"
+                    android:paddingTop="22dp"
+                    android:text=""
                     android:textColor="#000"
                     android:textSize="18dp"
-                    app:typefaceStyle="bold"
-                    android:layout_below="@id/views"
-                    android:layout_gravity="center"
-                    android:paddingTop="22dp"
-                    android:gravity="bottom" />
+                    app:typefaceStyle="bold" />
+
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#EDEDED"
-                android:layout_below="@id/group_erc_main_bottom_name"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_alignParentBottom="true"
-                android:background="#FFF" />
+                android:layout_below="@id/group_erc_main_bottom_name"
+                android:background="#EDEDED" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/group_erc_main_bottom_name"
-                android:layout_marginTop="40dp"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="40dp">
 
                 <io.grabity.planetwallet.Widgets.BarcodeView
-                    android:id="@+id/barcode_erc_main_bottom_barcodeview"
+                    android:id="@+id/barcode_popup_erc20"
                     android:layout_width="180dp"
                     android:layout_height="180dp"
                     android:padding="12dp"
@@ -88,19 +87,19 @@
                     app:borderWidth="1dp" />
 
                 <io.grabity.planetwallet.Widgets.FontTextView
-                    android:id="@+id/text_erc_main_bottom_name"
+                    android:id="@+id/text_popup_erc20_planet_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="PlanetName"
                     android:gravity="center"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
+                    android:text="PlanetName"
                     android:textColor="#1E1E28"
-                    app:typefaceStyle="semibold"/>
+                    android:textSize="18dp"
+                    app:typefaceStyle="semibold" />
 
                 <io.grabity.planetwallet.Widgets.FontTextView
-                    android:id="@+id/text_erc_main_bottom_address"
+                    android:id="@+id/text_popup_erc20_planet_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -120,7 +119,7 @@
                 android:paddingBottom="36dp">
 
                 <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
-                    android:id="@+id/btn_erc_main_bottom_copy"
+                    android:id="@+id/btn_popup_erc20_copy"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_marginRight="5dp"
@@ -137,7 +136,7 @@
                     app:textColorNormal="#000" />
 
                 <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
-                    android:id="@+id/btn_erc_main_bottom_transfer"
+                    android:id="@+id/btn_popup_erc20_transfer"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_marginRight="5dp"
@@ -158,7 +157,6 @@
             </LinearLayout>
 
         </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
-
 
     </RelativeLayout>
 

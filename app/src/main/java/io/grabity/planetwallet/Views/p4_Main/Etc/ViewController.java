@@ -24,7 +24,6 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
     MainActivity activity;
     ViewMapper viewMapper;
     HeaderViewMapper headerViewMapper;
-    FooterViewMapper footerViewMapper;
 
     float scrollY = 0.0f;
     float backgroundTopMargin = 0.0f;
@@ -36,15 +35,15 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         this.viewMapper = viewMapper;
         viewMapper.slideDrawer.setOnSlideDrawerListener( this );
         viewMapper.listMain.addOnScrollListener( this );
+
         viewMapper.slideDrawer.setTrigger( SlideDrawerLayout.Position.BOTTOM, viewMapper.viewTrigger, false );
-
         viewMapper.slideDrawer.getTrigger( SlideDrawerLayout.Position.BOTTOM ).setOffset( -Utils.dpToPx( activity, 100 ) );
-
-        viewMapper.listMain.getViewTreeObserver( ).addOnGlobalLayoutListener( this );
-        viewMapper.refresh.addOnRefreshListener( this );
+        viewMapper.overScrollWrapper.addOnRefreshListener( this );
 
         viewMapper.lottiePullToRefresh.setAnimation( "lottie/loader_loading.json" );
         viewMapper.lottiePullToRefresh.setProgress( 0.0f );
+
+        viewMapper.listMain.getViewTreeObserver( ).addOnGlobalLayoutListener( this );
     }
 
 
@@ -116,7 +115,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
             viewMapper.groupBackground.setScaleY( scale );
         }
 
-        if ( !viewMapper.refresh.isRefreshing( ) ) {
+        if ( !viewMapper.overScrollWrapper.isRefreshing( ) ) {
             if ( loaderStart ) {
                 viewMapper.lottiePullToRefresh.setAnimation( "lottie/loader_loading.json" );
                 viewMapper.lottiePullToRefresh.setRepeatCount( 0 );
@@ -168,7 +167,11 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
 
     public void updateBlurView( boolean theme ) {
         if ( viewMapper.listMain.getAdapter( ) != null ) {
-            viewMapper.imageBlurView.setImageBitmap( BlurBuilder.blur( activity, viewMapper.listMain.getScreenshot( Color.parseColor( theme ? "#FFFFFF" : "#111117" ) ), 0.25f, 25 ) );
+            try {
+                viewMapper.imageBlurView.setImageBitmap( BlurBuilder.blur( activity, viewMapper.listMain.getScreenshot( Color.parseColor( theme ? "#FFFFFF" : "#111117" ) ), 0.25f, 25 ) );
+            } catch ( IllegalArgumentException e ) {
+                PLog.e( "image width or height is 0" );
+            }
         }
     }
 

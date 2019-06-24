@@ -28,9 +28,9 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
 
     @Override
     public ViewMapper viewMapping( int position ) {
-        if ( getObjects( ).get( position ).getCoinType( ).equals( 0 ) ) {
+        if ( getObjects( ).get( position ).getCoinType( ).equals( CoinType.BTC.getCoinType( ) ) ) {
             return new BTCItem( View.inflate( getContext( ), R.layout.item_main_btc, null ) );
-        } else if ( getObjects( ).get( position ).getCoinType( ).equals( 60 ) ) {
+        } else if ( Math.abs( getObjects( ).get( position ).getCoinType( ) ) == CoinType.ETH.getCoinType( ) ) {
             return new ETHItem( View.inflate( getContext( ), R.layout.item_main_eth, null ) );
         } else {
             return null;
@@ -51,6 +51,14 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
             ( ( BTCItem ) viewMapper ).textTime.setText( btc.getDate( ) );
 
         } else if ( Utils.equals( CoinType.ETH.getCoinType( ), item.getCoinType( ) ) ) {
+
+
+            ETH eth = ( ETH ) item;
+            ( ( ETHItem ) viewMapper ).textName.setText( CoinType.ETH.name( ) );
+            ( ( ETHItem ) viewMapper ).textBalance.setText( eth.getBalance( ) );
+            ( ( ETHItem ) viewMapper ).textPrice.setText( "" );
+
+        } else if ( Utils.equals( CoinType.ERC20.getCoinType( ), item.getCoinType( ) ) ) {
 
             ERC20 erc20 = ( ERC20 ) item;
             ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), ( ( ETHItem ) viewMapper ).imageIcon );

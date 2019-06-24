@@ -12,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.managers.FontManager;
+import io.grabity.planetwallet.Widgets.FontTextView;
 
 /**
  * Created by. JcobPark on 2018. 08. 29
@@ -54,6 +57,8 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
 
         if ( contentView != null ) {
 
+            overrideFonts( contentView );
+
             {
                 background.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
                 background.setBackgroundColor( Color.parseColor( "#19000000" ) );
@@ -64,7 +69,7 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
             }
 
             contentView.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-            contentView.setY( getScrennHeight( this.context ) );
+            contentView.setY( getScreenHeight( this.context ) );
             ( ( ViewGroup ) ( ( Activity ) context ).findViewById( android.R.id.content ) ).addView( contentView );
 
         }
@@ -100,12 +105,30 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
 
     }
 
+    protected void overrideFonts( final View v ) {
+        try {
+            if ( v instanceof ViewGroup ) {
+                ViewGroup vg = ( ViewGroup ) v;
+                for ( int i = 0; i < vg.getChildCount( ); i++ ) {
+                    View child = vg.getChildAt( i );
+                    overrideFonts( child );
+                }
+            } else if ( v instanceof FontTextView ) {
+                ( ( TextView ) v ).setTypeface( FontManager.getInstance( ).getFont( ( ( FontTextView ) v ).getFontStyle( ) ) );
+            } else if ( v instanceof TextView ) {
+                ( ( TextView ) v ).setTypeface( FontManager.getInstance( ).getFont( ( ( TextView ) v ).getTypeface( ).getStyle( ) ) );
+            }
+        } catch ( Exception e ) {
+
+        }
+    }
+
     public void show( long duration, Interpolator interpolator ) {
 
         if ( contentView != null ) {
             onCreateView( );
 
-            ObjectAnimator animator = ObjectAnimator.ofFloat( contentView, "y", getScrennHeight( this.context ) / 1.0f, 0.0f );
+            ObjectAnimator animator = ObjectAnimator.ofFloat( contentView, "y", getScreenHeight( this.context ) / 1.0f, 0.0f );
             animator.setDuration( duration );
             animator.setInterpolator( interpolator );
             animator.addListener( new Animator.AnimatorListener( ) {
@@ -159,7 +182,7 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
     public void dismiss( long duration ) {
 
         if ( contentView != null ) {
-            ObjectAnimator animator = ObjectAnimator.ofFloat( contentView, "y", 0.0f, getScrennHeight( this.context ) / 1.0f );
+            ObjectAnimator animator = ObjectAnimator.ofFloat( contentView, "y", 0.0f, getScreenHeight( this.context ) / 1.0f );
             animator.setDuration( duration );
             animator.setInterpolator( new AccelerateDecelerateInterpolator( ) );
 
@@ -218,13 +241,21 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
         }
     }
 
+    public View getContentView( ) {
+        return contentView;
+    }
+
+    public View getBackground( ) {
+        return background;
+    }
+
     public static int getScreenWidth( Context context ) {
         Resources resources = context.getResources( );
         DisplayMetrics metrics = resources.getDisplayMetrics( );
         return ( int ) metrics.widthPixels;
     }
 
-    public static int getScrennHeight( Context context ) {
+    public static int getScreenHeight( Context context ) {
         Resources resources = context.getResources( );
         DisplayMetrics metrics = resources.getDisplayMetrics( );
         return ( int ) metrics.heightPixels;
