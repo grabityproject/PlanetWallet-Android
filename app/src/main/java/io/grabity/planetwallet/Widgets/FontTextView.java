@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 
 import io.grabity.planetwallet.R;
@@ -11,6 +13,7 @@ import io.grabity.planetwallet.R;
 public class FontTextView extends android.support.v7.widget.AppCompatTextView implements Themeable {
 
     private int defaultTheme;
+    private int defaultUnderLine;
 
     private Integer themeTextColor;
     private Integer defaultTextColor;
@@ -30,6 +33,7 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView im
         TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.FontTextView, defStyleAttr, 0 );
         defaultTheme = a.getInt( R.styleable.FontTextView_defaultTheme, 0 );
         themeTextColor = a.getColor( R.styleable.FontTextView_themeTextColor, Color.TRANSPARENT );
+        defaultUnderLine = a.getInt( R.styleable.FontTextView_underLine, 0 );
         if ( themeTextColor == Color.TRANSPARENT ) themeTextColor = null;
         fontStyle = a.getInt( R.styleable.FontTextView_typefaceStyle, 0 );
         if ( getTypeface( ).getStyle( ) != Typeface.NORMAL ) {
@@ -39,7 +43,18 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView im
         if ( defaultTheme > 0 ) {
             setTheme( false );
         }
+        if ( defaultUnderLine > 0 ){
+            underLine( );
+        }
         a.recycle( );
+
+    }
+
+    void underLine( ) {
+        SpannableString s = new SpannableString( this.getText( ).toString( ) );
+        s.setSpan( new UnderlineSpan( ), 0, s.length( ), 0 );
+
+        this.setText( s );
     }
 
     public int getFontStyle( ) {

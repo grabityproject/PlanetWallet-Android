@@ -155,6 +155,11 @@
             <enum name="semibold" value="6" />
         </attr>
 
+        <attr name="underLine">
+            <enum name="NoLine" value="0" />
+            <enum name="Line" value="1" />
+        </attr>
+
         <attr name="defaultTheme" />
 
     </declare-styleable>
@@ -184,6 +189,10 @@
     <declare-styleable name="BarcodeFrameView" >
         <attr name="borderWidth" />
         <attr name="borderColor" />
+    </declare-styleable>
+
+    <declare-styleable name="ThemeSeekBar">
+        <attr name="defaultTheme" />
     </declare-styleable>
 
 </resources>

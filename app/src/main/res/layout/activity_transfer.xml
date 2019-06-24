@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
         app:defaultTheme="Dark"
+        app:toolbarTitle="Transfer"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"
         app:blackThemeRightSrc="@drawable/image_toolbar_transfer_gray"

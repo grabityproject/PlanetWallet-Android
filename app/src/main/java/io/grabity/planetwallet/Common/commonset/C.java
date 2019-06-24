@@ -26,6 +26,7 @@ public class C {
 
         public final static int PINCODE_IS_NULL = 100;
 
+        public final static int TRANSFER = 260;
 
     }
 
@@ -48,10 +49,9 @@ public class C {
 
         public final static String QRCODE = "QRCODE";
 
-
         public final static String BOARD = "board";
-
         public final static String COINTYPE = "cointype";
+        public final static String TRANSFER = "TRANSFER";
     }
 
     public static class theme {
@@ -94,6 +94,14 @@ public class C {
 
     public static class dateFormat {
 
+    }
+
+    public static class pincertification {
+
+        public static int CHANGE = 10;
+        public static int MNEMONIC = 11;
+        public static int PRIVATEKEY = 12;
+        public static int TRANSFER = 13;
     }
 
 

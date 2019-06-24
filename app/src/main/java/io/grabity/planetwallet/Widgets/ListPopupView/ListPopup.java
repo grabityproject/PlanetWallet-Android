@@ -163,6 +163,8 @@ public class ListPopup extends AbsSlideUpView implements AdvanceRecyclerView.OnS
 
             viewTopShadow = findViewById( R.id.view_list_popup_top_shadow );
             viewBottomShadow = findViewById( R.id.view_list_popup_bottom_shadow );
+
+
         }
 
     }

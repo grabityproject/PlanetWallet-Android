@@ -64,7 +64,6 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             planet = PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) );
 
-            PLog.e( "planet.getPathIndex( ) : " + planet.getPathIndex( ) );
             viewMapper.btnMnemonic.setVisibility( planet.getPathIndex( ) != -1 ? View.VISIBLE : View.GONE );
 
             viewMapper.textType.setText( String.format( "%s Universe", CoinType.of( planet.getCoinType( ) ).name( ) ) );
