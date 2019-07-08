@@ -11,14 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -130,7 +128,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     protected void neverNotAllowed( int code, String permission ) {
         super.neverNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ){
-            CustomToast.makeText( this, "설정에 가서 직접 권한을 풀어주세요." ).show( );
+            CustomToast.makeText( this, localized( R.string.transfer_camera_permission_never_not_allowed_title ) ).show( );
         }
 
     }
@@ -148,7 +146,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     protected void permissionNotAllowed( int code, String permission ) {
         super.permissionNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ){
-            CustomToast.makeText( this, "QR Scan을 사용하시려면 권한에 동의해주세요." ).show( );
+            CustomToast.makeText( this, localized( R.string.transfer_camera_permission_not_allowed_title ) ).show( );
         }
 
     }

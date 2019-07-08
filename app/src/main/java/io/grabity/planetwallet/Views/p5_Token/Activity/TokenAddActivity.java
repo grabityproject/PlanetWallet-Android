@@ -49,8 +49,8 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.tabBar.setItems(
-                new TabBar.ButtonItem( ).setText( "Add Token" ).setTextSize( 14 ),
-                new TabBar.ButtonItem( ).setText( "Custom Token" ).setTextSize( 14 )
+                new TabBar.ButtonItem( ).setText( localized( R.string.token_add_tabbar_add_token_title ) ).setTextSize( 14 ),
+                new TabBar.ButtonItem( ).setText( localized( R.string.token_add_tabbar_custom_token_title ) ).setTextSize( 14 )
         );
 
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );

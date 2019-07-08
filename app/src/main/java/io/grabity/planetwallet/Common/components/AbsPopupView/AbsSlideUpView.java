@@ -15,6 +15,7 @@ import android.view.animation.Interpolator;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.MissingFormatArgumentException;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
@@ -259,5 +260,22 @@ public abstract class AbsSlideUpView implements PopupView, View.OnClickListener 
         Resources resources = context.getResources( );
         DisplayMetrics metrics = resources.getDisplayMetrics( );
         return ( int ) metrics.heightPixels;
+    }
+
+    public String localized( int id, Object... formats ) {
+        String returnValue;
+        try {
+            if ( formats.length > 0 ) {
+                if ( getActivity( ).getResources( ).getString( id ).contains( "%s" ) ) {
+                    returnValue = String.format( getActivity( ).getResources( ).getString( id ), formats );
+                } else
+                    returnValue = String.format( getActivity( ).getResources( ).getString( id ) );
+            } else
+                returnValue = String.format( getActivity( ).getResources( ).getString( id ) );
+
+        } catch ( MissingFormatArgumentException e ) {
+            returnValue = getActivity( ).getResources( ).getString( id ).replace( "%s", "" );
+        }
+        return returnValue;
     }
 }

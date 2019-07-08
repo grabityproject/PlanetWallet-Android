@@ -9,13 +9,10 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
@@ -76,9 +73,9 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
         Collections.shuffle( alphabetButtons );
 
         if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
-            viewMapper.passwordTitle.setText( "Change PIN Code" );
+            viewMapper.passwordTitle.setText( localized( R.string.pincode_registration_change_pin_code_title ) );
         } else {
-            viewMapper.passwordTitle.setText( "Registration Code" );
+            viewMapper.passwordTitle.setText( localized( R.string.pincode_registration_registration_code_title ) );
         }
     }
 
@@ -99,7 +96,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
 
         setPasswordView( );
 
-        viewMapper.passwordSubtitle.setText( "Enter the 4 digit + alphabet" );
+//        viewMapper.passwordSubtitle.setText( localized( R.string.pincode_sub_title ) );
     }
 
 
@@ -174,8 +171,8 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
     }
 
     void setPasswordMessage( boolean check ) {
-        viewMapper.passwordTitle.setText( check ? "Verification Code" : "Code incorrect" );
-        viewMapper.passwordSubtitle.setText( check ? "Enter the 4 digit + alphabet" : "Please check your code" );
+        viewMapper.passwordTitle.setText( check ? localized( R.string.pincode_registration_verification_code_title ) : localized( R.string.pincode_registration_code_incorrect_title ) );
+        viewMapper.passwordSubtitle.setText( check ? localized( R.string.pincode_registration_sub_title ) : localized( R.string.pincode_registration_sub_title_error ));
 
         if ( !getPlanetWalletApplication( ).getCurrentTheme( ) ) {
             viewMapper.passwordTitle.setTextColor( check ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#FF0050" ) );

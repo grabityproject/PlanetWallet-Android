@@ -144,19 +144,4 @@
 
     </LinearLayout>
 
-    <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
-        android:id="@+id/btn_planet_generate_add"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="@string/planet_generate_add_title"
-        android:textSize="18dp"
-        android:visibility="gone"
-        app:buttonType="C"
-        app:defaultTheme="Dark" />
-
     </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

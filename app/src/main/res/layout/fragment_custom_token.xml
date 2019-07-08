@@ -41,7 +41,7 @@
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/custom_token_contract_error_title"
+                android:text="@string/custom_token_not_contract_title"
                 android:textColor="#FF0050"
                 android:textSize="14dp" />
 

@@ -93,7 +93,6 @@
                     android:gravity="center"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
-                    android:text="PlanetName"
                     android:textColor="#1E1E28"
                     android:textSize="18dp"
                     app:typefaceStyle="semibold" />
@@ -103,7 +102,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="3Gvgi1WpEZ73CNmQviecrnyiWrnqRhjJm1"
                     android:textColor="#000000"
                     android:textSize="14dp" />
 
@@ -125,7 +123,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/main_btn_bottom_copy_title"
+                    android:text="@string/erc_popup_btn_copy_title"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:borderColorHighlight="#111117"
@@ -142,7 +140,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/main_btn_bottom_transfer_title"
+                    android:text="@string/erc_popup_btn_transfer_title"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:backgroundColorHighlight="#111117"

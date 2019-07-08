@@ -44,7 +44,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/planet_tx_receipt_planetview"
                     android:paddingStart="20dp"
-                    android:text="Choi3950"
                     android:textColor="#FFF"
                     android:textSize="18dp"
                     app:themeTextColor="#000"
@@ -57,7 +56,6 @@
                     android:layout_below="@id/text_tx_receipt_planet_name"
                     android:layout_toRightOf="@id/planet_tx_receipt_planetview"
                     android:paddingStart="20dp"
-                    android:text="0x2341...3452"
                     android:textColor="#5C5964"
                     android:textSize="14dp"
                     app:themeTextColor="#aaaaaa" />
@@ -94,7 +92,6 @@
                     android:layout_toRightOf="@id/image_tx_receipt_address_background"
                     android:lineSpacingExtra="4dp"
                     android:paddingStart="20dp"
-                    android:text="0xf291b69799516156fAA7F9ed4c39536335Ab797A"
                     android:textColor="#FFF"
                     android:textSize="18dp"
                     app:themeTextColor="#000"
@@ -111,7 +108,6 @@
             android:gravity="center"
             android:paddingTop="84dp"
             android:paddingBottom="30dp"
-            android:text="194.2341234 GBT"
             android:textColor="#FFF"
             android:textSize="28dp"
             app:themeTextColor="#000"
@@ -140,7 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="from"
+                    android:text="@string/tx_receipt_from_title"
                     android:textColor="#5c5964"
                     android:textSize="14dp"
                     app:themeTextColor="#aaaaaa" />
@@ -151,7 +147,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="Choi3950"
                     android:textColor="#FFF"
                     android:textSize="16dp"
                     app:themeTextColor="#000" />
@@ -166,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Amount"
+                    android:text="@string/tx_receipt_amount"
                     android:textColor="#5c5964"
                     android:textSize="14dp"
                     app:themeTextColor="#aaaaaa" />
@@ -177,7 +172,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="192.42342314 GBT"
                     android:textColor="#FF0050"
                     android:textSize="16dp"
                     app:themeTextColor="#FF0050" />
@@ -192,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Fee"
+                    android:text="@string/tx_receipt_fee_title"
                     android:textColor="#5c5964"
                     android:textSize="14dp"
                     app:themeTextColor="#aaaaaa" />
@@ -203,7 +197,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="0.03 ETH"
                     android:textColor="#FFF"
                     android:textSize="16dp"
                     app:themeTextColor="#000" />
@@ -218,7 +211,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Date"
+                    android:text="@string/tx_receipt_date_title"
                     android:textColor="#5c5964"
                     android:textSize="14dp"
                     app:themeTextColor="#aaaaaa" />
@@ -229,7 +222,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="2019. 06. 13 13:02:14"
                     android:textColor="#FFF"
                     android:textSize="16dp"
                     app:themeTextColor="#000" />
@@ -245,7 +237,7 @@
                     android:id="@+id/views"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TXHash"
+                    android:text="@string/tx_receipt_tx_hash_title"
                     android:textColor="#5c5964"
                     android:textSize="14dp"
                     app:themeTextColor="#aaaaaa"
@@ -256,7 +248,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@id/views"
-                    android:text="0x1507f1c7fba98b4ab985a4de07fd476920009a94401641b68249deec0f077cf7"
                     android:textColor="#FFF"
                     android:textSize="16dp"
                     app:themeTextColor="#000"
@@ -302,7 +293,7 @@
             android:layout_weight="3"
             android:layout_marginStart="10dp"
             android:gravity="center"
-            android:text="OK"
+            android:text="@string/tx_receipt_btn_title"
             android:textSize="18dp"
             app:buttonType="A"
             app:defaultTheme="Dark" />

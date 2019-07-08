@@ -30,7 +30,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:paddingBottom="6dp"
-            android:text="[Event] Planet Wallet open event!"
             android:textColor="#000"
             android:textSize="14dp"
             app:themeTextColor="#FFF" />
@@ -42,7 +41,6 @@
             android:layout_alignLeft="@id/text_detail_board_title"
             android:layout_alignTop="@id/text_detail_board_title"
             android:gravity="center"
-            android:text="2019. 02. 01"
             android:textColor="#000"
             android:textSize="14dp"
             app:themeTextColor="#FFF" />

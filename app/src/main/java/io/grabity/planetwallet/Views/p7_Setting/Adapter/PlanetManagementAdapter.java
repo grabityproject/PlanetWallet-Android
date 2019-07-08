@@ -39,7 +39,7 @@ public class PlanetManagementAdapter extends AdvanceArrayAdapter< Planet > {
 
     private String getShortAddress( String address ) {
         if ( address != null && address.length( ) > 10 ) {
-            return String.format( "%s...%s", address.substring( 0, 6 ), address.substring( address.length( ) - 4, address.length( ) ) );
+            return String.format( "%s...%s", address.substring( 0, 6 ), address.substring( address.length( ) - 4 ) );
         } else {
             return "";
         }

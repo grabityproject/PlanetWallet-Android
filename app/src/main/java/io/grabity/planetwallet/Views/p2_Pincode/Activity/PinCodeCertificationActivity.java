@@ -173,8 +173,8 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
     }
 
     void setPasswordMessage( boolean check ) {
-        viewMapper.passwordTitle.setText( check ? "Verification Code" : "Code incorrect" );
-        viewMapper.passwordSubtitle.setText( check ? "Enter the 4 digit + alphabet" : "Please check your code" );
+        viewMapper.passwordTitle.setText( check ? localized( R.string.pincode_certification_verification_code_title ) : localized( R.string.pincode_certification_code_incorrect_title ) );
+        viewMapper.passwordSubtitle.setText( check ? localized( R.string.pincode_certification_sub_title ) : localized( R.string.pincode_certification_sub_title_error ) );
 
         if ( !getPlanetWalletApplication( ).getCurrentTheme( ) ) {
             viewMapper.passwordTitle.setTextColor( check ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#FF0050" ) );

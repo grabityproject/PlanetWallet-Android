@@ -97,7 +97,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="@string/planet_generate_add_title"
+        android:text="@string/planet_name_btn_title"
         android:textSize="18dp"
         android:visibility="visible"
         app:buttonType="C"

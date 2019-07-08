@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
@@ -235,12 +234,12 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( v == viewMapper.btnCopy ) {
 
             Utils.copyToClipboard( this, selectedPlanet.getAddress( ) );
-            CustomToast.makeText( this, localized( R.string.copy_to_clipboard ) ).show( );
+            CustomToast.makeText( this, localized( R.string.main_copy_to_clipboard ) ).show( );
 
         } else if ( v == headerViewMapper.groupAddress ) {
 
             Utils.copyToClipboard( this, selectedPlanet.getAddress( ) );
-            CustomToast.makeText( this, localized( R.string.copy_to_clipboard ) ).show( );
+            CustomToast.makeText( this, localized( R.string.main_copy_to_clipboard ) ).show( );
 
         } else if ( v == viewMapper.btnTransfer ) {
 
@@ -310,7 +309,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 //            super.onBackPressed( );
             if ( System.currentTimeMillis( ) > backtime + 2000 ) {
                 backtime = System.currentTimeMillis( );
-                Toast.makeText( this, "뒤로가기 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT ).show( );
+                Toast.makeText( this, localized( R.string.main_back_pressed_finish_title ), Toast.LENGTH_SHORT ).show( );
             } else {
                 finish( );
             }

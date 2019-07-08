@@ -55,11 +55,6 @@ public class PrivateKeyExportActivity extends PlanetWalletActivity implements To
                 privateKey = planet.getPrivateKeyBase58Encode( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
 //                privateKey = planet.getPrivateKeyBase58Encodes( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
 
-
-
-                PLog.e( "getKey_id : " + planet.getKeyId() );
-                PLog.e( "getSigna : " + planet.getSignature() );
-
             }
 
 

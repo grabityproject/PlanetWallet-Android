@@ -38,7 +38,7 @@
             android:layout_height="56dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="@string/wallet_add_btn_create_title"
+            android:text="@string/wallet_add_btn_add_title"
             android:textSize="16dp"
             app:buttonType="A"
             app:defaultTheme="Dark" />

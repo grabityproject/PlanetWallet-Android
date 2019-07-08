@@ -14,7 +14,6 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:paddingStart="20dp"
-            android:text="한국어"
             android:textColor="#000"
             android:textSize="14dp"
             app:themeTextColor="#FFF" />

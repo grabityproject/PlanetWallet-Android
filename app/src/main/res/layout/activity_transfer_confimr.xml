@@ -18,7 +18,7 @@
                 app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
                 app:defaultTheme="Dark"
                 app:toolbarBottomWidth="1dp"
-                app:toolbarTitle="Confirmation"
+                app:toolbarTitle="@string/transfer_confirm_toolbar_title"
                 app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
             <RelativeLayout
@@ -148,7 +148,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="from"
+                            android:text="@string/transfer_confirm_from_title"
                             android:textColor="#5c5964"
                             android:textSize="14dp"
                             app:themeTextColor="#aaaaaa" />
@@ -175,7 +175,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="Amount"
+                            android:text="@string/transfer_confirm_amount_title"
                             android:textColor="#5c5964"
                             android:textSize="14dp"
                             app:themeTextColor="#aaaaaa" />
@@ -202,7 +202,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="Fee"
+                            android:text="@string/transfer_confirm_fee_title"
                             android:textColor="#5c5964"
                             android:textSize="14dp"
                             app:themeTextColor="#aaaaaa" />
@@ -258,7 +258,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
                                 android:paddingStart="20dp"
-                                android:text="Slow"
+                                android:text="@string/transfer_confirm_slow_title"
                                 android:textColor="#FF0050"
                                 android:textSize="14dp"
                                 app:themeTextColor="#FF0050" />
@@ -269,7 +269,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_alignParentBottom="true"
                                 android:paddingEnd="20dp"
-                                android:text="Fast"
+                                android:text="@string/transfer_confirm_fast_title"
                                 android:textColor="#FF0050"
                                 android:textSize="14dp"
                                 app:themeTextColor="#FF0050" />
@@ -296,7 +296,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingEnd="4dp"
-                                android:text="Advanced Options"
+                                android:text="@string/transfer_confirm_advanced_options_title"
                                 android:textColor="#FFF"
                                 app:themeTextColor="#000" />
 
@@ -321,7 +321,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_margin="20dp"
                     android:gravity="center"
-                    android:text="Confirm"
+                    android:text="@string/transfer_confirm_btn_title"
                     android:textSize="18dp"
                     app:buttonType="A"
                     app:defaultTheme="Dark" />

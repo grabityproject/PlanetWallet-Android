@@ -103,7 +103,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         if ( v == viewMapper.btnSubmit ) {
 
             if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
-                CustomToast.makeText( this, "이름은 공백일수 없습니다." ).show( );
+                CustomToast.makeText( this, localized( R.string.planet_name_name_not_blank_title ) ).show( );
                 return;
             }
 

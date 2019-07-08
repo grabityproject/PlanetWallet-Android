@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="40dp"
             android:paddingBottom="12dp"
-            android:text="Enter password (Option)"
+            android:text="@string/mnemonic_import_enter_password_title"
             android:textColor="#5C5964"
             android:textSize="14dp"
             app:themeTextColor="#aaaaaa" />
@@ -67,7 +67,7 @@
             android:layout_below="@id/et_mnemonic_import_password"
             android:paddingTop="20dp"
             android:paddingBottom="12dp"
-            android:text="Enter Mnemonic Phrase"
+            android:text="@string/mnemonic_import_enter_mnemonic_phrase_title"
             android:textColor="#5C5964"
             android:textSize="14dp"
             app:themeTextColor="#aaaaaa" />
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="Please enter the correct Mnemonic Phrase."
+                android:text="@string/mnemonic_import_correct_mnemonic_phrase_title"
                 android:textColor="#FF0050"
                 android:textSize="14dp" />
 
@@ -118,7 +118,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="Continue"
+        android:text="@string/mnemonic_import_btn_title"
         android:textSize="18dp"
         app:buttonType="A"
         app:defaultTheme="Dark" />

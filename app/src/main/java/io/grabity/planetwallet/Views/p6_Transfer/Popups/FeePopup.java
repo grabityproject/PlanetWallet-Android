@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
+import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.FontTextView;
@@ -102,6 +103,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
         viewMapper.textGasFee.setText( getFee( ) );
         viewMapper.textCoinType.setText( getCoinType( ) );
+
     }
 
     @Override
@@ -178,16 +180,16 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         } else if ( v == viewMapper.btnSave ) {
             //gas limit, price check
             if ( viewMapper.textGasLimit.getText( ).length( ) == 0 || viewMapper.textGasPrice.getText( ).length( ) == 0 ) {
-                Toast.makeText( getActivity( ), "Gas Price OR Gas Limit Not Spaces.", Toast.LENGTH_SHORT ).show( );
+                Toast.makeText( getActivity( ), localized( R.string.fee_popup_not_spaces_title ) , Toast.LENGTH_SHORT ).show( );
             } else {
                 if ( Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 ) {
-                    Toast.makeText( getActivity( ), "Gas Limit is at least 21,000", Toast.LENGTH_SHORT ).show( );
+                    Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_limit_least_title ), Toast.LENGTH_SHORT ).show( );
                     viewMapper.textGasLimit.setText( "21000" );
                     setFocusDataSet( limit, viewMapper.textGasLimit );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                     return;
                 } else if ( Integer.valueOf( viewMapper.textGasPrice.getText( ).toString( ) ) < 1 ) {
-                    Toast.makeText( getActivity( ), "Gas Price is at least 1", Toast.LENGTH_SHORT ).show( );
+                    Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_price_least_title ), Toast.LENGTH_SHORT ).show( );
                     viewMapper.textGasPrice.setText( "1" );
                     setFocusDataSet( price, viewMapper.textGasPrice );
                     setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );

@@ -197,7 +197,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             setTransition( Transition.SLIDE_UP );
             sendAction( TxReceiptActivity.class, bundle );
         } else if ( requestCode == C.requestCode.TRANSFER && resultCode == RESULT_CANCELED ) {
-            Toast.makeText( this, "Your password is different.", Toast.LENGTH_SHORT ).show( );
+            Toast.makeText( this, localized( R.string.transfer_confirm_not_password_title ), Toast.LENGTH_SHORT ).show( );
         }
 
     }

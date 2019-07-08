@@ -23,7 +23,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/image_item_tokenadd_icon"
-            android:text="ETH"
             android:textColor="#FFF"
             android:textSize="16dp"
             app:themeTextColor="#000"

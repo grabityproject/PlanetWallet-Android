@@ -54,9 +54,9 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.tabBar.setItems(
-                new TabBar.ButtonItem( ).setText( "Mnemonic" ).setTextSize( 14 ),
+                new TabBar.ButtonItem( ).setText( localized( R.string.wallet_import_tabbar_mnemonic_title ) ).setTextSize( 14 ),
 //                new TabBar.ButtonItem( ).setText( "Json" ).setTextSize( 14 ),
-                new TabBar.ButtonItem( ).setText( "Private Key" ).setTextSize( 14 )
+                new TabBar.ButtonItem( ).setText( localized( R.string.wallet_import_tabbar_privatekey_title ) ).setTextSize( 14 )
         );
 
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );

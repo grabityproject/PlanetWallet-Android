@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:paddingTop="38dp"
-        android:text="@string/pincode_certification_title"
+        android:text="@string/pincode_certification_verification_code_title"
         android:textColor="#FFF"
         android:textSize="28dp"
         app:themeTextColor="#000"
@@ -33,7 +33,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:paddingTop="8dp"
-        android:text="@string/pincode_certification_subtitle"
+        android:text="@string/pincode_certification_sub_title"
         android:textColor="#5C5964"
         android:textSize="16dp"
         app:themeTextColor="#aaaaaa" />

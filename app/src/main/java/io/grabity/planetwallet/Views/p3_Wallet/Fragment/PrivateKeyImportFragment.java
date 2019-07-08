@@ -81,11 +81,11 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
                         if ( PlanetStore.getInstance( ).getPlanet( btcPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( btcPlanet );
                         } else {
-                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_exists_title ), Toast.LENGTH_SHORT ).show( );
+                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_exists_title ), Toast.LENGTH_SHORT ).show( );
                         }
 
                     } catch ( Exception e ) {
-                        Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_not_match_title ), Toast.LENGTH_SHORT ).show( );
+                        Toast.makeText( getActivity( ), getString( R.string.privatekey_import_not_match_title ), Toast.LENGTH_SHORT ).show( );
                     }
 
                 } else if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
@@ -96,11 +96,11 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
                         if ( PlanetStore.getInstance( ).getPlanet( ethPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( ethPlanet );
                         } else {
-                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_exists_title ), Toast.LENGTH_SHORT ).show( );
+                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_exists_title ), Toast.LENGTH_SHORT ).show( );
                         }
 
                     } catch ( Exception e ) {
-                        Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_not_match_title ), Toast.LENGTH_SHORT ).show( );
+                        Toast.makeText( getActivity( ), getString( R.string.privatekey_import_not_match_title ), Toast.LENGTH_SHORT ).show( );
                     }
                 }
 

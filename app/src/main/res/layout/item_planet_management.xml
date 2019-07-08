@@ -36,7 +36,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="ETH"
                 android:textColor="#FFF"
                 android:textSize="14dp"
                 app:themeTextColor="#000"
@@ -52,7 +51,6 @@
             android:layout_below="@id/group_item_detailplanet_currencyname"
             android:layout_alignStart="@id/group_item_detailplanet_currencyname"
             android:layout_marginTop="12dp"
-            android:text="Satriani"
             android:textColor="#000"
             android:textSize="16dp"
             app:themeTextColor="#FFF"
@@ -65,7 +63,6 @@
             android:layout_alignTop="@id/text_item_detailplanet_walletname"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:text="0x1123A..Be24"
             android:textColor="#AAAAAA"
             android:textSize="14dp"
             app:themeTextColor="#5c5964" />

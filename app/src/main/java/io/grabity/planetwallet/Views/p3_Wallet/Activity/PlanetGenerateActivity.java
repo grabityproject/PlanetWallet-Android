@@ -1,7 +1,6 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.pentasecurity.cryptowallet.exceptions.DecryptionErrorException;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +34,6 @@ import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.ErrorResult;
-import io.grabity.planetwallet.VO.KeyPair;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
@@ -128,7 +125,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 }
 
             } else {
-                PLog.e( "setData generateEthPlanet( ) " );
                 generateEthPlanet( );
             }
         } catch ( DecryptionErrorException e ) {
@@ -187,7 +183,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                     }
                 } else {
 
-                    PLog.e( "btnRefresh generateEthPlanet( ) " );
                     generateEthPlanet( );
 
                 }
@@ -202,7 +197,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             if ( planet != null ) {
 
                 if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
-                    CustomToast.makeText( this, "이름은 공백일수 없습니다." ).show( );
+                    CustomToast.makeText( this, localized( R.string.planet_generate_name_not_blank_title ) ).show( );
                     return;
                 }
 
@@ -324,7 +319,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
 
         viewMapper.planetView.setData( planet.getAddress( ) );
-        PLog.e( "generateEthPlanet( ) : " + planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
 
     }

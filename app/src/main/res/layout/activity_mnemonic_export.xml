@@ -61,19 +61,6 @@
         </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
 
 
-        <!--<io.grabity.planetwallet.Widgets.RoundEditText-->
-            <!--android:textCursorDrawable="@null"-->
-            <!--android:id="@+id/et_mnemonic_export_mnemonic"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="100dp"-->
-            <!--android:background="@null"-->
-            <!--android:enabled="false"-->
-            <!--android:focusable="false"-->
-            <!--android:lineSpacingExtra="8dp"-->
-            <!--android:paddingLeft="14dp"-->
-            <!--android:paddingRight="14dp"-->
-            <!--app:defaultTheme="Light" />-->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
