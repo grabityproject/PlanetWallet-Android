@@ -8,12 +8,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
@@ -85,7 +81,7 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
                         if ( PlanetStore.getInstance( ).getPlanet( btcPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( btcPlanet );
                         } else {
-                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_waring_title ), Toast.LENGTH_SHORT ).show( );
+                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_exists_title ), Toast.LENGTH_SHORT ).show( );
                         }
 
                     } catch ( Exception e ) {
@@ -100,7 +96,7 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
                         if ( PlanetStore.getInstance( ).getPlanet( ethPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( ethPlanet );
                         } else {
-                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_waring_title ), Toast.LENGTH_SHORT ).show( );
+                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_exists_title ), Toast.LENGTH_SHORT ).show( );
                         }
 
                     } catch ( Exception e ) {

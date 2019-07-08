@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.pentasecurity.cryptowallet.JniWrapper;
-
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
@@ -89,7 +87,7 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
                         if ( PlanetStore.getInstance( ).getPlanet( btcPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( btcPlanet );
                         } else {
-                            Toast.makeText( getActivity( ), getString( R.string.mnemonic_import_fragment_waring_title ), Toast.LENGTH_SHORT ).show( );
+                            Toast.makeText( getActivity( ), getString( R.string.mnemonic_import_fragment_exists_title ), Toast.LENGTH_SHORT ).show( );
                         }
 
                     } catch ( Exception e ) {
@@ -103,7 +101,7 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
                         if ( PlanetStore.getInstance( ).getPlanet( ethPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( ethPlanet );
                         } else {
-                            Toast.makeText( getActivity( ), getString( R.string.mnemonic_import_fragment_waring_title ), Toast.LENGTH_SHORT ).show( );
+                            Toast.makeText( getActivity( ), getString( R.string.mnemonic_import_fragment_exists_title ), Toast.LENGTH_SHORT ).show( );
                         }
 
                     } catch ( Exception e ) {

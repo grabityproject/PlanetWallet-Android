@@ -8,6 +8,12 @@
     <string name="pincode_registration_title">Verification Code</string>
     <string name="pincode_registration_subtitle">Enter the 4 digit + alphabet</string>
 
+
+
+    <string name="pincode_registration_change_pincode_title">Change PIN Code</string>
+
+
+
     <string name="planet_generate_title">Make your\nOwn planet</string>
     <string name="planet_generate_add_title">Add Planet</string>
 
@@ -39,10 +45,10 @@
     <string name="detail_planet_backup_mnemonic_phrase_title">Backup Mnemonic Phrase</string>
     <string name="detail_planet_backup_privatekey_title">Backup Private Key</string>
 
-    <string name="mnemonic_import_fragment_waring_title">It is a mnemonic that already exists.</string>
+    <string name="mnemonic_import_fragment_exists_title">It is a mnemonic that already exists.</string>
     <string name="mnemonic_import_fragment_not_match_title">It does not fit the mnemonic type.</string>
 
-    <string name="privatekey_import_fragment_waring_title">It is a privateKey that already exists.</string>
+    <string name="privatekey_import_fragment_exists_title">It is a privateKey that already exists.</string>
     <string name="privatekey_import_fragment_not_match_title">The privateKey type does not match.</string>
 
 
