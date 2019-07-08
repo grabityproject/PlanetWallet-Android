@@ -109,7 +109,7 @@
         android:id="@+id/text_transfer_amount_error_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="You don’t have enough amount to send"
+        android:text="@string/transfer_amount_error_title"
         android:textSize="14dp"
         android:layout_below="@id/text_transfer_amount_amount"
         android:gravity="center"
@@ -123,10 +123,10 @@
         android:id="@+id/group_transfer_amount_input_amount"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/text_transfer_amount_amount_usd"
+        android:layout_below="@id/text_transfer_amount_amount"
         android:layout_above="@id/btn_submit"
         android:orientation="vertical"
-        android:paddingTop="40dp"
+        android:paddingTop="52dp"
         android:layout_marginBottom="40dp">
 
         <LinearLayout

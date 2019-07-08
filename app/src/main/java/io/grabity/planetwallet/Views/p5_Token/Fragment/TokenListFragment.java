@@ -181,7 +181,9 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
             erc20.setName( item.getName( ) );
             erc20.setImg_path( item.getImg_path( ) );
             erc20.setHide( item.isCheck( ) ? "N" : "Y" );
+            erc20.setBalance( item.getBalance( ) );
             PLog.e( "erc20 : " + erc20 );
+            PLog.e( "erc20.getBlance : " + erc20.getBalance( ) );
             ERC20Store.getInstance( ).save( erc20 );
 
         } catch ( ClassCastException e ) {

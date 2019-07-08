@@ -362,14 +362,6 @@ public class SlideDrawerLayout extends ViewGroup {
 
                     float moveY = ( getHeight( ) - getCurrentPositionView.getHeight( ) ) + ( event.getRawY( ) - thisLocations[ 1 ] ) - beforeTouchPositionY;
 
-                    PLog.e( "getHeight : " + getHeight( ) );
-                    PLog.e( " getCurrentPositionView.getHeight( ) : " + getCurrentPositionView.getHeight( ) );
-                    PLog.e( "event.getRawY( ): " + event.getRawY( ) );
-                    PLog.e( "thisLocations[ 1 ] : " + thisLocations[ 1 ] );
-                    PLog.e( "beforeTouchPositionY : " + beforeTouchPositionY );
-
-
-                    PLog.e( "moveY : " + moveY );
                     if ( getHeight( ) - getCurrentPositionView.getHeight( ) <= moveY ) {
                         getCurrentPositionView.setY( moveY );
                         if ( onSlideDrawerListener != null ) {

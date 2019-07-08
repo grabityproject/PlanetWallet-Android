@@ -23,10 +23,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/planetview_item_main_planets"
+            android:layout_toLeftOf="@id/text_item_main_planets_type"
             android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="planetName"
-            android:textColor="#FFF"
             android:textSize="14dp"
+            android:textColor="#FFF"
             app:themeTextColor="#000" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView

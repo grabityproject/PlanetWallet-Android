@@ -1,6 +1,10 @@
 package io.grabity.planetwallet.Common.commonset;
 
 
+import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferActivity;
+import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferAmountActivity;
+import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferConfirmActivity;
+
 public class C {
 
     public static class url {
@@ -36,6 +40,7 @@ public class C {
 
     public static class bundleKey {
         public final static String PLANET = "PLANET";
+
         public final static String PINCODE = "PINCODE";
 
         public final static String PLANETADD = "PLANETADD";
@@ -52,6 +57,19 @@ public class C {
         public final static String BOARD = "board";
         public final static String COINTYPE = "cointype";
         public final static String TRANSFER = "TRANSFER";
+
+    }
+
+    public static class transferChoice {
+        public final static String PLANET_NAME = "planetName";
+        public final static String ADDRESS = "address";
+    }
+
+    public static class transferClass {
+        public static TransferActivity transferActivity = null;
+        public static TransferAmountActivity transferAmountActivity = null;
+        public static TransferConfirmActivity transferConfirmActivity = null;
+
     }
 
     public static class theme {
@@ -81,11 +99,15 @@ public class C {
 
         public final static String LAST_PLANET_KEYID = "lastPlanetKeyId";
 
+        public final static String BACK_UP_MNEMONIC_ETH = "backupMnemonicETH";
+        public final static String BACK_UP_MNEMONIC_BTC = "backupMnemonicBTC";
 
     }
 
     public static class wallet {
         public final static String CREATE = "create";
+        public final static String BACKUP = "backup";
+        public final static String NOBACKUP = "nobackup";
     }
 
     public static class db {

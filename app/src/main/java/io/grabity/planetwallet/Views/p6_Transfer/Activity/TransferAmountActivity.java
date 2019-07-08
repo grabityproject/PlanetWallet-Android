@@ -6,12 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -24,12 +30,17 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
 
     private StringBuffer amountBuffer;
 
+    private Planet planet;
+    private Transfer transfer;
+    private ERC20 erc20;
+
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_transfer_amount );
         viewMapper = new ViewMapper( );
+        C.transferClass.transferAmountActivity = this;
         viewInit( );
         setData( );
     }
@@ -46,56 +57,105 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         viewMapper.btnSubmit.setOnClickListener( this );
         viewMapper.btnSubmit.setEnabled( false );
 
-        //Todo 임시
-        if ( getString( "address" ) != null ) {
-            viewMapper.textAddress.setVisibility( View.VISIBLE );
-            viewMapper.textAddress.setText( Utils.addressReduction( getString( "address" ) ) );
-        } else if ( getString( "planet" ) != null ) {
-            viewMapper.groupPlanet.setVisibility( View.VISIBLE );
-            viewMapper.planetView.setData( getString( "planet" ) );
-            viewMapper.textPlanetName.setText( "Choi_3950" );
-        }
-    }
-
-    @Override
-    protected void setData( ) {
-        super.setData( );
-
         for ( int i = 0; i < amountButtons.size( ); i++ ) {
             amountButtons.get( i ).setOnClickListener( this );
         }
         amount = new ArrayList<>( );
         amountBuffer = new StringBuffer( );
 
+        //default
+        amount.add( "0" );
+
+    }
+
+    @Override
+    protected void setData( ) {
+        super.setData( );
+        if ( getSerialize( C.bundleKey.PLANET ) == null || getSerialize( C.bundleKey.TRANSFER ) == null ) {
+            finish( );
+        } else {
+
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
+
+            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
+                } else {
+                    viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+                }
+            }
+            toolBarSetView( );
+        }
+    }
+
+    void toolBarSetView( ) {
+        viewMapper.groupPlanet.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ? View.VISIBLE : View.GONE );
+        viewMapper.textAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
+        if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
+            viewMapper.planetView.setData( transfer.getToAddress( ) );
+//            viewMapper.textPlanetName.setText( transfer.getToName( ) );
+            viewMapper.textPlanetName.setText( Utils.planetNameForm( transfer.getToName( ) ) );
+        } else if ( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ) {
+            viewMapper.textAddress.setText( Utils.addressReduction( transfer.getToAddress( ) ) );
+        }
     }
 
     @Override
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnSubmit ) {
-            sendAction( TransferConfirmActivity.class );
+            Bundle bundle = new Bundle( );
+            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+                bundle.putSerializable( C.bundleKey.PLANET, planet );
+
+            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+
+                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+                    bundle.putSerializable( C.bundleKey.PLANET, planet );
+                    bundle.putSerializable( C.bundleKey.ERC20, erc20 );
+                } else {
+                    bundle.putSerializable( C.bundleKey.PLANET, planet );
+                }
+            }
+            //balance setting
+            transfer.setToBalance( viewMapper.textAmount.getText( ).toString( ) );
+            bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
+            setTransition( Transition.SLIDE_SIDE );
+            sendAction( TransferConfirmActivity.class, bundle );
         } else if ( v == viewMapper.btnAmonutDelete ) {
             if ( amount.size( ) > 0 ) {
                 amount.remove( amount.size( ) - 1 );
 
-//                if ( amount.get( amount.size( ) - 1 ).equals( "." ) ) {
-//                    //지우고 다음 자리가 .일 경우 .도 제거
-//                    amount.remove( amount.size( ) - 1 );
-//                }
-                setAmount( );
+                if ( amount.size( ) == 0 ) {
+                    amount.add( "0" );
+                }
             }
+            setAmount( );
         } else if ( v instanceof FontTextView ) {
 
+            //Todo 임시 자릿수 제한 10자리
+            if ( amount.size() >= 10 ) return;
+
             if ( ( ( FontTextView ) v ).getText( ).equals( "." ) ) {
-                if ( !amount.toString( ).contains( "." ) && amount.size( ) > 0 ) {
+                if ( !amount.toString( ).contains( "." ) ) {
                     amount.add( ( ( FontTextView ) v ).getText( ).toString( ) );
-                    setAmount( );
+                }
+            } else if ( ( ( FontTextView ) v ).getText( ).equals( "0" ) ) {
+                if ( amount.toString( ).contains( "." ) || !amount.get( 0 ).equals( "0" ) ) {
+                    amount.add( ( ( FontTextView ) v ).getText( ).toString( ) );
                 }
             } else {
-                amount.add( ( ( FontTextView ) v ).getText( ).toString( ) );
-                setAmount( );
-
+                if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
+                    amount.set( 0, ( ( FontTextView ) v ).getText( ).toString( ) );
+                } else {
+                    amount.add( ( ( FontTextView ) v ).getText( ).toString( ) );
+                }
             }
+            setAmount( );
         }
     }
 
@@ -104,10 +164,47 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         for ( int i = 0; i < amount.size( ); i++ ) {
             amountBuffer.append( amount.get( i ) );
         }
-        viewMapper.textAmount.setText( amount.size( ) == 0 ? "0" : amountBuffer.toString( ) );
-        viewMapper.textAmountUSD.setText( amount.size( ) == 0 ? "0 USD" : String.format( "%s USD", String.valueOf( Float.valueOf( amountBuffer.toString( ) ) / 2f ) ) );
-        viewMapper.btnSubmit.setEnabled( amount.size( ) != 0 );
+        viewMapper.textAmount.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0" : amountBuffer.toString( ) );
+        viewMapper.textAmountUSD.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0 USD" : String.format( "%s USD", String.valueOf( Float.valueOf( amountBuffer.toString( ) ) / 2f ) ) );
+        viewMapper.btnSubmit.setEnabled( btnEnable( ) );
     }
+
+    private boolean btnEnable( ) {
+        if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
+            viewMapper.texterror.setVisibility( View.GONE );
+            viewMapper.textAmountUSD.setVisibility( View.VISIBLE );
+            return false;
+        } else {
+            if ( amount.get( amount.size( ) - 1 ).equals( "." ) ) {
+                return false;
+            }
+
+            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+                return balanceCheck( planet.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
+            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+
+                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+                    return balanceCheck( erc20.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
+                } else {
+                    return balanceCheck( planet.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
+                }
+
+            }
+            return false;
+        }
+    }
+
+    //Todo 수수료 값 추가
+    private boolean balanceCheck( String myBalance, String toBalance ) {
+        if ( myBalance == null || toBalance == null ) return false;
+        BigDecimal mB = new BigDecimal( myBalance );
+        BigDecimal tB = new BigDecimal( toBalance );
+        viewMapper.texterror.setVisibility( mB.compareTo( tB ) > 0 ? View.GONE : View.VISIBLE );
+        viewMapper.textAmountUSD.setVisibility( mB.compareTo( tB ) > 0 ? View.VISIBLE : View.GONE );
+        if ( mB.compareTo( tB ) > 0 ) return true;
+        return false;
+    }
+
 
     @Override
     public void onToolBarClick( Object tag, View view ) {

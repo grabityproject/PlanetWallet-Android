@@ -7,6 +7,10 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.pentasecurity.cryptowallet.JniWrapper;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
@@ -14,7 +18,9 @@ import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletImportActivity;
 import io.grabity.planetwallet.Widgets.RoundEditText;
@@ -72,23 +78,36 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
             viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
             viewMapper.etPassword.setSelection( viewMapper.etPassword.length( ) );
         } else if ( v == viewMapper.btnSubmit ) {
+            PLog.e( "니모닉 : " + viewMapper.etMnemonic.getText( ).toString( ) );
 
             if ( getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) != null ) {
 
-
                 if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
-
                     try {
-                        walletImportActivity.setPlanet( BitCoinManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), viewMapper.etPassword.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) ) );
+                        Planet btcPlanet = BitCoinManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), viewMapper.etPassword.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
+
+                        if ( PlanetStore.getInstance( ).getPlanet( btcPlanet.getKeyId( ) ) == null ) {
+                            walletImportActivity.setPlanet( btcPlanet );
+                        } else {
+                            Toast.makeText( getActivity( ), getString( R.string.mnemonic_import_fragment_waring_title ), Toast.LENGTH_SHORT ).show( );
+                        }
+
                     } catch ( Exception e ) {
-                        PLog.e( "Fail" );
+                        Toast.makeText( getContext( ), getString( R.string.mnemonic_import_fragment_not_match_title ), Toast.LENGTH_SHORT ).show( );
                     }
 
                 } else if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
                     try {
-                        walletImportActivity.setPlanet( EthereumManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), viewMapper.etPassword.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) ) );
+                        Planet ethPlanet = EthereumManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), viewMapper.etPassword.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
+
+                        if ( PlanetStore.getInstance( ).getPlanet( ethPlanet.getKeyId( ) ) == null ) {
+                            walletImportActivity.setPlanet( ethPlanet );
+                        } else {
+                            Toast.makeText( getActivity( ), getString( R.string.mnemonic_import_fragment_waring_title ), Toast.LENGTH_SHORT ).show( );
+                        }
+
                     } catch ( Exception e ) {
-                        PLog.e( "Fail" );
+                        Toast.makeText( getContext( ), getString( R.string.mnemonic_import_fragment_not_match_title ), Toast.LENGTH_SHORT ).show( );
                     }
                 }
 
@@ -123,7 +142,10 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
     @Override
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
         if ( viewMapper.etMnemonic.getText( ) == null ) return;
-        viewMapper.btnSubmit.setEnabled( viewMapper.etMnemonic.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
+//        viewMapper.btnSubmit.setEnabled( viewMapper.etMnemonic.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
+
+        viewMapper.btnSubmit.setEnabled( viewMapper.etMnemonic.getText( ).toString( ).trim( ).length( ) != 0 );
+
     }
 
     @Override
@@ -135,7 +157,8 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
     public class ViewMapper {
 
         RoundEditText etPassword;
-        RoundEditText etMnemonic;
+        //        RoundEditText etMnemonic;
+        EditText etMnemonic;
         View passwordInvisible;
         View passwordVisible;
         View btnSubmit;

@@ -56,14 +56,14 @@
 
             <io.grabity.planetwallet.Widgets.ActionEditText
                 android:id="@+id/et_planet_generate_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
                 android:background="@null"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:gravity="top"
+                android:gravity="center"
                 android:includeFontPadding="false"
                 android:inputType="textMultiLine"
                 android:maxLength="30"

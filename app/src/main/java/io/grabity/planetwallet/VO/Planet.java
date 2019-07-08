@@ -1,12 +1,15 @@
 package io.grabity.planetwallet.VO;
 
+import com.pentasecurity.cryptowallet.JniWrapper;
 import com.pentasecurity.cryptowallet.key.HDKeyPair;
+
+import org.spongycastle.util.Arrays;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
-import io.grabity.planetwallet.MiniFramework.wallet.signer.Signer;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
@@ -22,6 +25,7 @@ public class Planet implements Serializable {
     private String hide;
     private String address;
     private String name;
+    private String balance;
 
     private String signature;
     private String planet;
@@ -131,6 +135,33 @@ public class Planet implements Serializable {
         return null;
     }
 
+    //bitCoin privateKey
+    public String getPrivateKeyBase58Encode( KeyPairStore keyPairStore, char[] pinCode ) {
+        if ( keyPairStore != null ) {
+            HDKeyPair keyPair = keyPairStore.getKeyPair( getKeyId( ), pinCode );
+
+            if ( keyPair != null ) {
+                return JniWrapper.GenBase58CheckEncode( Arrays.concatenate( new byte[]{ ( byte ) 0x80 }, keyPair.getPrivateKey( ), new byte[]{ 0x01 }) );
+            }
+        }
+        return null;
+    }
+
+    public String getPrivateKeyBase58Encodes( KeyPairStore keyPairStore, char[] pinCode ) {
+        if ( keyPairStore != null ) {
+            HDKeyPair keyPair = keyPairStore.getKeyPair( getKeyId( ), pinCode );
+            if ( keyPair != null ) {
+                byte[] startByte = new byte[]{ ( byte ) 0x80 };
+                byte[] bitCoinPrivateKey = new byte[ keyPair.getPrivateKey( ).length + 1 ];
+                System.arraycopy( startByte, 0, bitCoinPrivateKey, 0, startByte.length );
+                System.arraycopy( keyPair.getPrivateKey( ), 0, bitCoinPrivateKey, 1, keyPair.getPrivateKey( ).length );
+                PLog.e( "checks : " + byteArrayToHexString( bitCoinPrivateKey ) );
+                return JniWrapper.GenBase58CheckEncode( bitCoinPrivateKey );
+            }
+        }
+        return null;
+    }
+
     public String getMnemonic( KeyPairStore keyPairStore, char[] pinCode ) {
         if ( getPathIndex( ) == -2 ) {
             return keyPairStore.getPhrase( getKeyId( ), pinCode );
@@ -166,6 +197,15 @@ public class Planet implements Serializable {
 
     public void setPlanet( String planet ) {
         this.planet = planet;
+    }
+
+    public String getBalance( ) {
+        if ( balance == null ) return "0";
+        return balance;
+    }
+
+    public void setBalance( String balance ) {
+        this.balance = balance;
     }
 
     @Override

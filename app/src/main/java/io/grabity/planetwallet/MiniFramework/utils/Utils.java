@@ -3,6 +3,7 @@ package io.grabity.planetwallet.MiniFramework.utils;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +13,14 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -49,11 +54,19 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+
+import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
+import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
+import io.grabity.planetwallet.Widgets.FontTextView;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -78,7 +91,7 @@ public class Utils {
 
     public static boolean isPlanetName( String name ) {
         boolean err = false;
-        if ( name.matches( "[^ㄱ-ㅎㅏ-ㅣ가-힣]+$" ) ){
+        if ( name.matches( "[^ㄱ-ㅎㅏ-ㅣ가-힣]+$" ) ) {
             String regex = "^[a-zA-Z0-9\\w]+$";
             Pattern p = Pattern.compile( regex );
             Matcher m = p.matcher( name );
@@ -741,11 +754,38 @@ public class Utils {
         }
     }
 
-    public static void copyToClipboard( Context context , String copyText ){
+    public static void copyToClipboard( Context context, String copyText ) {
         ClipboardManager clipboardManager = ( ClipboardManager ) context.getSystemService( CLIPBOARD_SERVICE );
         ClipData clipData = ClipData.newPlainText( "Copy to clipboard", copyText );
         clipboardManager.setPrimaryClip( clipData );
     }
+
+    public static boolean checkClipboard( Context context, Integer coinType ) {
+        ClipboardManager clipboardManager = ( ClipboardManager ) context.getSystemService( CLIPBOARD_SERVICE );
+        if ( clipboardManager.hasPrimaryClip( ) && Objects.requireNonNull( clipboardManager.getPrimaryClipDescription( ) ).hasMimeType( ClipDescription.MIMETYPE_TEXT_PLAIN ) ) {
+            if ( Utils.equals( coinType, CoinType.BTC.getCoinType( ) ) ) {
+                if ( BitCoinManager.getInstance( ).validateAddress( clipboardManager.getPrimaryClip( ).getItemAt( 0 ).getText( ).toString( ) ) ) {
+                    return true;
+                }
+                return false;
+            } else if ( Utils.equals( coinType, CoinType.ETH.getCoinType( ) ) ) {
+                if ( EthereumManager.getInstance( ).validateAddress( clipboardManager.getPrimaryClip( ).getItemAt( 0 ).getText( ).toString( ) ) ) {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public static String getClipboard( Context context ) {
+        ClipboardManager clipboardManager = ( ClipboardManager ) context.getSystemService( CLIPBOARD_SERVICE );
+        if ( Objects.requireNonNull( clipboardManager.getPrimaryClip( ) ).getItemAt( 0 ) == null )
+            return "";
+        return clipboardManager.getPrimaryClip( ).getItemAt( 0 ).getText( ).toString( );
+    }
+
 
     public static int getResource( Context context, String resourceType, String resName ) {
         try {
@@ -938,6 +978,18 @@ public class Utils {
         }
     }
 
+    public static byte[] sha256Binary( byte[] input ) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance( "SHA-256" );
+            digest.update( input, 0, input.length );
+            return digest.digest( );
+        } catch ( NoSuchAlgorithmException e ) {
+            e.printStackTrace( );
+            return null;
+        }
+    }
+
+
     public static < T extends View > ArrayList< T > getAllViewsFromParentView( ViewGroup parentView, Class< T > findType ) {
         ArrayList< ViewGroup > viewGroups = new ArrayList<>( );
         viewGroups.add( parentView );
@@ -972,8 +1024,39 @@ public class Utils {
 
     public static String addressReduction( String address ) {
         if ( address == null ) return "";
+        if ( address.length( ) < 8 ) return "";
         String endString = address.substring( address.length( ) - 4 );
         return address.substring( 0, 2 ).equals( "0x" ) ? address.substring( 0, 6 ) + "..." + endString : address.substring( 0, 4 ) + "..." + endString;
+    }
+
+    public static void addressForm( View v, String address ) {
+        if ( address == null ) return;
+        if ( address.length( ) < 8 ) return;
+        if ( v.getClass( ) == TextView.class || v.getClass( ) == FontTextView.class ) {
+            SpannableString s = new SpannableString( address );
+
+            if ( address.substring( 0, 2 ).equals( "0x" ) ) {
+                s.setSpan( new ForegroundColorSpan( Color.parseColor( "#FF0050" ) ), 2, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
+            } else {
+                s.setSpan( new ForegroundColorSpan( Color.parseColor( "#FF0050" ) ), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
+            }
+            s.setSpan( new ForegroundColorSpan( Color.parseColor( "#FF0050" ) ), address.length( ) - 4, address.length( ), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE );
+
+            if ( v.getClass( ) == TextView.class ) {
+                ( ( TextView ) v ).setText( s );
+            } else if ( v.getClass( ) == FontTextView.class ) {
+                ( ( FontTextView ) v ).setText( s );
+            }
+        }
+    }
+
+    public static String planetNameForm( String name ) {
+        if ( name == null ) return "";
+        if ( name.length( ) <= 15 ){
+            return name;
+        } else{
+            return name.substring( 0,15 ) + "...";
+        }
     }
 
 }

@@ -15,13 +15,20 @@ import com.pentasecurity.cryptowallet.utils.PcwfUtils;
 import com.pentasecurity.cryptowallet.wallet.WalletAccount;
 import com.pentasecurity.cryptowallet.wallet.WalletAccountService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import io.grabity.planetwallet.MiniFramework.Base58.Base58;
+import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
+import io.grabity.planetwallet.VO.KeyPair;
 import io.grabity.planetwallet.VO.Planet;
 
 public class BitCoinManager {
@@ -46,6 +53,13 @@ public class BitCoinManager {
 
     public Planet importMnemonic( String mnemonicPhrase, String passphrase, char[] pinCode ) {
         if ( passphrase == null ) passphrase = "";
+        try {
+            JniWrapper.CheckMnemonicValid( mnemonicPhrase );
+
+        } catch ( Exception e ) {
+            PLog.e( "Not 니모닉" );
+            return null;
+        }
 
         List< String > mnemonic = Arrays.asList( mnemonicPhrase.trim( ).split( " " ) );
         byte[] seed = mnemonicService.createSeed( mnemonic, passphrase );
@@ -71,6 +85,8 @@ public class BitCoinManager {
         planet.setHide( "N" );
         planet.setSymbol( CoinType.BTC.getDefaultUnit( ) );
         Log.e( getClass( ).getSimpleName( ), planet.toString( ) );
+
+
         KeyPairStore.getInstance( ).deleteKeyPair( btcCoinAccountKey.getId( ) );
 //        PlanetStore.getInstance( ).save( planet );
 
@@ -78,8 +94,53 @@ public class BitCoinManager {
     }
 
     public Planet importPrivateKey( String privKey, char[] pinCode ) {
+        PLog.e( "input PrivateKey : " + privKey );
+        byte[] privateKeyWif = null;
+        byte[] checksum = null;
+        try {
+            // Base58 check
+            JniWrapper.GenBase58CheckDecode( privKey );
+            privateKeyWif = Base58.decode( privKey );
+            // compressed 조사는 여기서 L, K , 5
+            if ( privKey.substring( 0, 1 ).equals( "L" ) || privKey.substring( 0, 1 ).equals( "K" ) ) {
 
-        byte[] privateKey = PcwfUtils.hexStringToByteArray( privKey );
+                checksum = Arrays.copyOfRange( privateKeyWif, privateKeyWif.length - 4, privateKeyWif.length );
+                privateKeyWif = Arrays.copyOfRange( privateKeyWif, 0, privateKeyWif.length - 4 );
+
+                byte[] doubleSha256 = Utils.sha256Binary( Utils.sha256Binary( privateKeyWif ) );
+                String s = PcwfUtils.byteArrayToHexString( doubleSha256 );
+
+                if ( s.substring( 0, 8 ).equals( PcwfUtils.byteArrayToHexString( checksum ) ) ) {
+                    privateKeyWif = Arrays.copyOfRange( privateKeyWif, 1, privateKeyWif.length - 1 );
+                }
+            } else if ( privKey.substring( 0, 1 ).equals( "5" ) ) {
+
+                checksum = Arrays.copyOfRange( privateKeyWif, privateKeyWif.length - 4, privateKeyWif.length );
+                privateKeyWif = Arrays.copyOfRange( privateKeyWif, 0, privateKeyWif.length - 4 );
+
+                byte[] doubleSha256 = Utils.sha256Binary( Utils.sha256Binary( privateKeyWif ) );
+                String s = PcwfUtils.byteArrayToHexString( doubleSha256 );
+
+                if ( s.substring( 0, 8 ).equals( PcwfUtils.byteArrayToHexString( checksum ) ) ) {
+                    privateKeyWif = Arrays.copyOfRange( privateKeyWif, 1, privateKeyWif.length );
+                }
+            }
+
+        } catch ( Exception e ) {
+            PLog.e( "Not WIF" );
+        }
+
+        //WIF가 아닌경우 HEX 체크
+        if ( privateKeyWif == null ) {
+            Pattern p = Pattern.compile( "^[a-fA-F0-9]{64}$" );
+            Matcher m = p.matcher( privKey );
+            if ( !m.find( ) ) {
+                return null;
+            }
+        }
+
+
+        byte[] privateKey = privateKeyWif != null ? privateKeyWif : PcwfUtils.hexStringToByteArray( privKey );
         byte[] publicKey = JniWrapper.GenPubkeyFromPrikey( privateKey );
 
         HDKeyPair keyPair = new HDKeyPair( privateKey, publicKey );
@@ -92,15 +153,18 @@ public class BitCoinManager {
 
         Planet planet = new Planet( );
         planet.setAddress( account.getAddress( ) );
+        PLog.e( "BitCoin Manager PrKey Import address : " + planet.getAddress( ) );
         planet.setCoinType( CoinType.BTC.getCoinType( ) );
         planet.setDecimals( String.valueOf( CoinType.BTC.getPrecision( ) ) );
-        planet.setPathIndex( -2 );
+        planet.setPathIndex( -1 );
         planet.setKeyId( keyPair.getId( ) );
         planet.setHide( "N" );
         planet.setSymbol( CoinType.BTC.getDefaultUnit( ) );
 //        PlanetStore.getInstance( ).save( planet );
+
         return planet;
     }
+
 
     public Planet addPlanet( char[] pinCode ) {
 
@@ -174,8 +238,24 @@ public class BitCoinManager {
             HDKeyPair masterKeyPair = KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.BTC.getCoinType( ), pinCode );
             if ( masterKeyPair != null ) {
                 HDKeyPair childKeyPair = hdKeyPairService.deriveHDKeyPair( masterKeyPair, PcwfUtils.getHDPath( "0/0" ) );
-                KeyPairStore.getInstance( ).deleteKeyPair( masterKeyPair.getId( ) );
-                KeyPairStore.getInstance( ).deleteKeyPair( childKeyPair.getId( ) );
+//                PWDBManager.getInstance( ).deleteData( new KeyPair( ), "keyId = '" + masterKeyPair.getId( ) + "'" );
+//                PWDBManager.getInstance( ).deleteData( new KeyPair( ), "keyId = '" + childKeyPair.getId( ) + "'" );
+
+                KeyPairStore.getInstance( ).generateKeyPairDelete( masterKeyPair.getId( ) );
+                KeyPairStore.getInstance( ).generateKeyPairDelete( childKeyPair.getId( ) );
+
+                //기존
+//                ArrayList< Planet > btcPlanets = PlanetStore.getInstance( ).getPlanetList( "BTC" );
+//                PLog.e( "BTC Planet size : " + btcPlanets.size( ) );
+//                if ( btcPlanets.size( ) == 0 ) {
+//                    KeyPairStore.getInstance( ).generateKeyPairDelete( masterKeyPair.getId( ) );
+//                    KeyPairStore.getInstance( ).generateKeyPairDelete( childKeyPair.getId( ) );
+//                } else {
+//                    KeyPairStore.getInstance( ).deleteKeyPair( masterKeyPair.getId( ) );
+//                    KeyPairStore.getInstance( ).deleteKeyPair( childKeyPair.getId( ) );
+//                }
+
+
                 PlanetStore.getInstance( ).delete( childKeyPair.getId( ) );
             }
 
@@ -205,5 +285,10 @@ public class BitCoinManager {
         planet.setSymbol( currencyInfo.getDefaultUnit( ) );
         return planet;
     }
+
+    public boolean validateAddress( String address ) {
+        return btcWalletAccountService.validateAddress( address );
+    }
+
 
 }

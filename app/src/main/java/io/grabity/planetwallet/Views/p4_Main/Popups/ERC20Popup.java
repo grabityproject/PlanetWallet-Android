@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;

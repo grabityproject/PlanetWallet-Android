@@ -194,6 +194,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
                 if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
                     if ( !shouldShowRequestPermissionRationale( permissions[ i ] ) ) {
                         neverNotAllowed( requestCode, permissions[ i ] );
+                        return;
                     }
                 }
                 permissionNotAllowed( requestCode, permissions[ i ] );
@@ -274,6 +275,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     public void sendAction( Class< ? > targetClass, Bundle bundle, int... flags ) {
         Intent intent = new Intent( this, targetClass );
         if ( bundle != null ) intent.putExtras( bundle );
+        for ( int f : flags ) intent.addFlags( f );
         startActivity( putTransitionToBundle( intent, transition ) );
         setEnterTransition( );
     }

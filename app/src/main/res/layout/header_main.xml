@@ -31,7 +31,7 @@
         android:gravity="center"
         android:paddingTop="20dp"
         android:paddingBottom="4dp"
-        android:text="Planet Name"
+        android:text="PlanetName"
         android:textColor="#FFF"
         android:textSize="24dp"
         app:themeTextColor="#000"

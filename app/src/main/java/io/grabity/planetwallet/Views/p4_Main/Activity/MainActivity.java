@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -15,20 +16,24 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p4_Main.Adapter.MainAdapter;
 import io.grabity.planetwallet.Views.p4_Main.Adapter.PlanetAdapter;
 import io.grabity.planetwallet.Views.p4_Main.Etc.ViewController;
 import io.grabity.planetwallet.Views.p4_Main.Popups.ERC20Popup;
 import io.grabity.planetwallet.Views.p5_Token.Activity.TokenAddActivity;
 import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferActivity;
+import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.MnemonicExportActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.SettingActivity;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
@@ -53,6 +58,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     private Planet selectedPlanet;
 
     private ArrayList< Planet > planetList;
+
+    private long backtime = 0;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -93,6 +100,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.btnCopy.setOnClickListener( this );
         viewMapper.btnTransfer.setOnClickListener( this );
         viewMapper.btnBottomBlur.setOnClickListener( this );
+        viewMapper.textNotice.setOnClickListener( this );
 
         viewMapper.slideDrawer.addBypassArea( viewMapper.btnBottomBlur );
 
@@ -129,6 +137,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     }
 
+
     void setUpViews( ) {
 
         if ( selectedPlanet != null ) {
@@ -143,22 +152,42 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 for ( ERC20 erc20 : tokenList ) {
                     selectedPlanet.getItems( ).add( erc20 );
                 }
+
             }
             viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) == null ? new ArrayList<>( ) : selectedPlanet.getItems( ) ) );
 
             viewMapper.textPlanetName.setText( selectedPlanet.getName( ) );
             viewMapper.toolBar.setTitle( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
             viewMapper.barcodeView.setData( selectedPlanet.getAddress( ) );
-            viewMapper.textBottomPlanetName.setText( selectedPlanet.getName( ) );
+//            viewMapper.textBottomPlanetName.setText( selectedPlanet.getName( ) );
+            viewMapper.textBottomPlanetName.setText( Utils.planetNameForm( selectedPlanet.getName( ) ) );
             viewMapper.textBottomAddress.setText( selectedPlanet.getAddress( ) );
 
             viewMapper.planetBackground.setData( selectedPlanet.getAddress( ) );
             viewMapper.planetBlur.setData( selectedPlanet.getAddress( ) );
 
+//            viewMapper.textBlurPlanetName.setText( selectedPlanet.getName( ) );
+            viewMapper.textBlurPlanetName.setText( Utils.planetNameForm( selectedPlanet.getName( ) ) );
+            viewMapper.textBlurCoinName.setText( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
+            viewMapper.textBlurBalance.setText( selectedPlanet.getBalance( ) );
+
+            setUpNotice( );
+
+
             if ( viewController != null )
                 viewController.updateBlurView( getCurrentTheme( ) );
         }
+    }
 
+    void setUpNotice( ) {
+        //textNotice
+        if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
+            viewMapper.textNotice.setVisibility( selectedPlanet.getPathIndex( ) >= 0 && Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC ), C.wallet.NOBACKUP ) ?
+                    View.VISIBLE : View.GONE );
+        } else if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
+            viewMapper.textNotice.setVisibility( selectedPlanet.getPathIndex( ) >= 0 && Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH ), C.wallet.NOBACKUP ) ?
+                    View.VISIBLE : View.GONE );
+        }
     }
 
     @Override
@@ -171,7 +200,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 headerViewMapper.groupAddress.setOnClickListener( this );
                 headerViewMapper.planetView.setData( selectedPlanet.getAddress( ) );
                 headerViewMapper.textAddress.setText( Utils.addressReduction( selectedPlanet.getAddress( ) ) );
-                headerViewMapper.textName.setText( selectedPlanet.getName( ) );
+//                headerViewMapper.textName.setText( selectedPlanet.getName( ) );
+                headerViewMapper.textName.setText( Utils.planetNameForm( selectedPlanet.getName( ) ) );
                 viewMapper.barcodeView.setPlanetView( headerViewMapper.planetView );
 
                 if ( viewController != null )
@@ -205,12 +235,12 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( v == viewMapper.btnCopy ) {
 
             Utils.copyToClipboard( this, selectedPlanet.getAddress( ) );
-            CustomToast.makeText( this, localized( R.string.main_btn_bottom_copy_title ) ).show( );
+            CustomToast.makeText( this, localized( R.string.copy_to_clipboard ) ).show( );
 
         } else if ( v == headerViewMapper.groupAddress ) {
 
             Utils.copyToClipboard( this, selectedPlanet.getAddress( ) );
-            CustomToast.makeText( this, localized( R.string.main_btn_bottom_copy_title ) ).show( );
+            CustomToast.makeText( this, localized( R.string.copy_to_clipboard ) ).show( );
 
         } else if ( v == viewMapper.btnTransfer ) {
 
@@ -232,6 +262,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             viewMapper.slideDrawer.open( SlideDrawerLayout.Position.BOTTOM );
 
+        } else if ( v == viewMapper.textNotice ) {
+            setTransition( Transition.NO_ANIMATION );
+            sendAction(
+                    C.requestCode.PLANET_MNEMONIC_EXPORT,
+                    PinCodeCertificationActivity.class );
         }
     }
 
@@ -240,6 +275,19 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.MAIN_TOKEN_ADD && resultCode == RESULT_OK ) {
             setUpViews( );
+        } else if ( requestCode == C.requestCode.PLANET_MNEMONIC_EXPORT && resultCode == RESULT_OK ) {
+            assert data != null;
+            char[] pinCode = data.getCharArrayExtra( C.bundleKey.PINCODE );
+            if ( pinCode != null ) {
+                StringBuilder pinCodeString = new StringBuilder( );
+                for ( char c : pinCode ) {
+                    pinCodeString.append( c );
+                }
+                if ( Utils.equals( Utils.sha256( pinCodeString.toString( ) ), KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD, pinCodeString.toString( ).toCharArray( ) ) ) ) {
+                    setTransition( Transition.SLIDE_UP );
+                    sendAction( MnemonicExportActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ) );
+                }
+            }
         }
     }
 
@@ -258,8 +306,15 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( viewMapper.slideDrawer.isOpen( ) ) {
             viewMapper.slideDrawer.close( );
         } else {
-            setTransition( Transition.NO_ANIMATION );
-            super.onBackPressed( );
+//            setTransition( Transition.NO_ANIMATION );
+//            super.onBackPressed( );
+            if ( System.currentTimeMillis( ) > backtime + 2000 ) {
+                backtime = System.currentTimeMillis( );
+                Toast.makeText( this, "뒤로가기 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT ).show( );
+            } else {
+                finish( );
+            }
+
         }
     }
 
@@ -278,9 +333,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( headerViewMapper != null && headerViewMapper.textName != null ) {
             String planetName = PlanetStore.getInstance( ).getPlanet( selectedPlanet.getKeyId( ) ).getName( );
             selectedPlanet.setName( planetName );
-            headerViewMapper.textName.setText( planetName );
+//            headerViewMapper.textName.setText( planetName );
+            headerViewMapper.textName.setText( Utils.planetNameForm( planetName ) );
         }
 
+        setUpNotice( );
     }
 
     @Override
@@ -317,7 +374,13 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                                 bundle.putSerializable( C.bundleKey.PLANET, planet );
                                 bundle.putSerializable( C.bundleKey.ERC20, erc20 );
 
-                                sendAction( C.requestCode.TRANSFER, TransferActivity.class, bundle );
+                                super.onBackPressed( );
+
+                                new Handler( ).postDelayed( ( ) -> {
+                                    setTransition( Transition.SLIDE_SIDE );
+//                                    sendAction( C.requestCode.TRANSFER, TransferActivity.class, bundle );
+                                    sendAction( TransferActivity.class, bundle );
+                                }, 250 );
 
                             }
                         } ).show( );
@@ -330,7 +393,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             selectedPlanet = planetList.get( position );
             setUpViews( );
             viewController.updateBlurView( getCurrentTheme( ) );
-
         }
     }
 
@@ -380,6 +442,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         TextView textBottomPlanetName;
         TextView textBottomAddress;
 
+        TextView textBlurBalance;
+        TextView textBlurCoinName;
+        TextView textBlurPlanetName;
+
 
         public View groupBackground;
         public PlanetView planetBackground;
@@ -427,6 +493,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             textBottomPlanetName = findViewById( R.id.text_main_bottom_name );
             textBottomAddress = findViewById( R.id.text_main_bottom_address );
+
+            textBlurBalance = findViewById( R.id.text_main_blur_balance );
+            textBlurCoinName = findViewById( R.id.text_main_blur_coin_name );
+            textBlurPlanetName = findViewById( R.id.text_main_blur_planet_name );
 
         }
     }

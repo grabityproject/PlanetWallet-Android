@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
@@ -68,10 +70,12 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
             viewMapper.textType.setText( String.format( "%s Universe", CoinType.of( planet.getCoinType( ) ).name( ) ) );
             viewMapper.textAddressType.setText( String.format( "%s Address", CoinType.of( planet.getCoinType( ) ).name( ) ) );
-            viewMapper.toolBar.setTitle( planet.getName( ) );
+//            viewMapper.toolBar.setTitle( planet.getName( ) );
+            viewMapper.toolBar.setTitle( Utils.planetNameForm( planet.getName( ) ) );
             viewMapper.planetView.setData( planet.getAddress( ) );
             viewMapper.textAddress.setText( planet.getAddress( ) );
-            viewMapper.textName.setText( planet.getName( ) );
+//            viewMapper.textName.setText( planet.getName( ) );
+            viewMapper.textName.setText( Utils.planetNameForm( planet.getName( ) ) );
             viewMapper.toggleButton.setOn( Utils.equals( planet.getHide( ), "Y" ) );
 
         }

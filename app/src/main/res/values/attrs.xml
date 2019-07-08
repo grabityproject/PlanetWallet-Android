@@ -11,6 +11,8 @@
         <attr name="cornerRadius" format="dimension" />
         <attr name="backgroundColor" format="color" />
 
+        <attr name="focusBorderColor" format="color" />
+
         <attr name="defaultTheme">
             <enum name="NoTheme" value="0" />
             <enum name="Dark" value="1" />
@@ -118,8 +120,22 @@
         <attr name="cornerRadius" />
         <attr name="borderWidth" />
         <attr name="borderColor" />
-        <attr name="focusBorderColor" format="color" />
+        <!--<attr name="focusBorderColor" format="color" />-->
         <attr name="backgroundColor" />
+        <attr name="focusBorderColor" />
+
+        <attr name="defaultTheme" />
+
+    </declare-styleable>
+
+    <declare-styleable name="ActionEditText">
+
+        <attr name="cornerRadius" />
+        <attr name="borderWidth" />
+        <attr name="borderColor" />
+        <!--<attr name="focusBorderColor" format="color" />-->
+        <attr name="backgroundColor" />
+        <attr name="focusBorderColor" />
 
         <attr name="defaultTheme" />
 
@@ -181,10 +197,7 @@
         <attr name="defaultTheme" />
     </declare-styleable>
 
-    <declare-styleable name="UnderlineTextView">
-        <attr name="underlineColor" format="color" />
-        <attr name="underlineWidth" format="dimension" />
-    </declare-styleable>
+
 
     <declare-styleable name="BarcodeFrameView" >
         <attr name="borderWidth" />

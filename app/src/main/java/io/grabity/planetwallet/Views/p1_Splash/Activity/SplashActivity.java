@@ -7,10 +7,17 @@ import android.support.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.util.ArrayList;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.KeyPair;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
 
@@ -27,7 +34,9 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );
+
     }
+
 
     @Override
     protected void viewInit( ) {
@@ -47,6 +56,14 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
     @Override
     protected void setData( ) {
         super.setData( );
+
+        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH ) , "" ) ){
+            Utils.setPreferenceData( this , C.pref.BACK_UP_MNEMONIC_ETH, C.wallet.NOBACKUP );
+        }
+
+        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC ) , "" ) ){
+            Utils.setPreferenceData( this , C.pref.BACK_UP_MNEMONIC_BTC, C.wallet.NOBACKUP );
+        }
     }
 
     @Override

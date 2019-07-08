@@ -39,6 +39,7 @@ public class ETH implements MainItem, Serializable {
     }
 
     public String getBalance( ) {
+        if ( balance == null ) return "0";
         return balance;
     }
 

@@ -26,10 +26,12 @@ import io.grabity.planetwallet.MiniFramework.wallet.signer.Signer;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.ErrorResult;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.CircleImageView;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ShadowView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -99,6 +101,12 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnSubmit ) {
+
+            if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
+                CustomToast.makeText( this, "이름은 공백일수 없습니다." ).show( );
+                return;
+            }
+
             planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
 
             Planet request = new Planet( );
@@ -141,6 +149,16 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
 
                 }
             }
+        } else {
+            ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
+            ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
+            CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
+//            if ( errorResult == null ) {
+//                CustomToast.makeText( this, "server error" ).show( );
+//            } else{
+//                CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
+//            }
+
         }
     }
 
@@ -207,10 +225,10 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             viewMapper.planetBackground.setFocusableInTouchMode( true );
             viewMapper.planetBackground.requestFocus( );
 
-            if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
-                //Todo 모두 다 지우고 키보드를 닫는경우
-                viewMapper.etPlanetName.setText( "WalletName" );
-            }
+//            if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
+//                //Todo 모두 다 지우고 키보드를 닫는경우
+//                CustomToast.makeText( this, "이름은 공백일수 없습니다." ).show( );
+//            }
         } else {
             if ( viewMapper.etPlanetName.getText( ).toString( ).contains( " " ) )
                 if ( first ) {

@@ -6,6 +6,10 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
@@ -13,7 +17,9 @@ import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletImportActivity;
 import io.grabity.planetwallet.Widgets.RoundEditText;
@@ -70,21 +76,35 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
         } else if ( v == viewMapper.btnSubmit ) {
 
             if ( getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) != null ) {
-
-
+                if ( viewMapper.etPrivateKey.getText( ) == null ) return;
                 if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
 
                     try {
-                        walletImportActivity.setPlanet( BitCoinManager.getInstance( ).importPrivateKey( viewMapper.etPrivateKey.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) ) );
+                        Planet btcPlanet = BitCoinManager.getInstance( ).importPrivateKey( viewMapper.etPrivateKey.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
+
+                        if ( PlanetStore.getInstance( ).getPlanet( btcPlanet.getKeyId( ) ) == null ) {
+                            walletImportActivity.setPlanet( btcPlanet );
+                        } else {
+                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_waring_title ), Toast.LENGTH_SHORT ).show( );
+                        }
+
                     } catch ( Exception e ) {
-                        PLog.e( "Fail" );
+                        Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_not_match_title ), Toast.LENGTH_SHORT ).show( );
                     }
 
                 } else if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
+
                     try {
-                        walletImportActivity.setPlanet( EthereumManager.getInstance( ).importPrivateKey( viewMapper.etPrivateKey.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) ) );
+                        Planet ethPlanet = EthereumManager.getInstance( ).importPrivateKey( viewMapper.etPrivateKey.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
+
+                        if ( PlanetStore.getInstance( ).getPlanet( ethPlanet.getKeyId( ) ) == null ) {
+                            walletImportActivity.setPlanet( ethPlanet );
+                        } else {
+                            Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_waring_title ), Toast.LENGTH_SHORT ).show( );
+                        }
+
                     } catch ( Exception e ) {
-                        PLog.e( "Fail" );
+                        Toast.makeText( getActivity( ), getString( R.string.privatekey_import_fragment_not_match_title ), Toast.LENGTH_SHORT ).show( );
                     }
                 }
 

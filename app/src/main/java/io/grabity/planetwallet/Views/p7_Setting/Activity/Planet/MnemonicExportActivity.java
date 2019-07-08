@@ -6,9 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.Arrays;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
@@ -46,9 +50,17 @@ public class MnemonicExportActivity extends PlanetWalletActivity implements Tool
 
             Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             String mnemonic = planet.getMnemonic( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+            PLog.e( "mnemonic : " + mnemonic );
             viewMapper.etMnemonic.setHint( mnemonic );
             viewMapper.groupMnemonic.setBackground_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#F5F5F5" ) );
             viewMapper.groupMnemonic.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
+
+
+            if ( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ) {
+                Utils.setPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC, C.wallet.BACKUP );
+            } else if ( Utils.equals( CoinType.ETH.getCoinType( ), planet.getCoinType( ) ) ) {
+                Utils.setPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH, C.wallet.BACKUP );
+            }
         }
 
 

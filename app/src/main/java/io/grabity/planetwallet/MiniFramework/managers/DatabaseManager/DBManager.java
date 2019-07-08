@@ -220,6 +220,61 @@ public abstract class DBManager {
         deleteData( object.getClass( ).getSimpleName( ), object );
     }
 
+    //add
+    public void deleteData( Object object, String condition ) {
+        deleteData( object.getClass( ).getSimpleName( ), object, condition );
+    }
+
+    //add
+    public void deleteData( String table, Object object, String condition ) {
+        condition = condition == null ? "" : ( "WHERE " + condition.replace( "WHERE ", "" ) );
+        if ( table == null || object == null ) return;
+
+        Field[] fields = object.getClass( ).getDeclaredFields( );
+        Method[] methods = object.getClass( ).getDeclaredMethods( );
+        StringBuilder valueSet = new StringBuilder( );
+        for ( int i = 0; i < methods.length; i++ ) {
+            try {
+                Method method = methods[ i ];
+                String methodName = method.getName( );
+
+                if ( methodName.length( ) > 3 && methodName.substring( 0, 3 ).equals( "get" ) ) {
+                    for ( Field field : fields ) {
+                        if ( methodName.substring( 3 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
+                            Object item = method.invoke( object );
+                            if ( item != null ) {
+                                valueSet.append( String.format( ", %s='%s'", field.getName( ), String.valueOf( item ) ) );
+                            }
+                            break;
+                        }
+                    }
+                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
+                    for ( Field field : fields ) {
+                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
+                            Object item = method.invoke( object );
+                            if ( item != null ) {
+                                valueSet.append( String.format( ", %s='%s'", field.getName( ), String.valueOf( item ) ) );
+                            }
+                            break;
+                        }
+                    }
+                }
+
+            } catch ( InvocationTargetException | IllegalAccessException e ) {
+                // Do not disturb
+                e.printStackTrace( );
+            }
+        }
+
+        if ( valueSet.length( ) > 2 ) {
+            valueSet.delete( 0, 2 );
+        }
+
+        Log.e( TAG, String.format( "DELETE FROM %s %s", table, condition ) );
+        sqLiteDatabase.execSQL( String.format( "DELETE FROM %s %s", table, condition ) );
+    }
+
+
     public void deleteData( String table, Object object ) {
         if ( table == null || object == null ) return;
         String condition = "";

@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 import cz.msebera.android.httpclient.NameValuePair;
 import cz.msebera.android.httpclient.message.BasicNameValuePair;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 
 public abstract class AbstractNetworkTask {
 
@@ -69,16 +70,19 @@ public abstract class AbstractNetworkTask {
                                                 ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ).getClass( ).equals( double.class ) ||
                                                 ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ).getClass( ).equals( float.class ) ) {
                                             result.add( new BasicNameValuePair( fields[ i ].getName( ) + "[]", String.valueOf( ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ) ) ) );
+                                            PLog.e( fields[ i ].getName( ) + "[]", String.valueOf( ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ) ) );
                                         } else {
                                             ArrayList< NameValuePair > inner = VOToMap( ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ) );
                                             for ( int k = 0; k < inner.size( ); k++ ) {
                                                 result.add( new BasicNameValuePair( fields[ i ].getName( ) + "[" + j + "][" + inner.get( k ).getName( ) + "]", inner.get( k ).getValue( ) ) );
+
                                             }
                                         }
                                     }
                                 }
                             } else {
                                 result.add( new BasicNameValuePair( fields[ i ].getName( ), String.valueOf( fields[ i ].get( obj ) ) ) );
+
                             }
 
                         }

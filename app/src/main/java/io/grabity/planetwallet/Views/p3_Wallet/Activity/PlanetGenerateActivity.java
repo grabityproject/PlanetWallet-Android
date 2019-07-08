@@ -35,10 +35,13 @@ import io.grabity.planetwallet.MiniFramework.wallet.signer.Signer;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.ErrorResult;
+import io.grabity.planetwallet.VO.KeyPair;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.CircleImageView;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ShadowView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -53,6 +56,8 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     private int cursor;
 
     private Planet planet;
+
+    private boolean btcMaster = false;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -104,8 +109,12 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
                 if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
 
-                    if ( PlanetStore.getInstance( ).getPlanetList( CoinType.BTC.name( ) ).size( ) == 0 ) {
+
+                    if ( KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.BTC.getCoinType( ), getPlanetWalletApplication( ).getPINCODE( ) ) == null ) {
+
+                        btcMaster = true;
                         generateBtcPlanet( );
+
                     } else {
                         addBtcPlanet( );
                     }
@@ -119,6 +128,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 }
 
             } else {
+                PLog.e( "setData generateEthPlanet( ) " );
                 generateEthPlanet( );
             }
         } catch ( DecryptionErrorException e ) {
@@ -165,12 +175,21 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             try {
                 if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
                     if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
-                        addBtcPlanet( );
+
+                        if ( btcMaster ) {
+                            generateBtcPlanet( );
+                        } else {
+                            addBtcPlanet( );
+                        }
+
                     } else if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
                         addEthPlanet( );
                     }
                 } else {
+
+                    PLog.e( "btnRefresh generateEthPlanet( ) " );
                     generateEthPlanet( );
+
                 }
             } catch ( DecryptionErrorException e ) {
                 e.printStackTrace( );
@@ -178,10 +197,17 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
         } else if ( v == viewMapper.btnSelect ) {
 
+
             // Todo Network 통신 다음 저장 기능 구현 현재는 그냥 저장
             if ( planet != null ) {
 
+                if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
+                    CustomToast.makeText( this, "이름은 공백일수 없습니다." ).show( );
+                    return;
+                }
+
                 planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+
 
                 Planet request = new Planet( );
                 request.setPlanet( planet.getName( ) );
@@ -190,6 +216,11 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                                 planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
                 request.setAddress( planet.getAddress( ) );
 
+
+
+
+
+                PLog.e( "URL : " + Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ) );
                 new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
 
             }
@@ -200,12 +231,15 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
+        PLog.e( "result : " + result );
+
         if ( statusCode == 200 ) {
             if ( requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
                 if ( returnVO.isSuccess( ) ) {
 
-
+                    //balance 테스트 세팅
+                    planet.setBalance( "24.5622312" );
                     PlanetStore.getInstance( ).save( planet );
 
                     if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
@@ -218,10 +252,18 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
                     }
 
-                } else {
-                    PLog.e( result );
                 }
+
             }
+        } else {
+            ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
+            ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
+            CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
+//            if ( errorResult == null ) {
+//                CustomToast.makeText( this, "server error" ).show( );
+//            } else{
+//                CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
+//            }
         }
     }
 
@@ -237,6 +279,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             planet = BitCoinManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
         } else {
             planet = BitCoinManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
+
         }
         planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
         viewMapper.planetView.setData( planet.getAddress( ) );
@@ -256,6 +299,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
         viewMapper.planetView.setData( planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
+
     }
 
 
@@ -265,6 +309,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             planet = EthereumManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
         } else {
             planet = EthereumManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
+
         }
         planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
         viewMapper.planetView.setData( planet.getAddress( ) );
@@ -279,7 +324,9 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
 
         viewMapper.planetView.setData( planet.getAddress( ) );
+        PLog.e( "generateEthPlanet( ) : " + planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
+
     }
 
     @Override
@@ -289,10 +336,10 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             viewMapper.planetBackground.setFocusableInTouchMode( true );
             viewMapper.planetBackground.requestFocus( );
 
-            if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
-                //Todo 모두 다 지우고 키보드를 닫는경우
-                viewMapper.etPlanetName.setText( "WalletName" );
-            }
+//            if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
+//                //Todo 모두 다 지우고 키보드를 닫는경우
+//                CustomToast.makeText( this, "이름은 공백일수 없습니다." ).show( );
+//            }
         } else {
             if ( viewMapper.etPlanetName.getText( ).toString( ).contains( " " ) )
                 if ( first ) {

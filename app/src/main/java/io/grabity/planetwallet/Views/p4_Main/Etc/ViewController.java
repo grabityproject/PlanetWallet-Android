@@ -61,12 +61,14 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
             viewMapper.groupBottom.setAlpha( movePoint * 1.2f );
 
             if ( ( y - ( viewMapper.slideDrawer.getHeight( ) - viewMapper.groupBlur.getHeight( ) / 2.0f ) + Utils.dpToPx( activity, 20 ) ) > 0 ) {
+
                 viewMapper.textNotice.setY( viewMapper.slideDrawer.getHeight( ) - viewMapper.groupBlur.getHeight( ) / 2.0f - viewMapper.textNotice.getHeight( ) );
                 viewMapper.groupBlur.setY( blurTop );
             } else {
-                viewMapper.textNotice.setY( y - viewMapper.textNotice.getHeight( ) );
-                viewMapper.groupBlur.setY( y + Utils.dpToPx( activity, 20 ) );
 
+//                viewMapper.textNotice.setY( y - viewMapper.textNotice.getHeight( ) );
+                viewMapper.textNotice.setY( y - viewMapper.textNotice.getHeight( ) + Utils.dpToPx( activity, 20 ) );
+                viewMapper.groupBlur.setY( y + Utils.dpToPx( activity, 20 ) );
 
                 viewMapper.imageBlurView.setY(
                         ( ( View ) viewMapper.imageBlurView.getParent( ) ).getHeight( ) -
@@ -147,6 +149,8 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         updateBlurView( activity.getCurrentTheme( ) );
 
         viewMapper.textNotice.setY( viewMapper.groupBlur.getY( ) + viewMapper.groupBlur.getHeight( ) - viewMapper.textNotice.getHeight( ) );
+
+        PLog.e( "onGlobalLayout : " + viewMapper.textNotice.getY( ) );
         viewMapper.groupBlur.setY( viewMapper.groupBlur.getY( ) + viewMapper.groupBlur.getHeight( ) );
         viewMapper.groupBlur.getLayoutParams( ).height = viewMapper.groupBlur.getLayoutParams( ).height * 2;
         viewMapper.groupBlur.requestLayout( );

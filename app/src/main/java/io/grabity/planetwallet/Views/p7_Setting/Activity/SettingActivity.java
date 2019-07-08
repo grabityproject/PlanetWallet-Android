@@ -62,7 +62,8 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         } else {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             planet = PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) );
-            viewMapper.textName.setText( localized( R.string.setting_planet_main_title, planet.getName( ) ) );
+//            viewMapper.textName.setText( localized( R.string.setting_planet_main_title, planet.getName( ) ) );
+            viewMapper.textName.setText( localized( R.string.setting_planet_main_title, Utils.planetNameForm( planet.getName( ) ) ) );
             viewMapper.planetView.setData( planet.getAddress( ) );
         }
 

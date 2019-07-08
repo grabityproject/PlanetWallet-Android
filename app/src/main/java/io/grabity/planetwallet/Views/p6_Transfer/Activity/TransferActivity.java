@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,34 +11,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
+import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
-import io.grabity.planetwallet.VO.MainItems.ETH;
-import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.VO.ReturnVO;
+import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Views.p6_Transfer.Adapter.TransferAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.CircleImageView;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class TransferActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener {
 
     private ViewMapper viewMapper;
-
-
-    //Dummy
     private ArrayList< Planet > allPlanets;
-    private ArrayList< Planet > filterPlanets;
 
     private TransferAdapter adapter;
+
+    private Planet planet;
+    private Transfer transfer;
+    private ERC20 erc20;
 
 
     @Override
@@ -45,7 +53,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_transfer );
         viewMapper = new ViewMapper( );
-
+        C.transferClass.transferActivity = this;
         viewInit( );
         setData( );
     }
@@ -65,46 +73,236 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
         viewMapper.etSearch.addTextChangedListener( this );
 
-        viewMapper.imageIconBackground.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
-
         searchViewThemeSet( );
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
-
         if ( getSerialize( C.bundleKey.PLANET ) == null ) {
             finish( );
         } else {
 
-            Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
 
             if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
                 // BTC Transfer
+                toolBarSetTitle( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), localized( R.string.transfer_toolbar_title ) ) );
+
 
             } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
 
                 if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                    ERC20 erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                    toolBarSetTitle( String.format( "%s " + erc20.getName( ), localized( R.string.transfer_toolbar_title ) ) );
                     // ERC Transfer
 
                 } else {
+
+                    toolBarSetTitle( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), localized( R.string.transfer_toolbar_title ) ) );
                     // ETH Transfer
 
                 }
             }
 
+            if ( Utils.checkClipboard( this, planet.getCoinType( ) ) ) {
+                viewMapper.btnClip.setVisibility( View.VISIBLE );
+            }
+
         }
 
         allPlanets = new ArrayList<>( );
-        filterPlanets = new ArrayList<>( );
+    }
 
-        setDummy( );
+
+    @Override
+    public void onToolBarClick( Object tag, View view ) {
+        if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
+            super.onBackPressed( );
+        } else if ( Utils.equals( tag, C.tag.TOOLBAR_TRANSFER_QRCODE ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
+            requestPermissions( C.requestCode.QR_CODE, Manifest.permission.CAMERA );
+        }
+    }
+
+    @Override
+    protected void neverNotAllowed( int code, String permission ) {
+        super.neverNotAllowed( code, permission );
+        if ( Utils.equals( code, C.requestCode.QR_CODE ) ){
+            CustomToast.makeText( this, "설정에 가서 직접 권한을 풀어주세요." ).show( );
+        }
 
     }
 
-    void searchViewThemeSet( ) {
+    @Override
+    protected void permissionsAllowed( int code ) {
+        super.permissionsAllowed( code );
+        if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
+            setTransition( Transition.SLIDE_UP );
+            sendAction( C.requestCode.QR_CODE, ScanQRActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+        }
+    }
+
+    @Override
+    protected void permissionNotAllowed( int code, String permission ) {
+        super.permissionNotAllowed( code, permission );
+        if ( Utils.equals( code, C.requestCode.QR_CODE ) ){
+            CustomToast.makeText( this, "QR Scan을 사용하시려면 권한에 동의해주세요." ).show( );
+        }
+
+    }
+
+
+    @Override
+    public void onClick( View v ) {
+        super.onClick( v );
+        if ( v == viewMapper.btnClear ) {
+            viewMapper.etSearch.setText( "" );
+        } else if ( v == viewMapper.btnClip ) {
+            viewMapper.etSearch.setText( Utils.getClipboard( this ) );
+            viewMapper.btnClip.setVisibility( View.GONE );
+        } else if ( v == viewMapper.groupSearchAddress ) {
+            //주소검색
+            transfer = new Transfer( );
+            transfer.setToAddress( viewMapper.textAddress.getText( ).toString( ) );
+            transfer.setChoice( C.transferChoice.ADDRESS );
+
+            Bundle bundle = new Bundle( );
+            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+
+                bundle.putSerializable( C.bundleKey.PLANET, planet );
+
+            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+
+                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+
+                    bundle.putSerializable( C.bundleKey.PLANET, planet );
+                    bundle.putSerializable( C.bundleKey.ERC20, erc20 );
+
+                } else {
+
+                    bundle.putSerializable( C.bundleKey.PLANET, planet );
+
+                }
+            }
+            bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
+            setTransition( Transition.SLIDE_SIDE );
+            sendAction( TransferAmountActivity.class, bundle );
+        }
+    }
+
+    @Override
+    public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
+        //이름검색
+        transfer = new Transfer( );
+        transfer.setToAddress( allPlanets.get( position ).getAddress( ) );
+        transfer.setToName( allPlanets.get( position ).getName( ) );
+        transfer.setChoice( C.transferChoice.PLANET_NAME );
+
+        Bundle bundle = new Bundle( );
+        if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+
+            bundle.putSerializable( C.bundleKey.PLANET, planet );
+
+        } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+
+            if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+
+                bundle.putSerializable( C.bundleKey.PLANET, planet );
+                bundle.putSerializable( C.bundleKey.ERC20, erc20 );
+
+            } else {
+
+                bundle.putSerializable( C.bundleKey.PLANET, planet );
+
+            }
+        }
+        bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
+        setTransition( Transition.SLIDE_SIDE );
+        sendAction( TransferAmountActivity.class, bundle );
+
+
+    }
+
+    @Override
+    public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
+
+    }
+
+    @Override
+    public void onTextChanged( CharSequence s, int start, int before, int count ) {
+    }
+
+    @Override
+    public void afterTextChanged( Editable s ) {
+        updateSearchView( );
+        new Get( this ).action( Route.URL( "planet", "search", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, "{\"q\"=\"" + viewMapper.etSearch.getText( ).toString( ) + "\"}" );
+    }
+
+
+    @Override
+    public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
+        super.onReceive( error, requestCode, resultCode, statusCode, result );
+        ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+        if ( returnVO.isSuccess( ) ) {
+
+            allPlanets = ( ArrayList< Planet > ) returnVO.getResult( );
+            if ( allPlanets != null ) {
+                if ( allPlanets.size( ) == 0 ) { //이름검색시 없을경우
+
+                    //주소 정규식 체크(주소검색)
+                    if ( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ) {
+                        if ( BitCoinManager.getInstance( ).validateAddress( viewMapper.etSearch.getText( ).toString( ) ) ) {
+                            noSearchView( false );
+                            addressSearchView( true );
+                            clipView( );
+                            return;
+                        }
+
+                    } else if ( Utils.equals( CoinType.ETH.getCoinType( ), planet.getCoinType( ) ) ) {
+                        if ( EthereumManager.getInstance( ).validateAddress( viewMapper.etSearch.getText( ).toString( ) ) ) {
+                            noSearchView( false );
+                            addressSearchView( true );
+                            clipView( );
+                            return;
+                        }
+                    }
+
+                    // 검색결과 없음
+                    noSearchView( true );
+                    addressSearchView( false );
+                    clipView( );
+
+                } else {
+                    //이름검색
+                    noSearchView( false );
+                    addressSearchView( false );
+                    clipView( );
+                }
+
+            }
+
+            viewMapper.listView.setAdapter( new TransferAdapter( this, allPlanets ) );
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
+        super.onActivityResult( requestCode, resultCode, data );
+        if ( requestCode == C.requestCode.QR_CODE && resultCode == RESULT_OK ) {
+            if ( data == null ) return;
+            String address = data.getStringExtra( C.bundleKey.QRCODE );
+            viewMapper.etSearch.setText( address );
+        }
+    }
+
+    private void toolBarSetTitle( String title ) {
+        viewMapper.toolBar.setTitle( title );
+    }
+
+    private void searchViewThemeSet( ) {
         if ( getCurrentTheme( ) ) {
             viewMapper.etSearch.setTextColor( Color.parseColor( "#000000" ) );
             viewMapper.etSearch.setHintTextColor( Color.parseColor( "#aaaaaa" ) );
@@ -120,94 +318,35 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         viewMapper.imageNotSearch.setVisibility( viewMapper.etSearch.getText( ).length( ) == 0 ? View.VISIBLE : View.INVISIBLE );
         viewMapper.btnClear.setVisibility( viewMapper.etSearch.getText( ).length( ) == 0 ? View.GONE : View.VISIBLE );
         viewMapper.imageSearch.setVisibility( viewMapper.etSearch.getText( ).length( ) >= 1 ? View.VISIBLE : View.INVISIBLE );
-        viewMapper.groupSearchAddress.setVisibility( viewMapper.etSearch.getText( ).length( ) < 34 ? View.GONE : View.VISIBLE );
-
-
-        if ( viewMapper.etSearch.getText( ).length( ) == 0 ) {
-            filterPlanets.clear( );
-        }
-    }
-
-
-    @Override
-    public void onToolBarClick( Object tag, View view ) {
-        if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            Utils.hideKeyboard( this, getCurrentFocus( ) );
-            super.onBackPressed( );
-        } else if ( Utils.equals( tag, C.tag.TOOLBAR_TRANSFER_QRCODE ) ) {
-            Utils.hideKeyboard( this, getCurrentFocus( ) );
-            setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.QR_CODE, ScanQRActivity.class );
-        }
-    }
-
-    @Override
-    public void onClick( View v ) {
-        super.onClick( v );
-        if ( v == viewMapper.btnClear ) {
-            viewMapper.etSearch.setText( "" );
-            updateSearchView( );
-        } else if ( v == viewMapper.groupSearchAddress ) {
-            //Todo 임시
-            setTransition( Transition.SLIDE_SIDE );
-            sendAction( TransferAmountActivity.class, Utils.createStringBundle( "address", viewMapper.textAddress.getText( ).toString( ) ) );
-        }
-    }
-
-    @Override
-    public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        //Todo 임시
-        setTransition( Transition.SLIDE_SIDE );
-        sendAction( TransferAmountActivity.class, Utils.createStringBundle( "planet", filterPlanets.get( position ).getAddress( ) ) );
 
     }
 
-    @Override
-    public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
-
+    private void noSearchView( boolean b ) {
+        viewMapper.textNoItem.setVisibility( b && viewMapper.etSearch.getText( ).length( ) != 0 ? View.VISIBLE : View.GONE );
     }
 
-    @Override
-    public void onTextChanged( CharSequence s, int start, int before, int count ) {
-    }
+    private void addressSearchView( boolean b ) {
+        viewMapper.groupSearchAddress.setVisibility( b ? View.VISIBLE : View.GONE );
 
-    @Override
-    public void afterTextChanged( Editable s ) {
-        filterPlanets.clear( );
-        //Todo 임시 : 우선 주소자릿수만 비교해서 이름검색인지 주소검색인지 판별
-        if ( viewMapper.etSearch.getText( ).length( ) < 34 ) {
-            for ( int i = 0; i < allPlanets.size( ); i++ ) {
-                if ( allPlanets.get( i ).getName( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) ) ) {
-                    filterPlanets.add( allPlanets.get( i ) );
-                }
+        //Todo ERC20 image
+        if ( b ) {
+            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+                viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_bit_white );
+            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+                viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_eth_black : R.drawable.icon_transfer_eth_white );
             }
-
-            if ( filterPlanets.size( ) == 0 ) {
-                viewMapper.textNoItem.setVisibility( View.VISIBLE );
-            } else {
-                viewMapper.textNoItem.setVisibility( View.GONE );
-            }
-
-
-        } else {
+            viewMapper.imageIconBackground.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
             viewMapper.textAddress.setText( viewMapper.etSearch.getText( ).toString( ) );
-
+            Utils.addressForm( viewMapper.textAddress, viewMapper.textAddress.getText( ).toString( ) );
         }
-        adapter.notifyDataSetChanged( );
-        updateSearchView( );
 
     }
 
-
-    @Override
-    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
-        super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.QR_CODE && resultCode == RESULT_OK ) {
-            if ( data == null ) return;
-            String address = data.getStringExtra( C.bundleKey.QRCODE );
-            viewMapper.etSearch.setText( address );
-        }
+    private void clipView( ) {
+        viewMapper.btnClip.setVisibility( Utils.checkClipboard( this, planet.getCoinType( ) ) && viewMapper.etSearch.getText( ).length( ) == 0 ?
+                View.VISIBLE : View.GONE );
     }
+
 
     public class ViewMapper {
 
@@ -243,104 +382,5 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             btnClip = findViewById( R.id.btn_transfer_clip );
 
         }
-    }
-
-
-    void setDummy( ) {
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC.getCoinType( ) );
-            planet.setName( "Jacob Park" );
-            planet.setAddress( "n1XYu73xiYzzPeeXNRighWHVRHsNrCXPAF" );
-
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC.getCoinType( ) );
-            planet.setName( "choi" );
-            planet.setAddress( "3QSfDbpgf1sysw73Hm9CDBHoVe54MVujQ7" );
-
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC.getCoinType( ) );
-            planet.setName( "Park" );
-            planet.setAddress( "4QSfDbpgf1sysw72Am9CDBHoVe54MVujQ7" );
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.BTC.getCoinType( ) );
-            planet.setName( "JeongHyun" );
-            planet.setAddress( "1QSfDbpgf1sysw73Hm9CDBHoVe54MVujQ7" );
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.ETH.getCoinType( ) );
-            planet.setName( "JeongHyun" );
-            planet.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-            allPlanets.add( planet );
-
-            ArrayList< MainItem > items = new ArrayList<>( );
-            {
-                ETH item = new ETH( );
-                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-                item.setBalance( "12.0" );
-                item.setName( "ETH" );
-                item.setPrice( "3600$" );
-                items.add( item );
-            }
-
-            {
-                ERC20 item = new ERC20( );
-                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-                item.setBalance( "244500" );
-                item.setName( "GBT" );
-                item.setPrice( "0$" );
-                item.setIconRes( R.drawable.icon_gbt );
-                items.add( item );
-            }
-
-            {
-                ERC20 item = new ERC20( );
-                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-                item.setBalance( "50.0" );
-                item.setName( "iOTA" );
-                item.setPrice( "0$" );
-                item.setIconRes( R.drawable.icon_iota );
-                items.add( item );
-            }
-
-            {
-                ERC20 item = new ERC20( );
-                item.setAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-                item.setBalance( "0.0" );
-                item.setName( "OMG" );
-                item.setPrice( "0$" );
-                item.setIconRes( R.drawable.icon_omg );
-                items.add( item );
-            }
-            planet.setItems( items );
-            allPlanets.add( planet );
-        }
-
-        {
-            Planet planet = new Planet( );
-            planet.setCoinType( CoinType.ETH.getCoinType( ) );
-            planet.setName( "JeongHyun" );
-            planet.setAddress( "0x9f1c94659d2c00b134a9ba418aa182f14bf72e56" );
-            allPlanets.add( planet );
-        }
-
-        adapter = new TransferAdapter( this, filterPlanets );
-        viewMapper.listView.setAdapter( adapter );
     }
 }

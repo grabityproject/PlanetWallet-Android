@@ -31,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:inputType="textPassword"
-                android:letterSpacing="0.4"
                 android:paddingStart="14dp"
+                android:paddingEnd="54dp"
                 app:defaultTheme="Dark" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView

@@ -73,7 +73,6 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
         if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_OK ) {
             Toast.makeText( this, "PinCode Change Success", Toast.LENGTH_SHORT ).show( );
         } else if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_CANCELED ) {
-            Toast.makeText( this, "PinCode Change Cancel", Toast.LENGTH_SHORT ).show( );
         }
     }
 

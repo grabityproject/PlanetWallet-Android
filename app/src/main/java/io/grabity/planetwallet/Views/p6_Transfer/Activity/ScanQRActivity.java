@@ -1,12 +1,16 @@
 package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,13 +19,16 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Widgets.BarcodeReaderView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, BarcodeReaderView.OnBarcodeDetectListener {
 
     private ViewMapper viewMapper;
+    private Planet planet;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -57,6 +64,28 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     }
 
     @Override
+    protected void onResume( ) {
+        super.onResume( );
+        requestPermissions( C.requestCode.QR_CODE, Manifest.permission.CAMERA );
+    }
+
+    @Override
+    protected void neverNotAllowed( int code, String permission ) {
+        super.neverNotAllowed( code, permission );
+        if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
+            super.onBackPressed( );
+        }
+    }
+
+    @Override
+    protected void permissionNotAllowed( int code, String permission ) {
+        super.permissionNotAllowed( code, permission );
+        if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
+            super.onBackPressed( );
+        }
+    }
+
+    @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
@@ -66,22 +95,36 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     @Override
     protected void setData( ) {
         super.setData( );
+        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+            finish( );
+        } else {
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+        }
     }
 
     @Override
     public void onBarcodeDetect( String contents ) {
-        //Todo BTC,ETH 정규식 적용
-//        Pattern p = Pattern.compile( "0x[0-9a-fA-F]{40}$" );
-//        Matcher m = p.matcher( contents );
-//        String address;
-//        if ( m.find( ) ) {
-//            address = m.group( 0 );
-//            PLog.e( "adderss : " + address );
-//        }
+        String address = null;
+        if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+            Pattern p = Pattern.compile( "0x[0-9a-fA-F]{40}$" );
+            Matcher m = p.matcher( contents );
+            if ( m.find( ) ) {
+                address = m.group( 0 );
+                PLog.e( "ETH address : " + address );
+            }
+        } else if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+            Pattern p = Pattern.compile( "1[0-9a-fA-F]{33}$" );
+            Matcher m = p.matcher( contents );
 
-        setResult( RESULT_OK, new Intent( ).putExtra( C.bundleKey.QRCODE, contents ) );
+            if ( m.find( ) ) {
+                address = m.group( 0 );
+                PLog.e( "BTC address : " + address );
+            }
+        }
+
+        if ( address == null ) return;
+        setResult( RESULT_OK, new Intent( ).putExtra( C.bundleKey.QRCODE, address ) );
         runOnUiThread( ScanQRActivity.super::onBackPressed );
-
 
     }
 

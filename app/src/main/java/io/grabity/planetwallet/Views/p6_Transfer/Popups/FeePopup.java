@@ -1,22 +1,27 @@
-package io.grabity.planetwallet.Widgets.ListPopupView;
+package io.grabity.planetwallet.Views.p6_Transfer.Popups;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 
-public class FeePopup extends AbsSlideUpView {
+public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
+
+    //Todo price,limit 초기화시 예외처리 추후작업
 
     private ViewMapper viewMapper;
     private ArrayList< FontTextView > feeButtons;
@@ -26,6 +31,14 @@ public class FeePopup extends AbsSlideUpView {
     private StringBuffer limitBuffer;
 
     private OnFeePopupSaveClickListener onFeePopupSaveClickListener;
+
+    private float contentHeight = -1.0f;
+    private float defaultTop = -1.0f;
+    private float defaultY = -1.0f;
+    private boolean isMove = false;
+
+    private String fee;
+    private String coinType;
 
 
     public FeePopup( Context context ) {
@@ -46,9 +59,15 @@ public class FeePopup extends AbsSlideUpView {
     @Override
     public void onCreateView( ) {
 
+        contentHeight = Utils.dpToPx( getContext( ), 580 );
+        defaultTop = getScreenHeight( getContext( ) ) - contentHeight - getActivity( ).getResources( ).getDimensionPixelSize( getActivity( ).getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
+
+        getBackground( ).setBackgroundColor( Color.TRANSPARENT );
+        getContentView( ).setOnTouchListener( this );
+
+
         viewMapper = new ViewMapper( );
 
-        viewMapper.groupFeePopup.setOnClickListener( this );
 
         viewMapper.groupGasPrice.setOnClickListener( this );
         viewMapper.groupGasLimit.setOnClickListener( this );
@@ -80,15 +99,62 @@ public class FeePopup extends AbsSlideUpView {
 
         setFocusDataSet( price, viewMapper.textGasPrice );
         setFocusDataSet( limit, viewMapper.textGasLimit );
+
+        viewMapper.textGasFee.setText( getFee( ) );
+        viewMapper.textCoinType.setText( getCoinType( ) );
+    }
+
+    @Override
+    public boolean onTouch( View v, MotionEvent event ) {
+        if ( !isMove ) {
+            if ( event.getAction( ) == MotionEvent.ACTION_DOWN ) {
+
+                defaultY = event.getRawY( );
+
+            } else if ( event.getAction( ) == MotionEvent.ACTION_MOVE ) {
+                if ( ( event.getRawY( ) - defaultY ) >= 0 ) {
+                    viewMapper.groupFeePopup.setTop( ( int ) ( event.getRawY( ) + defaultTop - defaultY ) );
+                }
+            } else if ( event.getAction( ) == MotionEvent.ACTION_UP || event.getAction( ) == MotionEvent.ACTION_CANCEL ) {
+                if ( contentHeight * 1 / 4 < ( event.getRawY( ) - defaultY ) ) {
+                    getActivity( ).onBackPressed( );
+                } else {
+                    ObjectAnimator animator = ObjectAnimator.ofInt( viewMapper.groupFeePopup, "top", ( int ) defaultTop );
+                    animator.setDuration( 200 );
+                    animator.addListener( new Animator.AnimatorListener( ) {
+                        @Override
+                        public void onAnimationStart( Animator animation ) {
+                            isMove = true;
+                        }
+
+                        @Override
+                        public void onAnimationEnd( Animator animation ) {
+                            isMove = false;
+                        }
+
+                        @Override
+                        public void onAnimationCancel( Animator animation ) {
+                            isMove = false;
+                        }
+
+                        @Override
+                        public void onAnimationRepeat( Animator animation ) {
+
+                        }
+                    } );
+                    animator.start( );
+                }
+            }
+
+        }
+        return true;
     }
 
     @Override
     public void onClick( View v ) {
         super.onClick( v );
-        if ( v == viewMapper.groupFeePopup ) {
-
-        } else if ( v == viewMapper.btnHeader ) {
-            dismiss( );
+        if ( v == viewMapper.btnHeader ) {
+            getActivity( ).onBackPressed( );
         } else if ( v == viewMapper.groupGasPrice ) {
             setFocusViewSetting( viewMapper.groupGasPrice, viewMapper.textGasPrice, viewMapper.groupGasLimit, viewMapper.textGasLimit );
             setFocusDataSet( price, viewMapper.textGasPrice );
@@ -108,17 +174,41 @@ public class FeePopup extends AbsSlideUpView {
                 }
             }
         } else if ( v == viewMapper.btnCancel ) {
-            dismiss( );
+            getActivity( ).onBackPressed( );
         } else if ( v == viewMapper.btnSave ) {
-            if ( onFeePopupSaveClickListener != null ) {
-                onFeePopupSaveClickListener.onFeePopupSaveClick( viewMapper.textGasFee.getText( ).toString( ) );
+            //gas limit, price check
+            if ( viewMapper.textGasLimit.getText( ).length( ) == 0 || viewMapper.textGasPrice.getText( ).length( ) == 0 ) {
+                Toast.makeText( getActivity( ), "Gas Price OR Gas Limit Not Spaces.", Toast.LENGTH_SHORT ).show( );
+            } else {
+                if ( Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 ) {
+                    Toast.makeText( getActivity( ), "Gas Limit is at least 21,000", Toast.LENGTH_SHORT ).show( );
+                    viewMapper.textGasLimit.setText( "21000" );
+                    setFocusDataSet( limit, viewMapper.textGasLimit );
+                    setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
+                    return;
+                } else if ( Integer.valueOf( viewMapper.textGasPrice.getText( ).toString( ) ) < 1 ) {
+                    Toast.makeText( getActivity( ), "Gas Price is at least 1", Toast.LENGTH_SHORT ).show( );
+                    viewMapper.textGasPrice.setText( "1" );
+                    setFocusDataSet( price, viewMapper.textGasPrice );
+                    setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
+                    return;
+                }
+                if ( onFeePopupSaveClickListener != null ) {
+                    onFeePopupSaveClickListener.onFeePopupSaveClick( viewMapper.textGasFee.getText( ).toString( ) );
+                }
             }
+
         } else {
-            if ( v instanceof FontTextView ){
+            if ( v instanceof FontTextView ) {
                 if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasPrice ) {
+
+                    //Todo 자릿수 제한 2
+                    if ( price.size() >= 2 ) return;
                     price.add( ( ( FontTextView ) v ).getText( ).toString( ) );
                     setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
                 } else if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasLimit ) {
+                    //Todo limit 자릿수 제한 6
+                    if ( limit.size() >= 6 ) return;
                     limit.add( ( ( FontTextView ) v ).getText( ).toString( ) );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                 }
@@ -133,7 +223,7 @@ public class FeePopup extends AbsSlideUpView {
      * @param gv1 포커스해제그룹뷰
      * @param t1  포커스해제텍스트뷰
      */
-    void setFocusViewSetting( RoundRelativeLayout gv, TextView t, RoundRelativeLayout gv1, TextView t1 ) {
+    private void setFocusViewSetting( RoundRelativeLayout gv, TextView t, RoundRelativeLayout gv1, TextView t1 ) {
         gv.setBorder_color_normal( Color.parseColor( "#000000" ) );
         gv1.setBorder_color_normal( Color.parseColor( "#EDEDED" ) );
 
@@ -145,28 +235,31 @@ public class FeePopup extends AbsSlideUpView {
         gv1.setFocusableInTouchMode( false );
     }
 
-    void setFocusDataSet( ArrayList< String > list, TextView v ) {
+    private void setFocusDataSet( ArrayList< String > list, TextView v ) {
         list.clear( );
         for ( int i = 0; i < v.getText( ).length( ); i++ ) {
             list.add( String.valueOf( v.getText( ).charAt( i ) ) );
         }
     }
 
-    void setPriceORLimit( StringBuffer b, ArrayList< String > list, TextView v ) {
+    private void setPriceORLimit( StringBuffer b, ArrayList< String > list, TextView v ) {
         b.setLength( 0 );
         for ( int i = 0; i < list.size( ); i++ ) {
             b.append( list.get( i ) );
         }
         v.setText( b.toString( ) );
 
-        setFee( );
+
+        feeCalculation( );
     }
 
-    void setFee( ) {
+    private void feeCalculation( ) {
         if ( viewMapper.textGasLimit.getText( ).length( ) != 0 && viewMapper.textGasPrice.getText( ).length( ) != 0 ) {
             BigDecimal price = new BigDecimal( viewMapper.textGasPrice.getText( ).toString( ) ).movePointLeft( 9 );
             BigDecimal limit = new BigDecimal( viewMapper.textGasLimit.getText( ).toString( ) );
             viewMapper.textGasFee.setText( String.valueOf( limit.multiply( price ).stripTrailingZeros( ) ) );
+        } else {
+            viewMapper.textGasFee.setText( "0.0" );
         }
     }
 
@@ -175,8 +268,32 @@ public class FeePopup extends AbsSlideUpView {
         return this;
     }
 
+    public FeePopup setFee( String fee, String coinType ) {
+        this.fee = fee;
+        this.coinType = coinType;
+        return this;
+    }
+
     public interface OnFeePopupSaveClickListener {
         void onFeePopupSaveClick( String fee );
+    }
+
+    public String getFee( ) {
+        if ( fee == null ) return "0";
+        return fee;
+    }
+
+    public void setFee( String fee ) {
+        this.fee = fee;
+    }
+
+    public String getCoinType( ) {
+        if ( coinType == null ) return "ETH";
+        return coinType;
+    }
+
+    public void setCoinType( String coinType ) {
+        this.coinType = coinType;
     }
 
     class ViewMapper {

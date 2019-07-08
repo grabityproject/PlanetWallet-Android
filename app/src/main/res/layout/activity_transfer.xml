@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarHeight"
         app:defaultTheme="Dark"
-        app:toolbarTitle="Transfer"
+        app:toolbarTitle="@string/transfer_toolbar_title"
         app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"
         app:blackThemeRightSrc="@drawable/image_toolbar_transfer_gray"
@@ -84,19 +84,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <io.grabity.planetwallet.Widgets.UnderlineTextView
+    <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/btn_transfer_clip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:textColor="#FF0050"
+        app:themeTextColor="#FF0050"
         android:text="@string/transfer_clip_board_title"
         android:layout_below="@id/group_transfer_search"
         android:layout_centerHorizontal="true"
-        android:paddingTop="30dp"
-        app:underlineWidth="1dp"
-        app:underlineColor="#FF0050"
-        android:visibility="gone"/>
+        android:layout_marginTop="30dp"
+        android:visibility="gone"
+        app:underLine="Line"/>
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_transfer_noitem"
@@ -163,7 +163,7 @@
             android:textColor="#FFF"
             android:lineSpacingExtra="4dp"
             app:typefaceStyle="medium"
-            app:themeTextColor="#000"/>
+            app:themeTextColor="#000" />
 
     </RelativeLayout>
 

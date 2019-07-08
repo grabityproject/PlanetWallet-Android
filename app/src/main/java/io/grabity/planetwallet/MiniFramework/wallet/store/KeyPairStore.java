@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.VO.KeyPair;
 import io.grabity.planetwallet.VO.Planet;
 
@@ -61,6 +63,45 @@ public class KeyPairStore implements HDKeyPairStore {
         return keyId;
     }
 
+    /**
+     * index 0 : privateKey
+     * index 1 : publicKey
+     * index 2 : chainCode
+     * index 3 : mnemonic
+     */
+    public void changePWDBKeyPairs( char[] beforePinCode, char[] changePinCode ) {
+        ArrayList< KeyPair > keyPairs = PWDBManager.getInstance( ).select( KeyPair.class );
+
+        for ( int i = 0; i < keyPairs.size( ); i++ ) {
+
+            byte[] privateKeyPlain = storageCrypter.doubleDecrypt( bytesFromBufData( hexStringToByteArray( keyPairs.get( i ).getValue( ) ), 0 ), beforePinCode );
+            byte[] publicKeyPlain = storageCrypter.singleDecrypt( bytesFromBufData( hexStringToByteArray( keyPairs.get( i ).getValue( ) ), 1 ) );
+            byte[] chainCodePlain = storageCrypter.singleDecrypt( bytesFromBufData( hexStringToByteArray( keyPairs.get( i ).getValue( ) ), 2 ) );
+            byte[] mnemonicPlain = bytesFromBufData( hexStringToByteArray( keyPairs.get( i ).getValue( ) ), 3 ) == null ? null :
+                    storageCrypter.doubleDecrypt( bytesFromBufData( hexStringToByteArray( keyPairs.get( i ).getValue( ) ), 3 ), beforePinCode );
+
+            byte[] privateKeyDec = storageCrypter.doubleEncrypt( privateKeyPlain, changePinCode );
+            byte[] publicKeyDec = storageCrypter.singleEncrypt( publicKeyPlain );
+            byte[] chainCodeDec = storageCrypter.singleEncrypt( chainCodePlain );
+            byte[] mnemonicDec = mnemonicPlain == null ? null : storageCrypter.doubleEncrypt( mnemonicPlain, changePinCode );
+
+
+            String value = mnemonicDec == null ? bufData( privateKeyDec, publicKeyDec, chainCodeDec ) : bufData( privateKeyDec, publicKeyDec, chainCodeDec, mnemonicDec );
+
+            keyPairs.get( i ).setValue( value );
+            PWDBManager.getInstance( ).updateData( keyPairs.get( i ), "keyId = '" + keyPairs.get( i ).getKeyId( ) + "'" );
+
+        }
+
+        if ( PWDBManager.getInstance( ) != null ) {
+            this.keyPairMap = new HashMap<>( );
+            ArrayList< KeyPair > keyPairs2 = PWDBManager.getInstance( ).select( KeyPair.class );
+            for ( KeyPair keyPair : keyPairs2 ) {
+                this.keyPairMap.put( keyPair.getKeyId( ), keyPair );
+            }
+        }
+    }
+
 
     public String saveKeyPair( HDKeyPair keyPair, String phrase, char[] pinCode ) {
         Log.e( getClass( ).getSimpleName( ), "saveKeyPair with phrase" );
@@ -74,12 +115,23 @@ public class KeyPairStore implements HDKeyPairStore {
         insertData.setKeyId( keyId );
         insertData.setValue( bufData( privateKey, publicKey, chainCode, phraseBytes ) );
         insertData.setMaster( "-2" );
-        Log.e( getClass( ).getSimpleName( ), "saveKeyPair with phrase " + keyId + ", " + PWDBManager.getInstance( ).insertData( insertData ) );
+//        Log.e( getClass( ).getSimpleName( ), "saveKeyPair with phrase " + keyId + ", " + PWDBManager.getInstance( ).insertData( insertData ) );
+
         if ( !keyPairMap.containsKey( keyId ) ) {
+            PWDBManager.getInstance( ).insertData( insertData );
             keyPairMap.put( keyId, insertData );
-        } else {
-            keyPairMap.replace( keyId, insertData );
         }
+
+//        if ( keyPairMap.get( keyId ) == null ) {
+//            PLog.e( "keyPairMap.get( keyId ) == null" );
+//            PWDBManager.getInstance( ).insertData( insertData );
+//            keyPairMap.put( keyId, insertData );
+//        }
+//        if ( !keyPairMap.containsKey( keyId ) ) {
+//            keyPairMap.put( keyId, insertData );
+//        } else {
+//            keyPairMap.replace( keyId, insertData );
+//        }
         return keyId;
     }
 
@@ -146,11 +198,27 @@ public class KeyPairStore implements HDKeyPairStore {
         return this.genHDKeyPair( keyId, ( byte[] ) null );
     }
 
+    //add
+    public void generateKeyPairDelete( String keyId ) {
+        if ( keyPairMap.get( keyId ) != null ) {
+            this.keyPairMap.remove( keyId );
+
+            KeyPair keyPair = new KeyPair( );
+            keyPair.setKeyId( keyId );
+            PWDBManager.getInstance( ).deleteData( keyPair );
+        }
+    }
+
     public void deleteKeyPair( String keyId ) {
-        this.keyPairMap.remove( keyId );
-        KeyPair keyPair = new KeyPair( );
-        keyPair.setKeyId( keyId );
-        PWDBManager.getInstance( ).deleteData( keyPair );
+
+        if ( keyPairMap.get( keyId ) != null ) {
+            if ( Integer.parseInt( keyPairMap.get( keyId ).getMaster( ) ) < 0 ) {
+                this.keyPairMap.remove( keyId );
+            }
+            KeyPair keyPair = new KeyPair( );
+            keyPair.setKeyId( keyId );
+            PWDBManager.getInstance( ).deleteData( keyPair, "keyId='" + keyId + "'" + " AND master < 0" );
+        }
     }
 
     public ArrayList< KeyPair > all( ) {
@@ -172,6 +240,7 @@ public class KeyPairStore implements HDKeyPairStore {
         }
         return null;
     }
+
 
     private byte[] bytesFromBufData( byte[] bufData, int index ) {
         int before = 0;

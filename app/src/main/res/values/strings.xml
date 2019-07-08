@@ -16,8 +16,8 @@
 
     <string name="wallet_import_toolbar_title">Import Planet</string>
 
-    <string name="main_blur_wallet_balance_title">Wallet Balance</string>
-    <string name="main_notice_title">Blah</string>
+    <string name="main_blur_wallet_balance_title">Balance</string>
+    <string name="main_notice_title">Your Planet Keep safe here</string>
     <string name="main_btn_bottom_copy_title">Copy</string>
     <string name="main_btn_bottom_transfer_title">Transfer</string>
 
@@ -38,6 +38,12 @@
     <string name="detail_planet_hide_planet_title">Hide Planet</string>
     <string name="detail_planet_backup_mnemonic_phrase_title">Backup Mnemonic Phrase</string>
     <string name="detail_planet_backup_privatekey_title">Backup Private Key</string>
+
+    <string name="mnemonic_import_fragment_waring_title">It is a mnemonic that already exists.</string>
+    <string name="mnemonic_import_fragment_not_match_title">It does not fit the mnemonic type.</string>
+
+    <string name="privatekey_import_fragment_waring_title">It is a privateKey that already exists.</string>
+    <string name="privatekey_import_fragment_not_match_title">The privateKey type does not match.</string>
 
 
     <string name="mnemonic_export_toolbar_title">Mnemonic Phrase</string>
@@ -73,6 +79,10 @@
     <string name="setting_version_title">Version</string>
 
     <string name="transfer_clip_board_title">Paste from Clipboard</string>
+    <string name="transfer_toolbar_title">Transfer</string>
+    <string name="transfer_confirm_reset_title">Reset</string>
+
+    <string name="transfer_amount_error_title">You don’t have enough amount to send</string>
 
     <string name="copy_to_clipboard">Copy To Clipboard</string>
 

@@ -9,13 +9,19 @@
         android:id="@+id/group_popup_fee_bottom"
         android:layout_width="match_parent"
         android:layout_height="580dp"
-        android:layout_alignParentBottom="true"
-        >
+        android:layout_alignParentBottom="true">
 
         <io.grabity.planetwallet.Widgets.ShadowView
             android:layout_width="match_parent"
             android:layout_height="40dp"
             app:direction="BOTTOM_TOP" />
+
+        <View
+            android:id="@+id/view_popup_fee_bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_alignParentBottom="true"
+            android:background="#FFF" />
 
         <io.grabity.planetwallet.Widgets.RoundRelativeLayout
             android:layout_width="match_parent"
@@ -115,7 +121,7 @@
                             android:id="@+id/text_popup_fee_bottom_gas_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="21"
+                            android:text="10"
                             android:textSize="14dp"
                             android:textColor="#000"
                             android:layout_centerVertical="true"
@@ -167,7 +173,7 @@
                         android:id="@+id/text_poup_fee_bottom_fee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.0003"
+                        android:text="0.00021"
                         android:textSize="14dp"
                         android:textColor="#aaaaaa"
                         app:themeTextColor="#aaaaaa"/>
@@ -237,7 +243,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_below="@id/group_popup_fee_main"
-                android:layout_above="@id/view_popup_fee_bottom_view">
+                android:paddingBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -392,12 +398,7 @@
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/view_popup_fee_bottom_view"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_alignParentBottom="true"
-                android:background="#FFF" />
+
 
 
         </io.grabity.planetwallet.Widgets.RoundRelativeLayout>

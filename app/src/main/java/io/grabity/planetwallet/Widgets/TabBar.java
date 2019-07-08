@@ -432,6 +432,32 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
         void onTabBarItemClick( ButtonItem item );
     }
 
+//    @Override
+//    public void setTheme( boolean theme ) {
+//        if ( !theme ) { //Dark
+//            tabBarTheme = false;
+//            setIndicatorColor( Color.argb( 255, 255, 255, 255 ) );
+//
+//            if ( getItems( ) != null ) {
+//                for ( int i = 0; i < getItems( ).size( ); i++ ) {
+//                    ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( "#5C5964" ) );
+//                }
+//                ( ( TextView ) getItems( ).get( 0 ).getView( ) ).setTextColor( Color.WHITE );
+//            }
+//        } else { // white
+//            tabBarTheme = true;
+//            setIndicatorColor( Color.argb( 255, 0, 0, 0 ) );
+//
+//            if ( getItems( ) != null ) {
+//                for ( int i = 0; i < getItems( ).size( ); i++ ) {
+//                    ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( "#aaaaaa" ) );
+//                }
+//                ( ( TextView ) getItems( ).get( 0 ).getView( ) ).setTextColor( Color.BLACK );
+//            }
+//        }
+//
+//    }
+
     @Override
     public void setTheme( boolean theme ) {
         if ( !theme ) { //Dark
@@ -442,7 +468,7 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
                 for ( int i = 0; i < getItems( ).size( ); i++ ) {
                     ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( "#5C5964" ) );
                 }
-                ( ( TextView ) getItems( ).get( 0 ).getView( ) ).setTextColor( Color.WHITE );
+                ( ( TextView ) getItems( ).get( currentPosition ).getView( ) ).setTextColor( Color.WHITE );
             }
         } else { // white
             tabBarTheme = true;
@@ -452,10 +478,9 @@ public class TabBar extends HorizontalScrollView implements View.OnClickListener
                 for ( int i = 0; i < getItems( ).size( ); i++ ) {
                     ( ( TextView ) getItems( ).get( i ).getView( ) ).setTextColor( Color.parseColor( "#aaaaaa" ) );
                 }
-                ( ( TextView ) getItems( ).get( 0 ).getView( ) ).setTextColor( Color.BLACK );
+                ( ( TextView ) getItems( ).get( currentPosition ).getView( ) ).setTextColor( Color.BLACK );
             }
         }
-
 
     }
 

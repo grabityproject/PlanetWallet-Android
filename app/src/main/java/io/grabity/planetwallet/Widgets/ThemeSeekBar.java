@@ -16,9 +16,7 @@ public class ThemeSeekBar extends AppCompatSeekBar implements Themeable {
     }
 
     public ThemeSeekBar( Context context, AttributeSet attrs ) {
-        this( context, attrs, 0 );
-
-
+        this( context, attrs, android.R.attr.seekBarStyle );
     }
 
     public ThemeSeekBar( Context context, AttributeSet attrs, int defStyleAttr ) {

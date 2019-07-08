@@ -68,6 +68,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     protected void onResume( ) {
         super.onResume( );
         viewMapper.tabBar.setTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
+
     }
 
     @Override
@@ -80,6 +81,8 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
         adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
         viewMapper.viewPager.setAdapter( adapter );
+
+
     }
 
     @Override

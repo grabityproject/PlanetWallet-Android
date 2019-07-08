@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -13,14 +14,17 @@ import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetGenerateActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
+import io.grabity.planetwallet.Views.p6_Transfer.Activity.ScanQRActivity;
 import io.grabity.planetwallet.Widgets.DotView;
 import io.grabity.planetwallet.Widgets.FontTextView;
+import io.grabity.planetwallet.Widgets.ToolBar;
 
 
 public class PinCodeCertificationActivity extends PlanetWalletActivity {
@@ -45,6 +49,24 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
     @Override
     protected void viewInit( ) {
         super.viewInit( );
+
+        PLog.e( "Screen Size : " + Utils.getScrennHeight( this ) );
+
+
+        if ( Utils.getScrennHeight( this ) <= 1920 ) {
+            viewMapper.passwordTitle.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
+                @Override
+                public void onGlobalLayout( ) {
+                    ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( PinCodeCertificationActivity.this, 48 ) );
+                    viewMapper.passwordTitle.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
+                    viewMapper.passwordTitle.setPadding( 0, 0, 0, 0 );
+
+                    viewMapper.toolBar.requestLayout( );
+                    viewMapper.passwordTitle.requestLayout( );
+                }
+            } );
+        }
+
         viewMapper.btnDeleteNumber.setOnClickListener( this );
         viewMapper.btnDeleteAlphabet.setOnClickListener( this );
 
@@ -112,8 +134,13 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
                             Bundle bundle = new Bundle( );
                             bundle.putCharArray( C.bundleKey.PINCODE, strKeyList.toCharArray( ) );
                             sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, bundle );
+                            return;
 
                         } else if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
+
+                            setResult( RESULT_OK );
+
+                        } else if ( getRequestCode( ) == C.requestCode.TRANSFER ) {
 
                             setResult( RESULT_OK );
 
@@ -206,6 +233,8 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
 
     public class ViewMapper {
 
+        ToolBar toolBar;
+
         ViewGroup inputPassword;
         ViewGroup inputNumber;
         ViewGroup inputAlphabet;
@@ -220,6 +249,8 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity {
         View decorationViewHeight;
 
         public ViewMapper( ) {
+
+            toolBar = findViewById( R.id.toolBar );
 
             inputPassword = findViewById( R.id.group_pincode_certification_inputpassword );
             inputNumber = findViewById( R.id.group_pincode_certification_inputnumber );

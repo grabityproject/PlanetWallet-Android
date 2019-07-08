@@ -31,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:inputType="textPassword"
-                android:letterSpacing="0.4"
-                android:paddingLeft="14dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="54dp"
                 app:defaultTheme="Dark" />
 
 
@@ -72,17 +72,20 @@
             android:textSize="14dp"
             app:themeTextColor="#aaaaaa" />
 
-
-        <io.grabity.planetwallet.Widgets.RoundEditText
-            android:textCursorDrawable="@null"
+        <io.grabity.planetwallet.Widgets.ActionEditText
             android:id="@+id/et_mnemonic_import_mnemonic"
+            android:textCursorDrawable="@null"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:background="@null"
             android:lineSpacingExtra="8dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
-            app:defaultTheme="Dark" />
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textSize="14dp"
+            android:gravity="center|left"
+            app:defaultTheme="Dark"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

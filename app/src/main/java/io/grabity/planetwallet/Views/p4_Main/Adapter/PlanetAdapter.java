@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
@@ -28,7 +29,8 @@ public class PlanetAdapter extends AdvanceArrayAdapter< Planet > {
     public void bindData( ViewMapper viewMapper, Planet item, int position ) {
         ( ( PlanetsItem ) viewMapper ).planetView.setData( item.getAddress( ) );
         ( ( PlanetsItem ) viewMapper ).textType.setText( String.format( "%s Universe", CoinType.of( item.getCoinType( ) ).name( ) ) );
-        ( ( PlanetsItem ) viewMapper ).textName.setText( item.getName( ) );
+//        ( ( PlanetsItem ) viewMapper ).textName.setText( item.getName( ) );
+        ( ( PlanetsItem ) viewMapper ).textName.setText( Utils.planetNameForm( item.getName( ) ) );
     }
 
 

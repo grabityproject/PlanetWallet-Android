@@ -8,7 +8,9 @@ import android.widget.EditText;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
@@ -43,9 +45,25 @@ public class PrivateKeyExportActivity extends PlanetWalletActivity implements To
         if ( getSerialize( C.bundleKey.PLANET ) == null ) {
             onBackPressed( );
         } else {
-
             Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-            String privateKey = planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+//            String privateKey = planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+
+            String privateKey = null;
+            if ( planet.getCoinType( ).equals( CoinType.ETH.getCoinType( ) ) ) {
+                privateKey = planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+            } else {
+                privateKey = planet.getPrivateKeyBase58Encode( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+//                privateKey = planet.getPrivateKeyBase58Encodes( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+
+
+
+                PLog.e( "getKey_id : " + planet.getKeyId() );
+                PLog.e( "getSigna : " + planet.getSignature() );
+
+            }
+
+
+            PLog.e( "privateKey : " + privateKey );
             viewMapper.etPrivateKey.setHint( privateKey );
             viewMapper.groupPrivateKey.setBackground_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#F5F5F5" ) );
             viewMapper.groupPrivateKey.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );

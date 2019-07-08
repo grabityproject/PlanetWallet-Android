@@ -79,23 +79,34 @@
                         app:data="Hello Sydney!!" />
 
                     <io.grabity.planetwallet.Widgets.FontTextView
-                        android:id="@+id/text_main_blur_wallet_name_balance"
+                        android:id="@+id/text_main_blur_planet_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/planet_main_blur_planetview"
                         android:layout_toRightOf="@id/planet_main_blur_planetview"
                         android:paddingStart="10dp"
-                        android:text="@string/main_blur_wallet_balance_title"
+                        android:paddingEnd="4dp"
                         android:textColor="#5C5964"
+                        android:text="choi3950"
                         android:textSize="14dp"
                         app:themeTextColor="#aaaaaa" />
+
+                    <io.grabity.planetwallet.Widgets.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="#5c5964"
+                        app:themeTextColor="#aaaaaa"
+                        android:text="@string/main_blur_wallet_balance_title"
+                        android:layout_alignTop="@id/text_main_blur_planet_name"
+                        android:layout_toRightOf="@id/text_main_blur_planet_name" />
 
                     <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_blur_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/text_main_blur_wallet_name_balance"
-                        android:layout_alignLeft="@id/text_main_blur_wallet_name_balance"
+                        android:layout_below="@id/text_main_blur_planet_name"
+                        android:layout_alignLeft="@id/text_main_blur_planet_name"
                         android:paddingStart="10dp"
                         android:text="1.2345"
                         android:textColor="#FFF"
@@ -143,7 +154,8 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:textSize="14dp"
-                android:visibility="gone" />
+                android:text="@string/main_notice_title"
+                android:visibility="visible" />
 
 
             <io.grabity.planetwallet.Widgets.ToolBar
@@ -280,13 +292,13 @@
                         android:id="@+id/text_main_bottom_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:text="PlanetName"
                         android:gravity="center"
                         android:paddingTop="40dp"
                         android:paddingBottom="10dp"
+                        android:text="PlanetName"
                         android:textColor="#1E1E28"
-                        app:typefaceStyle="semibold"/>
+                        android:textSize="18dp"
+                        app:typefaceStyle="semibold" />
 
                     <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_bottom_address"

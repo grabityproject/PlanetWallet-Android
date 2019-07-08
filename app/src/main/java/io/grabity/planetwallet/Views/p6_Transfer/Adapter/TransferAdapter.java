@@ -27,7 +27,8 @@ public class TransferAdapter extends AdvanceArrayAdapter< Planet > {
     public void bindData( ViewMapper viewMapper, Planet item, int position ) {
 
         ( ( NameSearchItem ) viewMapper ).planet.setData( item.getAddress( ) );
-        ( ( NameSearchItem ) viewMapper ).textName.setText( item.getName( ) );
+//        ( ( NameSearchItem ) viewMapper ).textName.setText( item.getName( ) );
+        ( ( NameSearchItem ) viewMapper ).textName.setText( Utils.planetNameForm( item.getName( ) ) );
         ( ( NameSearchItem ) viewMapper ).textNameAddress.setText( Utils.addressReduction( item.getAddress( ) ) );
 
     }

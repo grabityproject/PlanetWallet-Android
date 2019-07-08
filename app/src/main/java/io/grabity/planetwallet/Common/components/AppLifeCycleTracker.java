@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import java.util.Arrays;
+
 import io.grabity.planetwallet.Common.commonset.C;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
+import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
 
 public class AppLifeCycleTracker implements Application.ActivityLifecycleCallbacks {
 
@@ -23,8 +27,12 @@ public class AppLifeCycleTracker implements Application.ActivityLifecycleCallbac
 
     @Override
     public void onActivityStarted( Activity activity ) {
+        // 최초 앱 설치시 getPINCODE Log    PINCODE : []
         if ( numStarted == 0 ) {
             if ( planetWalletApplication.getPINCODE( ) == null ) {
+                //add
+//                if ( PinCodeRegistrationActivity.class.equals( activity.getClass( ) ) ) return;
+
                 if ( !PinCodeCertificationActivity.class.equals( activity.getClass( ) ) )
                     ( ( PlanetWalletActivity ) activity ).sendAction( C.requestCode.PINCODE_IS_NULL, PinCodeCertificationActivity.class );
             }
@@ -48,6 +56,9 @@ public class AppLifeCycleTracker implements Application.ActivityLifecycleCallbac
         numStarted--;
         if ( numStarted == 0 ) {
             if ( planetWalletApplication != null ) {
+                //add
+                if ( PinCodeRegistrationActivity.class.equals( activity.getClass( ) ) ) return;
+
                 planetWalletApplication.setPINCODE( null );
             }
         }

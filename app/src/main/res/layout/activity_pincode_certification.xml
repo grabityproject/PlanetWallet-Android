@@ -18,7 +18,7 @@
         android:layout_below="@id/toolBar"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:paddingTop="42dp"
+        android:paddingTop="38dp"
         android:text="@string/pincode_certification_title"
         android:textColor="#FFF"
         android:textSize="28dp"
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/text_pincode_certification_specification"
-        android:padding="84dp">
+        android:padding="62dp">
 
         <LinearLayout
             android:id="@+id/group_pincode_certification_inputpassword"

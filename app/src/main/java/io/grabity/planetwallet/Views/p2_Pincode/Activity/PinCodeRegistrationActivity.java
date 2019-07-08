@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -13,12 +14,15 @@ import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.DotView;
 import io.grabity.planetwallet.Widgets.FontTextView;
+import io.grabity.planetwallet.Widgets.ToolBar;
 
 
 public class PinCodeRegistrationActivity extends PlanetWalletActivity {
@@ -46,6 +50,21 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
     @Override
     protected void viewInit( ) {
         super.viewInit( );
+
+        if ( Utils.getScrennHeight( this ) <= 1920 ) {
+            viewMapper.passwordTitle.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
+                @Override
+                public void onGlobalLayout( ) {
+                    ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( PinCodeRegistrationActivity.this, 48 ) );
+                    viewMapper.passwordTitle.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
+                    viewMapper.passwordTitle.setPadding( 0, 0, 0, 0 );
+
+                    viewMapper.toolBar.requestLayout( );
+                    viewMapper.passwordTitle.requestLayout( );
+                }
+            } );
+        }
+
         viewMapper.btnDeleteNumber.setOnClickListener( this );
         viewMapper.btnDeleteAlphabet.setOnClickListener( this );
 
@@ -122,10 +141,12 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
 
                             char[] beforePinCode = getIntent( ).getCharArrayExtra( C.bundleKey.PINCODE );
                             //Todo DataBase 전체 교체
-                            PLog.e( "beforePinCode : " + Arrays.toString( beforePinCode ) );
 
                             String value = Utils.sha256( strKeyList );
+                            KeyPairStore.getInstance( ).changePWDBKeyPairs( beforePinCode, checkKeyList.toCharArray( ) );
+
                             KeyValueStore.getInstance( ).setValue( C.pref.PASSWORD, value, checkKeyList.toCharArray( ) );
+                            getPlanetWalletApplication( ).setPINCODE( checkKeyList.toCharArray( ) );
 
                             setResult( RESULT_OK );
                             super.onBackPressed( );
@@ -134,6 +155,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
 
                             String value = Utils.sha256( strKeyList );
                             KeyValueStore.getInstance( ).setValue( C.pref.PASSWORD, value, checkKeyList.toCharArray( ) );
+                            getPlanetWalletApplication( ).setPINCODE( checkKeyList.toCharArray( ) );
 
                             setTransition( Transition.NO_ANIMATION );
                             sendAction( PinCodeCertificationActivity.class );
@@ -202,6 +224,8 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
 
     public class ViewMapper {
 
+        ToolBar toolBar;
+
         ViewGroup inputPassword;
         ViewGroup inputNumber;
         ViewGroup inputAlphabet;
@@ -216,6 +240,8 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity {
         View decorationViewHeight;
 
         public ViewMapper( ) {
+
+            toolBar = findViewById( R.id.toolBar );
 
             inputPassword = findViewById( R.id.group_pincode_registration_inputpassword );
             inputNumber = findViewById( R.id.group_pincode_registration_inputnumber );

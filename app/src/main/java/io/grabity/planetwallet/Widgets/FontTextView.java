@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 
@@ -19,6 +21,7 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView im
     private Integer defaultTextColor;
 
     private int fontStyle;
+
 
     public FontTextView( Context context ) {
         super( context );
@@ -43,7 +46,7 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView im
         if ( defaultTheme > 0 ) {
             setTheme( false );
         }
-        if ( defaultUnderLine > 0 ){
+        if ( defaultUnderLine > 0 ) {
             underLine( );
         }
         a.recycle( );
@@ -53,9 +56,9 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView im
     void underLine( ) {
         SpannableString s = new SpannableString( this.getText( ).toString( ) );
         s.setSpan( new UnderlineSpan( ), 0, s.length( ), 0 );
-
         this.setText( s );
     }
+
 
     public int getFontStyle( ) {
         return fontStyle;
@@ -64,7 +67,6 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView im
     public void setFontStyle( int fontStyle ) {
         this.fontStyle = fontStyle;
     }
-
     @Override
     public void setTheme( boolean theme ) {
         if ( themeTextColor != null ) {
