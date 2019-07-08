@@ -85,19 +85,18 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
             if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
                 // BTC Transfer
-                toolBarSetTitle( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), localized( R.string.transfer_toolbar_title ) ) );
-
+                viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
 
             } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
 
                 if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
                     erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                    toolBarSetTitle( String.format( "%s " + erc20.getName( ), localized( R.string.transfer_toolbar_title ) ) );
+                    viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, erc20.getName( ) ) );
                     // ERC Transfer
 
                 } else {
 
-                    toolBarSetTitle( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), localized( R.string.transfer_toolbar_title ) ) );
+                    viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
                     // ETH Transfer
 
                 }
@@ -127,7 +126,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void neverNotAllowed( int code, String permission ) {
         super.neverNotAllowed( code, permission );
-        if ( Utils.equals( code, C.requestCode.QR_CODE ) ){
+        if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
             CustomToast.makeText( this, localized( R.string.transfer_camera_permission_never_not_allowed_title ) ).show( );
         }
 
@@ -145,7 +144,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void permissionNotAllowed( int code, String permission ) {
         super.permissionNotAllowed( code, permission );
-        if ( Utils.equals( code, C.requestCode.QR_CODE ) ){
+        if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
             CustomToast.makeText( this, localized( R.string.transfer_camera_permission_not_allowed_title ) ).show( );
         }
 

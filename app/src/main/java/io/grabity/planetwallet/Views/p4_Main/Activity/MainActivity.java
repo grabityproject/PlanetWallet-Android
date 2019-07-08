@@ -168,7 +168,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 //            viewMapper.textBlurPlanetName.setText( selectedPlanet.getName( ) );
             viewMapper.textBlurPlanetName.setText( Utils.planetNameForm( selectedPlanet.getName( ) ) );
             viewMapper.textBlurCoinName.setText( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
+//            viewMapper.textBlurBalance.setText( localized( R.string.main_blur_balance, selectedPlanet.getBalance( ) ) );
             viewMapper.textBlurBalance.setText( selectedPlanet.getBalance( ) );
+
 
             setUpNotice( );
 

@@ -216,7 +216,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/image_setting_currency_arrow"
                     android:paddingEnd="12dp"
-                    android:text="@string/setting_currency_value_title"
+                    android:text="USD"
                     android:textColor="#AAAAAA"
                     android:textSize="14dp"
                     app:themeTextColor="#5c5964" />

@@ -45,7 +45,6 @@
                 android:id="@+id/et_rename_planet_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/rename_planet_name_title"
                 android:paddingLeft="16dp"
                 android:singleLine="true"
                 android:textCursorDrawable="@null"

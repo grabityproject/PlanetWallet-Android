@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PlanetWallet</string>
+
+
+    <string name="pincode_registration_verification_code_title">PIN 코드 입력</string>
+    <string name="pincode_registration_registration_code_title">PIN 코드 등록</string>
+    <string name="pincode_registration_code_incorrect_title">PIN 코드가 틀렸습니다.</string>
+    <string name="pincode_registration_change_pin_code_title">PIN 코드 변경</string>
+    <string name="pincode_registration_sub_title">숫자 4개 와 알파벳 조합입니다.</string>
+    <string name="pincode_registration_sub_title_error">PIN 코드를 확인해주세요.</string>
+
+    <string name="pincode_certification_verification_code_title">PIN 코드 입력</string>
+    <string name="pincode_certification_code_incorrect_title">PIN 코드가 틀렸습니다.</string>
+    <string name="pincode_certification_change_pin_code_title">PIN 코드 변경</string>
+    <string name="pincode_certification_sub_title">숫자 4개 와 알파벳 조합입니다.</string>
+    <string name="pincode_certification_sub_title_error">PIN 코드를 확인해주세요.</string>
+
+    <string name="planet_generate_name_not_blank_title">The name can not be blank.</string>
+
+    <string name="planet_name_name_not_blank_title">이름은 공백일 수 없습니다.</string>
+    <string name="planet_name_btn_title">플래닛 추가하기</string>
+
+    <string name="wallet_add_btn_add_title">플래닛 추가하기</string>
+    <string name="wallet_add_btn_import_title">플래닛 가져오기</string>
+
+    <string name="wallet_import_toolbar_title">플래닛 가져오기</string>
+    <string name="wallet_import_tabbar_mnemonic_title">니모닉 구문</string>
+    <string name="wallet_import_tabbar_privatekey_title">개인키</string>
+
+    <string name="mnemonic_import_enter_password_title">비밀번호 입력 (옵션)</string>
+    <string name="mnemonic_import_enter_mnemonic_phrase_title">니모닉 구문 입력</string>
+    <string name="mnemonic_import_correct_mnemonic_phrase_title">올바른 니모닉 구문을 입력해 주세요.</string>
+    <string name="mnemonic_import_exists_title">이미 존재하는 니모닉 구문입니다.</string>
+    <string name="mnemonic_import_not_match_title">니모닉 구문이 맞지 않습니다.</string>
+    <string name="mnemonic_import_btn_title">다음</string>
+
+    <string name="privatekey_import_enter_privateKey_title">개인키 입력</string>
+    <string name="privatekey_import_exists_title">이미 존재하는 개인키 입니다.</string>
+    <string name="privatekey_import_not_match_title">개인키의 형식이 맞지 않습니다.</string>
+    <string name="privatekey_import_btn_title">다음</string>
+
+    <string name="main_blur_balance_title">Balance</string>  <!-- 지원짐 !-->
+    <string name="main_notice_title">니모닉 문구가 백업 되지 않았습니다.</string>
+    <string name="main_btn_bottom_copy_title">주소 복사</string>
+    <string name="main_btn_bottom_transfer_title">전송</string>
+    <string name="main_copy_to_clipboard">복사 되었습니다.</string>
+    <string name="main_back_pressed_finish_title">뒤로가기를 한번 더 누르시면 앱이 종료됩니다.</string>
+    <string name="main_footer_manage_token">토큰 관리하기</string>
+    <string name="main_footer_no_btc_history">트랜잭션이 존재하지 않습니다. :)</string>
+
+    <string name="token_add_toolbar_title">토큰 관리하기</string>
+    <string name="token_add_tabbar_add_token_title">토큰 리스트</string>
+    <string name="token_add_tabbar_custom_token_title">커스텀 토큰</string>
+
+    <string name="token_list_search_title">검색</string>
+    <string name="token_list_not_search_title">검색 결과가 없습니다. 검색어를 확인해 주세요.</string>
+
+    <string name="custom_token_contract_address_title">컨트랙트 주소</string>
+    <string name="custom_token_token_symbol_title">심볼</string>
+    <string name="custom_token_decimals_title">자릿수</string>
+    <string name="custom_token_btn_title">토큰 추가</string>
+    <string name="custom_token_not_contract_title">컨트랙트 주소가 맞지 않습니다.</string>
+
+    <string name="scan_qr_toolbar_title">QR Code 스캔하기</string>
+    <string name="scan_qr_camera_permission_never_not_allowed_title">휴대폰 설정에서 카메라 권한을 허용해 주세요.</string>
+    <string name="scan_qr_camera_permission_not_allowed_title">QR 코드를 스캔하기 위하여 카메라 권한을 허용해주세요.</string>
+
+    <string name="transfer_toolbar_title">%s 전송하기</string>
+    <string name="transfer_search_title">검색어 입력</string>
+    <string name="transfer_not_search_title">검색 결과가 없습니다.\n플래닛 이름이나 주소를 확인해 주세요.</string>
+    <string name="transfer_clip_board_title">복사한 주소 가져오기</string>
+    <string name="transfer_confirm_reset_title">초기화</string>
+    <string name="transfer_camera_permission_never_not_allowed_title">휴대폰 설정에서 카메라 권한을 허용해 주세요.</string>
+    <string name="transfer_camera_permission_not_allowed_title">QR 코드를 스캔하기 위하여 카메라 권한을 허용해주세요.</string>
+
+    <string name="transfer_amount_not_balance_title">자산보다 입력한 금액이 큽니다.</string>
+
+    <string name="transfer_confirm_toolbar_title">Confirmation</string>
+    <string name="transfer_confirm_from_title">보내는 이</string>
+    <string name="transfer_confirm_amount_title">금액</string>
+    <string name="transfer_confirm_fee_title">수수료</string>
+    <string name="transfer_confirm_slow_title">느림</string>
+    <string name="transfer_confirm_fast_title">빠름</string>
+    <string name="transfer_confirm_advanced_options_title">직접 입력</string>
+    <string name="transfer_confirm_btn_title">확인</string>
+
+    <string name="tx_receipt_from_title">보내는 이</string>
+    <string name="tx_receipt_amount">보낸 금액</string>
+    <string name="tx_receipt_fee_title">수수료</string>
+    <string name="tx_receipt_date_title">날짜</string>
+    <string name="tx_receipt_tx_hash_title">트랜잭션 해시</string>
+    <string name="tx_receipt_btn_title">확인</string>
+
+    <string name="detail_planet_hide_planet_title">숨기기</string>
+    <string name="detail_planet_backup_mnemonic_phrase_title">니모닉 구문 백업</string>
+    <string name="detail_planet_backup_privatekey_title">개인키 백업</string>
+
+    <string name="mnemonic_export_toolbar_title">니모닉 구문</string>
+    <string name="mnemonic_export_backup_mnemonic_phrase_title">니모닉 구문 백업</string>
+    <string name="mnemonic_export_message_title">니모닉 구문을 안전하게 보관해 주세요.\n니모닉 구문은 절대 다른 사람에게 노출하시면 안됩니다.</string>
+
+    <string name="planet_management_toolbar_title">유니버스</string>
+
+    <string name="privatekey_export_toolbar_title">개인키</string>
+    <string name="privatekey_export_backup_privatekey_title">개인키 백업</string>
+    <string name="privatekey_export_message_title">개인키를 안전하게 보관해 주세요.\n개인키는 절대 다른 사람에게 노출하시면 안됩니다.</string>
+
+    <string name="rename_planet_toolbar_title">플래닛 이름 변경</string>
+    <string name="rename_planet_enter_planet_name_title">플래닛 이름 입력</string>
+    <string name="rename_planet_btn_title">저장</string>
+
+    <string name="detail_setting_toolbar_title">보안</string>
+    <string name="detail_setting_change_pincode_title">PIN 코드 변경</string>
+    <string name="detail_setting_touch_or_face_title">지문 인식</string>
+
+    <string name="setting_planet_main_title">당신은 지금\n%s에 있습니다.</string>
+    <string name="setting_planet_title">플랫닛</string>
+    <string name="setting_universe_title">유니버스</string>
+    <string name="setting_security_title">보안</string>
+    <string name="setting_announcements_title">공지사항</string>
+    <string name="setting_faq_title">FAQ</string>
+    <string name="setting_language_title">언어</string>
+    <string name="setting_currency_title">통화</string>
+    <string name="setting_theme_setting_title">테마 설정</string>
+
+
+    <!-- popup -->
+    <string name="erc_popup_btn_copy_title">주소 복사</string>
+    <string name="erc_popup_btn_transfer_title">전송하기</string>
+
+    <string name="fee_popup_advanced_option_title">수수료 직접 입력</string>
+    <string name="fee_popup_gas_price_title">가스비 (Gwei)</string>
+    <string name="fee_popup_gas_limit_title">가스 한도</string>
+    <string name="fee_popup_fees_title">수수료:</string>
+    <string name="fee_popup_btn_cancel_title">취소</string>
+    <string name="fee_popup_btn_save_title">저장</string>
+    <string name="fee_popup_not_spaces_title">가스비와 가스한도는 모두 비어 있을 수 없습니다.</string>
+    <string name="fee_popup_gas_limit_least_title">최소 가스 한도는 21,000 입니다.</string>
+    <string name="fee_popup_gas_price_least_title">가스비는 최소 1 Gwei 이상 입니다.</string>
+    <string name="main_blur_balance">%s 잔액</string>
+    <string name="setting_version_title">버전</string>
+    <string name="detail_planet_address">%s 주소</string>
+    <string name="detail_planet_universe">%s 유니버스</string>
+    <string name="transfer_amount_btn_title">다음</string>
+
+</resources>
