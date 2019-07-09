@@ -68,6 +68,8 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
             viewMapper.passwordInvisible.setVisibility( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
             viewMapper.passwordVisible.setVisibility( viewMapper.passwordVisible.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
             viewMapper.etPrivateKey.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+
+
             viewMapper.etPrivateKey.setSelection( viewMapper.etPrivateKey.length( ) );
         } else if ( v == viewMapper.btnSubmit ) {
 

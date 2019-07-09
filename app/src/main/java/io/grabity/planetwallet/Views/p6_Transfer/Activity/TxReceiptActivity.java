@@ -19,11 +19,14 @@ import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.CircleImageView;
+import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
+
+    //Todo 거래완료후 그 값을 이용해 setting
 
     private ViewMapper viewMapper;
     private Planet planet;
@@ -61,6 +64,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         if ( getSerialize( C.bundleKey.PLANET ) == null || getSerialize( C.bundleKey.TRANSFER ) == null ) {
             finish( );
         } else {
+
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
@@ -76,6 +80,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
                     amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
                 }
             }
+
 
             viewSetting( );
         }
@@ -96,8 +101,10 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         viewMapper.textFromName.setText( Utils.planetNameForm( planet.getName( ) ) );
         viewMapper.textFee.setText( transfer.getFee( ) );
         //Todo
-//        viewMapper.textDate.setText( "" );
-//        viewMapper.btnTxHash.setText( "" );
+        viewMapper.textDate.setText( "2019. 06. 13 13:05:10" );
+        viewMapper.btnTxHash.setText( "0x1507f1c7fba98b4ab985a4de07fd476920009a94401641b68249deec0f077cf7" );
+        viewMapper.btnTxHash.underLine( );
+
         if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
             viewMapper.planetView.setData( transfer.getToAddress( ) );
 //            viewMapper.textPlanetName.setText( transfer.getToName( ) );
@@ -168,7 +175,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         TextView textAmountList;
         TextView textFee;
         TextView textDate;
-        TextView btnTxHash;
+        FontTextView btnTxHash;
 
 
         CircleImageView imageIconBackground;

@@ -106,6 +106,22 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
                 viewMapper.btnClip.setVisibility( View.VISIBLE );
             }
 
+            //간결하게 change QR 전까지 일단 주석처리
+            //----------------------------------
+//            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+//            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
+//                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+//                viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, erc20.getName( ) ) );
+//            } else {
+//                viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
+//            }
+//
+//
+//            if ( Utils.checkClipboard( this, planet.getCoinType( ) ) ) {
+//                viewMapper.btnClip.setVisibility( View.VISIBLE );
+//            }
+            //----------------------------------
+
         }
 
         allPlanets = new ArrayList<>( );
@@ -127,7 +143,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     protected void neverNotAllowed( int code, String permission ) {
         super.neverNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
-            CustomToast.makeText( this, localized( R.string.transfer_camera_permission_never_not_allowed_title ) ).show( );
+            CustomToast.makeText( this, localized( R.string.camera_permission_never_not_allowed_title ) ).show( );
         }
 
     }
@@ -145,7 +161,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     protected void permissionNotAllowed( int code, String permission ) {
         super.permissionNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
-            CustomToast.makeText( this, localized( R.string.transfer_camera_permission_not_allowed_title ) ).show( );
+            CustomToast.makeText( this, localized( R.string.camera_permission_not_allowed_title ) ).show( );
         }
 
     }
@@ -293,10 +309,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             String address = data.getStringExtra( C.bundleKey.QRCODE );
             viewMapper.etSearch.setText( address );
         }
-    }
-
-    private void toolBarSetTitle( String title ) {
-        viewMapper.toolBar.setTitle( title );
     }
 
     private void searchViewThemeSet( ) {

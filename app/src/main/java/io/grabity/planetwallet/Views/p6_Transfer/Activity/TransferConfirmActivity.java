@@ -94,6 +94,19 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                     amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
                 }
             }
+
+            //간결하게 change QA 이후 주석해제
+            //-------------------------------
+//            if ( CoinType.ETH.getCoinType().equals( planet.getCoinType() ) && getSerialize( C.bundleKey.ERC20 ) != null) {
+//                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+//                amountViewSetting( erc20.getName( ) );
+//            } else{
+//                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
+//            }
+            //-------------------------------
+
+
+
             viewSetting( );
 
 
@@ -225,7 +238,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         }
     }
 
-    //Todo Fee api 통신후 seekbar progress 적용
 
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {

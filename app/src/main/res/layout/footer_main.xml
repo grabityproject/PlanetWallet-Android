@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@string/main_footer_manage_token"
+                android:text="@string/main_footer_no_btc_history"
                 android:textColor="#5C5964"
                 android:textSize="14dp"
                 app:themeTextColor="#aaaaaa" />

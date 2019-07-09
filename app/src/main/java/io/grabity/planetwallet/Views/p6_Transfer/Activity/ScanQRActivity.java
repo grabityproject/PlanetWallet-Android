@@ -71,7 +71,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     protected void neverNotAllowed( int code, String permission ) {
         super.neverNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
-            CustomToast.makeText( this , localized( R.string.scan_qr_camera_permission_never_not_allowed_title ) );
+            CustomToast.makeText( this , localized( R.string.camera_permission_never_not_allowed_title ) );
             super.onBackPressed( );
         }
     }
@@ -80,7 +80,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     protected void permissionNotAllowed( int code, String permission ) {
         super.permissionNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
-            CustomToast.makeText( this , localized( R.string.scan_qr_camera_permission_not_allowed_title ) );
+            CustomToast.makeText( this , localized( R.string.camera_permission_not_allowed_title ) );
             super.onBackPressed( );
         }
     }

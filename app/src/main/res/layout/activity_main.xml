@@ -91,16 +91,6 @@
                         app:themeTextColor="#aaaaaa" />
 
                     <io.grabity.planetwallet.Widgets.FontTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14dp"
-                        android:textColor="#5c5964"
-                        app:themeTextColor="#aaaaaa"
-                        android:text="@string/main_blur_balance_title"
-                        android:layout_alignTop="@id/text_main_blur_planet_name"
-                        android:layout_toRightOf="@id/text_main_blur_planet_name" />
-
-                    <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_blur_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -321,7 +311,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/main_btn_bottom_copy_title"
-                        android:textSize="20dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
                         app:borderColorHighlight="#111117"
                         app:borderColorNormal="#000"
@@ -338,7 +328,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/main_btn_bottom_transfer_title"
-                        android:textSize="20dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
                         app:backgroundColorHighlight="#111117"
                         app:backgroundColorNormal="#000"

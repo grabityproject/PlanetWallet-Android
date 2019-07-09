@@ -289,7 +289,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="@string/transfer_amount_btn_title"
+        android:text="@string/continue_title"
         android:textSize="18dp"
         app:buttonType="A"
         app:defaultTheme="Dark" />

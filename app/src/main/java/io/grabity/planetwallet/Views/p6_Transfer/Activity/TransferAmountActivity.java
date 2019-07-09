@@ -88,6 +88,18 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                     viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
                 }
             }
+
+            //간결하게 change QA이후 주석해제
+            //------------------
+//            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
+//                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+//                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
+//            } else{
+//                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+//            }
+            //------------------
+
+
             toolBarSetView( );
         }
     }
@@ -138,7 +150,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         } else if ( v instanceof FontTextView ) {
 
             //Todo 임시 자릿수 제한 10자리
-            if ( amount.size() >= 10 ) return;
+            if ( amount.size( ) >= 10 ) return;
 
             if ( ( ( FontTextView ) v ).getText( ).equals( "." ) ) {
                 if ( !amount.toString( ).contains( "." ) ) {
@@ -165,6 +177,8 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             amountBuffer.append( amount.get( i ) );
         }
         viewMapper.textAmount.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0" : amountBuffer.toString( ) );
+
+        //Todo 언어별로 원화변경 및 계산
         viewMapper.textAmountUSD.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0 USD" : String.format( "%s USD", String.valueOf( Float.valueOf( amountBuffer.toString( ) ) / 2f ) ) );
         viewMapper.btnSubmit.setEnabled( btnEnable( ) );
     }

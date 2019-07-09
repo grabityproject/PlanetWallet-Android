@@ -15,6 +15,7 @@ import com.pentasecurity.cryptowallet.utils.PcwfUtils;
 import com.pentasecurity.cryptowallet.wallet.WalletAccount;
 import com.pentasecurity.cryptowallet.wallet.WalletAccountService;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -260,6 +261,21 @@ public class EthereumManager {
 
     public boolean validateAddress( String address ) {
         return ethWalletAccountService.validateAddress( address );
+    }
+
+    //add web3j source 참고
+    public boolean isValidAddress( String address ) {
+        if ( address == null || address.length( ) == 0 ) return false;
+        if ( address.charAt( 0 ) == '0' && address.charAt( 1 ) == 'x' ) {
+            address = address.substring( 2 );
+        }
+        try {
+            new BigInteger( address, 16 );
+        } catch ( NumberFormatException e ) {
+            return false;
+        }
+
+        return address.length( ) == 160 >> 2;
     }
 
 }

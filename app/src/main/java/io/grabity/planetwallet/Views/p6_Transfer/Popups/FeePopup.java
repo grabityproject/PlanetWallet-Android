@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
-import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.FontTextView;
@@ -98,8 +97,8 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         priceBuffer = new StringBuffer( );
         limitBuffer = new StringBuffer( );
 
-        setFocusDataSet( price, viewMapper.textGasPrice );
-        setFocusDataSet( limit, viewMapper.textGasLimit );
+        setList( price, viewMapper.textGasPrice );
+        setList( limit, viewMapper.textGasLimit );
 
         viewMapper.textGasFee.setText( getFee( ) );
         viewMapper.textCoinType.setText( getCoinType( ) );
@@ -159,10 +158,10 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
             getActivity( ).onBackPressed( );
         } else if ( v == viewMapper.groupGasPrice ) {
             setFocusViewSetting( viewMapper.groupGasPrice, viewMapper.textGasPrice, viewMapper.groupGasLimit, viewMapper.textGasLimit );
-            setFocusDataSet( price, viewMapper.textGasPrice );
+            setList( price, viewMapper.textGasPrice );
         } else if ( v == viewMapper.groupGasLimit ) {
             setFocusViewSetting( viewMapper.groupGasLimit, viewMapper.textGasLimit, viewMapper.groupGasPrice, viewMapper.textGasPrice );
-            setFocusDataSet( limit, viewMapper.textGasLimit );
+            setList( limit, viewMapper.textGasLimit );
         } else if ( v == viewMapper.btnFeeDelete ) {
             if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasPrice ) {
                 if ( price.size( ) > 0 ) {
@@ -180,18 +179,38 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         } else if ( v == viewMapper.btnSave ) {
             //gas limit, price check
             if ( viewMapper.textGasLimit.getText( ).length( ) == 0 || viewMapper.textGasPrice.getText( ).length( ) == 0 ) {
-                Toast.makeText( getActivity( ), localized( R.string.fee_popup_not_spaces_title ) , Toast.LENGTH_SHORT ).show( );
+                Toast.makeText( getActivity( ), localized( R.string.fee_popup_not_spaces_title ), Toast.LENGTH_SHORT ).show( );
+
+                //QA 이후 주석해제 -> 리밋이나 프라이스가 빈 경우 자동으로 기본값세팅
+//                if ( viewMapper.textGasPrice.getText( ).length( ) == 0 ) {
+//                    viewMapper.textGasPrice.setText( "1" );
+//                    setList( price, viewMapper.textGasPrice );
+//                    setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
+//                }
+//                if ( viewMapper.textGasLimit.getText( ).length( ) == 0 ) {
+//                    viewMapper.textGasLimit.setText( "21000" );
+//                    setList( limit, viewMapper.textGasLimit );
+//                    setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
+//                }
+//
+//                if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasPrice ) {
+//                    setFocusViewSetting( viewMapper.groupGasPrice, viewMapper.textGasPrice, viewMapper.groupGasLimit, viewMapper.textGasLimit );
+//                } else if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasLimit ) {
+//                    setFocusViewSetting( viewMapper.groupGasLimit, viewMapper.textGasLimit, viewMapper.groupGasPrice, viewMapper.textGasPrice );
+//                }
+
+
             } else {
                 if ( Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 ) {
                     Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_limit_least_title ), Toast.LENGTH_SHORT ).show( );
                     viewMapper.textGasLimit.setText( "21000" );
-                    setFocusDataSet( limit, viewMapper.textGasLimit );
+                    setList( limit, viewMapper.textGasLimit );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                     return;
                 } else if ( Integer.valueOf( viewMapper.textGasPrice.getText( ).toString( ) ) < 1 ) {
                     Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_price_least_title ), Toast.LENGTH_SHORT ).show( );
                     viewMapper.textGasPrice.setText( "1" );
-                    setFocusDataSet( price, viewMapper.textGasPrice );
+                    setList( price, viewMapper.textGasPrice );
                     setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
                     return;
                 }
@@ -205,12 +224,12 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
                 if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasPrice ) {
 
                     //Todo 자릿수 제한 2
-                    if ( price.size() >= 2 ) return;
+                    if ( price.size( ) >= 2 ) return;
                     price.add( ( ( FontTextView ) v ).getText( ).toString( ) );
                     setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
                 } else if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasLimit ) {
                     //Todo limit 자릿수 제한 6
-                    if ( limit.size() >= 6 ) return;
+                    if ( limit.size( ) >= 6 ) return;
                     limit.add( ( ( FontTextView ) v ).getText( ).toString( ) );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                 }
@@ -237,7 +256,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         gv1.setFocusableInTouchMode( false );
     }
 
-    private void setFocusDataSet( ArrayList< String > list, TextView v ) {
+    private void setList( ArrayList< String > list, TextView v ) {
         list.clear( );
         for ( int i = 0; i < v.getText( ).length( ); i++ ) {
             list.add( String.valueOf( v.getText( ).charAt( i ) ) );

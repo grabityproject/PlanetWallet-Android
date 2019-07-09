@@ -118,7 +118,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="@string/mnemonic_import_btn_title"
+        android:text="@string/continue_title"
         android:textSize="18dp"
         app:buttonType="A"
         app:defaultTheme="Dark" />

@@ -68,8 +68,12 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
             viewMapper.btnMnemonic.setVisibility( planet.getPathIndex( ) != -1 ? View.VISIBLE : View.GONE );
 
-            viewMapper.textType.setText( String.format( "%s Universe", CoinType.of( planet.getCoinType( ) ).name( ) ) );
-            viewMapper.textAddressType.setText( String.format( "%s Address", CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            //localized change
+//            viewMapper.textType.setText( String.format( "%s Universe", CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            viewMapper.textType.setText( localized( R.string.detail_planet_universe, CoinType.of( planet.getCoinType( ) ).name( ) ) );
+//            viewMapper.textAddressType.setText( String.format( "%s Address", CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            viewMapper.textAddressType.setText( localized( R.string.detail_planet_address, CoinType.of( planet.getCoinType( ) ).name( ) ) );
+
 //            viewMapper.toolBar.setTitle( planet.getName( ) );
             viewMapper.toolBar.setTitle( Utils.planetNameForm( planet.getName( ) ) );
             viewMapper.planetView.setData( planet.getAddress( ) );
@@ -183,7 +187,7 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             textAddress = findViewById( R.id.text_detail_planet_address );
             textAddressType = findViewById( R.id.text_detail_planet_address_type );
             textName = findViewById( R.id.text_detail_planet_name );
-            textType = findViewById( R.id.text_detail_planet_type );
+//            textType = findViewById( R.id.text_detail_planet_type );
 
 
             btnName = findViewById( R.id.btn_detail_planet_name_change );

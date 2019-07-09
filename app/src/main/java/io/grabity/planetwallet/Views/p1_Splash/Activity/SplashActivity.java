@@ -14,6 +14,7 @@ import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.R;
@@ -36,7 +37,6 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         setData( );
 
     }
-
 
     @Override
     protected void viewInit( ) {

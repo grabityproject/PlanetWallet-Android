@@ -165,9 +165,12 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             viewMapper.planetBackground.setData( selectedPlanet.getAddress( ) );
             viewMapper.planetBlur.setData( selectedPlanet.getAddress( ) );
 
-//            viewMapper.textBlurPlanetName.setText( selectedPlanet.getName( ) );
-            viewMapper.textBlurPlanetName.setText( Utils.planetNameForm( selectedPlanet.getName( ) ) );
             viewMapper.textBlurCoinName.setText( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
+
+            //localized change
+//            viewMapper.textBlurPlanetName.setText( Utils.planetNameForm( selectedPlanet.getName( ) ) );
+            viewMapper.textBlurPlanetName.setText( localized( R.string.main_blur_balance, Utils.planetNameForm( selectedPlanet.getName( ) ) ) );
+
 //            viewMapper.textBlurBalance.setText( localized( R.string.main_blur_balance, selectedPlanet.getBalance( ) ) );
             viewMapper.textBlurBalance.setText( selectedPlanet.getBalance( ) );
 
@@ -307,14 +310,16 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         if ( viewMapper.slideDrawer.isOpen( ) ) {
             viewMapper.slideDrawer.close( );
         } else {
-//            setTransition( Transition.NO_ANIMATION );
-//            super.onBackPressed( );
-            if ( System.currentTimeMillis( ) > backtime + 2000 ) {
-                backtime = System.currentTimeMillis( );
-                Toast.makeText( this, localized( R.string.main_back_pressed_finish_title ), Toast.LENGTH_SHORT ).show( );
-            } else {
-                finish( );
-            }
+            setTransition( Transition.NO_ANIMATION );
+            super.onBackPressed( );
+
+
+//            if ( System.currentTimeMillis( ) > backtime + 2000 ) {
+//                backtime = System.currentTimeMillis( );
+//                Toast.makeText( this, localized( R.string.main_back_pressed_finish_title ), Toast.LENGTH_SHORT ).show( );
+//            } else {
+//                finish( );
+//            }
 
         }
     }
