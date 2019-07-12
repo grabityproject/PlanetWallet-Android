@@ -31,7 +31,6 @@
         android:gravity="center"
         android:paddingTop="20dp"
         android:paddingBottom="4dp"
-        android:text="PlanetName"
         android:textColor="#FFF"
         android:textSize="24dp"
         app:themeTextColor="#000"
@@ -49,16 +48,16 @@
             android:id="@+id/text_main_header_planet_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0x12341231231232342343"
             android:textColor="#5c5964"
             android:textSize="16dp"
+            android:text="12312312322"
             app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/btn_main_header_copy"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_gravity="center"
             android:src="@drawable/image_address_copy_darkgray"
             app:themeSrc="@drawable/image_address_copy_gray" />
 

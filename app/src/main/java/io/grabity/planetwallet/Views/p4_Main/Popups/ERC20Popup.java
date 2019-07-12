@@ -18,6 +18,8 @@ import io.grabity.planetwallet.Widgets.BarcodeView;
 
 public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
 
+    public static ERC20Popup instance = null;
+
     private ViewMapper viewMapper;
 
     private Planet planet;
@@ -33,24 +35,39 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
     private float defaultY = -1.0f;
     private boolean isMove = false;
 
+
+
     public static ERC20Popup newInstance( Context context, Planet planet, ERC20 erc20 ) {
-        return new ERC20Popup( context, planet, erc20 );
+        return instance = new ERC20Popup( context, planet, erc20 );
+//        return new ERC20Popup( context, planet, erc20 );
     }
 
     public static ERC20Popup newInstance( Context context ) {
-        return new ERC20Popup( context, null, null );
+        return instance = new ERC20Popup( context,null,null );
+//        return new ERC20Popup( context, null, null );
+    }
+
+    public static ERC20Popup getInstance( ) {
+        return instance;
+    }
+
+    public static void setInstance( ERC20Popup instance ) {
+        ERC20Popup.instance = instance;
     }
 
     public ERC20Popup( Context context, Planet planet, ERC20 erc20 ) {
         super( context );
         this.planet = planet;
         this.erc20 = erc20;
+
+
     }
 
     @Override
     protected View contentView( ) {
         return View.inflate( getContext( ), R.layout.popup_erc20, null );
     }
+
 
     @Override
     public void onCreateView( ) {
@@ -128,11 +145,18 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
                         }
                     } );
                     animator.start( );
+
                 }
             }
 
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed( ) {
+        super.onBackPressed( );
+        instance = null;
     }
 
     class ViewMapper {

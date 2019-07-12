@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.Views.p1_Splash.Activity.SplashActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
 
@@ -58,6 +59,7 @@ public class AppLifeCycleTracker implements Application.ActivityLifecycleCallbac
             if ( planetWalletApplication != null ) {
                 //add
                 if ( PinCodeRegistrationActivity.class.equals( activity.getClass( ) ) ) return;
+                if ( SplashActivity.class.equals( activity.getClass( ) ) ) return;
 
                 planetWalletApplication.setPINCODE( null );
             }

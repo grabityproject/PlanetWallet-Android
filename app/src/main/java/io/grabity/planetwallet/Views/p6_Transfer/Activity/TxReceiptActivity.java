@@ -21,6 +21,7 @@ import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
+import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -55,7 +56,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         viewMapper.btnSubmit.setOnClickListener( this );
 
         viewMapper.imageIconBackground.setBorderColor( !getCurrentTheme( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#000000" ) );
-
+        viewMapper.btnShare.setBorder_color_normal( !getCurrentTheme( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#000000" ) );
     }
 
     @Override
@@ -68,17 +69,24 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+//            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+//                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
+//
+//            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+//
+//                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+//                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+//                    amountViewSetting( erc20.getName( ) );
+//                } else {
+//                    amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
+//                }
+//            }
+
+            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
+                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                amountViewSetting( erc20.getName( ) );
+            } else {
                 amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                    amountViewSetting( erc20.getName( ) );
-                } else {
-                    amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-                }
             }
 
 
@@ -162,7 +170,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         ViewGroup groupPlanet;
         ViewGroup groupAddress;
 
-        View btnShare;
+        RoundRelativeLayout btnShare;
         View btnSubmit;
 
         PlanetView planetView;

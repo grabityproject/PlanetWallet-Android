@@ -1,44 +1,35 @@
-<resources>
+<?xml version="1.0" encoding="UTF-8"?><resources>
     <string name="app_name">PlanetWallet</string>
-
+    <string name="continue_title">Continue</string>
+    <string name="camera_permission_never_not_allowed_title">Please allow camera privileges in Settings &gt; Permissions tab.</string>
+    <string name="camera_permission_not_allowed_title">To use QR Scan, please agree to the camera authority.</string>
     <string name="pincode_registration_verification_code_title">Verification Code</string>
     <string name="pincode_registration_registration_code_title">Registration PIN Code</string>
     <string name="pincode_registration_code_incorrect_title">Code incorrect</string>
     <string name="pincode_registration_change_pin_code_title">Change PIN Code</string>
     <string name="pincode_registration_sub_title">Enter the 4 digit + alphabet</string>
     <string name="pincode_registration_sub_title_error">Please check your code</string>
-
     <string name="pincode_certification_verification_code_title">Verification Code</string>
     <string name="pincode_certification_code_incorrect_title">Code incorrect</string>
     <string name="pincode_certification_change_pin_code_title">Change PIN Code</string>
     <string name="pincode_certification_sub_title">Enter the 4 digit + alphabet</string>
     <string name="pincode_certification_sub_title_error">Please check your code</string>
-
     <string name="planet_generate_name_not_blank_title">The name can not be blank.</string>
-
     <string name="planet_name_name_not_blank_title">The name can not be blank.</string>
     <string name="planet_name_btn_title">Add Planet</string>
-
-    <string name="wallet_add_btn_add_title">Add Planet</string>
+    <string name="wallet_add_btn_add_title">Create Planet</string>
     <string name="wallet_add_btn_import_title">Import Another Planet</string>
-
     <string name="wallet_import_toolbar_title">Import Planet</string>
     <string name="wallet_import_tabbar_mnemonic_title">Mnemonic</string>
     <string name="wallet_import_tabbar_privatekey_title">Private Key</string>
-
     <string name="mnemonic_import_enter_password_title">Enter password (Option)</string>
     <string name="mnemonic_import_enter_mnemonic_phrase_title">Enter Mnemonic Phrase</string>
     <string name="mnemonic_import_correct_mnemonic_phrase_title">Please enter the correct Mnemonic Phrase.</string>
     <string name="mnemonic_import_exists_title">It is a mnemonic that already exists.</string>
     <string name="mnemonic_import_not_match_title">It does not fit the mnemonic type.</string>
-    <string name="mnemonic_import_btn_title">Continue</string>
-
     <string name="privatekey_import_enter_privateKey_title">Enter privateKey</string>
     <string name="privatekey_import_exists_title">It is a privateKey that already exists.</string>
     <string name="privatekey_import_not_match_title">The privateKey type does not match.</string>
-    <string name="privatekey_import_btn_title">Continue</string>
-
-    <string name="main_blur_balance_title">Balance</string>
     <string name="main_notice_title">Your Planet Keep safe here</string>
     <string name="main_btn_bottom_copy_title">Copy</string>
     <string name="main_btn_bottom_transfer_title">Transfer</string>
@@ -46,36 +37,24 @@
     <string name="main_back_pressed_finish_title">To exit the app, press the Back button again.</string>
     <string name="main_footer_manage_token">Manage Tokens</string>
     <string name="main_footer_no_btc_history">You haven’t made any \n transaction yet :)</string>
-
     <string name="token_add_toolbar_title">Manage Tokens</string>
     <string name="token_add_tabbar_add_token_title">Token List</string>
     <string name="token_add_tabbar_custom_token_title">Custom Token</string>
-
     <string name="token_list_search_title">Search</string>
     <string name="token_list_not_search_title">Haven’t found\n what you’re looking for?</string>
-
     <string name="custom_token_contract_address_title">Contract Address</string>
     <string name="custom_token_token_symbol_title">Token Symbol</string>
     <string name="custom_token_decimals_title">Decimals of Precision</string>
     <string name="custom_token_btn_title">Add Token</string>
     <string name="custom_token_not_contract_title">This is not a valid Contract address.</string>
-
     <string name="scan_qr_toolbar_title">Scan QR code</string>
-    <string name="scan_qr_camera_permission_never_not_allowed_title">Please allow camera privileges in Settings > Permissions tab.</string>
-    <string name="scan_qr_camera_permission_not_allowed_title">To use QR Scan, please agree to the camera authority.</string>
-
-    <string name="transfer_toolbar_title">Transfer %s</string>
+    <string name="transfer_toolbar_title">Search</string>
     <string name="transfer_search_title">Search</string>
     <string name="transfer_not_search_title">You can transfer to\n the Planet name and Wallet address.</string>
     <string name="transfer_clip_board_title">Paste from Clipboard</string>
     <string name="transfer_confirm_reset_title">Reset</string>
-    <string name="transfer_camera_permission_never_not_allowed_title">Please allow camera privileges in Settings > Permissions tab.</string>
-    <string name="transfer_camera_permission_not_allowed_title">To use QR Scan, please agree to the camera authority.</string>
-
-    <string name="transfer_amount_btn_title">Submit</string>
     <string name="transfer_amount_not_balance_title">You don’t have enough amount to send</string>
-
-    <string name="transfer_confirm_toolbar_title">Confirmation</string>
+    <string name="transfer_confirm_toolbar_title">Transfer %s </string>
     <string name="transfer_confirm_from_title">from</string>
     <string name="transfer_confirm_amount_title">Amount</string>
     <string name="transfer_confirm_fee_title">Fee</string>
@@ -83,39 +62,31 @@
     <string name="transfer_confirm_fast_title">Fast</string>
     <string name="transfer_confirm_advanced_options_title">Advanced Options</string>
     <string name="transfer_confirm_btn_title">Confirm</string>
-
     <string name="tx_receipt_from_title">from</string>
     <string name="tx_receipt_amount">Amount</string>
     <string name="tx_receipt_fee_title">Fee</string>
     <string name="tx_receipt_date_title">Date</string>
     <string name="tx_receipt_tx_hash_title">TxHash</string>
     <string name="tx_receipt_btn_title">OK</string>
-
-    <string name="detail_planet_universe">%s Universe</string>
-    <string name="detail_planet_address">%s Address</string>
     <string name="detail_planet_hide_planet_title">Hide Planet</string>
     <string name="detail_planet_backup_mnemonic_phrase_title">Backup Mnemonic Phrase</string>
     <string name="detail_planet_backup_privatekey_title">Backup Private Key</string>
-
+    <string name="detail_planet_address">%s Address</string>
+    <string name="detail_planet_universe">%s Universe</string>
     <string name="mnemonic_export_toolbar_title">Mnemonic Phrase</string>
     <string name="mnemonic_export_backup_mnemonic_phrase_title">Backup Mnemonic Phrase</string>
     <string name="mnemonic_export_message_title">Save the Mnemonic Phrase safely.</string>
-
     <string name="planet_management_toolbar_title">Universe</string>
-
     <string name="privatekey_export_toolbar_title">PrivateKey</string>
     <string name="privatekey_export_backup_privatekey_title">Backup PrivateKey</string>
     <string name="privatekey_export_message_title">Save the PrivateKey safely.</string>
-
     <string name="rename_planet_toolbar_title">Planet Rename</string>
     <string name="rename_planet_enter_planet_name_title">Enter Planet name</string>
     <string name="rename_planet_btn_title">Save</string>
-
     <string name="detail_setting_toolbar_title">Security</string>
     <string name="detail_setting_change_pincode_title">Change PIN Code</string>
     <string name="detail_setting_touch_or_face_title">Fingerprint</string>
-
-    <string name="setting_planet_main_title">You\'\re on \n %s</string>
+    <string name="setting_planet_main_title">You\'re on \n %s</string>
     <string name="setting_planet_title">Planet</string>
     <string name="setting_universe_title">Universe</string>
     <string name="setting_security_title">Security</string>
@@ -125,14 +96,10 @@
     <string name="setting_currency_title">Currency</string>
     <string name="setting_theme_setting_title">Theme Setting</string>
     <string name="setting_version_title">Version</string>
-
-
-    <!-- popup -->
     <string name="erc_popup_btn_copy_title">COPY</string>
     <string name="erc_popup_btn_transfer_title">Transfer</string>
-
     <string name="fee_popup_advanced_option_title">Advanced Option</string>
-    <string name="fee_popup_gas_price_title">Gas Price (GWEI)</string>
+    <string name="fee_popup_gas_price_title">Gas Price (Gwei)</string>
     <string name="fee_popup_gas_limit_title">Gas Limit</string>
     <string name="fee_popup_fees_title">Fees:</string>
     <string name="fee_popup_btn_cancel_title">Cancel</string>
@@ -140,7 +107,4 @@
     <string name="fee_popup_not_spaces_title">Gas Price OR Gas Limit Not Spaces.</string>
     <string name="fee_popup_gas_limit_least_title">Gas Limit is at least 21,000</string>
     <string name="fee_popup_gas_price_least_title">Gas Price is at least 1</string>
-    <string name="main_blur_balance">%s Balance</string>
-
-
-</resources>
+    <string name="pincode_registration_one_more_registration_title">Please enter your password again.</string></resources>

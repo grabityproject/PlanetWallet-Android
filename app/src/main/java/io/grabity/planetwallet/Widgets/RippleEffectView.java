@@ -34,6 +34,15 @@ public class RippleEffectView extends View implements Themeable {
     private OnRippleEffectListener onRippleEffectListener;
 
     private boolean isRippleOn = false;
+    private boolean isRippleAnimationStatus = true;
+
+    public boolean isRippleAnimationStatus( ) {
+        return isRippleAnimationStatus;
+    }
+
+    public void setRippleAnimationStatus( boolean rippleAnimationStatus ) {
+        isRippleAnimationStatus = rippleAnimationStatus;
+    }
 
     public boolean isRippleOn( ) {
         return isRippleOn;
@@ -130,6 +139,11 @@ public class RippleEffectView extends View implements Themeable {
 
     public void setPercent( float percent ) {
         this.percent = percent;
+        if ( this.percent > 0 ){
+            isRippleAnimationStatus = false;
+        } else if ( this.percent == 0 ) {
+            isRippleAnimationStatus = true;
+        }
         invalidate( );
     }
 

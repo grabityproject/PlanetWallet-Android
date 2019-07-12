@@ -150,7 +150,6 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
 
         viewMapper.textNotice.setY( viewMapper.groupBlur.getY( ) + viewMapper.groupBlur.getHeight( ) - viewMapper.textNotice.getHeight( ) );
 
-        PLog.e( "onGlobalLayout : " + viewMapper.textNotice.getY( ) );
         viewMapper.groupBlur.setY( viewMapper.groupBlur.getY( ) + viewMapper.groupBlur.getHeight( ) );
         viewMapper.groupBlur.getLayoutParams( ).height = viewMapper.groupBlur.getLayoutParams( ).height * 2;
         viewMapper.groupBlur.requestLayout( );

@@ -24,10 +24,7 @@
     <io.grabity.planetwallet.Widgets.ToolBar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbarHeight"
-        app:blackThemeLeftSrc="@drawable/image_toolbar_close_gray"
-        app:defaultTheme="Dark"
-        app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
+        android:layout_height="@dimen/toolbarHeight" />
 
     <LinearLayout
         android:id="@+id/group_planet_generate_title"
@@ -78,13 +75,20 @@
 
 
 
+    <!--<io.grabity.planetwallet.Widgets.PlanetView-->
+        <!--android:id="@+id/planet_generate_icon"-->
+        <!--android:layout_width="170dp"-->
+        <!--android:layout_height="170dp"-->
+        <!--android:layout_below="@id/group_planet_generate_title"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="80dp"/>-->
+
     <io.grabity.planetwallet.Widgets.PlanetView
         android:id="@+id/planet_generate_icon"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:layout_below="@id/group_planet_generate_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
+        android:layout_centerInParent="true"/>
 
 
     <LinearLayout

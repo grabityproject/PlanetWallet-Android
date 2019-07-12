@@ -46,13 +46,16 @@
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_detailplanet_walletname"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/group_item_detailplanet_currencyname"
             android:layout_alignStart="@id/group_item_detailplanet_currencyname"
+            android:layout_toLeftOf="@id/text_item_detailplanet_address"
+            android:paddingEnd="12dp"
             android:layout_marginTop="12dp"
             android:textColor="#000"
             android:textSize="16dp"
+            android:maxLines="1"
             app:themeTextColor="#FFF"
             app:typefaceStyle="medium" />
 

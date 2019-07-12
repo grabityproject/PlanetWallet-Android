@@ -260,12 +260,13 @@ public class EthereumManager {
     }
 
     public boolean validateAddress( String address ) {
+
         return ethWalletAccountService.validateAddress( address );
     }
 
     //add web3j source 참고
     public boolean isValidAddress( String address ) {
-        if ( address == null || address.length( ) == 0 ) return false;
+        if ( address == null || address.length( ) < 2 ) return false;
         if ( address.charAt( 0 ) == '0' && address.charAt( 1 ) == 'x' ) {
             address = address.substring( 2 );
         }

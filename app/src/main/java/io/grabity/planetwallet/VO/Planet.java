@@ -25,7 +25,7 @@ public class Planet implements Serializable {
     private String hide;
     private String address;
     private String name;
-    private String balance;
+    private String balance = "100";
 
     private String signature;
     private String planet;
@@ -200,8 +200,9 @@ public class Planet implements Serializable {
     }
 
     public String getBalance( ) {
-        if ( balance == null ) return "0";
-        return balance;
+//        if ( balance == null ) return "0";
+//        return balance;
+        return "100";
     }
 
     public void setBalance( String balance ) {

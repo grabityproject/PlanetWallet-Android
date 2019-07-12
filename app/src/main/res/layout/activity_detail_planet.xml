@@ -54,18 +54,18 @@
                 android:id="@+id/btn_detail_planet_name_change"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:padding="2dp"
                 android:layout_alignTop="@id/text_detail_planet_name"
                 android:layout_alignBottom="@id/text_detail_planet_name"
                 android:layout_toRightOf="@id/text_detail_planet_name"
-                android:src="@drawable/image_detail_planet_edit_black"
-                app:themeSrc="@drawable/image_detail_planet_edit_blue" />
+                android:src="@drawable/image_detail_planet_edit_blue"
+                app:themeSrc="@drawable/image_detail_planet_edit_black" />
 
             <io.grabity.planetwallet.Widgets.PlanetView
                 android:id="@+id/planet_detail_planet_planetview"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_alignTop="@id/text_detail_planet_name"
-                android:layout_alignBottom="@id/text_detail_planet_name"
                 android:layout_alignParentRight="true" />
 
         </RelativeLayout>

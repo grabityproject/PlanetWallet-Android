@@ -78,8 +78,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
         ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) ) );
         viewMapper.toolBar.requestLayout( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
-        viewMapper.toolBar.setOnToolBarClickListener( this );
+
 
         viewMapper.btnRefresh.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
         viewMapper.btnSelect.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
@@ -103,6 +102,9 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
         try {
             if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+
+                viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( !getCurrentTheme( ) ? R.drawable.image_toolbar_close_gray : R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
+                viewMapper.toolBar.setOnToolBarClickListener( this );
 
                 if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
 
@@ -158,6 +160,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
         }
     }
@@ -211,9 +214,8 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                                 planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
                 request.setAddress( planet.getAddress( ) );
 
-
-
-
+                //balance 테스트 세팅
+//                planet.setBalance( "24.5622312" );
 
                 PLog.e( "URL : " + Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ) );
                 new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
@@ -233,8 +235,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
                 if ( returnVO.isSuccess( ) ) {
 
-                    //balance 테스트 세팅
-                    planet.setBalance( "24.5622312" );
+
                     PlanetStore.getInstance( ).save( planet );
 
                     if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
@@ -272,8 +273,17 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         if ( planet != null ) {
             KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
             planet = BitCoinManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
+
+            if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
+                addBtcPlanet( );
+                return;
+            }
         } else {
             planet = BitCoinManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
+            if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
+                addBtcPlanet( );
+                return;
+            }
 
         }
         planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
@@ -302,9 +312,18 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         if ( planet != null ) {
             KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
             planet = EthereumManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
+
+            if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
+                addEthPlanet( );
+                return;
+            }
         } else {
             planet = EthereumManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
 
+            if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
+                addEthPlanet( );
+                return;
+            }
         }
         planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
         viewMapper.planetView.setData( planet.getAddress( ) );
@@ -386,7 +405,12 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         if ( viewMapper.etPlanetName.getText( ).length( ) != 0 ) {
             if ( !Utils.isPlanetName( viewMapper.etPlanetName.getText( ).toString( ) ) ) {
                 viewMapper.etPlanetName.setText( plantName );
-                viewMapper.etPlanetName.setSelection( cursor <= 0 ? cursor : cursor - 1 );
+                try {
+                    viewMapper.etPlanetName.setSelection( cursor <= 0 ? cursor : cursor - 1 );
+                } catch ( Exception e ) {
+                    viewMapper.etPlanetName.setSelection( viewMapper.etPlanetName.getText( ).toString( ).length( ) );
+                }
+
             }
         }
 

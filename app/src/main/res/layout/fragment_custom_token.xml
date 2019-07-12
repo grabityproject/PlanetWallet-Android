@@ -22,15 +22,33 @@
             android:textSize="16dp"
             app:themeTextColor="#aaaaaa" />
 
-        <io.grabity.planetwallet.Widgets.RoundEditText
-            android:textCursorDrawable="@null"
-            android:id="@+id/et_custom_token_address"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:defaultTheme="Dark"
-            android:singleLine="true"
-            android:paddingStart="14dp"
-            />
+            android:layout_height="56dp">
+
+            <io.grabity.planetwallet.Widgets.RoundEditText
+                android:textCursorDrawable="@null"
+                android:id="@+id/et_custom_token_address"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:defaultTheme="Dark"
+                android:singleLine="true"
+                android:paddingStart="14dp"
+                />
+
+            <io.grabity.planetwallet.Widgets.CircleImageView
+                android:id="@+id/btn_custom_token_clear"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentRight="true"
+                android:padding="14dp"
+                android:src="@drawable/image_input_clear_blue"
+                android:visibility="gone"
+                app:themeSrc="@drawable/image_input_clear_black" />
+
+        </RelativeLayout>
+
+
 
         <RelativeLayout
             android:id="@+id/group_custom_token_waring"
@@ -70,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:paddingStart="14dp"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             app:defaultTheme="Dark" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
@@ -105,7 +123,7 @@
         android:layout_margin="20dp"
         android:gravity="center"
         android:text="@string/custom_token_btn_title"
-        android:textSize="18dp"
+        android:textSize="16dp"
         app:buttonType="A"
         app:defaultTheme="Dark" />
 

@@ -8,6 +8,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Post;
@@ -29,6 +31,8 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
 
     private ViewMapper viewMapper;
     private Planet planet;
+    private String planetReName;
+    private int cursor;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -122,17 +126,35 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
 
     @Override
     public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
-
+        if ( Objects.requireNonNull( viewMapper.etName.getText( ) ).length( ) != 0 ) {
+            planetReName = viewMapper.etName.getText( ).toString( );
+            cursor = viewMapper.etName.getSelectionStart( );
+        } else {
+            planetReName = "";
+        }
     }
 
     @Override
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
-        viewMapper.btnSubmit.setEnabled( viewMapper.etName.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
+//        viewMapper.btnSubmit.setEnabled( viewMapper.etName.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
+        if ( viewMapper.etName.getText( ) == null ) return;
+        viewMapper.btnSubmit.setEnabled( viewMapper.etName.getText( ).toString( ).trim( ).length( ) != 0 );
         viewMapper.btnNameClear.setVisibility( viewMapper.etName.getText( ).toString( ).trim( ).length( ) == 0 ? View.GONE : View.VISIBLE );
     }
 
     @Override
     public void afterTextChanged( Editable s ) {
+        if ( Objects.requireNonNull( viewMapper.etName.getText( ) ).length( ) != 0 ) {
+            if ( !Utils.isPlanetName( viewMapper.etName.getText( ).toString( ) ) ) {
+                viewMapper.etName.setText( planetReName );
+                try {
+                    viewMapper.etName.setSelection( cursor <= 0 ? cursor : cursor - 1 );
+                } catch ( Exception e ) {
+                    viewMapper.etName.setSelection( viewMapper.etName.getText( ).toString( ).length( ) );
+                }
+
+            }
+        }
 
     }
 

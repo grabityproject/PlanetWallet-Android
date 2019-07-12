@@ -82,29 +82,33 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
             new Get( this ).action( Route.URL( "gas" ), 0, 0, null );
 
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                    amountViewSetting( erc20.getName( ) );
-                } else {
-                    amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-                }
-            }
+//            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+//                viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
+//                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
+//
+//            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+//
+//                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+//                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+//                    viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, erc20.getName( ) ) );
+//                    amountViewSetting( erc20.getName( ) );
+//                } else {
+//                    viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
+//                    amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
+//                }
+//            }
 
             //간결하게 change QA 이후 주석해제
             //-------------------------------
-//            if ( CoinType.ETH.getCoinType().equals( planet.getCoinType() ) && getSerialize( C.bundleKey.ERC20 ) != null) {
-//                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-//                amountViewSetting( erc20.getName( ) );
-//            } else{
-//                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-//            }
+            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
+                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, erc20.getName( ) ) );
+                amountViewSetting( erc20.getName( ) );
+            } else {
+                viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
+                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
+            }
             //-------------------------------
-
 
 
             viewSetting( );
@@ -181,7 +185,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             viewMapper.seekBar.setProgress( 2 );
 
         } else if ( v == viewMapper.btnSubmit ) {
-            setTransition( Transition.NO_ANIMATION );
+            setTransition( Transition.SLIDE_UP );
             sendAction( C.requestCode.TRANSFER, PinCodeCertificationActivity.class );
         }
 

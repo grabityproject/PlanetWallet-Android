@@ -769,7 +769,7 @@ public class Utils {
                 }
                 return false;
             } else if ( Utils.equals( coinType, CoinType.ETH.getCoinType( ) ) ) {
-                if ( EthereumManager.getInstance( ).validateAddress( clipboardManager.getPrimaryClip( ).getItemAt( 0 ).getText( ).toString( ) ) ) {
+                if ( EthereumManager.getInstance( ).isValidAddress( clipboardManager.getPrimaryClip( ).getItemAt( 0 ).getText( ).toString( ) ) ) {
                     return true;
                 }
                 return false;

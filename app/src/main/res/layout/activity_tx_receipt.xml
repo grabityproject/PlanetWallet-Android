@@ -14,10 +14,16 @@
         app:defaultTheme="Dark"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolBar"
+        android:layout_above="@id/group_tx_receipt_btn_group">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingStart="40dp"
         android:paddingEnd="40dp">
 
@@ -261,7 +267,10 @@
 
     </RelativeLayout>
 
+    </ScrollView>
+
     <LinearLayout
+        android:id="@+id/group_tx_receipt_btn_group"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"

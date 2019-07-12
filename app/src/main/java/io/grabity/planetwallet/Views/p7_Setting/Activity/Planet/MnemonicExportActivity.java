@@ -57,9 +57,9 @@ public class MnemonicExportActivity extends PlanetWalletActivity implements Tool
 
 
             if ( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ) {
-                Utils.setPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC, C.wallet.BACKUP );
+                Utils.setPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC, String.valueOf( true ) );
             } else if ( Utils.equals( CoinType.ETH.getCoinType( ), planet.getCoinType( ) ) ) {
-                Utils.setPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH, C.wallet.BACKUP );
+                Utils.setPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH, String.valueOf( true ) );
             }
         }
 

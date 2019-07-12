@@ -172,6 +172,7 @@
             app:position="top"
             tools:ignore="MissingPrefix">
 
+
             <io.grabity.planetwallet.Widgets.ShadowView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -187,26 +188,22 @@
                 app:themeBackground="#FFF"
                 tools:ignore="MissingPrefix">
 
-                <io.grabity.planetwallet.Widgets.FontTextView
-                    android:id="@+id/text_main_planets_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingTop="45dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="#5C5964"
-                    android:textSize="16dp"
-                    app:themeTextColor="#aaaaaa" />
-
                 <io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView
                     android:id="@+id/list_main_planets_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/text_main_planets_name"
-                    android:layout_marginBottom="40dp" />
+                    android:layout_height="280dp"
+                    android:paddingTop="40dp"
+                    />
+
+                <View
+                    android:id="@+id/view_main_top_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/list_main_planets_list"
+                    android:layout_above="@id/pwrel" />
 
                 <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout
+                    android:id="@+id/pwrel"
                     android:layout_width="40dp"
                     android:layout_height="4dp"
                     android:layout_alignParentBottom="true"
@@ -216,7 +213,6 @@
                     app:cornerRadius="6dp"
                     app:cornerRound="LB|RB|LT|RT"
                     app:themeBackground="#BCBDD5" />
-
 
             </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
 
@@ -261,7 +257,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="56dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
@@ -307,7 +303,7 @@
                         android:id="@+id/btn_main_bottom_copy"
                         android:layout_width="0dp"
                         android:layout_height="56dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/main_btn_bottom_copy_title"

@@ -57,13 +57,13 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
     protected void setData( ) {
         super.setData( );
 
-        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH ) , "" ) ){
-            Utils.setPreferenceData( this , C.pref.BACK_UP_MNEMONIC_ETH, C.wallet.NOBACKUP );
-        }
-
-        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC ) , "" ) ){
-            Utils.setPreferenceData( this , C.pref.BACK_UP_MNEMONIC_BTC, C.wallet.NOBACKUP );
-        }
+//        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH, "N" ) , "N" ) ){
+//            Utils.setPreferenceData( this , C.pref.BACK_UP_MNEMONIC_ETH, "N","1" );
+//        }
+//
+//        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC ) , "" ) ){
+//            Utils.setPreferenceData( this , C.pref.BACK_UP_MNEMONIC_BTC, C.wallet.NOBACKUP );
+//        }
     }
 
     @Override

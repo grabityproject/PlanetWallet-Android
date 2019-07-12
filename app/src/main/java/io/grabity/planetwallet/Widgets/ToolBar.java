@@ -135,7 +135,8 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             params.addRule( ALIGN_PARENT_BOTTOM );
             imageViewLeft = new StretchImageView( getContext( ) );
             imageViewLeft.setImageDrawable( getImageLeftDrawable( ) );
-            imageViewLeft.setPadding( ( int ) DPToPX( 18 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ) );
+//            imageViewLeft.setPadding( ( int ) DPToPX( 18 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ) );
+            imageViewLeft.setPadding( ( int ) DPToPX( 16 ), ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ) );
             imageViewLeft.setOnClickListener( this );
 
             addView( imageViewLeft, params );
@@ -147,7 +148,8 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             params.addRule( ALIGN_PARENT_BOTTOM );
             imageViewRight = new StretchImageView( getContext( ) );
             imageViewRight.setImageDrawable( getImageRightDrawable( ) );
-            imageViewRight.setPadding( ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 18 ), ( int ) DPToPX( 14 ) );
+//            imageViewRight.setPadding( ( int ) DPToPX( 14 ), ( int ) DPToPX( 14 ), ( int ) DPToPX( 18 ), ( int ) DPToPX( 14 ) );
+            imageViewRight.setPadding( ( int ) DPToPX( 12 ), ( int ) DPToPX( 12 ), ( int ) DPToPX( 16 ), ( int ) DPToPX( 12 ) );
             imageViewRight.setOnClickListener( this );
 
             addView( imageViewRight, params );

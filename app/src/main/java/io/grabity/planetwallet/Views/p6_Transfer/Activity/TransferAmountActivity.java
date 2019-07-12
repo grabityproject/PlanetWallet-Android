@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.Transfer;
+import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -49,6 +51,25 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
     protected void viewInit( ) {
         super.viewInit( );
 
+        if ( Utils.getScrennHeight( this ) <= 1920 ) {
+            viewMapper.textBalance.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
+                @Override
+                public void onGlobalLayout( ) {
+                    viewMapper.textBalance.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
+//                    ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( TransferAmountActivity.this, 48 ) );
+
+                    viewMapper.textBalance.setPadding( 0, ( int ) Utils.dpToPx( TransferAmountActivity.this, 24 ), 0, 0 );
+                    viewMapper.textAmount.setPadding( 0, ( int ) Utils.dpToPx( TransferAmountActivity.this, 20 ), 0, 0 );
+                    ( ( ViewGroup.MarginLayoutParams ) viewMapper.groupInputAmount.getLayoutParams( ) ).bottomMargin = ( int ) Utils.dpToPx( TransferAmountActivity.this, 20 );
+
+                    viewMapper.groupInputAmount.requestLayout( );
+                    viewMapper.textBalance.requestLayout( );
+                    viewMapper.textAmount.requestLayout( );
+                }
+            } );
+        }
+
+
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
@@ -65,6 +86,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
 
         //default
         amount.add( "0" );
+        setAmount( );
 
     }
 
@@ -78,25 +100,26 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
-                } else {
-                    viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
-                }
-            }
+//            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+//
+//                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+//            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+//                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+//                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+//                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
+//                } else {
+//                    viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+//                }
+//            }
 
             //간결하게 change QA이후 주석해제
             //------------------
-//            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
-//                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-//                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
-//            } else{
-//                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
-//            }
+            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
+                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
+            } else{
+                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+            }
             //------------------
 
 

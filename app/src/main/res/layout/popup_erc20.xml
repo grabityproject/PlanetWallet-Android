@@ -37,7 +37,7 @@
             <LinearLayout
                 android:id="@+id/group_erc_main_bottom_name"
                 android:layout_width="match_parent"
-                android:layout_height="78dp"
+                android:layout_height="64dp"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
@@ -57,7 +57,6 @@
                     android:layout_gravity="center"
                     android:gravity="bottom"
                     android:paddingTop="22dp"
-                    android:text=""
                     android:textColor="#000"
                     android:textSize="18dp"
                     app:typefaceStyle="bold" />

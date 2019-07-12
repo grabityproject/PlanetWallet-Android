@@ -99,6 +99,7 @@ public class BitCoinManager {
         byte[] checksum = null;
         try {
             // Base58 check
+            if ( privKey.length( ) < 10 ) return null;
             JniWrapper.GenBase58CheckDecode( privKey );
             privateKeyWif = Base58.decode( privKey );
             // compressed 조사는 여기서 L, K , 5

@@ -106,8 +106,6 @@ public class C {
 
     public static class wallet {
         public final static String CREATE = "create";
-        public final static String BACKUP = "backup";
-        public final static String NOBACKUP = "nobackup";
     }
 
     public static class db {

@@ -82,45 +82,18 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         } else {
 
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                // BTC Transfer
+            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
+                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, erc20.getName( ) ) );
+            } else {
                 viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
-
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                    viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, erc20.getName( ) ) );
-                    // ERC Transfer
-
-                } else {
-
-                    viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
-                    // ETH Transfer
-
-                }
             }
+
 
             if ( Utils.checkClipboard( this, planet.getCoinType( ) ) ) {
+                if ( Utils.equals( Utils.getClipboard( this ), planet.getAddress( ) ) ) return;
                 viewMapper.btnClip.setVisibility( View.VISIBLE );
             }
-
-            //간결하게 change QR 전까지 일단 주석처리
-            //----------------------------------
-//            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-//            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
-//                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-//                viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, erc20.getName( ) ) );
-//            } else {
-//                viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
-//            }
-//
-//
-//            if ( Utils.checkClipboard( this, planet.getCoinType( ) ) ) {
-//                viewMapper.btnClip.setVisibility( View.VISIBLE );
-//            }
-            //----------------------------------
 
         }
 
@@ -264,7 +237,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             if ( allPlanets != null ) {
                 if ( allPlanets.size( ) == 0 ) { //이름검색시 없을경우
 
-                    //주소 정규식 체크(주소검색)
+                    //주소 정규식 체크(주소검색) , 주소 검색시 내 주소면 검색결과 없는걸로 처리
                     if ( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ) {
                         if ( BitCoinManager.getInstance( ).validateAddress( viewMapper.etSearch.getText( ).toString( ) ) ) {
                             noSearchView( false );
@@ -274,7 +247,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
                         }
 
                     } else if ( Utils.equals( CoinType.ETH.getCoinType( ), planet.getCoinType( ) ) ) {
-                        if ( EthereumManager.getInstance( ).validateAddress( viewMapper.etSearch.getText( ).toString( ) ) ) {
+                        if ( EthereumManager.getInstance( ).isValidAddress( viewMapper.etSearch.getText( ).toString( ) ) ) {
                             noSearchView( false );
                             addressSearchView( true );
                             clipView( );
@@ -288,6 +261,22 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
                     clipView( );
 
                 } else {
+
+                    //내 플래닛 제거
+                    for ( int i = 0; i < allPlanets.size( ); i++ ) {
+                        if ( Utils.equals( allPlanets.get( i ).getName( ), planet.getName( ) ) ) {
+                            allPlanets.remove( i );
+                            break;
+                        }
+                    }
+
+                    if ( allPlanets.size( ) == 0 ) {
+                        noSearchView( true );
+                        addressSearchView( false );
+                        clipView( );
+                        return;
+                    }
+
                     //이름검색
                     noSearchView( false );
                     addressSearchView( false );
@@ -309,6 +298,12 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             String address = data.getStringExtra( C.bundleKey.QRCODE );
             viewMapper.etSearch.setText( address );
         }
+    }
+
+    @Override
+    protected void onResume( ) {
+        super.onResume( );
+        clipView( );
     }
 
     private void searchViewThemeSet( ) {
@@ -352,7 +347,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     }
 
     private void clipView( ) {
-        viewMapper.btnClip.setVisibility( Utils.checkClipboard( this, planet.getCoinType( ) ) && viewMapper.etSearch.getText( ).length( ) == 0 ?
+        viewMapper.btnClip.setVisibility( Utils.checkClipboard( this, planet.getCoinType( ) ) && viewMapper.etSearch.getText( ).length( ) == 0 && !Utils.equals( Utils.getClipboard( this ), planet.getAddress( ) ) ?
                 View.VISIBLE : View.GONE );
     }
 

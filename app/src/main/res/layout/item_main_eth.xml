@@ -6,7 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        android:paddingEnd="14dp">
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_main_eth_icon"
@@ -22,7 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/image_item_main_eth_icon"
-            android:text="ETH"
             android:textColor="#FFF"
             android:textSize="16dp"
             app:themeTextColor="#000"
@@ -30,13 +30,10 @@
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_main_eth_arrow"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
-            android:paddingStart="20dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="14dp"
-            android:paddingBottom="20dp"
+            android:layout_centerVertical="true"
             android:src="@drawable/image_arrow_right_gray"
             app:themeSrc="@drawable/image_arrow_right_blue" />
 
@@ -45,10 +42,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/image_item_main_eth_arrow"
-            android:paddingTop="18dp"
-            android:text="120,230"
+            android:paddingTop="14dp"
             android:textColor="#FFF"
             android:textSize="16dp"
+            android:paddingEnd="14dp"
             app:themeTextColor="#000"
             app:typefaceStyle="medium" />
 
@@ -58,10 +55,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_item_main_eth_balance"
             android:layout_toLeftOf="@id/image_item_main_eth_arrow"
-            android:paddingTop="2dp"
-            android:text="1000 USD"
-            android:textColor="#5C5964"
+            android:paddingEnd="14dp"
             android:textSize="12dp"
+            android:textColor="#5c5964"
             app:themeTextColor="#aaaaaa" />
 
 

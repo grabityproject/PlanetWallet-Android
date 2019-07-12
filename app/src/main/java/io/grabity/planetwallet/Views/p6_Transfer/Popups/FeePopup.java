@@ -182,22 +182,22 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
                 Toast.makeText( getActivity( ), localized( R.string.fee_popup_not_spaces_title ), Toast.LENGTH_SHORT ).show( );
 
                 //QA 이후 주석해제 -> 리밋이나 프라이스가 빈 경우 자동으로 기본값세팅
-//                if ( viewMapper.textGasPrice.getText( ).length( ) == 0 ) {
-//                    viewMapper.textGasPrice.setText( "1" );
-//                    setList( price, viewMapper.textGasPrice );
-//                    setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
-//                }
-//                if ( viewMapper.textGasLimit.getText( ).length( ) == 0 ) {
-//                    viewMapper.textGasLimit.setText( "21000" );
-//                    setList( limit, viewMapper.textGasLimit );
-//                    setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
-//                }
-//
-//                if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasPrice ) {
-//                    setFocusViewSetting( viewMapper.groupGasPrice, viewMapper.textGasPrice, viewMapper.groupGasLimit, viewMapper.textGasLimit );
-//                } else if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasLimit ) {
-//                    setFocusViewSetting( viewMapper.groupGasLimit, viewMapper.textGasLimit, viewMapper.groupGasPrice, viewMapper.textGasPrice );
-//                }
+                if ( viewMapper.textGasPrice.getText( ).length( ) == 0 ) {
+                    viewMapper.textGasPrice.setText( "1" );
+                    setList( price, viewMapper.textGasPrice );
+                    setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
+                }
+                if ( viewMapper.textGasLimit.getText( ).length( ) == 0 ) {
+                    viewMapper.textGasLimit.setText( "21000" );
+                    setList( limit, viewMapper.textGasLimit );
+                    setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
+                }
+
+                if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasPrice ) {
+                    setFocusViewSetting( viewMapper.groupGasPrice, viewMapper.textGasPrice, viewMapper.groupGasLimit, viewMapper.textGasLimit );
+                } else if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasLimit ) {
+                    setFocusViewSetting( viewMapper.groupGasLimit, viewMapper.textGasLimit, viewMapper.groupGasPrice, viewMapper.textGasPrice );
+                }
 
 
             } else {

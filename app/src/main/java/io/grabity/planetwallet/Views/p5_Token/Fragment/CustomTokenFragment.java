@@ -43,9 +43,11 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
     protected void viewInit( ) {
         super.viewInit( );
         viewMapper.btnSubmit.setOnClickListener( this );
+        viewMapper.btnClear.setOnClickListener( this );
         viewMapper.etAddress.addTextChangedListener( this );
 
         viewMapper.btnSubmit.setEnabled( false );
+
     }
 
     @Override
@@ -59,30 +61,8 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
             if ( getActivity( ) == null ) return;
             getActivity( ).setResult( Activity.RESULT_OK );
             getActivity( ).onBackPressed( );
-            //애니메이션 테스트
-
-//            PLog.e( "not ani viewHeight : " + viewMapper.addressWaring.getHeight( ) );
-//            new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ) ).start( );
-//
-//            ValueAnimator animator = ValueAnimator.ofInt( ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ) );
-//            animator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener( ) {
-//                @Override
-//                public void onAnimationUpdate( ValueAnimator animation ) {
-//                    int val = ( int ) animation.getAnimatedValue( );
-//
-//                    //같은기능
-//                    viewMapper.addressWaring.getLayoutParams( ).height = val;
-//                    viewMapper.addressWaring.requestLayout( );
-//
-//                    //같은기능
-////                    ViewGroup.LayoutParams params = viewMapper.addressWaring.getLayoutParams();
-////                    params.height = val;
-////                    viewMapper.addressWaring.setLayoutParams( params );
-//                }
-//            } );
-//            animator.setDuration( 500 );
-//            animator.start( );
-
+        } else if ( v == viewMapper.btnClear ){
+            viewMapper.etAddress.setText( "" );
         }
     }
 
@@ -98,6 +78,8 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
         viewMapper.btnSubmit.setEnabled(
                 viewMapper.etAddress.getText( ).toString( ).trim( ).length( ) != 0 ||
                         viewMapper.etSymbol.getText( ).toString( ).trim( ).length( ) != 0 );
+
+        viewMapper.btnClear.setVisibility( viewMapper.etAddress.getText( ).length( ) == 0 ? View.GONE : View.VISIBLE );
 
         if ( viewMapper.etAddress.getText( ).length( ) >= 1 ) {
             if ( viewMapper.addressWaring.getHeight( ) == 0 ) {
@@ -119,6 +101,8 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
         RoundEditText etSymbol;
         RoundEditText etDecimals;
         RelativeLayout addressWaring;
+
+        View btnClear;
         View btnSubmit;
 
         public ViewMapper( ) {
@@ -126,6 +110,7 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
             etSymbol = findViewById( R.id.et_customToken_symbol );
             etDecimals = findViewById( R.id.edit_custom_token_decimals );
             addressWaring = findViewById( R.id.group_custom_token_waring );
+            btnClear = findViewById( R.id.btn_custom_token_clear );
             btnSubmit = findViewById( R.id.btn_submit );
         }
     }

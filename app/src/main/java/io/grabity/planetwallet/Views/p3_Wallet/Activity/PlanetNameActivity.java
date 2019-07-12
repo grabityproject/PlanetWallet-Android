@@ -182,7 +182,12 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         if ( viewMapper.etPlanetName.getText( ).length( ) != 0 ) {
             if ( !Utils.isPlanetName( viewMapper.etPlanetName.getText( ).toString( ) ) ) {
                 viewMapper.etPlanetName.setText( plantName );
-                viewMapper.etPlanetName.setSelection( cursor <= 0 ? cursor : cursor - 1 );
+                try {
+                    viewMapper.etPlanetName.setSelection( cursor <= 0 ? cursor : cursor - 1 );
+                } catch ( Exception e ) {
+                    viewMapper.etPlanetName.setSelection( viewMapper.etPlanetName.getText( ).toString( ).length( ) );
+                }
+
             }
         }
     }
@@ -242,6 +247,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
+            Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
         }
     }

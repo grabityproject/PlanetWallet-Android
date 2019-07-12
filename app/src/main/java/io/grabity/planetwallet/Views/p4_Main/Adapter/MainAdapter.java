@@ -56,7 +56,8 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
             ETH eth = ( ETH ) item;
             ( ( ETHItem ) viewMapper ).textName.setText( CoinType.ETH.name( ) );
             ( ( ETHItem ) viewMapper ).textBalance.setText( eth.getBalance( ) );
-            ( ( ETHItem ) viewMapper ).textPrice.setText( "" );
+            //todo 화폐단위 임시고정
+            ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", eth.getBalance( ) ) );
 
         } else if ( Utils.equals( CoinType.ERC20.getCoinType( ), item.getCoinType( ) ) ) {
 
@@ -64,7 +65,8 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
             ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), ( ( ETHItem ) viewMapper ).imageIcon );
             ( ( ETHItem ) viewMapper ).textName.setText( erc20.getName( ) );
             ( ( ETHItem ) viewMapper ).textBalance.setText( erc20.getBalance( ) );
-            ( ( ETHItem ) viewMapper ).textPrice.setText( "" );
+            //todo 화폐단위 임시고정
+            ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", erc20.getBalance( ) ) );
 
         }
 
