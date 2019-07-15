@@ -56,6 +56,7 @@
             android:textColor="#000"
             android:textSize="16dp"
             android:maxLines="1"
+            android:ellipsize="end"
             app:themeTextColor="#FFF"
             app:typefaceStyle="medium" />
 

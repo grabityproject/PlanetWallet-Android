@@ -120,11 +120,25 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
                 keyList.remove( keyList.size( ) - 1 );
                 setPasswordView( );
             }
+        } else if ( v == viewMapper.btnReset ) {
+            //pincode 초기화
+            strKeyList = null;
+            checkKeyList = null;
+            keyList.clear( );
+            setPasswordView( );
+            if ( getRequestCode() == C.requestCode.SETTING_CHANGE_PINCODE ){
+                setPasswordMessage( true, 2 );
+            } else{
+                setPasswordMessage( true, 0 );
+            }
+
+            viewMapper.btnReset.setVisibility( View.GONE );
+            //============
+
         } else {
             String tag = String.valueOf( v.getTag( ) );
             if ( v.getTag( ) != null ) {
                 keyList.add( tag );
-//                setPasswordMessage( true );
                 if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
                     setPasswordMessage( true, checkKeyList != null ? 1 : 2 );
                 } else {
@@ -141,6 +155,10 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
                     keyList.clear( );
 
                     setPasswordMessage( true, 1 );
+
+                    //pincode 초기화기능 추가
+                    viewMapper.btnReset.setVisibility( View.VISIBLE );
+                    //===================
 
                 } else if ( keyList.size( ) == 5 && checkKeyList != null ) {
 

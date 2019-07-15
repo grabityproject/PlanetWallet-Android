@@ -349,6 +349,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             headerViewMapper.textName.setText( Utils.planetNameForm( planetName ) );
         }
 
+        //add 이름변경 후 Main화면으로 돌아올시 이름 새로고침
+        viewMapper.textBlurPlanetName.setText( Utils.planetNameForm( selectedPlanet.getName( ) ) );
+        viewMapper.textBottomPlanetName.setText( Utils.planetNameForm( selectedPlanet.getName( ) ) );
+
         setUpNotice( );
     }
 

@@ -49,7 +49,7 @@
                 android:singleLine="true"
                 android:textCursorDrawable="@null"
                 android:textSize="14dp"
-                android:maxLength="30"
+                android:maxLength="20"
                 app:defaultTheme="Light" />
 
             <io.grabity.planetwallet.Widgets.CircleImageView

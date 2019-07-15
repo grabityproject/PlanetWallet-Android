@@ -31,8 +31,8 @@ public class PlanetManagementAdapter extends AdvanceArrayAdapter< Planet > {
         if ( Utils.equals( item.getHide( ), "Y" ) ) viewMapper.getView( ).setAlpha( 0.5f );
         ( ( PlanetItem ) viewMapper ).planetView.setData( item.getAddress( ) );
         ( ( PlanetItem ) viewMapper ).textType.setText( CoinType.of( item.getCoinType( ) ).name( ) );
-//        ( ( PlanetItem ) viewMapper ).textName.setText( item.getName( ) );
-        ( ( PlanetItem ) viewMapper ).textName.setText( Utils.planetNameForm( item.getName( ) ) );
+        ( ( PlanetItem ) viewMapper ).textName.setText( item.getName( ) );
+//        ( ( PlanetItem ) viewMapper ).textName.setText( Utils.planetNameForm( item.getName( ) ) );
         ( ( PlanetItem ) viewMapper ).textAddress.setText( Utils.addressReduction( item.getAddress( ) ) );
 
     }

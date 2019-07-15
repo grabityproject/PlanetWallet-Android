@@ -1052,10 +1052,10 @@ public class Utils {
 
     public static String planetNameForm( String name ) {
         if ( name == null ) return "";
-        if ( name.length( ) <= 15 ){
+        if ( name.length( ) <= 20 ){
             return name;
         } else{
-            return name.substring( 0,15 ) + "...";
+            return name.substring( 0,20 ) + "...";
         }
     }
 

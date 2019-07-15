@@ -9,9 +9,7 @@
         android:layout_height="@dimen/listHeight"
         android:paddingStart="20dp"
         android:paddingTop="20dp"
-        android:paddingEnd="20dp"
-
-        >
+        android:paddingEnd="20dp">
 
         <io.grabity.planetwallet.Widgets.PlanetView
             android:id="@+id/planetview_item_main_planets"
@@ -29,6 +27,8 @@
             android:text="planetName"
             android:textSize="14dp"
             android:textColor="#FFF"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:themeTextColor="#000" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView

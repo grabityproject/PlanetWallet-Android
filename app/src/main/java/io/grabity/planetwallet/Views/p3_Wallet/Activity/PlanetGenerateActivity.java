@@ -229,6 +229,11 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         PLog.e( "result : " + result );
+        PLog.e( "requestCode : " + requestCode );
+        PLog.e( "resultCode : " + resultCode );
+        PLog.e( "statusCode : " + statusCode );
+        PLog.e( "error : " + error );
+
 
         if ( statusCode == 200 ) {
             if ( requestCode == 0 ) {

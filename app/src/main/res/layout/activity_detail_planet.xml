@@ -36,6 +36,7 @@
             android:textSize="16dp"
             app:themeTextColor="#5c5964" />
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/listHeight">
@@ -47,6 +48,9 @@
                 android:paddingEnd="6dp"
                 android:textColor="#000"
                 android:textSize="24dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="111ass"
                 app:themeTextColor="#FFF"
                 app:typefaceStyle="medium" />
 
@@ -57,9 +61,10 @@
                 android:padding="2dp"
                 android:layout_alignTop="@id/text_detail_planet_name"
                 android:layout_alignBottom="@id/text_detail_planet_name"
-                android:layout_toRightOf="@id/text_detail_planet_name"
+                android:layout_toEndOf="@id/text_detail_planet_name"
                 android:src="@drawable/image_detail_planet_edit_blue"
                 app:themeSrc="@drawable/image_detail_planet_edit_black" />
+
 
             <io.grabity.planetwallet.Widgets.PlanetView
                 android:id="@+id/planet_detail_planet_planetview"
