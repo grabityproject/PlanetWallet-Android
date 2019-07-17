@@ -4,8 +4,8 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.MotionEvent;
@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 

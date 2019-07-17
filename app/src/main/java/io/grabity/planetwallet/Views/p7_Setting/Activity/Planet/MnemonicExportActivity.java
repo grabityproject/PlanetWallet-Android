@@ -2,11 +2,9 @@ package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
-
-import java.util.Arrays;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
@@ -16,7 +14,6 @@ import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 import io.grabity.planetwallet.Widgets.ToolBar;
 

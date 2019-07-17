@@ -4,15 +4,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 
 import io.grabity.planetwallet.R;
 
-public class FontTextView extends android.support.v7.widget.AppCompatTextView implements Themeable {
+public class FontTextView extends androidx.appcompat.widget.AppCompatTextView implements Themeable {
 
     //Todo QA 이후 defaultUnderLine 수정
 

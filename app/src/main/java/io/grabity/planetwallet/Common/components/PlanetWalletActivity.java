@@ -9,13 +9,13 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.MissingFormatArgumentException;
 import java.util.Stack;
 
@@ -35,7 +34,6 @@ import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout;

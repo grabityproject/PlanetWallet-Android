@@ -1,10 +1,9 @@
 package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.Transfer;
-import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;

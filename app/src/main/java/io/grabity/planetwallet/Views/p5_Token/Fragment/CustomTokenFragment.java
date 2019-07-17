@@ -2,14 +2,13 @@ package io.grabity.planetwallet.Views.p5_Token.Fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.ResizeAnimation;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;

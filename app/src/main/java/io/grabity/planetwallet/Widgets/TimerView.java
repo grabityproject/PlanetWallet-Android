@@ -9,7 +9,7 @@ import android.view.animation.LinearInterpolator;
  * Created by. JeongHyun 2019. 05. 21
  **/
 
-public class TimerView extends android.support.v7.widget.AppCompatTextView {
+public class TimerView extends androidx.appcompat.widget.AppCompatTextView {
 
     private ObjectAnimator animator;
     private int time;

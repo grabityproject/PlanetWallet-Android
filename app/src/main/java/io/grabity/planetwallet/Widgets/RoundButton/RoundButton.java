@@ -22,7 +22,7 @@ import io.grabity.planetwallet.Widgets.Themeable;
 /**
  * Created by. JcobPark on 2018. 08. 29
  */
-public class RoundButton extends android.support.v7.widget.AppCompatButton implements View.OnClickListener, Themeable {
+public class RoundButton extends androidx.appcompat.widget.AppCompatButton implements View.OnClickListener, Themeable {
 
     private int defaultTheme;
 

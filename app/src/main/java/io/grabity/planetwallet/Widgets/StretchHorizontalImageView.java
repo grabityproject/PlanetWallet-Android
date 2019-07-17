@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
-public class StretchHorizontalImageView extends android.support.v7.widget.AppCompatImageView {
+public class StretchHorizontalImageView extends androidx.appcompat.widget.AppCompatImageView {
 
 
     public StretchHorizontalImageView( Context context ) {

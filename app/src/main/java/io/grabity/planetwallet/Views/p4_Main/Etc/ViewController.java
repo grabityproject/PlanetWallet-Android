@@ -1,7 +1,7 @@
 package io.grabity.planetwallet.Views.p4_Main.Etc;
 
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -12,7 +12,6 @@ import io.grabity.planetwallet.MiniFramework.utils.BlurBuilder;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
-import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.FooterViewMapper;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.HeaderViewMapper;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity.ViewMapper;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;

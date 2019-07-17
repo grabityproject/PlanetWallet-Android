@@ -14,7 +14,7 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
 
-public class RoundEditText extends android.support.v7.widget.AppCompatEditText implements Themeable {
+public class RoundEditText extends androidx.appcompat.widget.AppCompatEditText implements Themeable {
 
     private int defaultTheme;
 

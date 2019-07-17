@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;

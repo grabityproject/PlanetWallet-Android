@@ -10,11 +10,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 
 /**
  * Created by. JcobPark on 2019. 05. 14

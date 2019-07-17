@@ -4,21 +4,18 @@ package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;

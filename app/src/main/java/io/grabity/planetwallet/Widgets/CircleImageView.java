@@ -19,7 +19,7 @@ import android.util.AttributeSet;
 import io.grabity.planetwallet.R;
 
 
-public class CircleImageView extends android.support.v7.widget.AppCompatImageView implements Themeable {
+public class CircleImageView extends androidx.appcompat.widget.AppCompatImageView implements Themeable {
 
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;

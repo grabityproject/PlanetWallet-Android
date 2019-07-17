@@ -2,10 +2,12 @@ package io.grabity.planetwallet.Common.components;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
+import androidx.annotation.Nullable;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
+
+import com.google.firebase.messaging.RemoteMessage;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -17,17 +19,18 @@ import com.pentasecurity.cryptowallet.crypto.PinBasedKeyCrypterImpl;
 import com.pentasecurity.cryptowallet.storage.DefaultStorageCrypter;
 
 import java.security.Security;
+import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
+import io.grabity.planetwallet.MiniFramework.fcm.OnMessagingListener;
 import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
+import io.grabity.planetwallet.MiniFramework.utils.SetTokenImageDownloader;
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.crypto.KeyStoreCrypter;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
-import io.grabity.planetwallet.MiniFramework.utils.SetTokenImageDownloader;
-import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 
 
@@ -38,6 +41,9 @@ import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 public class PlanetWalletApplication extends MultiDexApplication {
 
     public char[] PINCODE = null;
+
+    private ArrayList< OnMessagingListener > messagingListeners = new ArrayList<>( );
+
 
     static {
         System.loadLibrary( "pallet_core-0.1.0-x64_shared" );
@@ -118,6 +124,15 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void setPINCODE( @Nullable char[] PINCODE ) {
         this.PINCODE = PINCODE;
+    }
+
+    public void addOnMessagingListener( OnMessagingListener listener ) {
+        if ( messagingListeners == null ) messagingListeners = new ArrayList<>( );
+        messagingListeners.add( listener );
+    }
+
+    public ArrayList< OnMessagingListener > getMessagingListeners( ) {
+        return messagingListeners;
     }
 }
 

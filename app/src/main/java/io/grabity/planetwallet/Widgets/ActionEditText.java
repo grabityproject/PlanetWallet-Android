@@ -1,6 +1,5 @@
 package io.grabity.planetwallet.Widgets;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -11,12 +10,11 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.widget.EditText;
 
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
-public class ActionEditText extends android.support.v7.widget.AppCompatEditText implements Themeable {
+public class ActionEditText extends androidx.appcompat.widget.AppCompatEditText implements Themeable {
 
     private int defaultTheme;
 

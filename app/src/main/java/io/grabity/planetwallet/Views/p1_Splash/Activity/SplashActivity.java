@@ -3,24 +3,27 @@ package io.grabity.planetwallet.Views.p1_Splash.Activity;
 import android.animation.Animator;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
-
-import java.util.ArrayList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
-import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
-import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.KeyPair;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
+import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 
 
 public class SplashActivity extends PlanetWalletActivity implements Animator.AnimatorListener {
@@ -56,14 +59,20 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
     @Override
     protected void setData( ) {
         super.setData( );
+        FirebaseInstanceId.getInstance( ).getInstanceId( )
+                .addOnCompleteListener( new OnCompleteListener< InstanceIdResult >( ) {
+                    @Override
+                    public void onComplete( @NonNull Task< InstanceIdResult > task ) {
+                        if ( !task.isSuccessful( ) ) {
+                            PLog.e( "getInstanceId failed", task.getException( ) );
+                            return;
+                        }
 
-//        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH, "N" ) , "N" ) ){
-//            Utils.setPreferenceData( this , C.pref.BACK_UP_MNEMONIC_ETH, "N","1" );
-//        }
-//
-//        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC ) , "" ) ){
-//            Utils.setPreferenceData( this , C.pref.BACK_UP_MNEMONIC_BTC, C.wallet.NOBACKUP );
-//        }
+                        // Get new Instance ID token
+                        String token = task.getResult( ).getToken( );
+                        PLog.e( "token : " + token );
+                    }
+                } );
     }
 
     @Override

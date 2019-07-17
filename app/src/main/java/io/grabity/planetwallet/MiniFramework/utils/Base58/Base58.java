@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package io.grabity.planetwallet.MiniFramework.Base58;
+package io.grabity.planetwallet.MiniFramework.utils.Base58;
 
 
 import java.math.BigInteger;

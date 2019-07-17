@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package io.grabity.planetwallet.MiniFramework.Base58;
+package io.grabity.planetwallet.MiniFramework.utils.Base58;
 
 @SuppressWarnings( "serial" )
 public class AddressFormatException extends IllegalArgumentException {

@@ -1,7 +1,7 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Board;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;

@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 
 import io.grabity.planetwallet.R;
 
-public class StretchImageView extends android.support.v7.widget.AppCompatImageView implements Themeable {
+public class StretchImageView extends androidx.appcompat.widget.AppCompatImageView implements Themeable {
 
     private Drawable themeDrawable;
     private Drawable defaultDrawable;

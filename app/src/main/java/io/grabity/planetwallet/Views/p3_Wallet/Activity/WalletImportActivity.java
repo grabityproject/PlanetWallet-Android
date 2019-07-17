@@ -2,8 +2,8 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -12,10 +12,7 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
-import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
-import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.JSONImportFragment;

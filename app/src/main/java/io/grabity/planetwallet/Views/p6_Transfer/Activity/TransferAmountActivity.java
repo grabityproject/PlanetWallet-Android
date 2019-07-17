@@ -1,7 +1,7 @@
 package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -12,14 +12,12 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.Transfer;
-import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToolBar;

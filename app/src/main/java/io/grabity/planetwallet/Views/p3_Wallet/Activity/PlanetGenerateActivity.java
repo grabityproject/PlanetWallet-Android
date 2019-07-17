@@ -2,7 +2,7 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;

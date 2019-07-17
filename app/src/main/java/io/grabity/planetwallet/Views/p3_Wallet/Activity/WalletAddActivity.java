@@ -3,7 +3,7 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import java.util.ArrayList;
