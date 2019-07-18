@@ -102,6 +102,10 @@ public class C {
         public final static String BACK_UP_MNEMONIC_ETH = "backupMnemonicETH";
         public final static String BACK_UP_MNEMONIC_BTC = "backupMnemonicBTC";
 
+        public final static String FCM_TOKEN = "device_token";
+        public final static String DEVICE_KEY = "device_key";
+
+
     }
 
     public static class wallet {

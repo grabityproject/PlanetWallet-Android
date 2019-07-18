@@ -56,6 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -953,6 +954,12 @@ public class Utils {
         Bundle bundle = new Bundle( );
         bundle.putInt( key, value );
         return bundle;
+    }
+
+    public static HashMap<String, String> createStringHashMap( String key, String value ) {
+        HashMap<String, String> map = new HashMap<>(  );
+        map.put( key, value );
+        return map;
     }
 
     public static String md5( final String s ) {

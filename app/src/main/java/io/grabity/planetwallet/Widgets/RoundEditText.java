@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.ViewTreeObserver;
 
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
@@ -79,8 +80,20 @@ public class RoundEditText extends androidx.appcompat.widget.AppCompatEditText i
         paintBorderColor.setStrokeWidth( borderWidth );
 
         setFocusable( true );
+
+
+        this.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
+            @Override
+            public void onGlobalLayout( ) {
+                getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
+                requestFocus( );
+                setSelection( getText( ).toString( ).length( ) );
+
+            }
+        } );
         super.setBackgroundColor( Color.TRANSPARENT );
     }
+
 
     @Override
     public void setBackgroundColor( int color ) {

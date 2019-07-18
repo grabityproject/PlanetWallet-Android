@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -36,6 +37,7 @@ public class Post extends AbstractNetworkTask {
     private int resultCode;
     private HttpClient httpClient;
     private String token = null;
+    private HashMap<String, String> extraHeaders = new HashMap<>(  );
 
     public Post( NetworkInterface in ) {
         // TODO Auto-generated constructor stub
@@ -46,6 +48,13 @@ public class Post extends AbstractNetworkTask {
     public Post setToken( String token ) {
         this.token = token;
         return this;
+    }
+
+    public void action( String url, int requestCode, int resultCode, Object data, HashMap<String, String> extraHeaders ) {
+        this.requestCode = requestCode;
+        this.resultCode = resultCode;
+        this.extraHeaders = extraHeaders;
+        new PostTask( url, false, httpClient, in, data ).execute( );
     }
 
     public void action( String url, int requestCode, int resultCode, Object data ) {
@@ -102,6 +111,13 @@ public class Post extends AbstractNetworkTask {
 
                 httpPost = new HttpPost( this.url );
                 httpPost.setHeader( "locale", Locale.getDefault().getLanguage() );
+
+                if( extraHeaders != null && !extraHeaders.isEmpty() ){
+                    Set<String> set = extraHeaders.keySet();
+                    for ( String key : set ) {
+                        httpPost.addHeader( key, extraHeaders.get( key ) );
+                    }
+                }
 
                 if ( token != null ) {
                     httpPost.setHeader( "Authorization", "Bearer " + token );

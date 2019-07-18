@@ -232,7 +232,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
         if ( returnVO.isSuccess( ) ) {
-
             allPlanets = ( ArrayList< Planet > ) returnVO.getResult( );
             if ( allPlanets != null ) {
                 if ( allPlanets.size( ) == 0 ) { //이름검색시 없을경우
@@ -284,7 +283,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
                 }
 
             }
-
             viewMapper.listView.setAdapter( new TransferAdapter( this, allPlanets ) );
 
         }

@@ -1,7 +1,9 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -53,6 +55,7 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
         viewMapper.btnSubmit.setOnClickListener( this );
 
         viewMapper.etPrivateKey.addTextChangedListener( this );
+//        viewMapper.etPrivateKey.requestFocus( );
     }
 
     @Override

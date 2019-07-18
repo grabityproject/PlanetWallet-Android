@@ -1,7 +1,9 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Board;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.view.View;
 
 import java.util.ArrayList;
@@ -9,12 +11,14 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Board;
 import io.grabity.planetwallet.VO.ReturnVO;
-import io.grabity.planetwallet.Views.p7_Setting.Adapter.BoardAdapter;
+import io.grabity.planetwallet.Views.p7_Setting.Adapter.AnnounceAdapter;
+import io.grabity.planetwallet.Views.p7_Setting.Adapter.FAQAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -53,7 +57,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
                 onBackPressed( );
             } else {
                 viewMapper.toolBar.setTitle( board.getType( ) );
-                if ( Utils.equals( board.getType( ), "FAQ" ) ) {
+                if ( Utils.equals( board.getType( ), localized( R.string.setting_faq_title ) ) ) {
                     new Get( this ).action( Route.URL( "board", "faq", "list" ), 0, 0, null );
                 } else {
                     new Get( this ).action( Route.URL( "board", "notice", "list" ), 0, 0, null );
@@ -69,7 +73,11 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
             ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Board.class );
             if ( returnVO.isSuccess( ) ) {
                 items = ( ArrayList< Board > ) returnVO.getResult( );
-                viewMapper.listView.setAdapter( new BoardAdapter( getApplicationContext( ), items ) );
+                if ( Utils.equals( board.getType( ), localized( R.string.setting_faq_title ) ) ) {
+                    viewMapper.listView.setAdapter( new FAQAdapter( getApplicationContext( ), items ) );
+                } else {
+                    viewMapper.listView.setAdapter( new AnnounceAdapter( getApplicationContext( ), items ) );
+                }
             }
         }
     }

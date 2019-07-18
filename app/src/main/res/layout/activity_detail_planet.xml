@@ -50,7 +50,6 @@
                 android:textSize="24dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="111ass"
                 app:themeTextColor="#FFF"
                 app:typefaceStyle="medium" />
 
@@ -111,10 +110,9 @@
 
 
         <RelativeLayout
+            android:id="@+id/group_detail_planet_toggle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/listHeight"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp">
+            android:layout_height="76dp">
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:layout_width="match_parent"
@@ -126,26 +124,28 @@
                 app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.ToggleButton
-                android:id="@+id/toggleBtn"
+                android:id="@+id/toggle"
                 android:layout_width="52dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true" />
 
-        </RelativeLayout>
 
-        <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/toolBar"
-            android:layout_marginBottom="20dp"
-            android:background="#EDEDED"
-            app:themeBackground="#1E1E28" />
+            <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#EDEDED"
+                app:themeBackground="#1E1E28" />
+
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/group_detail_planet_mnemonic_backup"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/listHeight">
+            android:layout_height="@dimen/listHeight"
+            android:layout_marginTop="20dp">
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_detail_planet_text1"

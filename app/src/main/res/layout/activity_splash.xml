@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,13 +7,20 @@
     app:themeBackground="#FFF">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp">
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_splash"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
+
+    </RelativeLayout>
 
 
 
 
-</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>
+</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout>

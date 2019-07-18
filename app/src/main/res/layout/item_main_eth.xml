@@ -7,24 +7,28 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:paddingEnd="14dp">
+        android:paddingEnd="14dp"
+        android:paddingStart="20dp">
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_main_eth_icon"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_eth"
             android:layout_centerVertical="true"
-            android:padding="20dp"
-            android:src="@drawable/icon_eth" />
+            />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_eth_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/image_item_main_eth_icon"
             android:textColor="#FFF"
             android:textSize="16dp"
+            android:paddingStart="10dp"
+            android:layout_centerVertical="true"
+            android:includeFontPadding="false"
+            android:gravity="center"
             app:themeTextColor="#000"
             app:typefaceStyle="medium" />
 

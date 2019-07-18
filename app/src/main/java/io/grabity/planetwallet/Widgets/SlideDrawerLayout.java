@@ -2,6 +2,7 @@ package io.grabity.planetwallet.Widgets;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class SlideDrawerLayout extends ViewGroup {
     private OnSlideDrawerListener onSlideDrawerListener;
 
     private ArrayList< View > bypassAreaViews;
+    private ArrayList< View > doNotEventViews;
 
     public SlideDrawerLayout( @NonNull Context context ) {
         super( context );
@@ -267,10 +269,17 @@ public class SlideDrawerLayout extends ViewGroup {
         this.currentMovingPosition = currentMovingPosition;
     }
 
+    @SuppressLint( "ClickableViewAccessibility" )
     @Override
     public boolean onTouchEvent( MotionEvent event ) {
         if ( currentMovingPosition == -1 ) return false;
         View getCurrentPositionView = triggers.get( currentMovingPosition ).view;
+
+        if ( doNotEventViews != null ) {
+            for ( int i = 0; i< doNotEventViews.size(); i++ ){
+                doNotEventViews.get( i ).setOnTouchListener( ( v, event1 ) -> true );
+            }
+        }
 
         if ( !isOpen ) {
 
@@ -627,6 +636,11 @@ public class SlideDrawerLayout extends ViewGroup {
     public void addBypassArea( View view ) {
         if ( bypassAreaViews == null ) bypassAreaViews = new ArrayList<>( );
         bypassAreaViews.add( view );
+    }
+
+    public void addNotEventArea( View view ) {
+        if ( doNotEventViews == null ) doNotEventViews = new ArrayList<>( );
+        doNotEventViews.add( view );
     }
 
 }

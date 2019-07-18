@@ -2,7 +2,9 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.pentasecurity.cryptowallet.exceptions.DecryptionErrorException;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,9 +40,11 @@ import io.grabity.planetwallet.VO.ErrorResult;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
+import io.grabity.planetwallet.Widgets.ActionEditText;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.PlanetView;
+import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.ShadowView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -93,6 +98,8 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
         viewMapper.etPlanetName.setOnEditorActionListener( this );
         viewMapper.etPlanetName.addTextChangedListener( this );
+
+//        viewMapper.etPlanetName.requestFocus( );
 
     }
 
@@ -204,7 +211,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                     return;
                 }
 
-                planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+                planet.setName( viewMapper.etPlanetName.getText( ).toString( ).trim( ) );
 
 
                 Planet request = new Planet( );
@@ -218,7 +225,10 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 //                planet.setBalance( "24.5622312" );
 
                 PLog.e( "URL : " + Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ) );
-                new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
+
+
+//                new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
+                new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );
 
             }
 
@@ -228,43 +238,32 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-        PLog.e( "result : " + result );
-        PLog.e( "requestCode : " + requestCode );
-        PLog.e( "resultCode : " + resultCode );
-        PLog.e( "statusCode : " + statusCode );
-        PLog.e( "error : " + error );
 
 
-        if ( statusCode == 200 ) {
-            if ( requestCode == 0 ) {
-                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
-                if ( returnVO.isSuccess( ) ) {
+        if ( !error ) {
+            if ( statusCode == 200 && requestCode == 0  ) {
+                    ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+                    if ( returnVO.isSuccess( ) ) {
 
+                        PlanetStore.getInstance( ).save( planet );
 
-                    PlanetStore.getInstance( ).save( planet );
+                        if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+                            setResult( RESULT_OK );
+                            super.onBackPressed( );
 
-                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
-                        setResult( RESULT_OK );
-                        super.onBackPressed( );
-
-                    } else {
-                        sendAction( MainActivity.class );
-                        finish( );
-
+                        } else {
+                            sendAction( MainActivity.class );
+                            finish( );
+                        }
                     }
 
-                }
-
+            } else {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
+                ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
+                CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
             }
         } else {
-            ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
-            ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
-            CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
-//            if ( errorResult == null ) {
-//                CustomToast.makeText( this, "server error" ).show( );
-//            } else{
-//                CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
-//            }
+            CustomToast.makeText( this, result ).show( );
         }
     }
 
@@ -434,7 +433,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         PlanetView planetBackground;
         ShadowView shadowBackground;
 
-        EditText etPlanetName;
+        ActionEditText etPlanetName;
 
         public ViewMapper( ) {
 

@@ -3,7 +3,9 @@ package io.grabity.planetwallet.Views.p5_Token.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -27,6 +29,7 @@ import io.grabity.planetwallet.Views.p5_Token.Adapter.TokenAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.CircleImageView;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
 public class TokenListFragment extends PlanetWalletFragment implements View.OnClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< ERC20 > {
@@ -64,6 +67,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     protected void viewInit( ) {
         super.viewInit( );
         viewMapper.etSearch.addTextChangedListener( this );
+        viewMapper.etSearch.requestFocus( );
         viewMapper.btnClear.setOnClickListener( this );
     }
 
@@ -76,34 +80,38 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-        if ( resultCode == 0 && statusCode == 200 ) {
-            ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ERC20.class );
-            if ( returnVO.isSuccess( ) ) {
-                items = new ArrayList<>( );
-                ArrayList< ERC20 > erc20list = ( ArrayList< ERC20 > ) returnVO.getResult( );
-                ArrayList< ERC20 > currentUseId = ERC20Store.getInstance( ).getTokenList( planet.getKeyId( ) );
-                HashMap< String, ERC20 > currentMap = new HashMap<>( );
+        if ( !error ) {
+            if ( resultCode == 0 && statusCode == 200 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ERC20.class );
+                if ( returnVO.isSuccess( ) ) {
+                    items = new ArrayList<>( );
+                    ArrayList< ERC20 > erc20list = ( ArrayList< ERC20 > ) returnVO.getResult( );
+                    ArrayList< ERC20 > currentUseId = ERC20Store.getInstance( ).getTokenList( planet.getKeyId( ) );
+                    HashMap< String, ERC20 > currentMap = new HashMap<>( );
 
-                for ( ERC20 erc20 : currentUseId ) {
-                    currentMap.put( erc20.getContract( ), erc20 );
-                }
-
-                for ( int i = 0; i < erc20list.size( ); i++ ) {
-                    if ( currentMap.containsKey( erc20list.get( i ).getContract( ) ) ) {
-                        if ( currentMap.get( erc20list.get( i ).getContract( ) ).getHide( ).equals( "N" ) )
-                            erc20list.get( i ).setCheck( true );
+                    for ( ERC20 erc20 : currentUseId ) {
+                        currentMap.put( erc20.getContract( ), erc20 );
                     }
-                    items.add( erc20list.get( i ) );
+
+                    for ( int i = 0; i < erc20list.size( ); i++ ) {
+                        if ( currentMap.containsKey( erc20list.get( i ).getContract( ) ) ) {
+                            if ( currentMap.get( erc20list.get( i ).getContract( ) ).getHide( ).equals( "N" ) )
+                                erc20list.get( i ).setCheck( true );
+                        }
+                        items.add( erc20list.get( i ) );
+                    }
+
+                    filterItems = new ArrayList<>( items );
+
+                    adapter = new TokenAdapter( getContext( ), filterItems );
+                    adapter.setOnInsideItemClickListener( this );
+
+                    viewMapper.listView.setAdapter( adapter );
+                    viewMapper.listView.setOnItemClickListener( this );
                 }
-
-                filterItems = new ArrayList<>( items );
-
-                adapter = new TokenAdapter( getContext( ), filterItems );
-                adapter.setOnInsideItemClickListener( this );
-
-                viewMapper.listView.setAdapter( adapter );
-                viewMapper.listView.setOnItemClickListener( this );
             }
+        } else {
+            CustomToast.makeText( getContext( ), result ).show( );
         }
     }
 

@@ -65,7 +65,7 @@
 
 
             <io.grabity.planetwallet.Widgets.ToggleButton
-                android:id="@+id/toggleBtn"
+                android:id="@+id/toggle"
                 android:layout_width="52dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"

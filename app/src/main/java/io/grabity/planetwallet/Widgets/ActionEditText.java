@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
@@ -77,6 +78,17 @@ public class ActionEditText extends androidx.appcompat.widget.AppCompatEditText 
         paintBorderColor.setStrokeWidth( borderWidth );
 
         setFocusable( true );
+
+        this.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
+            @Override
+            public void onGlobalLayout( ) {
+                getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
+                requestFocus( );
+                setSelection( getText( ).toString( ).length( ) );
+
+            }
+        } );
+
         super.setBackgroundColor( Color.TRANSPARENT );
     }
 

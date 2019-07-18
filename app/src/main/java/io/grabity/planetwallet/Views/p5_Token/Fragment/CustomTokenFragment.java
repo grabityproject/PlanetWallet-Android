@@ -2,7 +2,9 @@ package io.grabity.planetwallet.Views.p5_Token.Fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -60,7 +62,7 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
             if ( getActivity( ) == null ) return;
             getActivity( ).setResult( Activity.RESULT_OK );
             getActivity( ).onBackPressed( );
-        } else if ( v == viewMapper.btnClear ){
+        } else if ( v == viewMapper.btnClear ) {
             viewMapper.etAddress.setText( "" );
         }
     }

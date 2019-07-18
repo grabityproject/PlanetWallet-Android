@@ -17,8 +17,11 @@
             android:layout_height="wrap_content"
             android:paddingTop="22dp"
             android:paddingBottom="22dp"
+            android:paddingEnd="22dp"
             android:textColor="#000"
             android:textSize="14dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:themeTextColor="#FFF" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView

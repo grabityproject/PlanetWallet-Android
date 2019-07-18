@@ -6,13 +6,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Board;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 
-public class BoardAdapter extends AdvanceArrayAdapter< Board > {
+public class FAQAdapter extends AdvanceArrayAdapter< Board > {
 
-    public BoardAdapter( Context context, ArrayList< Board > objects ) {
+    public FAQAdapter( Context context, ArrayList< Board > objects ) {
         super( context, objects );
     }
 
@@ -24,18 +25,15 @@ public class BoardAdapter extends AdvanceArrayAdapter< Board > {
     @Override
     public void bindData( ViewMapper viewMapper, Board item, int position ) {
         ( ( BoardItem ) viewMapper ).title.setText( item.getSubject( ) );
-        ( ( BoardItem ) viewMapper ).date.setText( item.getCreated_at( ) );
     }
 
     class BoardItem extends ViewMapper {
 
         TextView title;
-        TextView date;
 
         public BoardItem( View itemView ) {
             super( itemView );
             title = findViewById( R.id.text_item_board_title );
-            date = findViewById( R.id.text_item_board_date );
         }
     }
 

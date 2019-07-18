@@ -9,6 +9,7 @@
     <string name="pincode_registration_change_pin_code_title">Change PIN Code</string>
     <string name="pincode_registration_sub_title">Enter the 4 digit + alphabet</string>
     <string name="pincode_registration_sub_title_error">Please check your code</string>
+    <string name="pincode_registration_reset_title">Reset</string>
     <string name="pincode_certification_verification_code_title">Verification Code</string>
     <string name="pincode_certification_code_incorrect_title">Code incorrect</string>
     <string name="pincode_certification_change_pin_code_title">Change PIN Code</string>
@@ -30,7 +31,7 @@
     <string name="privatekey_import_enter_privateKey_title">Enter privateKey</string>
     <string name="privatekey_import_exists_title">It is a privateKey that already exists.</string>
     <string name="privatekey_import_not_match_title">The privateKey type does not match.</string>
-    <string name="main_notice_title">Your Planet Keep safe here</string>
+    <string name="main_notice_title">Your Planet Keep safe <u>here</u></string>
     <string name="main_btn_bottom_copy_title">Copy</string>
     <string name="main_btn_bottom_transfer_title">Transfer</string>
     <string name="main_copy_to_clipboard">Copy To Clipboard</string>

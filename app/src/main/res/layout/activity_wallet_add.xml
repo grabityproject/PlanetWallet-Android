@@ -14,16 +14,23 @@
         app:defaultTheme="Dark"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_close_blue" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/group_wallet_add_btn">
 
     <io.grabity.planetwallet.Widgets.StretchImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolBar"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
         android:src="@drawable/image_walletadd_black"
         app:themeSrc="@drawable/image_walletadd_white" />
 
+    </FrameLayout>
+
 
     <LinearLayout
+        android:id="@+id/group_wallet_add_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -71,7 +71,8 @@
                 android:paddingTop="10dp"
                 android:text="@string/privatekey_export_message_title"
                 android:textColor="#FF0050"
-                android:textSize="14dp" />
+                android:lineSpacingExtra="4dp"
+                android:textSize="12dp" />
 
             <io.grabity.planetwallet.Widgets.StretchImageView
                 android:layout_width="20dp"

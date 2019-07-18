@@ -23,5 +23,4 @@ public class MessagingService extends FirebaseMessagingService {
             }
         }
     }
-
 }

@@ -51,7 +51,7 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
         viewMapper.btnMnemonic.setOnClickListener( this );
         viewMapper.btnPrivateKey.setOnClickListener( this );
         viewMapper.btnName.setOnClickListener( this );
-        viewMapper.toggleButton.setOnToggleListener( this );
+        viewMapper.toggle.setOnToggleListener( this );
     }
 
     @Override
@@ -76,6 +76,9 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
             viewMapper.textName.setText( Utils.planetNameForm( planet.getName( ) ) );
 
+            viewMapper.groupToggle.setVisibility( Utils.equals( planet.getKeyId() , Utils.getPreferenceData( this, C.pref.LAST_PLANET_KEYID ) ) ? View.GONE : View.VISIBLE );
+            viewMapper.toggle.setOn( Utils.equals( planet.getHide(), "Y" ) );
+
             viewMapper.textName.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
                 @Override
                 public void onGlobalLayout( ) {
@@ -87,7 +90,6 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
                         viewMapper.btnName.setX( viewMapper.textName.getPaint( ).measureText( viewMapper.textName.getText( ).toString( ) ) + Utils.dpToPx( DetailPlanetActivity.this, 6 ) );
                         viewMapper.btnName.requestLayout( );
                     }
-
 
                 }
             } );
@@ -175,7 +177,7 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
     public class ViewMapper {
 
         ToolBar toolBar;
-        ToggleButton toggleButton;
+        ToggleButton toggle;
 
         TextView textType;
         TextView textAddress;
@@ -186,13 +188,14 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
         ViewGroup btnMnemonic;
         ViewGroup btnPrivateKey;
+        ViewGroup groupToggle;
 
         PlanetView planetView;
 
         public ViewMapper( ) {
 
             toolBar = findViewById( R.id.toolBar );
-            toggleButton = findViewById( R.id.toggleBtn );
+            toggle = findViewById( R.id.toggle );
             textType = findViewById( R.id.text_detail_planet_type );
             textAddress = findViewById( R.id.text_detail_planet_address );
             textAddressType = findViewById( R.id.text_detail_planet_address_type );
@@ -203,6 +206,8 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             btnName = findViewById( R.id.btn_detail_planet_name_change );
             btnMnemonic = findViewById( R.id.group_detail_planet_mnemonic_backup );
             btnPrivateKey = findViewById( R.id.group_detail_planet_privatekey_backup );
+
+            groupToggle = findViewById( R.id.group_detail_planet_toggle );
 
             planetView = findViewById( R.id.planet_detail_planet_planetview );
 

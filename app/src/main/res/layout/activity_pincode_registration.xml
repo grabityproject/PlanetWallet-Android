@@ -9,16 +9,28 @@
     <io.grabity.planetwallet.Widgets.ToolBar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbarHeight"
-        />
+        android:layout_height="@dimen/toolbarHeight" />
 
-    <Button
+    <RelativeLayout
         android:id="@+id/btn_pin_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="리셋"
-        android:visibility="gone"/>
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        android:visibility="gone"
+        android:paddingEnd="30dp">
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pincode_registration_reset_title"
+            android:textSize="16dp"
+            android:textColor="#FF0050"
+            app:themeTextColor="#FF0050"
+            app:underLine="Line"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_pincode_registration_verificationcode"

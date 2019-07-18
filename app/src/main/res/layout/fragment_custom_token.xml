@@ -34,6 +34,7 @@
                 app:defaultTheme="Dark"
                 android:singleLine="true"
                 android:paddingStart="14dp"
+                android:paddingEnd="56dp"
                 />
 
             <io.grabity.planetwallet.Widgets.CircleImageView
@@ -88,7 +89,6 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:paddingStart="14dp"
-            android:inputType="number"
             app:defaultTheme="Dark" />
 
         <io.grabity.planetwallet.Widgets.FontTextView

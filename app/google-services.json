@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "779752411933",
+    "firebase_url": "https://planetwallet-a6fad.firebaseio.com",
+    "project_id": "planetwallet-a6fad",
+    "storage_bucket": "planetwallet-a6fad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779752411933:android:f1dc821bab317dbd",
+        "android_client_info": {
+          "package_name": "io.grabity.planetwallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779752411933-ehp7s1d7v9bder8viieul0pi2f66tbht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOHFUXSaJw7MFdOV_cpazppvHxQ724mHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779752411933-ehp7s1d7v9bder8viieul0pi2f66tbht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,9 @@ package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -58,6 +60,8 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
         viewMapper.btnSubmit.setOnClickListener( this );
 
         viewMapper.etMnemonic.addTextChangedListener( this );
+
+//        viewMapper.etPassword.requestFocus( );
 
     }
 
@@ -155,7 +159,6 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
     public class ViewMapper {
 
         RoundEditText etPassword;
-        //        RoundEditText etMnemonic;
         EditText etMnemonic;
         View passwordInvisible;
         View passwordVisible;

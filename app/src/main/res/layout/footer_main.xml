@@ -39,41 +39,40 @@
                 android:background="#1E1E28"
                 app:themeBackground="#EDEDED" />
 
-
-            <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+            <io.grabity.planetwallet.Widgets.RoundRelativeLayout
                 android:id="@+id/btn_footer_main_manage_token"
-                android:layout_width="196dp"
+                android:layout_width="wrap_content"
                 android:layout_height="54dp"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="-6dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                app:borderColorHighlight="#1E1E28"
-                app:borderColorNormal="#1E1E28"
+                android:paddingRight="24dp"
+                android:layout_centerHorizontal="true"
+                app:borderColor="#1E1E28"
                 app:borderWidth="1dp"
-                app:cornerRadius="6dp" />
+                app:cornerRadius="6dp">
 
+                <io.grabity.planetwallet.Widgets.StretchImageView
+                    android:id="@+id/image_footerMain_addTokenBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/image_main_addtokens_gray"
+                    app:themeSrc="@drawable/image_main_addtokens_blue" />
 
-            <io.grabity.planetwallet.Widgets.StretchImageView
-                android:id="@+id/image_footerMain_addTokenBtn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignStart="@+id/btn_footer_main_manage_token"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/image_main_addtokens_gray"
-                app:themeSrc="@drawable/image_main_addtokens_blue" />
+                <io.grabity.planetwallet.Widgets.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/image_footerMain_addTokenBtn"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="@string/main_footer_manage_token"
+                    android:textColor="#FFF"
+                    android:textSize="16dp"
+                    app:themeTextColor="#000" />
 
-            <io.grabity.planetwallet.Widgets.FontTextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:paddingLeft="12dp"
-                android:text="@string/main_footer_manage_token"
-                android:textColor="#FFFFFF"
-                android:textSize="16dp"
-                app:themeTextColor="#000" />
+            </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
+
 
         </RelativeLayout>
 

@@ -31,20 +31,18 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
     private OnERC20PopupClickListener onERC20PopupClickListener;
 
     private float contentHeight = -1.0f;
-    private float defaultTop = -1.0f;
     private float defaultY = -1.0f;
     private boolean isMove = false;
+    boolean isAbleMoving = false;
 
-
+    private float defaultPopupTop = -1.0f;
 
     public static ERC20Popup newInstance( Context context, Planet planet, ERC20 erc20 ) {
         return instance = new ERC20Popup( context, planet, erc20 );
-//        return new ERC20Popup( context, planet, erc20 );
     }
 
     public static ERC20Popup newInstance( Context context ) {
-        return instance = new ERC20Popup( context,null,null );
-//        return new ERC20Popup( context, null, null );
+        return instance = new ERC20Popup( context, null, null );
     }
 
     public static ERC20Popup getInstance( ) {
@@ -71,9 +69,7 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
 
     @Override
     public void onCreateView( ) {
-
         contentHeight = Utils.dpToPx( getContext( ), 580 );
-        defaultTop = getScreenHeight( getContext( ) ) - contentHeight;
 
         getBackground( ).setBackgroundColor( Color.TRANSPARENT );
         getContentView( ).setOnTouchListener( this );
@@ -87,8 +83,7 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
 
         viewMapper.btnCopy.setOnClickListener( this );
         viewMapper.btnTransfer.setOnClickListener( this );
-        viewMapper.btnClose.setOnClickListener( this );
-
+        viewMapper.btnClose.setOnTouchListener( this );
     }
 
     @Override
@@ -101,9 +96,8 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
             if ( onERC20PopupClickListener != null ) {
                 onERC20PopupClickListener.onERC20PopupClick( planet, erc20, TRANSFER );
             }
-        } else if ( v == viewMapper.btnClose ) {
-            getActivity( ).onBackPressed( );
         }
+
     }
 
     @Override
@@ -112,16 +106,28 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
             if ( event.getAction( ) == MotionEvent.ACTION_DOWN ) {
 
                 defaultY = event.getRawY( );
-
-            } else if ( event.getAction( ) == MotionEvent.ACTION_MOVE ) {
-                if ( ( event.getRawY( ) - defaultY ) >= 0 ) {
-                    viewMapper.groupPopup.setTop( ( int ) ( event.getRawY( ) + defaultTop - defaultY ) );
+                defaultPopupTop = viewMapper.groupPopup.getTop( );
+                if ( defaultY >= defaultPopupTop + Utils.dpToPx( getContext( ), 52 ) ){
+                    isAbleMoving = false;
+                }else{
+                    isAbleMoving = true;
                 }
-            } else if ( event.getAction( ) == MotionEvent.ACTION_UP || event.getAction( ) == MotionEvent.ACTION_CANCEL ) {
-                if ( contentHeight * 1 / 4 < ( event.getRawY( ) - defaultY ) ) {
+
+                PLog.e( "ACTION DOWN defaultY : " + defaultY);
+                PLog.e( "ACTION DOWN defaultPopupTop : " + defaultPopupTop);
+
+            } else if ( event.getAction( ) == MotionEvent.ACTION_MOVE && isAbleMoving ) {
+                if ( ( event.getRawY( ) - defaultY ) >= 0 ) {
+                    viewMapper.groupPopup.setTop( ( int ) ( event.getRawY( ) + defaultPopupTop - defaultY ) );
+                }
+
+            } else if ( ( event.getAction( ) == MotionEvent.ACTION_UP || event.getAction( ) == MotionEvent.ACTION_CANCEL ) && isAbleMoving ) {
+                if ( v == viewMapper.btnClose && viewMapper.groupPopup.getTop( ) == defaultPopupTop ) {
+                    getActivity( ).onBackPressed( );
+                } else if ( contentHeight * 1 / 4 < ( event.getRawY( ) - defaultY ) ) {
                     getActivity( ).onBackPressed( );
                 } else {
-                    ObjectAnimator animator = ObjectAnimator.ofInt( viewMapper.groupPopup, "top", ( int ) defaultTop );
+                    ObjectAnimator animator = ObjectAnimator.ofInt( viewMapper.groupPopup, "top", ( int ) defaultPopupTop );
                     animator.setDuration( 200 );
                     animator.addListener( new Animator.AnimatorListener( ) {
                         @Override

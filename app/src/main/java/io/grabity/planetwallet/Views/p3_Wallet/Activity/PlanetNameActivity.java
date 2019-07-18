@@ -3,7 +3,9 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -30,6 +32,7 @@ import io.grabity.planetwallet.VO.ErrorResult;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
+import io.grabity.planetwallet.Widgets.ActionEditText;
 import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ShadowView;
@@ -79,6 +82,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         viewMapper.etPlanetName.setOnEditorActionListener( this );
         viewMapper.etPlanetName.addTextChangedListener( this );
 
+
     }
 
     @Override
@@ -93,6 +97,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             viewMapper.planetView.setData( planet.getAddress( ) );
             viewMapper.planetBackground.setData( planet.getAddress( ) );
 
+
         }
     }
 
@@ -106,7 +111,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
                 return;
             }
 
-            planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+            planet.setName( viewMapper.etPlanetName.getText( ).toString( ).trim( ) );
 
             Planet request = new Planet( );
             request.setPlanet( planet.getName( ) );
@@ -115,7 +120,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
                             planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
             request.setAddress( planet.getAddress( ) );
 
-            new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
+            new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );
 
         }
     }
@@ -124,13 +129,12 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-        if ( statusCode == 200 ) {
-            if ( requestCode == 0 ) {
+        if ( !error ) {
+            if ( statusCode == 200 && requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
                 if ( returnVO.isSuccess( ) ) {
 
                     PlanetStore.getInstance( ).save( planet );
-
                     if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
                         setResult( RESULT_OK );
                         super.onBackPressed( );
@@ -138,27 +142,17 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
                     } else {
                         sendAction( MainActivity.class );
                         finish( );
-
                     }
-
-                } else {
-
-                    PLog.e( "returnVO.getResult( ) : " + returnVO.getResult( ).getClass( ) );
-                    PLog.e( result );
-
                 }
+            } else {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
+                ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
+                CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
             }
         } else {
-            ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
-            ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
-            CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
-//            if ( errorResult == null ) {
-//                CustomToast.makeText( this, "server error" ).show( );
-//            } else{
-//                CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
-//            }
-
+            CustomToast.makeText( this, result ).show( );
         }
+
     }
 
     @Override
@@ -260,7 +254,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         PlanetView planetBackground;
         ShadowView shadowBackground;
 
-        EditText etPlanetName;
+        ActionEditText etPlanetName;
 
         public ViewMapper( ) {
             btnSubmit = findViewById( R.id.submit );

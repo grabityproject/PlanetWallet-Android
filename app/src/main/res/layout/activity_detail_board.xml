@@ -20,15 +20,15 @@
         android:id="@+id/group_detail_board"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_below="@id/toolBar">
+        android:layout_below="@id/toolBar"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_detail_board_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:paddingBottom="6dp"
             android:textColor="#000"
             android:textSize="14dp"
@@ -43,15 +43,19 @@
             android:gravity="center"
             android:textColor="#000"
             android:textSize="14dp"
+            android:visibility="gone"
             app:themeTextColor="#FFF" />
 
-        <View
+        <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
+            android:id="@+id/pwview"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="#F5F5F5" />
+            android:background="#EDEDED"
+            app:themeBackground="#1E1E28" />
 
     </RelativeLayout>
+    
 
 
     <WebView

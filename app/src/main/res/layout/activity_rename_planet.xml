@@ -50,7 +50,9 @@
                 android:textCursorDrawable="@null"
                 android:textSize="14dp"
                 android:maxLength="20"
-                app:defaultTheme="Light" />
+                app:defaultTheme="Light">
+            </io.grabity.planetwallet.Widgets.RoundEditText>
+
 
             <io.grabity.planetwallet.Widgets.CircleImageView
                 android:id="@+id/btn_rename_planet_clear"
@@ -74,6 +76,8 @@
             android:textSize="14dp" />
 
     </LinearLayout>
+
+
 
     <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
         android:id="@+id/btn_submit"

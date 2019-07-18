@@ -9,6 +9,7 @@
     <string name="pincode_registration_change_pin_code_title">새 비밀번호를 입력하세요.</string>
     <string name="pincode_registration_sub_title">숫자 4개와 알파벳 조합입니다.</string>
     <string name="pincode_registration_sub_title_error">확인 후 다시 입력해주세요.</string>
+    <string name="pincode_registration_reset_title">리셋</string>
     <string name="pincode_certification_verification_code_title">비밀번호를 입력하세요.</string>
     <string name="pincode_certification_code_incorrect_title">비밀번호가 일치하지 않습니다.</string>
     <string name="pincode_certification_change_pin_code_title">새 비밀번호를 입력하세요.</string>

@@ -107,9 +107,11 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         } else if ( v == viewMapper.btnSecurity ) {
             sendAction( SecurityActivity.class );
         } else if ( v == viewMapper.btnAnnouncements ) {
-            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( "Announcements" ) ) );
+//            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( "Announcements" ) ) );
+//            viewMapper.textName.setText( localized( R.string.setting_planet_main_title, Utils.planetNameForm( planet.getName( ) ) ) );
+            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( localized( R.string.setting_announcements_title ) ) ) );
         } else if ( v == viewMapper.btnFaq ) {
-            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( "FAQ" ) ) );
+            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( localized( R.string.setting_faq_title ) ) ) );
         } else if ( v == viewMapper.btnThemeBlack ) {
 
             getPlanetWalletApplication( ).setTheme( false );

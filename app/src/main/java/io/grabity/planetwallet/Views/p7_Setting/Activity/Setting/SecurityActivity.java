@@ -37,7 +37,7 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
         super.viewInit( );
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
-        viewMapper.toggleButton.setOnToggleListener( this );
+        viewMapper.toggle.setOnToggleListener( this );
         viewMapper.btnPinCode.setOnClickListener( this );
 
 
@@ -84,13 +84,13 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
 
     public class ViewMapper {
         ToolBar toolBar;
-        ToggleButton toggleButton;
+        ToggleButton toggle;
         ViewGroup btnPinCode;
 
 
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
-            toggleButton = findViewById( R.id.toggleBtn );
+            toggle = findViewById( R.id.toggle );
             btnPinCode = findViewById( R.id.group_detail_setting_change_pincode );
         }
     }

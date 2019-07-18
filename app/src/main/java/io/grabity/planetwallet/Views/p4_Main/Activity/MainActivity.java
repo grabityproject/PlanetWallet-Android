@@ -42,6 +42,7 @@ import io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.RippleEffectView;
 import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
+import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 import io.grabity.planetwallet.Widgets.ShadowView;
 import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 import io.grabity.planetwallet.Widgets.StretchImageView;
@@ -103,6 +104,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.btnBottomBlur.setOnClickListener( this );
         viewMapper.textNotice.setOnClickListener( this );
 
+        viewMapper.slideDrawer.addNotEventArea( viewMapper.viewIncorrectScrolling );
         viewMapper.slideDrawer.addBypassArea( viewMapper.btnBottomBlur );
 
         viewController = new ViewController( this, viewMapper );
@@ -225,8 +227,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                         footerViewMapper.groupMessage.setVisibility( View.VISIBLE );
                 }
 
-                footerViewMapper.btnAddToken.setBorderColorNormal( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
-                footerViewMapper.btnAddToken.setBorderColorHighlight( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
+                footerViewMapper.btnAddToken.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
+                footerViewMapper.btnAddToken.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
+
 
             }
         }
@@ -546,7 +549,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public class FooterViewMapper {
 
         View footerView;
-        RoundButton btnAddToken;
+        RoundRelativeLayout btnAddToken;
 
         ViewGroup groupAddToken;
         ViewGroup groupMessage;

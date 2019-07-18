@@ -17,6 +17,7 @@
             android:hint="@string/token_list_search_title"
             android:singleLine="true"
             android:paddingStart="60dp"
+            android:paddingEnd="56dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#5C5964"
             android:textSize="14dp"
@@ -47,12 +48,6 @@
             android:src="@drawable/image_input_clear_blue"
             android:visibility="gone"
             app:themeSrc="@drawable/image_input_clear_black" />
-
-        <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#1E1E28"
-            app:themeBackground="#EDEDED" />
 
         <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
             android:layout_width="match_parent"

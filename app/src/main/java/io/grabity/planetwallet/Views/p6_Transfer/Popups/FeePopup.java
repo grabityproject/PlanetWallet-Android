@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Widgets.FontTextView;
@@ -22,6 +23,7 @@ import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
     //Todo price,limit 초기화시 예외처리 추후작업
+
 
     private ViewMapper viewMapper;
     private ArrayList< FontTextView > feeButtons;
@@ -37,8 +39,13 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
     private float defaultY = -1.0f;
     private boolean isMove = false;
 
+    private boolean isAbleMoving = false;
+
     private String fee;
     private String coinType;
+
+    private float defaultFeePopupTop = -1.0f;
+    private int statusBar = -1;
 
 
     public FeePopup( Context context ) {
@@ -50,7 +57,6 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         return feePopup;
     }
 
-
     @Override
     protected View contentView( ) {
         return View.inflate( getContext( ), R.layout.popup_fee, null );
@@ -60,7 +66,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
     public void onCreateView( ) {
 
         contentHeight = Utils.dpToPx( getContext( ), 580 );
-        defaultTop = getScreenHeight( getContext( ) ) - contentHeight - getActivity( ).getResources( ).getDimensionPixelSize( getActivity( ).getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
+        statusBar = getActivity( ).getResources( ).getDimensionPixelSize( getActivity( ).getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
 
         getBackground( ).setBackgroundColor( Color.TRANSPARENT );
         getContentView( ).setOnTouchListener( this );
@@ -74,7 +80,8 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         viewMapper.btnCancel.setOnClickListener( this );
         viewMapper.btnSave.setOnClickListener( this );
         viewMapper.btnFeeDelete.setOnClickListener( this );
-        viewMapper.btnHeader.setOnClickListener( this );
+
+        viewMapper.btnHeader.setOnTouchListener( this );
 
         viewMapper.groupGasPrice.setFocusableInTouchMode( true );
         viewMapper.groupGasPrice.requestFocus( );
@@ -105,22 +112,30 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
     }
 
+
     @Override
     public boolean onTouch( View v, MotionEvent event ) {
         if ( !isMove ) {
             if ( event.getAction( ) == MotionEvent.ACTION_DOWN ) {
-
                 defaultY = event.getRawY( );
-
-            } else if ( event.getAction( ) == MotionEvent.ACTION_MOVE ) {
-                if ( ( event.getRawY( ) - defaultY ) >= 0 ) {
-                    viewMapper.groupFeePopup.setTop( ( int ) ( event.getRawY( ) + defaultTop - defaultY ) );
+                defaultFeePopupTop = viewMapper.groupFeePopup.getTop( );
+                if ( defaultY - statusBar >= defaultFeePopupTop + Utils.dpToPx( getContext( ), 52 ) ) {
+                    isAbleMoving = false;
+                } else {
+                    isAbleMoving = true;
                 }
-            } else if ( event.getAction( ) == MotionEvent.ACTION_UP || event.getAction( ) == MotionEvent.ACTION_CANCEL ) {
-                if ( contentHeight * 1 / 4 < ( event.getRawY( ) - defaultY ) ) {
+
+            } else if ( event.getAction( ) == MotionEvent.ACTION_MOVE && isAbleMoving ) {
+                if ( ( event.getRawY( ) - defaultY ) >= 0 ) {
+                    viewMapper.groupFeePopup.setTop( ( int ) ( event.getRawY( ) + defaultFeePopupTop - defaultY ) );
+                }
+            } else if ( ( event.getAction( ) == MotionEvent.ACTION_UP || event.getAction( ) == MotionEvent.ACTION_CANCEL ) && isAbleMoving ) {
+                if ( v == viewMapper.btnHeader && viewMapper.groupFeePopup.getTop( ) == defaultFeePopupTop ) {
+                    getActivity( ).onBackPressed( );
+                } else if ( contentHeight * 1 / 4 < ( event.getRawY( ) - defaultY ) ) {
                     getActivity( ).onBackPressed( );
                 } else {
-                    ObjectAnimator animator = ObjectAnimator.ofInt( viewMapper.groupFeePopup, "top", ( int ) defaultTop );
+                    ObjectAnimator animator = ObjectAnimator.ofInt( viewMapper.groupFeePopup, "top", ( int ) defaultFeePopupTop );
                     animator.setDuration( 200 );
                     animator.addListener( new Animator.AnimatorListener( ) {
                         @Override
@@ -152,11 +167,15 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
     }
 
     @Override
+    public void onBackPressed( ) {
+        super.onBackPressed( );
+
+    }
+
+    @Override
     public void onClick( View v ) {
         super.onClick( v );
-        if ( v == viewMapper.btnHeader ) {
-            getActivity( ).onBackPressed( );
-        } else if ( v == viewMapper.groupGasPrice ) {
+        if ( v == viewMapper.groupGasPrice ) {
             setFocusViewSetting( viewMapper.groupGasPrice, viewMapper.textGasPrice, viewMapper.groupGasLimit, viewMapper.textGasLimit );
             setList( price, viewMapper.textGasPrice );
         } else if ( v == viewMapper.groupGasLimit ) {

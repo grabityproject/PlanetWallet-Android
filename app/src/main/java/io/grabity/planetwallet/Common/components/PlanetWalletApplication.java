@@ -40,6 +40,9 @@ import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 @SuppressLint( "Registered" )
 public class PlanetWalletApplication extends MultiDexApplication {
 
+
+    private String deviceKey = null;
+
     public char[] PINCODE = null;
 
     private ArrayList< OnMessagingListener > messagingListeners = new ArrayList<>( );
@@ -133,6 +136,15 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public ArrayList< OnMessagingListener > getMessagingListeners( ) {
         return messagingListeners;
+    }
+
+
+    public String getDeviceKey( ) {
+        return deviceKey;
+    }
+
+    public void setDeviceKey( String deviceKey ) {
+        this.deviceKey = deviceKey;
     }
 }
 

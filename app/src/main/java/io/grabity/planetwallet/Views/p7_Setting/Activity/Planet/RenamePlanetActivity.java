@@ -1,7 +1,9 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -53,6 +55,11 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
 
         viewMapper.btnSubmit.setEnabled( false );
 
+        //test
+//        viewMapper.etName.setFocusable( true );
+//        viewMapper.etName.setFocusableInTouchMode( true );
+
+
     }
 
     @Override
@@ -60,6 +67,9 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
         super.setData( );
         planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
         viewMapper.etName.setText( planet.getName( ) );
+        //android pie
+//        viewMapper.etName.requestFocus( );
+
     }
 
     @Override
@@ -76,7 +86,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
                             planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
             request.setAddress( planet.getAddress( ) );
 
-            new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
+            new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );
 
         } else if ( v == viewMapper.btnNameClear ) {
 

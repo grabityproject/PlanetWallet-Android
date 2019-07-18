@@ -22,7 +22,6 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolBar"
-        android:paddingTop="22dp"/>
+        android:layout_below="@id/toolBar" />
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

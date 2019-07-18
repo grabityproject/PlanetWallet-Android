@@ -109,6 +109,7 @@
         android:gravity="center_horizontal"
         android:paddingTop="116dp"
         android:visibility="gone"
+        android:lineSpacingExtra="4dp"
         app:themeTextColor="#AAAAAA" />
 
     <RelativeLayout

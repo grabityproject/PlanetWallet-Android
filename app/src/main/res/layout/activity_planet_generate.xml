@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
+                android:textCursorDrawable="@null"
                 android:background="@null"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -73,22 +74,20 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/group_planet_generate_title"
+        android:layout_above="@id/group_planet_generate_refresh_select_btn">
 
-
-    <!--<io.grabity.planetwallet.Widgets.PlanetView-->
-        <!--android:id="@+id/planet_generate_icon"-->
-        <!--android:layout_width="170dp"-->
-        <!--android:layout_height="170dp"-->
-        <!--android:layout_below="@id/group_planet_generate_title"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="80dp"/>-->
 
     <io.grabity.planetwallet.Widgets.PlanetView
         android:id="@+id/planet_generate_icon"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 
 
     <LinearLayout

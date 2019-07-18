@@ -1,13 +1,18 @@
 package io.grabity.planetwallet.Views.p2_Pincode.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +20,7 @@ import java.util.Collections;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.CornerRound;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
@@ -35,6 +41,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
 
     private ArrayList< String > keyList;
     private String strKeyList;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -74,7 +81,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
         Collections.shuffle( numberButtons );
         Collections.shuffle( alphabetButtons );
 
-        if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE || getRequestCode( ) == C.requestCode.TRANSFER ) {
+        if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE || getRequestCode( ) == C.requestCode.TRANSFER || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT || getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT ) {
             viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( !getCurrentTheme( ) ? R.drawable.image_toolbar_close_gray : R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
             viewMapper.toolBar.setOnToolBarClickListener( this );
         }
@@ -84,6 +91,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     @Override
     protected void setData( ) {
         super.setData( );
+
         for ( int i = 0; i < numberButtons.size( ); i++ ) {
             numberButtons.get( i ).setText( String.valueOf( i ) );
             numberButtons.get( i ).setTag( String.valueOf( i ) );
@@ -231,7 +239,20 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
             if ( getRequestCode( ) < 0 ) {
                 finish( );
             } else {
-                super.onBackPressed( );
+                if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
+                    if ( System.currentTimeMillis( ) > backPressedTime + 2000 ) {
+                        backPressedTime = System.currentTimeMillis( );
+                        Toast.makeText( this, localized( R.string.main_back_pressed_finish_title ), Toast.LENGTH_SHORT ).show( );
+                    } else {
+                        this.finishAffinity( );
+                        System.runFinalization( );
+                        System.exit( 0 );
+                    }
+                } else {
+                    super.onBackPressed( );
+                }
+
+
             }
 
         } else {
