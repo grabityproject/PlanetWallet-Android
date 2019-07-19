@@ -3,8 +3,6 @@ package io.grabity.planetwallet.Views.p1_Splash.Activity;
 import android.animation.Animator;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.fcm.OnMessagingListener;
+import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
 import io.grabity.planetwallet.MiniFramework.networktask.Post;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
@@ -28,12 +27,13 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Device;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
-import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 
 
-public class SplashActivity extends PlanetWalletActivity implements Animator.AnimatorListener, OnMessagingListener {
+public class SplashActivity extends PlanetWalletActivity implements Animator.AnimatorListener, OnMessagingListener, SyncManager.OnSyncListener {
 
     private ViewMapper viewMapper;
+
+    private boolean isSync = false;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -49,6 +49,7 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
     @Override
     protected void viewInit( ) {
         super.viewInit( );
+        SyncManager.getInstance( ).syncPlanet( this );
 
         viewMapper.loadingView.addAnimatorListener( this );
         viewMapper.loadingView.setAnimation( !getCurrentTheme( ) ? "lottie/splash_black.json" : "lottie/splash_white.json" );
@@ -65,7 +66,7 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
     @Override
     protected void setData( ) {
         super.setData( );
-        getPlanetWalletApplication().addOnMessagingListener( this );
+        getPlanetWalletApplication( ).addOnMessagingListener( this );
         FirebaseInstanceId.getInstance( ).getInstanceId( )
                 .addOnCompleteListener( new OnCompleteListener< InstanceIdResult >( ) {
                     @Override
@@ -77,24 +78,23 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
 
                         // Get new Instance ID token
                         String token = task.getResult( ).getToken( );
-                        PLog.e( "token : " + token );
-                        if( Utils.getPreferenceData( SplashActivity.this, C.pref.FCM_TOKEN, "" ).equals( "" ) ){
+                        if ( Utils.getPreferenceData( SplashActivity.this, C.pref.FCM_TOKEN, "" ).equals( "" ) ) {
                             Utils.setPreferenceData( SplashActivity.this, C.pref.FCM_TOKEN, token );
                             new Post( SplashActivity.this::onReceive ).action( Route.URL( "device", "android" ), 0, 0, new Device( token ) );
-                        }else{
-                            if( !Utils.getPreferenceData( SplashActivity.this, C.pref.FCM_TOKEN, "" ).equals( token ) ){
+                        } else {
+                            if ( !Utils.getPreferenceData( SplashActivity.this, C.pref.FCM_TOKEN, "" ).equals( token ) ) {
                                 Utils.setPreferenceData( SplashActivity.this, C.pref.FCM_TOKEN, token );
                                 new Post( SplashActivity.this::onReceive ).action( Route.URL( "device", "android" ), 0, 0, new Device( token ) );
                             }
                         }
 
-                        if( KeyValueStore.getInstance().getValue( C.pref.DEVICE_KEY ) == null ){
+                        if ( KeyValueStore.getInstance( ).getValue( C.pref.DEVICE_KEY ) == null ) {
 
                             new Post( SplashActivity.this::onReceive ).action( Route.URL( "device", "android" ), 0, 0, new Device( token ) );
 
-                        }else{
+                        } else {
 
-                            getPlanetWalletApplication().setDeviceKey( KeyValueStore.getInstance().getValue( C.pref.DEVICE_KEY ) );
+                            getPlanetWalletApplication( ).setDeviceKey( KeyValueStore.getInstance( ).getValue( C.pref.DEVICE_KEY ) );
 
                         }
 
@@ -111,11 +111,11 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
 
     public void sendActionSwitch( ) {
 
-        if( getPlanetWalletApplication().getDeviceKey() == null ){
+        if ( getPlanetWalletApplication( ).getDeviceKey( ) == null || !isSync ) {
 
             new Handler( ).postDelayed( this::sendActionSwitch, 500 );
 
-        }else{
+        } else {
             if ( KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD ) == null ) {
                 new Handler( ).postDelayed( ( ) -> {
                     sendAction( PinCodeRegistrationActivity.class );
@@ -150,8 +150,14 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
 
     @Override
     public void onMessage( RemoteMessage remoteMessage ) {
-        KeyValueStore.getInstance().setValue( C.pref.DEVICE_KEY,  remoteMessage.getData().get( "device_key" ) );
-        getPlanetWalletApplication().setDeviceKey( KeyValueStore.getInstance().getValue( C.pref.DEVICE_KEY ) );
+        KeyValueStore.getInstance( ).setValue( C.pref.DEVICE_KEY, remoteMessage.getData( ).get( "device_key" ) );
+        getPlanetWalletApplication( ).setDeviceKey( KeyValueStore.getInstance( ).getValue( C.pref.DEVICE_KEY ) );
+    }
+
+    @Override
+    public void onSyncComplete( SyncManager.SyncType syncType, boolean complete, boolean isUpdated ) {
+        PLog.e( syncType.name( ) + ", complete : " + complete + ", isUpdated : " + isUpdated );
+        isSync = true;
     }
 
     public class ViewMapper {
