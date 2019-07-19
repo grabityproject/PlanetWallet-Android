@@ -11,6 +11,7 @@ import io.grabity.planetwallet.MiniFramework.networktask.Post;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
@@ -28,7 +29,7 @@ public class SyncManager {
         ArrayList< Planet > planets = PlanetStore.getInstance( ).getPlanetList( );
         HashMap< String, String > addresses = new HashMap<>( );
         for ( int i = 0; i < planets.size( ); i++ ) {
-            addresses.put( String.format( Locale.US, "addresses[%d]", i ), planets.get( i ).getAddress( ) );
+            addresses.put( String.format( Locale.US, "%s[%d]", CoinType.of( planets.get( i ).getCoinType( ) ).name( ), i ), planets.get( i ).getAddress( ) );
         }
         new Post( ( error, requestCode, resultCode, statusCode, result ) -> {
 
