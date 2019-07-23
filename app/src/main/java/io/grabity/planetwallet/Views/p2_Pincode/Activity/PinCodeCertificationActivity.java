@@ -2,6 +2,7 @@ package io.grabity.planetwallet.Views.p2_Pincode.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.biometrics.BiometricPrompt;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.biometric.BioMetricManager;
 import io.grabity.planetwallet.MiniFramework.utils.CornerRound;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
@@ -28,7 +31,7 @@ import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
-public class PinCodeCertificationActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
+public class PinCodeCertificationActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, BioMetricManager.OnBioResultListener {
 
     private ViewMapper viewMapper;
     private ArrayList< RoundRelativeLayout > passwordViews;
@@ -51,6 +54,8 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     @Override
     protected void viewInit( ) {
         super.viewInit( );
+
+        BioMetricManager.Init( this, this );
 
         if ( Utils.getScrennHeight( this ) <= 1920 ) {
             viewMapper.passwordTitle.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
@@ -77,9 +82,24 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
         Collections.shuffle( numberButtons );
         Collections.shuffle( alphabetButtons );
 
-        if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE || getRequestCode( ) == C.requestCode.TRANSFER || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT || getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT ) {
+        if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE || getRequestCode( ) == C.requestCode.TRANSFER || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT || getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT || getRequestCode( ) == C.requestCode.BIO_METRIC ) {
             viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( !getCurrentTheme( ) ? R.drawable.image_toolbar_close_gray : R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
             viewMapper.toolBar.setOnToolBarClickListener( this );
+        }
+
+        if ( getRequestCode( ) != C.requestCode.BIO_METRIC && Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( true ) ) ) {
+            BioMetricManager.getInstance( ).startAuth( );
+        }
+        //Todo 지문인식이 적용된 후에 핀코드 변경을 누르면 어떻게 처리할까요
+
+    }
+
+    @Override
+    public void onBioResult( boolean isResult, Object data ) {
+        PLog.e( "onBioResult : " + isResult );
+        if ( isResult ) {
+            sendAction( MainActivity.class );
+            finish( );
         }
     }
 
@@ -158,6 +178,13 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
 
                             setResult( RESULT_OK );
 
+                        } else if ( getRequestCode( ) == C.requestCode.BIO_METRIC ) {
+                            if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( false ) ) ) {
+                                Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( true ) );
+                            } else {
+                                Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) );
+                            }
+                            setResult( RESULT_OK );
                         } else {
 
                             if ( PlanetStore.getInstance( ).getPlanetList( ).size( ) == 0 ) {
@@ -195,7 +222,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
         } else {
             viewMapper.passwordTitle.setTextColor( isPassword ? Color.parseColor( "#000000" ) : Color.parseColor( "#FF0050" ) );
         }
-        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( !getCurrentTheme() ? "#5C5964" : "#aaaaaa" ) : Color.parseColor( "#FF0050" ) );
+        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( !getCurrentTheme( ) ? "#5C5964" : "#aaaaaa" ) : Color.parseColor( "#FF0050" ) );
     }
 
     void setPasswordView( ) {
@@ -266,6 +293,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
         }
         super.onBackPressed( );
     }
+
 
     public class ViewMapper {
 

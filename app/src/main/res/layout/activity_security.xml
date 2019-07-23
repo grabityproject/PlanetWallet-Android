@@ -26,7 +26,7 @@
         android:paddingRight="20dp">
 
         <RelativeLayout
-            android:id="@+id/group_detail_setting_change_pincode"
+            android:id="@+id/group_security_change_pincode"
             android:layout_width="match_parent"
             android:layout_height="@dimen/listHeight"
             android:layout_marginTop="20dp">
@@ -51,6 +51,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/group_security_bio"
             android:layout_width="match_parent"
             android:layout_height="@dimen/listHeight">
 
@@ -63,7 +64,6 @@
                 android:textSize="14dp"
                 app:themeTextColor="#FFF" />
 
-
             <io.grabity.planetwallet.Widgets.ToggleButton
                 android:id="@+id/toggle"
                 android:layout_width="52dp"
@@ -71,6 +71,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 app:defaultTheme="Light"/>
+
+            <Button
+                android:id="@+id/btn_security_sub_toggle"
+                android:layout_width="52dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="#00000000"/>
 
 
         </RelativeLayout>

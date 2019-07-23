@@ -19,6 +19,7 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
@@ -358,11 +359,12 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     public void onRippleEffect( boolean on ) {
         if ( on ) {
-            setTransition( Transition.NO_ANIMATION );
-            sendAction( SettingActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ) );
+            if ( viewMapper.rippleView.isBackPressed( ) ) {
+                PLog.e( "onRippleEffect Check" );
+                setTransition( Transition.NO_ANIMATION );
+                sendAction( SettingActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ) );
+            }
         }
-
-
     }
 
     @Override

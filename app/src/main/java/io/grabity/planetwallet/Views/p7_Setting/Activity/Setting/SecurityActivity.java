@@ -8,10 +8,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.biometric.BioMetricManager;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
@@ -39,14 +38,25 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.toggle.setOnToggleListener( this );
         viewMapper.btnPinCode.setOnClickListener( this );
+        viewMapper.btnToggle.setOnClickListener( this );
 
+        BioMetricManager.Init( this );
+
+        if ( !BioMetricManager.getInstance( ).isHardwareCheck( ) ) {
+            viewMapper.groupBio.setVisibility( View.GONE );
+        }
 
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
+    }
 
+    @Override
+    protected void onResume( ) {
+        super.onResume( );
+            viewMapper.toggle.setOn( Utils.equals( Utils.getPreferenceData( this,C.pref.BIO_METRIC , String.valueOf( false ) ),  String.valueOf( true ) ) );
     }
 
     @Override
@@ -59,7 +69,11 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     public void onClick( View v ) {
         super.onClick( v );
-        if ( v == viewMapper.btnPinCode ) {
+        if ( v == viewMapper.btnToggle ) {
+            setTransition( Transition.SLIDE_UP );
+            sendAction( C.requestCode.BIO_METRIC, PinCodeCertificationActivity.class );
+
+        } else if ( v == viewMapper.btnPinCode ) {
             setTransition( Transition.SLIDE_UP );
             sendAction(
                     C.requestCode.SETTING_CHANGE_PINCODE,
@@ -86,12 +100,18 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
         ToolBar toolBar;
         ToggleButton toggle;
         ViewGroup btnPinCode;
+        ViewGroup groupBio;
+
+        View btnToggle;
 
 
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
             toggle = findViewById( R.id.toggle );
-            btnPinCode = findViewById( R.id.group_detail_setting_change_pincode );
+            btnPinCode = findViewById( R.id.group_security_change_pincode );
+            btnToggle = findViewById( R.id.btn_security_sub_toggle );
+
+            groupBio = findViewById( R.id.group_security_bio );
         }
     }
 }

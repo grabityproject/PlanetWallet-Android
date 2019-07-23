@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+
 public class RippleEffectView extends View implements Themeable {
 
     private View trigger;
@@ -35,6 +37,7 @@ public class RippleEffectView extends View implements Themeable {
 
     private boolean isRippleOn = false;
     private boolean isRippleAnimationStatus = true;
+    private boolean isBackPressed = true;
 
     public boolean isRippleAnimationStatus( ) {
         return isRippleAnimationStatus;
@@ -42,6 +45,14 @@ public class RippleEffectView extends View implements Themeable {
 
     public void setRippleAnimationStatus( boolean rippleAnimationStatus ) {
         isRippleAnimationStatus = rippleAnimationStatus;
+    }
+
+    public boolean isBackPressed( ) {
+        return isBackPressed;
+    }
+
+    public void setIsbackpressed( boolean isBackPressed ) {
+        this.isBackPressed = isBackPressed;
     }
 
     public boolean isRippleOn( ) {
@@ -110,13 +121,14 @@ public class RippleEffectView extends View implements Themeable {
         animator.addListener( new Animator.AnimatorListener( ) {
             @Override
             public void onAnimationStart( Animator animation ) {
-
+                isBackPressed = true;
             }
 
             @Override
             public void onAnimationEnd( Animator animation ) {
                 if ( onRippleEffectListener != null ) {
                     onRippleEffectListener.onRippleEffect( isRippleOn );
+                    isBackPressed = false;
                 }
             }
 
@@ -143,6 +155,7 @@ public class RippleEffectView extends View implements Themeable {
             isRippleAnimationStatus = false;
         } else if ( this.percent == 0 ) {
             isRippleAnimationStatus = true;
+
         }
         invalidate( );
     }

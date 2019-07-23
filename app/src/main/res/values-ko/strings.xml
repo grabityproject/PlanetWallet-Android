@@ -9,7 +9,6 @@
     <string name="pincode_registration_change_pin_code_title">새 비밀번호를 입력하세요.</string>
     <string name="pincode_registration_sub_title">숫자 4개와 알파벳 조합입니다.</string>
     <string name="pincode_registration_sub_title_error">확인 후 다시 입력해주세요.</string>
-    <string name="pincode_registration_reset_title">리셋</string>
     <string name="pincode_certification_verification_code_title">비밀번호를 입력하세요.</string>
     <string name="pincode_certification_code_incorrect_title">비밀번호가 일치하지 않습니다.</string>
     <string name="pincode_certification_change_pin_code_title">새 비밀번호를 입력하세요.</string>
@@ -87,7 +86,7 @@
     <string name="detail_setting_toolbar_title">Security</string>
     <string name="detail_setting_change_pincode_title">비밀번호 변경</string>
     <string name="detail_setting_touch_or_face_title">지문 인식</string>
-    <string name="setting_planet_main_title">당신은 지금\n%s 에\n있습니다.</string>
+    <string name="setting_planet_main_title">지금 여기는, \n%s</string>
     <string name="setting_planet_title">Planet</string>
     <string name="setting_universe_title">Universe</string>
     <string name="setting_security_title">Security</string>
@@ -109,5 +108,5 @@
     <string name="fee_popup_gas_limit_least_title">최소 가스 한도는 21,000 입니다.</string>
     <string name="fee_popup_gas_price_least_title">가스비는 최소 1 Gwei 이상 입니다.</string>
     <string name="pincode_registration_one_more_registration_title">한번 더 입력해주세요.</string>
-    <string name="main_footer_planets_add_new_planet_title">Add New Planet</string>
-</resources>
+    <string name="pincode_registration_reset_title">리셋</string>
+    <string name="main_footer_planets_add_new_planet_title">플래닛 추가하기</string></resources>

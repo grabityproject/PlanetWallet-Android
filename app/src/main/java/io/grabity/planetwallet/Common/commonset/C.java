@@ -32,6 +32,8 @@ public class C {
 
         public final static int TRANSFER = 260;
 
+        public final static int BIO_METRIC = 270;
+
     }
 
     public static class resultCode {
@@ -104,6 +106,8 @@ public class C {
 
         public final static String FCM_TOKEN = "device_token";
         public final static String DEVICE_KEY = "device_key";
+
+        public final static String BIO_METRIC = "bio_metric";
 
 
     }
