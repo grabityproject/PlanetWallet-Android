@@ -4,13 +4,12 @@ package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,8 +28,8 @@ import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
-import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Views.p6_Transfer.Popups.FeePopup;
+import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -90,7 +89,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
                 amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
             }
-            //-------------------------------
 
 
             viewSetting( );
@@ -102,11 +100,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-        PLog.e( "error :" + error );
-        PLog.e( "requestCode :" + requestCode );
-        PLog.e( "resultCode :" + resultCode );
-        PLog.e( "statusCode :" + statusCode );
-        PLog.e( "result :" + result );
         if ( !error ) {
             if ( statusCode == 200 && requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ETHGasPrice.class );
@@ -141,15 +134,12 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     void viewSetting( ) {
         viewMapper.groupPlanet.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ? View.VISIBLE : View.GONE );
         viewMapper.groupAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
-//        viewMapper.textFromName.setText( planet.getName( ) );
-        viewMapper.textFromName.setText( Utils.planetNameForm( planet.getName( ) ) );
+        viewMapper.textFromName.setText( planet.getName( ) );
         if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
             viewMapper.planetView.setData( transfer.getToAddress( ) );
-//            viewMapper.textPlanetName.setText( transfer.getToName( ) );
-            viewMapper.textPlanetName.setText( Utils.planetNameForm( transfer.getToName( ) ) );
+            viewMapper.textPlanetName.setText( transfer.getToName( ) );
             viewMapper.textPlanetAddress.setText( Utils.addressReduction( transfer.getToAddress( ) ) );
         } else if ( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ) {
-            //Todo ERC20 image
             if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
                 viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_bit_white );
             } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {

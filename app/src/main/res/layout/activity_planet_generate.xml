@@ -44,19 +44,16 @@
             app:themeSrc="@drawable/image_planet_generate_title_black"
             />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="50dp"
-            android:paddingEnd="50dp"
-            android:orientation="vertical">
+            android:paddingTop="12dp"
+            android:layout_height="match_parent">
 
             <io.grabity.planetwallet.Widgets.ActionEditText
                 android:id="@+id/et_planet_generate_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="12dp"
                 android:textCursorDrawable="@null"
                 android:background="@null"
                 android:focusable="true"
@@ -65,11 +62,19 @@
                 android:includeFontPadding="false"
                 android:inputType="textMultiLine"
                 android:maxLength="20"
-                android:text="WalletName "
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
+                android:text="WalletName"
                 android:textColor="#FF0050"
                 android:textSize="28dp" />
 
-        </LinearLayout>
+            <io.grabity.planetwallet.Widgets.PlanetCursor
+                android:id="@+id/cursor"
+                android:layout_width="2dp"
+                android:layout_height="28dp"/>
+
+
+        </RelativeLayout>
 
 
     </LinearLayout>

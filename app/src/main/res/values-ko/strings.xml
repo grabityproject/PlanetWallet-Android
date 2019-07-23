@@ -15,7 +15,7 @@
     <string name="pincode_certification_change_pin_code_title">새 비밀번호를 입력하세요.</string>
     <string name="pincode_certification_sub_title">숫자 4개와 알파벳 조합입니다.</string>
     <string name="pincode_certification_sub_title_error">확인 후 다시 입력해주세요.</string>
-    <string name="planet_generate_name_not_blank_title">The name can not be blank.</string>
+    <string name="planet_generate_name_not_blank_title">이름은 공백일 수 없습니다.</string>
     <string name="planet_name_name_not_blank_title">이름은 공백일 수 없습니다.</string>
     <string name="planet_name_btn_title">플래닛 추가하기</string>
     <string name="wallet_add_btn_add_title">플래닛 추가하기</string>
@@ -108,4 +108,6 @@
     <string name="fee_popup_not_spaces_title">가스비와 가스한도는 모두 비어 있을 수 없습니다.</string>
     <string name="fee_popup_gas_limit_least_title">최소 가스 한도는 21,000 입니다.</string>
     <string name="fee_popup_gas_price_least_title">가스비는 최소 1 Gwei 이상 입니다.</string>
-    <string name="pincode_registration_one_more_registration_title">한번 더 입력해주세요.</string></resources>
+    <string name="pincode_registration_one_more_registration_title">한번 더 입력해주세요.</string>
+    <string name="main_footer_planets_add_new_planet_title">Add New Planet</string>
+</resources>

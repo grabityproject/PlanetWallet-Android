@@ -2,8 +2,9 @@ package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 

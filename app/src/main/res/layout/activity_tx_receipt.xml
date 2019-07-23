@@ -46,12 +46,14 @@
 
                 <io.grabity.planetwallet.Widgets.FontTextView
                     android:id="@+id/text_tx_receipt_planet_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/planet_tx_receipt_planetview"
                     android:paddingStart="20dp"
                     android:textColor="#FFF"
                     android:textSize="18dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     app:themeTextColor="#000"
                     app:typefaceStyle="semibold" />
 
@@ -139,6 +141,7 @@
                 android:layout_height="@dimen/listHeight">
 
                 <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_tx_receipt_from_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -149,8 +152,13 @@
 
                 <io.grabity.planetwallet.Widgets.FontTextView
                     android:id="@+id/text_tx_receipt_from_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/text_tx_receipt_from_title"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:gravity="end"
+                    android:ellipsize="end"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:textColor="#FFF"

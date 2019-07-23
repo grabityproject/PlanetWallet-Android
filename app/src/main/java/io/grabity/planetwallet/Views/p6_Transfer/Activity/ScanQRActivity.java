@@ -4,10 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+
+import androidx.annotation.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,7 +54,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
             @Override
             public void onGlobalLayout( ) {
                 viewMapper.toolBar.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-                ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( ScanQRActivity.this, 68 ) + getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) ) );
+                ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( ScanQRActivity.this, 68 ) + Utils.getDeviceStatusBarHeight( ScanQRActivity.this ) );
                 viewMapper.toolBar.requestLayout( );
             }
         } );
@@ -110,7 +111,6 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
             Matcher m = p.matcher( contents );
             if ( m.find( ) ) {
                 address = m.group( 0 );
-                PLog.e( "ETH address : " + address );
             }
         } else if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
             Pattern p = Pattern.compile( "1[0-9a-fA-F]{33}$" );
@@ -118,7 +118,6 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
             if ( m.find( ) ) {
                 address = m.group( 0 );
-                PLog.e( "BTC address : " + address );
             }
         }
 

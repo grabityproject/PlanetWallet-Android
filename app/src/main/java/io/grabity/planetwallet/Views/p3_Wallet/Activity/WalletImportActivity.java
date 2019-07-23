@@ -2,9 +2,10 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
-import android.view.View;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,6 @@ import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.Views.p3_Wallet.Fragment.JSONImportFragment;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.MnemonicImportFragment;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.PrivateKeyImportFragment;
 import io.grabity.planetwallet.Widgets.LockableViewPager;
@@ -29,7 +29,6 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     private ViewPagerAdapter< PlanetWalletFragment > adapter;
     private ArrayList< PlanetWalletFragment > fragments;
 
-    private JSONImportFragment jsonImportFragment;
     private MnemonicImportFragment mnemonicImportFragment;
     private PrivateKeyImportFragment privateKeyImportFragment;
 
@@ -52,13 +51,11 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
         viewMapper.tabBar.setItems(
                 new TabBar.ButtonItem( ).setText( localized( R.string.wallet_import_tabbar_mnemonic_title ) ).setTextSize( 14 ),
-//                new TabBar.ButtonItem( ).setText( "Json" ).setTextSize( 14 ),
                 new TabBar.ButtonItem( ).setText( localized( R.string.wallet_import_tabbar_privatekey_title ) ).setTextSize( 14 )
         );
 
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );
         viewMapper.viewPager.addOnPageChangeListener( this );
-//        viewMapper.viewPager.setOffscreenPageLimit( 3 );
     }
 
     @Override
@@ -73,7 +70,6 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
         super.setData( );
         fragments = new ArrayList<>( );
         fragments.add( mnemonicImportFragment = MnemonicImportFragment.newInstance( ) );
-//        fragments.add( jsonImportFragment = JSONImportFragment.newInstance( ) );
         fragments.add( privateKeyImportFragment = PrivateKeyImportFragment.newInstance( ) );
 
         adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );

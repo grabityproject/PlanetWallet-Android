@@ -2,11 +2,11 @@ package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
@@ -67,19 +67,6 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
-//            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-//                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-//
-//            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-//
-//                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-//                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-//                    amountViewSetting( erc20.getName( ) );
-//                } else {
-//                    amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-//                }
-//            }
-
             if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
                 erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
                 amountViewSetting( erc20.getName( ) );
@@ -103,18 +90,16 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
     private void viewSetting( ) {
         viewMapper.groupPlanet.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ? View.VISIBLE : View.GONE );
         viewMapper.groupAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
-//        viewMapper.textFromName.setText( planet.getName( ) );
-        viewMapper.textFromName.setText( Utils.planetNameForm( planet.getName( ) ) );
+        viewMapper.textFromName.setText( planet.getName( ) );
         viewMapper.textFee.setText( transfer.getFee( ) );
-        //Todo
+        //Todo node
         viewMapper.textDate.setText( "2019. 06. 13 13:05:10" );
         viewMapper.btnTxHash.setText( "0x1507f1c7fba98b4ab985a4de07fd476920009a94401641b68249deec0f077cf7" );
         viewMapper.btnTxHash.underLine( );
 
         if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
             viewMapper.planetView.setData( transfer.getToAddress( ) );
-//            viewMapper.textPlanetName.setText( transfer.getToName( ) );
-            viewMapper.textPlanetName.setText( Utils.planetNameForm( transfer.getToName( ) ) );
+            viewMapper.textPlanetName.setText( transfer.getToName( ) );
             viewMapper.textPlanetAddress.setText( Utils.addressReduction( transfer.getToAddress( ) ) );
         } else if ( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ) {
             if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {

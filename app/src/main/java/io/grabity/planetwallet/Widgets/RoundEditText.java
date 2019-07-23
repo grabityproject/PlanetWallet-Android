@@ -81,16 +81,6 @@ public class RoundEditText extends androidx.appcompat.widget.AppCompatEditText i
 
         setFocusable( true );
 
-
-        this.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
-            @Override
-            public void onGlobalLayout( ) {
-                getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-                requestFocus( );
-                setSelection( getText( ).toString( ).length( ) );
-
-            }
-        } );
         super.setBackgroundColor( Color.TRANSPARENT );
     }
 

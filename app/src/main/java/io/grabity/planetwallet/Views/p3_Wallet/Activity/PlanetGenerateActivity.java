@@ -2,9 +2,6 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -12,14 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.pentasecurity.cryptowallet.exceptions.DecryptionErrorException;
+import androidx.annotation.Nullable;
 
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.pentasecurity.cryptowallet.exceptions.DecryptionErrorException;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
@@ -43,8 +37,8 @@ import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.ActionEditText;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.CustomToast;
+import io.grabity.planetwallet.Widgets.PlanetCursor;
 import io.grabity.planetwallet.Widgets.PlanetView;
-import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.ShadowView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -81,7 +75,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         viewMapper.btnSelect.setOnClickListener( this );
         viewMapper.btnRefresh.setOnClickListener( this );
 
-        ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) ) );
+        ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + Utils.getDeviceStatusBarHeight( this ) );
         viewMapper.toolBar.requestLayout( );
 
 
@@ -99,7 +93,11 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         viewMapper.etPlanetName.setOnEditorActionListener( this );
         viewMapper.etPlanetName.addTextChangedListener( this );
 
-//        viewMapper.etPlanetName.requestFocus( );
+
+        viewMapper.planetBackground.setFocusable( true );
+        viewMapper.planetBackground.setFocusableInTouchMode( true );
+        viewMapper.planetBackground.requestFocus( );
+
 
     }
 
@@ -147,7 +145,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         findViewById( android.R.id.content ).getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
 
         float backgroundSize = ( ( Utils.getScreenWidth( this ) * 480.0f / 375.0f ) );
-        float backgroundTopMargin = getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
+        float backgroundTopMargin = Utils.getDeviceStatusBarHeight( this );
 
         viewMapper.planetBackground.getLayoutParams( ).width = ( int ) backgroundSize;
         viewMapper.planetBackground.getLayoutParams( ).height = ( int ) backgroundSize;
@@ -161,6 +159,8 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
         viewMapper.planetBackground.requestLayout( );
         viewMapper.shadowBackground.requestLayout( );
+
+        viewMapper.cursor.setX( ( Utils.getScreenWidth( this ) / 2.0f + viewMapper.etPlanetName.getPaint( ).measureText( viewMapper.etPlanetName.getText( ).toString( ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
 
     }
 
@@ -221,13 +221,8 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                                 planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
                 request.setAddress( planet.getAddress( ) );
 
-                //balance 테스트 세팅
-//                planet.setBalance( "24.5622312" );
-
                 PLog.e( "URL : " + Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ) );
 
-
-//                new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request );
                 new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );
 
             }
@@ -241,21 +236,21 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
 
         if ( !error ) {
-            if ( statusCode == 200 && requestCode == 0  ) {
-                    ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
-                    if ( returnVO.isSuccess( ) ) {
+            if ( statusCode == 200 && requestCode == 0 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+                if ( returnVO.isSuccess( ) ) {
 
-                        PlanetStore.getInstance( ).save( planet );
+                    PlanetStore.getInstance( ).save( planet );
 
-                        if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
-                            setResult( RESULT_OK );
-                            super.onBackPressed( );
+                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+                        setResult( RESULT_OK );
+                        super.onBackPressed( );
 
-                        } else {
-                            sendAction( MainActivity.class );
-                            finish( );
-                        }
+                    } else {
+                        sendAction( MainActivity.class );
+                        finish( );
                     }
+                }
 
             } else {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
@@ -353,29 +348,14 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             viewMapper.planetBackground.setFocusableInTouchMode( true );
             viewMapper.planetBackground.requestFocus( );
 
-//            if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
-//                //Todo 모두 다 지우고 키보드를 닫는경우
-//                CustomToast.makeText( this, "이름은 공백일수 없습니다." ).show( );
-//            }
         } else {
-            if ( viewMapper.etPlanetName.getText( ).toString( ).contains( " " ) )
-                if ( first ) {
-                    first = false;
-                    viewMapper.etPlanetName.setText( viewMapper.etPlanetName.getText( ).toString( ).trim( ) );
-                    viewMapper.etPlanetName.setSelection( viewMapper.etPlanetName.getText( ).length( ) );
-//                    viewMapper.etPlanetName.setSelection( viewMapper.etPlanetName.getText( ).toString( ).length( ) - getStrCount( " ", viewMapper.etPlanetName.getText( ).toString( ) ) );
-                }
+            if ( first ) {
+                first = false;
+                viewMapper.cursor.setVisibility( View.GONE );
+            }
         }
     }
 
-    int getStrCount( String regex, String input ) {
-        Pattern p = Pattern.compile( regex );
-        Matcher m = p.matcher( input );
-        int count = 0;
-        while ( m.find( ) )
-            count++;
-        return count;
-    }
 
     @Override
     public boolean onEditorAction( TextView v, int actionId, KeyEvent event ) {
@@ -424,6 +404,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     public class ViewMapper {
 
         ViewGroup groupBtn;
+        PlanetCursor cursor;
 
         CircleImageView btnRefresh;
         CircleImageView btnSelect;
@@ -438,6 +419,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         public ViewMapper( ) {
 
             groupBtn = findViewById( R.id.group_planet_generate_refresh_select_btn );
+            cursor = findViewById( R.id.cursor );
 
             planetView = findViewById( R.id.planet_generate_icon );
             toolBar = findViewById( R.id.toolBar );

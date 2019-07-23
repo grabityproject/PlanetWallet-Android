@@ -120,7 +120,6 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
                 setPasswordView( );
             }
         } else if ( v == viewMapper.btnReset ) {
-            //pincode 초기화
             strKeyList = null;
             checkKeyList = null;
             keyList.clear( );
@@ -132,7 +131,6 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
             }
 
             viewMapper.btnReset.setVisibility( View.GONE );
-            //============
 
         } else {
             String tag = String.valueOf( v.getTag( ) );
@@ -155,9 +153,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
 
                     setPasswordMessage( true, 1 );
 
-                    //pincode 초기화기능 추가
                     viewMapper.btnReset.setVisibility( View.VISIBLE );
-                    //===================
 
                 } else if ( keyList.size( ) == 5 && checkKeyList != null ) {
 
@@ -233,7 +229,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
         } else {
             viewMapper.passwordTitle.setTextColor( isPassword ? Color.parseColor( "#000000" ) : Color.parseColor( "#FF0050" ) );
         }
-        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#FF0050" ) );
+        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( !getCurrentTheme() ? "#5C5964" : "#aaaaaa" ) : Color.parseColor( "#FF0050" ) );
     }
 
     void setPasswordView( ) {

@@ -49,6 +49,7 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
 
         viewMapper.btnSubmit.setEnabled( false );
 
+        viewMapper.etAddress.requestFocus( );
     }
 
     @Override

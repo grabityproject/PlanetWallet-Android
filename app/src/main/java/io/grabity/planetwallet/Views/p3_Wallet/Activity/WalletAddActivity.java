@@ -99,7 +99,6 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
 
     @Override
     public void onListPopupItemClick( PopupView popup, View view, int position ) {
-        //Todo BTC,ETH 분기로 지갑생성처리
         super.onBackPressed( );
         if ( popup == popupCreate ) {
             new Handler( ).postDelayed( ( ) -> {

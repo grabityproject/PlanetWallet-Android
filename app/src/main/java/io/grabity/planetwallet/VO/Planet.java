@@ -147,20 +147,7 @@ public class Planet implements Serializable {
         return null;
     }
 
-    public String getPrivateKeyBase58Encodes( KeyPairStore keyPairStore, char[] pinCode ) {
-        if ( keyPairStore != null ) {
-            HDKeyPair keyPair = keyPairStore.getKeyPair( getKeyId( ), pinCode );
-            if ( keyPair != null ) {
-                byte[] startByte = new byte[]{ ( byte ) 0x80 };
-                byte[] bitCoinPrivateKey = new byte[ keyPair.getPrivateKey( ).length + 1 ];
-                System.arraycopy( startByte, 0, bitCoinPrivateKey, 0, startByte.length );
-                System.arraycopy( keyPair.getPrivateKey( ), 0, bitCoinPrivateKey, 1, keyPair.getPrivateKey( ).length );
-                PLog.e( "checks : " + byteArrayToHexString( bitCoinPrivateKey ) );
-                return JniWrapper.GenBase58CheckEncode( bitCoinPrivateKey );
-            }
-        }
-        return null;
-    }
+
 
     public String getMnemonic( KeyPairStore keyPairStore, char[] pinCode ) {
         if ( getPathIndex( ) == -2 ) {

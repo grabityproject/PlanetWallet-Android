@@ -3,13 +3,12 @@ package io.grabity.planetwallet.Views.p5_Token.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,7 +80,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( !error ) {
-            if ( resultCode == 0 && statusCode == 200 ) {
+            if ( requestCode == 0 && statusCode == 200 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ERC20.class );
                 if ( returnVO.isSuccess( ) ) {
                     items = new ArrayList<>( );
@@ -188,8 +187,6 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
             erc20.setImg_path( item.getImg_path( ) );
             erc20.setHide( item.isCheck( ) ? "N" : "Y" );
             erc20.setBalance( item.getBalance( ) );
-            PLog.e( "erc20 : " + erc20 );
-            PLog.e( "erc20.getBlance : " + erc20.getBalance( ) );
             ERC20Store.getInstance( ).save( erc20 );
 
         } catch ( ClassCastException e ) {

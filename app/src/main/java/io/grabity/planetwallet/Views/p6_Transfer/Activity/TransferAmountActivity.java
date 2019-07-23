@@ -1,11 +1,12 @@
 package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,7 +55,6 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 @Override
                 public void onGlobalLayout( ) {
                     viewMapper.textBalance.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-//                    ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( TransferAmountActivity.this, 48 ) );
 
                     viewMapper.textBalance.setPadding( 0, ( int ) Utils.dpToPx( TransferAmountActivity.this, 24 ), 0, 0 );
                     viewMapper.textAmount.setPadding( 0, ( int ) Utils.dpToPx( TransferAmountActivity.this, 20 ), 0, 0 );
@@ -98,27 +98,12 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
-//            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-//
-//                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
-//            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-//                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-//                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-//                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
-//                } else {
-//                    viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
-//                }
-//            }
-
-            //간결하게 change QA이후 주석해제
-            //------------------
             if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
                     erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
                     viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
             } else{
                 viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
             }
-            //------------------
 
 
             toolBarSetView( );
@@ -130,8 +115,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         viewMapper.textAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
         if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
             viewMapper.planetView.setData( transfer.getToAddress( ) );
-//            viewMapper.textPlanetName.setText( transfer.getToName( ) );
-            viewMapper.textPlanetName.setText( Utils.planetNameForm( transfer.getToName( ) ) );
+            viewMapper.textPlanetName.setText( transfer.getToName( ) );
         } else if ( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ) {
             viewMapper.textAddress.setText( Utils.addressReduction( transfer.getToAddress( ) ) );
         }

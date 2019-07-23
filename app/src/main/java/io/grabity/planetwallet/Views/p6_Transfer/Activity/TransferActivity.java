@@ -4,13 +4,14 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -70,6 +71,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         viewMapper.groupSearchAddress.setOnClickListener( this );
 
         viewMapper.etSearch.addTextChangedListener( this );
+        viewMapper.etSearch.requestFocus( );
 
         searchViewThemeSet( );
     }
@@ -234,9 +236,9 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         if ( returnVO.isSuccess( ) ) {
             allPlanets = ( ArrayList< Planet > ) returnVO.getResult( );
             if ( allPlanets != null ) {
-                if ( allPlanets.size( ) == 0 ) { //이름검색시 없을경우
+                if ( allPlanets.size( ) == 0 ) {
 
-                    //주소 정규식 체크(주소검색) , 주소 검색시 내 주소면 검색결과 없는걸로 처리
+
                     if ( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ) {
                         if ( BitCoinManager.getInstance( ).validateAddress( viewMapper.etSearch.getText( ).toString( ) ) ) {
                             noSearchView( false );
@@ -254,14 +256,14 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
                         }
                     }
 
-                    // 검색결과 없음
+
                     noSearchView( true );
                     addressSearchView( false );
                     clipView( );
 
                 } else {
 
-                    //내 플래닛 제거
+
                     for ( int i = 0; i < allPlanets.size( ); i++ ) {
                         if ( Utils.equals( allPlanets.get( i ).getName( ), planet.getName( ) ) ) {
                             allPlanets.remove( i );
@@ -276,7 +278,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
                         return;
                     }
 
-                    //이름검색
                     noSearchView( false );
                     addressSearchView( false );
                     clipView( );
@@ -330,7 +331,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     private void addressSearchView( boolean b ) {
         viewMapper.groupSearchAddress.setVisibility( b ? View.VISIBLE : View.GONE );
 
-        //Todo ERC20 image
         if ( b ) {
             if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
                 viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_bit_white );

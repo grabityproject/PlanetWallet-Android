@@ -66,7 +66,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
     public void onCreateView( ) {
 
         contentHeight = Utils.dpToPx( getContext( ), 580 );
-        statusBar = getActivity( ).getResources( ).getDimensionPixelSize( getActivity( ).getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
+        statusBar = Utils.getDeviceStatusBarHeight( getActivity( ) );
 
         getBackground( ).setBackgroundColor( Color.TRANSPARENT );
         getContentView( ).setOnTouchListener( this );

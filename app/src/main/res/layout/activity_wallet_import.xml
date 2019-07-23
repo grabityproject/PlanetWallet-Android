@@ -15,7 +15,6 @@
         app:toolbarTitle="@string/wallet_import_toolbar_title"
         app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue" />
 
-
     <io.grabity.planetwallet.Widgets.TabBar
         android:id="@+id/tabBar"
         android:layout_width="match_parent"
@@ -29,11 +28,13 @@
         android:background="#1E1E28"
         app:themeBackground="#EDEDED" />
 
+
     <io.grabity.planetwallet.Widgets.LockableViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tabBar" />
+
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

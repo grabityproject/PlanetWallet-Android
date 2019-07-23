@@ -2,9 +2,10 @@ package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.annotation.Nullable;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
@@ -45,15 +46,11 @@ public class PrivateKeyExportActivity extends PlanetWalletActivity implements To
             onBackPressed( );
         } else {
             Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-//            String privateKey = planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
-
             String privateKey = null;
             if ( planet.getCoinType( ).equals( CoinType.ETH.getCoinType( ) ) ) {
                 privateKey = planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
             } else {
                 privateKey = planet.getPrivateKeyBase58Encode( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
-//                privateKey = planet.getPrivateKeyBase58Encodes( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
-
             }
 
 

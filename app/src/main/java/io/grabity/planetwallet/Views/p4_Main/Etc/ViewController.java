@@ -1,10 +1,11 @@
 package io.grabity.planetwallet.Views.p4_Main.Etc;
 
 import android.graphics.Color;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieDrawable;
 
@@ -65,7 +66,6 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
                 viewMapper.groupBlur.setY( blurTop );
             } else {
 
-//                viewMapper.textNotice.setY( y - viewMapper.textNotice.getHeight( ) );
                 viewMapper.textNotice.setY( y - viewMapper.textNotice.getHeight( ) + Utils.dpToPx( activity, 20 ) );
                 viewMapper.groupBlur.setY( y + Utils.dpToPx( activity, 20 ) );
 

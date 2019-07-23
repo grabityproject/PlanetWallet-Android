@@ -48,19 +48,16 @@
             app:themeSrc="@drawable/image_planet_generate_title_black"
             />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="50dp"
-            android:paddingEnd="50dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <io.grabity.planetwallet.Widgets.ActionEditText
                 android:id="@+id/et_planet_name_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="18dp"
+                android:paddingTop="18dp"
                 android:background="@null"
                 android:textCursorDrawable="@null"
                 android:focusable="true"
@@ -69,21 +66,36 @@
                 android:includeFontPadding="false"
                 android:inputType="textMultiLine"
                 android:maxLength="20"
-                android:text="WalletName "
+                android:text="WalletName"
                 android:textColor="#FF0050"
                 android:textSize="28dp" />
 
-        </LinearLayout>
 
+            <io.grabity.planetwallet.Widgets.PlanetCursor
+                android:id="@+id/cursor"
+                android:layout_width="2dp"
+                android:layout_height="28dp"
+                android:layout_alignBottom="@id/et_planet_name_name"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolBar">
 
         <io.grabity.planetwallet.Widgets.PlanetView
             android:id="@+id/planet_name_icon"
             android:layout_width="170dp"
             android:layout_height="170dp"
             android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+
+
 
     <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
         android:id="@+id/submit"

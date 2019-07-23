@@ -288,11 +288,11 @@
                     app:themeTextColor="#FFF" />
 
                 <io.grabity.planetwallet.Widgets.FontTextView
+                    android:id="@+id/text_setting_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="1.1.4"
                     android:textColor="#AAAAAA"
                     android:textSize="14dp"
                     app:themeTextColor="#5c5964" />

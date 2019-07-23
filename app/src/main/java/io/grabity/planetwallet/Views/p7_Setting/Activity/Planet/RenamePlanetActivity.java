@@ -1,13 +1,12 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import java.util.Objects;
 
@@ -55,9 +54,6 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
 
         viewMapper.btnSubmit.setEnabled( false );
 
-        //test
-//        viewMapper.etName.setFocusable( true );
-//        viewMapper.etName.setFocusableInTouchMode( true );
 
 
     }
@@ -67,8 +63,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
         super.setData( );
         planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
         viewMapper.etName.setText( planet.getName( ) );
-        //android pie
-//        viewMapper.etName.requestFocus( );
+        viewMapper.etName.requestFocus( );
 
     }
 
@@ -145,7 +140,6 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
 
     @Override
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
-//        viewMapper.btnSubmit.setEnabled( viewMapper.etName.getText( ).toString( ).trim( ).length( ) == 0 ? false : true );
         if ( viewMapper.etName.getText( ) == null ) return;
         viewMapper.btnSubmit.setEnabled( viewMapper.etName.getText( ).toString( ).trim( ).length( ) != 0 );
         viewMapper.btnNameClear.setVisibility( viewMapper.etName.getText( ).toString( ).trim( ).length( ) == 0 ? View.GONE : View.VISIBLE );

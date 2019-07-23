@@ -11,20 +11,22 @@
         android:paddingTop="20dp"
         android:paddingEnd="20dp">
 
-        <io.grabity.planetwallet.Widgets.PlanetView
-            android:id="@+id/planetview_item_main_planets"
-            android:layout_width="22dp"
-            android:layout_height="22dp" />
+       <io.grabity.planetwallet.Widgets.StretchImageView
+           android:id="@+id/image_footer_planets"
+           android:layout_width="22dp"
+           android:layout_height="22dp"
+           android:src="@drawable/image_planet_add_black"
+           app:themeSrc="@drawable/image_planet_add_white" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_planets_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/planetview_item_main_planets"
-            android:layout_toLeftOf="@id/text_item_main_planets_type"
+            android:layout_toRightOf="@id/image_footer_planets"
+            android:layout_toLeftOf="@id/image_item_main_planets_arrow"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="planetName"
+            android:text="@string/main_footer_planets_add_new_planet_title"
             android:textSize="14dp"
             android:textColor="#FFF"
             android:maxLines="1"
@@ -41,14 +43,6 @@
             android:src="@drawable/image_arrow_right_gray"
             app:themeSrc="@drawable/image_arrow_right_gray" />
 
-        <io.grabity.planetwallet.Widgets.FontTextView
-            android:id="@+id/text_item_main_planets_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/image_item_main_planets_arrow"
-            android:paddingEnd="8dp"
-            android:textColor="#5C5964"
-            app:themeTextColor="#aaaaaa" />
 
     </RelativeLayout>
 

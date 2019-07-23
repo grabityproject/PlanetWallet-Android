@@ -1,18 +1,15 @@
 package io.grabity.planetwallet.Views.p2_Pincode.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +17,6 @@ import java.util.Collections;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.CornerRound;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
@@ -129,7 +125,6 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
                 keyList.add( tag );
                 setPasswordMessage( true );
 
-                //Todo 여러 액티비티에서 넘어오게되는 핀화면 , 각 액티비티별로 받아서 분기처리
                 if ( keyList.size( ) == 5 ) {
                     StringBuilder stringBuffer = new StringBuilder( );
                     for ( int i = 0; i < keyList.size( ); i++ ) {
@@ -200,7 +195,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
         } else {
             viewMapper.passwordTitle.setTextColor( isPassword ? Color.parseColor( "#000000" ) : Color.parseColor( "#FF0050" ) );
         }
-        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#FF0050" ) );
+        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( !getCurrentTheme() ? "#5C5964" : "#aaaaaa" ) : Color.parseColor( "#FF0050" ) );
     }
 
     void setPasswordView( ) {

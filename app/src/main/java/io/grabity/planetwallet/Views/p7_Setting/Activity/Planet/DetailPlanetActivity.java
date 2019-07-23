@@ -2,12 +2,12 @@ package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
@@ -70,11 +70,11 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             viewMapper.textType.setText( localized( R.string.detail_planet_universe, CoinType.of( planet.getCoinType( ) ).name( ) ) );
             viewMapper.textAddressType.setText( localized( R.string.detail_planet_address, CoinType.of( planet.getCoinType( ) ).name( ) ) );
 
-            viewMapper.toolBar.setTitle( Utils.planetNameForm( planet.getName( ) ) );
+            viewMapper.toolBar.setTitle( planet.getName( )  );
             viewMapper.planetView.setData( planet.getAddress( ) );
             viewMapper.textAddress.setText( planet.getAddress( ) );
 
-            viewMapper.textName.setText( Utils.planetNameForm( planet.getName( ) ) );
+            viewMapper.textName.setText(  planet.getName( )  );
 
             viewMapper.groupToggle.setVisibility( Utils.equals( planet.getKeyId() , Utils.getPreferenceData( this, C.pref.LAST_PLANET_KEYID ) ) ? View.GONE : View.VISIBLE );
             viewMapper.toggle.setOn( Utils.equals( planet.getHide(), "Y" ) );
@@ -200,7 +200,6 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             textAddress = findViewById( R.id.text_detail_planet_address );
             textAddressType = findViewById( R.id.text_detail_planet_address_type );
             textName = findViewById( R.id.text_detail_planet_name );
-//            textType = findViewById( R.id.text_detail_planet_type );
 
 
             btnName = findViewById( R.id.btn_detail_planet_name_change );

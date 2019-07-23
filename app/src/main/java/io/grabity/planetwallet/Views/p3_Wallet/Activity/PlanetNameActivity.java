@@ -3,9 +3,6 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -13,14 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.KeyboardManager;
 import io.grabity.planetwallet.MiniFramework.networktask.Post;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -34,6 +31,7 @@ import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.ActionEditText;
 import io.grabity.planetwallet.Widgets.CustomToast;
+import io.grabity.planetwallet.Widgets.PlanetCursor;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ShadowView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -66,7 +64,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         findViewById( android.R.id.content ).getViewTreeObserver( ).addOnGlobalLayoutListener( this );
 
         viewMapper.btnSubmit.setOnClickListener( this );
-        ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) ) );
+        ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + Utils.getDeviceStatusBarHeight( this ) );
         viewMapper.toolBar.requestLayout( );
         viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
@@ -82,7 +80,9 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         viewMapper.etPlanetName.setOnEditorActionListener( this );
         viewMapper.etPlanetName.addTextChangedListener( this );
 
-
+        viewMapper.planetBackground.setFocusable( true );
+        viewMapper.planetBackground.setFocusableInTouchMode( true );
+        viewMapper.planetBackground.requestFocus( );
     }
 
     @Override
@@ -190,7 +190,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         findViewById( android.R.id.content ).getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
 
         float backgroundSize = ( ( Utils.getScreenWidth( this ) * 480.0f / 375.0f ) );
-        float backgroundTopMargin = getResources( ).getDimensionPixelSize( getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
+        float backgroundTopMargin = Utils.getDeviceStatusBarHeight( this );
 
         viewMapper.planetBackground.getLayoutParams( ).width = ( int ) backgroundSize;
         viewMapper.planetBackground.getLayoutParams( ).height = ( int ) backgroundSize;
@@ -204,6 +204,8 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
 
         viewMapper.planetBackground.requestLayout( );
         viewMapper.shadowBackground.requestLayout( );
+
+        viewMapper.cursor.setX( ( Utils.getScreenWidth( this ) / 2.0f + viewMapper.etPlanetName.getPaint( ).measureText( viewMapper.etPlanetName.getText( ).toString( ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
     }
 
     @Override
@@ -222,17 +224,10 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             viewMapper.planetBackground.setFocusable( true );
             viewMapper.planetBackground.setFocusableInTouchMode( true );
             viewMapper.planetBackground.requestFocus( );
-
-//            if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
-//                //Todo 모두 다 지우고 키보드를 닫는경우
-//                CustomToast.makeText( this, "이름은 공백일수 없습니다." ).show( );
-//            }
         } else {
-            if ( viewMapper.etPlanetName.getText( ).toString( ).contains( " " ) )
                 if ( first ) {
                     first = false;
-                    viewMapper.etPlanetName.setText( viewMapper.etPlanetName.getText( ).toString( ).trim( ) );
-                    viewMapper.etPlanetName.setSelection( viewMapper.etPlanetName.getText( ).length( ) );
+                    viewMapper.cursor.setVisibility( View.GONE );
                 }
         }
     }
@@ -247,6 +242,8 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
 
     public class ViewMapper {
 
+        PlanetCursor cursor;
+
         View btnSubmit;
         ToolBar toolBar;
         PlanetView planetView;
@@ -257,6 +254,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         ActionEditText etPlanetName;
 
         public ViewMapper( ) {
+            cursor = findViewById( R.id.cursor );
             btnSubmit = findViewById( R.id.submit );
             toolBar = findViewById( R.id.toolBar );
             planetView = findViewById( R.id.planet_name_icon );

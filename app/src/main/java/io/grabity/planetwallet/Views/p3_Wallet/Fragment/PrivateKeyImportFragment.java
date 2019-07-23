@@ -55,7 +55,7 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
         viewMapper.btnSubmit.setOnClickListener( this );
 
         viewMapper.etPrivateKey.addTextChangedListener( this );
-//        viewMapper.etPrivateKey.requestFocus( );
+        viewMapper.etPrivateKey.requestFocus( );
     }
 
     @Override

@@ -113,9 +113,6 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
                     isAbleMoving = true;
                 }
 
-                PLog.e( "ACTION DOWN defaultY : " + defaultY);
-                PLog.e( "ACTION DOWN defaultPopupTop : " + defaultPopupTop);
-
             } else if ( event.getAction( ) == MotionEvent.ACTION_MOVE && isAbleMoving ) {
                 if ( ( event.getRawY( ) - defaultY ) >= 0 ) {
                     viewMapper.groupPopup.setTop( ( int ) ( event.getRawY( ) + defaultPopupTop - defaultY ) );

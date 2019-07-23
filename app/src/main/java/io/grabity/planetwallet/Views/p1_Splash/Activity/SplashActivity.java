@@ -60,7 +60,6 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-//        PLog.e( result );
     }
 
     @Override
@@ -101,6 +100,7 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
 
                     }
                 } );
+
     }
 
 

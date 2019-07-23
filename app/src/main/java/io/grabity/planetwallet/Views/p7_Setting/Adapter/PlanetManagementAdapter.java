@@ -32,18 +32,9 @@ public class PlanetManagementAdapter extends AdvanceArrayAdapter< Planet > {
         ( ( PlanetItem ) viewMapper ).planetView.setData( item.getAddress( ) );
         ( ( PlanetItem ) viewMapper ).textType.setText( CoinType.of( item.getCoinType( ) ).name( ) );
         ( ( PlanetItem ) viewMapper ).textName.setText( item.getName( ) );
-//        ( ( PlanetItem ) viewMapper ).textName.setText( Utils.planetNameForm( item.getName( ) ) );
         ( ( PlanetItem ) viewMapper ).textAddress.setText( Utils.addressReduction( item.getAddress( ) ) );
 
     }
-
-//    private String getShortAddress( String address ) {
-//        if ( address != null && address.length( ) > 10 ) {
-//            return String.format( "%s...%s", address.substring( 0, 6 ), address.substring( address.length( ) - 4 ) );
-//        } else {
-//            return "";
-//        }
-//    }
 
 
     class PlanetItem extends ViewMapper {

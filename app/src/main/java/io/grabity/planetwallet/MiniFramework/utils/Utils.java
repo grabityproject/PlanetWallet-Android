@@ -956,8 +956,8 @@ public class Utils {
         return bundle;
     }
 
-    public static HashMap<String, String> createStringHashMap( String key, String value ) {
-        HashMap<String, String> map = new HashMap<>(  );
+    public static HashMap< String, String > createStringHashMap( String key, String value ) {
+        HashMap< String, String > map = new HashMap<>( );
         map.put( key, value );
         return map;
     }
@@ -1057,13 +1057,19 @@ public class Utils {
         }
     }
 
-    public static String planetNameForm( String name ) {
-        if ( name == null ) return "";
-        if ( name.length( ) <= 20 ){
-            return name;
-        } else{
-            return name.substring( 0,20 ) + "...";
+    public static ViewGroup getAndroidContentViewGroup( Activity activity ) {
+        try {
+            if ( activity != null ) {
+                return ( ( ViewGroup ) activity.findViewById( android.R.id.content ) );
+            }
+        } catch ( Exception e ) {
+            return null;
         }
+        return null;
     }
 
+    public static int getDeviceStatusBarHeight( Context context ) {
+        if ( context == null ) return 0;
+       return context.getResources( ).getDimensionPixelSize( context.getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
+    }
 }
