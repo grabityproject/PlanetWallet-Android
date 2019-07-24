@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
+import androidx.biometric.BiometricConstants;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.app.ActivityCompat;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
@@ -12,6 +13,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 
 public class BioMetricManager {
     private Context context;
@@ -26,6 +29,7 @@ public class BioMetricManager {
 
     private OnBioResultListener onBioResultListener;
 
+
     public BioMetricManager( Context context ) {
         this.context = context;
         this.fingerprintManagerCompat = FingerprintManagerCompat.from( context );
@@ -39,11 +43,11 @@ public class BioMetricManager {
         this.onBioResultListener = onBioResultListener;
     }
 
-    public static void Init( Context context ) {
+    public static void init( Context context ) {
         instance = new BioMetricManager( context );
     }
 
-    public static void Init( Context context, OnBioResultListener onBioResultListener ) {
+    public static void init( Context context, OnBioResultListener onBioResultListener ) {
         instance = new BioMetricManager( context, onBioResultListener );
     }
 
@@ -76,7 +80,7 @@ public class BioMetricManager {
             promptInfo = new BiometricPrompt.PromptInfo.Builder( )
                     .setTitle( "지문인식" )
                     .setSubtitle( "서브타이틀공간" )
-                    .setDescription( "DES" )
+                    .setDescription( "설명공간" )
                     .setNegativeButtonText( "취소" )
                     .build( );
             biometricPrompt.authenticate( promptInfo );
@@ -90,14 +94,13 @@ public class BioMetricManager {
 
     }
 
-
-
-    public BiometricPrompt.AuthenticationCallback getAuthenticationCallback( ) {
+    private BiometricPrompt.AuthenticationCallback getAuthenticationCallback( ) {
         return new BiometricPrompt.AuthenticationCallback( ) {
             @Override
             public void onAuthenticationError( int errorCode, @NonNull CharSequence errString ) {
                 super.onAuthenticationError( errorCode, errString );
-
+                PLog.e( "onAuthenticationError errorCode : " + errorCode );
+                PLog.e( "onAuthenticationError errString : " + errString );
                 if ( onBioResultListener != null ) {
                     onBioResultListener.onBioResult( false, errString );
                 }

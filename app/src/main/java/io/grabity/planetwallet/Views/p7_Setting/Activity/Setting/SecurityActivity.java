@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.biometric.BioMetricManager;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
@@ -40,12 +41,11 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
         viewMapper.btnPinCode.setOnClickListener( this );
         viewMapper.btnToggle.setOnClickListener( this );
 
-        BioMetricManager.Init( this );
+        BioMetricManager.init( this );
 
         if ( !BioMetricManager.getInstance( ).isHardwareCheck( ) ) {
             viewMapper.groupBio.setVisibility( View.GONE );
         }
-
     }
 
     @Override

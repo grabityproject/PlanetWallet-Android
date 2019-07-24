@@ -55,7 +55,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     protected void viewInit( ) {
         super.viewInit( );
 
-        BioMetricManager.Init( this, this );
+        BioMetricManager.init( this, this );
 
         if ( Utils.getScrennHeight( this ) <= 1920 ) {
             viewMapper.passwordTitle.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
@@ -87,19 +87,14 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
             viewMapper.toolBar.setOnToolBarClickListener( this );
         }
 
-        if ( getRequestCode( ) != C.requestCode.BIO_METRIC && Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( true ) ) ) {
-            BioMetricManager.getInstance( ).startAuth( );
-        }
-        //Todo 지문인식이 적용된 후에 핀코드 변경을 누르면 어떻게 처리할까요
-
     }
 
     @Override
-    public void onBioResult( boolean isResult, Object data ) {
-        PLog.e( "onBioResult : " + isResult );
-        if ( isResult ) {
-            sendAction( MainActivity.class );
-            finish( );
+    protected void onResume( ) {
+        super.onResume( );
+        if ( getRequestCode( ) != C.requestCode.BIO_METRIC && Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( true ) ) ) {
+            if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) return;
+            BioMetricManager.getInstance( ).startAuth( );
         }
     }
 
@@ -128,6 +123,22 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
+        }
+    }
+
+
+    @Override
+    public void onBioResult( boolean isResult, Object data ) {
+        if ( isResult ) {
+            if ( getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT ) {
+                // 핀코드 넘기는부분 일단 제거
+                setResult( RESULT_OK );
+            } else if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
+                setResult( RESULT_OK );
+            } else {
+                sendAction( MainActivity.class );
+            }
+            finish( );
         }
     }
 
@@ -173,6 +184,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
                         } else if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
 
                             setResult( RESULT_OK );
+
 
                         } else if ( getRequestCode( ) == C.requestCode.TRANSFER ) {
 

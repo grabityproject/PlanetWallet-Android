@@ -12,6 +12,7 @@
         android:layout_height="@dimen/toolbarHeight"
         />
 
+
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_pincode_certification_verificationcode"
         android:layout_width="wrap_content"
