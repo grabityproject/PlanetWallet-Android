@@ -2,11 +2,11 @@ package io.grabity.planetwallet.Views.p2_Pincode.Activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,17 +50,10 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
         super.viewInit( );
 
         if ( Utils.getScrennHeight( this ) <= 1920 ) {
-            viewMapper.passwordTitle.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
-                @Override
-                public void onGlobalLayout( ) {
-                    viewMapper.passwordTitle.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-                    viewMapper.groupPasswordView.setPadding( ( int ) Utils.dpToPx( PinCodeRegistrationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeRegistrationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeRegistrationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeRegistrationActivity.this, 42 ) );
-                    viewMapper.passwordTitle.setPadding( 0, 0, 0, 0 );
-                    viewMapper.groupPasswordView.requestLayout( );
-                    viewMapper.passwordTitle.requestLayout( );
-
-                }
-            } );
+            viewMapper.groupPasswordView.setPadding( ( int ) Utils.dpToPx( PinCodeRegistrationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeRegistrationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeRegistrationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeRegistrationActivity.this, 42 ) );
+            viewMapper.passwordTitle.setPadding( 0, 0, 0, 0 );
+            viewMapper.groupPasswordView.requestLayout( );
+            viewMapper.passwordTitle.requestLayout( );
         }
 
         viewMapper.btnDeleteNumber.setOnClickListener( this );
@@ -124,9 +117,9 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
             checkKeyList = null;
             keyList.clear( );
             setPasswordView( );
-            if ( getRequestCode() == C.requestCode.SETTING_CHANGE_PINCODE ){
+            if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
                 setPasswordMessage( true, 2 );
-            } else{
+            } else {
                 setPasswordMessage( true, 0 );
             }
 
@@ -229,7 +222,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
         } else {
             viewMapper.passwordTitle.setTextColor( isPassword ? Color.parseColor( "#000000" ) : Color.parseColor( "#FF0050" ) );
         }
-        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( !getCurrentTheme() ? "#5C5964" : "#aaaaaa" ) : Color.parseColor( "#FF0050" ) );
+        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( !getCurrentTheme( ) ? "#5C5964" : "#aaaaaa" ) : Color.parseColor( "#FF0050" ) );
     }
 
     void setPasswordView( ) {

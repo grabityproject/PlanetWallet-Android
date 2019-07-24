@@ -27,7 +27,6 @@
             android:layout_height="56dp">
 
             <io.grabity.planetwallet.Widgets.RoundEditText
-                android:textCursorDrawable="@null"
                 android:id="@+id/et_custom_token_address"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -84,7 +83,6 @@
             app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.RoundEditText
-            android:textCursorDrawable="@null"
             android:id="@+id/et_customToken_symbol"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -102,7 +100,6 @@
             app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.RoundEditText
-            android:textCursorDrawable="@null"
             android:id="@+id/edit_custom_token_decimals"
             android:layout_width="match_parent"
             android:layout_height="56dp"

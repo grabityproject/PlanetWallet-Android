@@ -41,7 +41,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/image_arrow_right_gray"
-            app:themeSrc="@drawable/image_arrow_right_gray" />
+            app:themeSrc="@drawable/image_arrow_right_blue" />
 
 
     </RelativeLayout>

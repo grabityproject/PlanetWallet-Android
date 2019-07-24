@@ -29,6 +29,7 @@ public class BioMetricManager {
     private final String[] TRANSFORMATION = { KeyProperties.KEY_ALGORITHM_AES, KeyProperties.BLOCK_MODE_CBC, KeyProperties.ENCRYPTION_PADDING_PKCS7 };
     private static final String KEYSTORE_PROVIDER = "AndroidKeyStore";
     private final String ALIAS = "bio_key";
+    private final String ALIAS_ENC = "bio_enc";
     private static final byte[] DEFAULT_IV = "PlanetWalletPCWF".getBytes( );
 
     private BiometricPrompt biometricPrompt;
@@ -116,7 +117,7 @@ public class BioMetricManager {
             Cipher cipher = Cipher.getInstance( transformation( TRANSFORMATION ) );
             cipher.init( Cipher.ENCRYPT_MODE, secretKey( ), new IvParameterSpec( DEFAULT_IV ) );
             byte[] enc = cipher.doFinal( String.valueOf( PINCODE ).getBytes( ) );
-            KeyValueStore.getInstance( ).setValue( "bio_enc", Base64.encodeToString( enc, Base64.DEFAULT ) );
+            KeyValueStore.getInstance( ).setValue( ALIAS_ENC, Base64.encodeToString( enc, Base64.DEFAULT ) );
         } catch ( Throwable var4 ) {
             PLog.e( "Error" );
         }
@@ -126,7 +127,7 @@ public class BioMetricManager {
         try {
             Cipher cipher = Cipher.getInstance( transformation( TRANSFORMATION ) );
             cipher.init( Cipher.DECRYPT_MODE, secretKey( ), new IvParameterSpec( DEFAULT_IV ) );
-            byte[] dec = Base64.decode( KeyValueStore.getInstance( ).getValue( "bio_enc" ), Base64.DEFAULT );
+            byte[] dec = Base64.decode( KeyValueStore.getInstance( ).getValue( ALIAS_ENC ), Base64.DEFAULT );
             byte[] result = cipher.doFinal( dec );
             char[] items = new char[ result.length ];
             for ( int i = 0; i < result.length; i++ ) {
@@ -139,7 +140,7 @@ public class BioMetricManager {
     }
 
     public void removeKey( ) {
-        KeyValueStore.getInstance( ).deleteValue( "bio_enc" );
+        KeyValueStore.getInstance( ).deleteValue( ALIAS_ENC );
     }
 
     public SecretKey secretKey( ) {

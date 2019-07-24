@@ -225,10 +225,10 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             viewMapper.planetBackground.setFocusableInTouchMode( true );
             viewMapper.planetBackground.requestFocus( );
         } else {
-                if ( first ) {
-                    first = false;
-                    viewMapper.cursor.setVisibility( View.GONE );
-                }
+            if ( first ) {
+                first = false;
+                viewMapper.cursor.setVisibility( View.GONE );
+            }
         }
     }
 

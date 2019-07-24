@@ -121,7 +121,6 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         if ( v == viewMapper.btnPlanet ) {
             sendAction( DetailPlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
         } else if ( v == viewMapper.btnUniverse ) {
-            //Todo 자기자신 제거한 리스트출력
             sendAction( PlanetManagementActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
         } else if ( v == viewMapper.btnSecurity ) {
             sendAction( SecurityActivity.class );

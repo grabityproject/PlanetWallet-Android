@@ -360,7 +360,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onRippleEffect( boolean on ) {
         if ( on ) {
             if ( viewMapper.rippleView.isBackPressed( ) ) {
-                PLog.e( "onRippleEffect Check" );
                 setTransition( Transition.NO_ANIMATION );
                 sendAction( SettingActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ) );
             }

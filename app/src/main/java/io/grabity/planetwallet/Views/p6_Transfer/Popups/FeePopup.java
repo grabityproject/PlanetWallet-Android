@@ -22,9 +22,6 @@ import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 
 public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
-    //Todo price,limit 초기화시 예외처리 추후작업
-
-
     private ViewMapper viewMapper;
     private ArrayList< FontTextView > feeButtons;
     private ArrayList< String > price;
@@ -35,7 +32,6 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
     private OnFeePopupSaveClickListener onFeePopupSaveClickListener;
 
     private float contentHeight = -1.0f;
-    private float defaultTop = -1.0f;
     private float defaultY = -1.0f;
     private boolean isMove = false;
 

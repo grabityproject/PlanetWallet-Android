@@ -38,7 +38,6 @@
                     android:inputType="textPassword"
                     android:paddingStart="14dp"
                     android:paddingEnd="54dp"
-                    android:textCursorDrawable="@null"
                     app:defaultTheme="Dark" />
 
 
@@ -89,7 +88,6 @@
                 android:lineSpacingExtra="8dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
-                android:textCursorDrawable="@null"
                 android:textSize="14dp"
                 app:defaultTheme="Dark" />
 

@@ -26,7 +26,6 @@
             android:layout_height="56dp">
 
             <io.grabity.planetwallet.Widgets.RoundEditText
-                android:textCursorDrawable="@null"
                 android:id="@+id/et_privatekey_import_privatekey"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
