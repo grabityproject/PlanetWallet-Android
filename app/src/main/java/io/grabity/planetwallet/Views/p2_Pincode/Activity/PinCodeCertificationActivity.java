@@ -2,11 +2,9 @@ package io.grabity.planetwallet.Views.p2_Pincode.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.hardware.biometrics.BiometricPrompt;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -17,9 +15,8 @@ import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.biometric.BioMetricManager;
+import io.grabity.planetwallet.MiniFramework.managers.BioMetricManager;
 import io.grabity.planetwallet.MiniFramework.utils.CornerRound;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
@@ -31,7 +28,7 @@ import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
-public class PinCodeCertificationActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, BioMetricManager.OnBioResultListener {
+public class PinCodeCertificationActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, BioMetricManager.OnBioAuthListener {
 
     private ViewMapper viewMapper;
     private ArrayList< RoundRelativeLayout > passwordViews;
@@ -39,8 +36,9 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     private ArrayList< FontTextView > alphabetButtons;
 
     private ArrayList< String > keyList;
-    private String strKeyList;
     private long backPressedTime = 0;
+
+    private char[] pincode;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -54,23 +52,12 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-
-        BioMetricManager.init( this, this );
-
         if ( Utils.getScrennHeight( this ) <= 1920 ) {
-            viewMapper.passwordTitle.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
-                @Override
-                public void onGlobalLayout( ) {
-                    viewMapper.passwordTitle.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-                    viewMapper.groupPasswordView.setPadding( ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ) );
-                    viewMapper.passwordTitle.setPadding( 0, 0, 0, 0 );
-                    viewMapper.groupPasswordView.requestLayout( );
-                    viewMapper.passwordTitle.requestLayout( );
-
-                }
-            } );
+            viewMapper.groupPasswordView.setPadding( ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ) );
+            viewMapper.passwordTitle.setPadding( 0, 0, 0, 0 );
+            viewMapper.groupPasswordView.requestLayout( );
+            viewMapper.passwordTitle.requestLayout( );
         }
-
 
         viewMapper.btnDeleteNumber.setOnClickListener( this );
         viewMapper.btnDeleteAlphabet.setOnClickListener( this );
@@ -90,16 +77,6 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     }
 
     @Override
-    protected void onResume( ) {
-        super.onResume( );
-        if ( getRequestCode( ) != C.requestCode.BIO_METRIC && Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( true ) ) ) {
-            if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) return;
-            BioMetricManager.getInstance( ).startAuth( );
-        }
-    }
-
-
-    @Override
     protected void setData( ) {
         super.setData( );
 
@@ -117,28 +94,28 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
         keyList = new ArrayList<>( );
 
         setPasswordView( );
+        setBioMetric( );
+    }
+
+    private void setBioMetric( ) {
+        if ( getRequestCode( ) != C.requestCode.BIO_METRIC &&
+                Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( true ) ) ) {
+
+            if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) return;
+
+            if ( !BioMetricManager.getInstance( ).isFingerPrintCheck( this ) ) {
+                Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) );
+                BioMetricManager.getInstance( ).removeKey( );
+            } else {
+                BioMetricManager.getInstance( ).setOnBioAuthListener( this ).startAuth( this );
+            }
+        }
     }
 
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
-        }
-    }
-
-
-    @Override
-    public void onBioResult( boolean isResult, Object data ) {
-        if ( isResult ) {
-            if ( getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT ) {
-                // 핀코드 넘기는부분 일단 제거
-                setResult( RESULT_OK );
-            } else if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
-                setResult( RESULT_OK );
-            } else {
-                sendAction( MainActivity.class );
-            }
-            finish( );
         }
     }
 
@@ -161,58 +138,13 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
                     for ( int i = 0; i < keyList.size( ); i++ ) {
                         stringBuffer.append( keyList.get( i ) );
                     }
-                    strKeyList = stringBuffer.toString( );
+                    String strKeyList = stringBuffer.toString( );
 
                     if ( Utils.equals( Utils.sha256( strKeyList ), KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD, strKeyList.toCharArray( ) ) ) ) {
 
                         getPlanetWalletApplication( ).setPINCODE( strKeyList.toCharArray( ) );
-
-                        if ( getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT ) {
-
-                            Intent intent = new Intent( );
-                            intent.putExtra( C.bundleKey.PINCODE, strKeyList.toCharArray( ) );
-                            setResult( RESULT_OK, intent );
-
-                        } else if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
-
-                            Bundle bundle = new Bundle( );
-                            bundle.putCharArray( C.bundleKey.PINCODE, strKeyList.toCharArray( ) );
-                            setTransition( Transition.SLIDE_UP );
-                            sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, bundle );
-                            return;
-
-                        } else if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
-
-                            setResult( RESULT_OK );
-
-
-                        } else if ( getRequestCode( ) == C.requestCode.TRANSFER ) {
-
-                            setResult( RESULT_OK );
-
-                        } else if ( getRequestCode( ) == C.requestCode.BIO_METRIC ) {
-                            if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( false ) ) ) {
-                                Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( true ) );
-                            } else {
-                                Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) );
-                            }
-                            setResult( RESULT_OK );
-                        } else {
-
-                            if ( PlanetStore.getInstance( ).getPlanetList( ).size( ) == 0 ) {
-
-                                Bundle bundle = new Bundle( );
-                                bundle.putCharArray( C.bundleKey.PINCODE, strKeyList.toCharArray( ) );
-                                sendAction( PlanetGenerateActivity.class, bundle );
-
-                            } else {
-
-                                sendAction( MainActivity.class );
-
-                            }
-
-                        }
-                        finish( );
+                        pincode = strKeyList.toCharArray( );
+                        switchAction( );
 
                     } else {
                         keyList.clear( );
@@ -267,6 +199,63 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
         }
     }
 
+    private void switchAction( ) {
+
+        if ( pincode != null ) {
+            if ( getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT ) {
+
+                Intent intent = new Intent( );
+                intent.putExtra( C.bundleKey.PINCODE, pincode );
+                setResult( RESULT_OK, intent );
+
+            } else if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
+
+                Bundle bundle = new Bundle( );
+                bundle.putCharArray( C.bundleKey.PINCODE, pincode );
+                setTransition( Transition.SLIDE_UP );
+                sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, bundle );
+                return;
+
+            } else if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
+
+                setResult( RESULT_OK );
+
+            } else if ( getRequestCode( ) == C.requestCode.TRANSFER ) {
+
+                setResult( RESULT_OK );
+
+            } else if ( getRequestCode( ) == C.requestCode.BIO_METRIC ) {
+
+                if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( false ) ) ) {
+                    Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( true ) );
+                    BioMetricManager.getInstance( ).generateSecretKey( );
+                    BioMetricManager.getInstance( ).saveKey( pincode );
+                } else {
+                    Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) );
+                    BioMetricManager.getInstance( ).removeKey( );
+                }
+                setResult( RESULT_OK );
+
+            } else {
+
+                if ( PlanetStore.getInstance( ).getPlanetList( ).size( ) == 0 ) {
+
+                    Bundle bundle = new Bundle( );
+                    bundle.putCharArray( C.bundleKey.PINCODE, pincode );
+                    sendAction( PlanetGenerateActivity.class, bundle );
+
+                } else {
+
+                    sendAction( MainActivity.class );
+
+                }
+
+            }
+            finish( );
+        }
+
+    }
+
     @Override
     public void onBackPressed( ) {
         if ( keyList.size( ) == 0 ) {
@@ -304,6 +293,15 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
             setResult( RESULT_CANCELED );
         }
         super.onBackPressed( );
+    }
+
+    @Override
+    public void onBioAuth( boolean isResult, char[] data ) {
+        if ( isResult ) {
+            getPlanetWalletApplication( ).setPINCODE( data );
+            pincode = data;
+            switchAction( );
+        }
     }
 
 
