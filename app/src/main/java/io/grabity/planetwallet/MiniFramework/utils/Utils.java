@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -937,6 +938,21 @@ public class Utils {
         }
     }
 
+    public static Bundle mergeBundles( Bundle... bundles ) {
+        Bundle bundle = new Bundle( );
+        for ( Bundle b : bundles ) {
+            Set< String > keys = b.keySet( );
+            for ( String k : keys ) {
+                try {
+                    bundle.putSerializable( k, ( Serializable ) b.get( k ) );
+                } catch ( Exception e ) {
+                    e.printStackTrace( );
+                }
+            }
+        }
+        return bundle;
+    }
+
     public static Bundle createSerializableBundle( String key, Serializable object ) {
         Bundle bundle = new Bundle( );
         bundle.putSerializable( key, object );
@@ -1090,6 +1106,32 @@ public class Utils {
             builder.append( s );
         }
         return builder.toString( );
+    }
+
+    public static String join( char[] array ) {
+        StringBuilder builder = new StringBuilder( );
+        for ( char c : array ) {
+            builder.append( c );
+        }
+        return builder.toString( );
+    }
+
+    public static void addTopMargin( View target, float margin ) {
+        try {
+            ( ( ViewGroup.MarginLayoutParams ) target.getLayoutParams( ) ).topMargin = ( int ) margin;
+            target.requestLayout( );
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
+    }
+
+    public static void addTopMarginStatusBarHeight( Context context, View target ) {
+        try {
+            ( ( ViewGroup.MarginLayoutParams ) target.getLayoutParams( ) ).topMargin = ( int ) Utils.getDeviceStatusBarHeight( context );
+            target.requestLayout( );
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
     }
 
 }
