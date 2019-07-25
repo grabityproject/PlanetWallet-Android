@@ -63,12 +63,9 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        findViewById( android.R.id.content ).getViewTreeObserver( ).addOnGlobalLayoutListener( this );
-
         viewMapper.btnSubmit.setOnClickListener( this );
 
         viewMapper.toolBar.setTopMarginFullScreen( );
-        viewMapper.toolBar.requestLayout( );
         viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
@@ -86,6 +83,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         viewMapper.planetBackground.setFocusable( true );
         viewMapper.planetBackground.setFocusableInTouchMode( true );
         viewMapper.planetBackground.requestFocus( );
+        viewMapper.planetBackground.getViewTreeObserver( ).addOnGlobalLayoutListener( this );
     }
 
     @Override
@@ -101,6 +99,8 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             viewMapper.planetBackground.setData( planet.getAddress( ) );
 
 
+            viewMapper.etPlanetName.setText( "WelcomePlanet" );
+            viewMapper.cursor.setX( ( ( Utils.getScreenWidth( this ) + Utils.getTextWidth( viewMapper.etPlanetName ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
         }
     }
 
@@ -190,25 +190,11 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
 
     @Override
     public void onGlobalLayout( ) {
-        findViewById( android.R.id.content ).getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-
-        float backgroundSize = ( ( Utils.getScreenWidth( this ) * 480.0f / 375.0f ) );
-        float backgroundTopMargin = Utils.getDeviceStatusBarHeight( this );
-
-        viewMapper.planetBackground.getLayoutParams( ).width = ( int ) backgroundSize;
-        viewMapper.planetBackground.getLayoutParams( ).height = ( int ) backgroundSize;
-        viewMapper.shadowBackground.getLayoutParams( ).width = ( int ) backgroundSize;
-        viewMapper.shadowBackground.getLayoutParams( ).height = ( int ) backgroundSize;
-
-        viewMapper.planetBackground.setScaleX( 1.3f );
-        viewMapper.planetBackground.setScaleY( 1.3f );
-
-        ( ( ViewGroup.MarginLayoutParams ) viewMapper.planetBackground.getLayoutParams( ) ).topMargin = ( int ) backgroundTopMargin;
-
-        viewMapper.planetBackground.requestLayout( );
-        viewMapper.shadowBackground.requestLayout( );
-
-        viewMapper.cursor.setX( ( Utils.getScreenWidth( this ) / 2.0f + viewMapper.etPlanetName.getPaint( ).measureText( viewMapper.etPlanetName.getText( ).toString( ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
+        viewMapper.planetBackground.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
+        Utils.setViewSize( viewMapper.planetBackground, Utils.getScreenWidth( this ) * 480.0f / 375.0f );
+        Utils.setViewSize( viewMapper.shadowBackground, Utils.getScreenWidth( this ) * 480.0f / 375.0f );
+        Utils.addTopMarginStatusBarHeight( this, viewMapper.planetBackground );
+        Utils.setScale( viewMapper.planetBackground, 1.3f );
     }
 
     @Override

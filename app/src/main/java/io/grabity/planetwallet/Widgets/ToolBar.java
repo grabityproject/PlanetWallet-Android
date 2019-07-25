@@ -356,4 +356,8 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
     public void setTopMarginFullScreen( ) {
         Utils.addTopMarginStatusBarHeight( getContext( ), this );
     }
+
+    public void setToolBarHeight( ) {
+        ( ( ViewGroup.LayoutParams ) this.getLayoutParams( ) ).height = ( int ) Utils.dpToPx( getContext( ), 64 ) + ( int ) Utils.getDeviceStatusBarHeight( getContext( ) );
+    }
 }

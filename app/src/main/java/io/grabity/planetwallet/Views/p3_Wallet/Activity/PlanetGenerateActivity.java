@@ -72,13 +72,12 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        findViewById( android.R.id.content ).getViewTreeObserver( ).addOnGlobalLayoutListener( this );
+
 
         viewMapper.btnSelect.setOnClickListener( this );
         viewMapper.btnRefresh.setOnClickListener( this );
 
-        ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + Utils.getDeviceStatusBarHeight( this ) );
-        viewMapper.toolBar.requestLayout( );
+        viewMapper.toolBar.setTopMarginFullScreen( );
 
 
         viewMapper.btnRefresh.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
@@ -99,6 +98,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         viewMapper.planetBackground.setFocusable( true );
         viewMapper.planetBackground.setFocusableInTouchMode( true );
         viewMapper.planetBackground.requestFocus( );
+        viewMapper.planetBackground.getViewTreeObserver( ).addOnGlobalLayoutListener( this );
 
 
     }
@@ -136,6 +136,9 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             } else {
                 generateEthPlanet( );
             }
+
+            viewMapper.etPlanetName.setText( "WelcomePlanet" );
+            viewMapper.cursor.setX( ( ( Utils.getScreenWidth( this ) + Utils.getTextWidth( viewMapper.etPlanetName ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
         } catch ( DecryptionErrorException e ) {
             e.printStackTrace( );
         }
@@ -144,26 +147,11 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
     @Override
     public void onGlobalLayout( ) {
-        findViewById( android.R.id.content ).getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-
-        float backgroundSize = ( ( Utils.getScreenWidth( this ) * 480.0f / 375.0f ) );
-        float backgroundTopMargin = Utils.getDeviceStatusBarHeight( this );
-
-        viewMapper.planetBackground.getLayoutParams( ).width = ( int ) backgroundSize;
-        viewMapper.planetBackground.getLayoutParams( ).height = ( int ) backgroundSize;
-        viewMapper.shadowBackground.getLayoutParams( ).width = ( int ) backgroundSize;
-        viewMapper.shadowBackground.getLayoutParams( ).height = ( int ) backgroundSize;
-
-        viewMapper.planetBackground.setScaleX( 1.3f );
-        viewMapper.planetBackground.setScaleY( 1.3f );
-
-        ( ( ViewGroup.MarginLayoutParams ) viewMapper.planetBackground.getLayoutParams( ) ).topMargin = ( int ) backgroundTopMargin;
-
-        viewMapper.planetBackground.requestLayout( );
-        viewMapper.shadowBackground.requestLayout( );
-
-        viewMapper.cursor.setX( ( Utils.getScreenWidth( this ) / 2.0f + viewMapper.etPlanetName.getPaint( ).measureText( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
-
+        viewMapper.planetBackground.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
+        Utils.setViewSize( viewMapper.planetBackground, Utils.getScreenWidth( this ) * 480.0f / 375.0f );
+        Utils.setViewSize( viewMapper.shadowBackground, Utils.getScreenWidth( this ) * 480.0f / 375.0f );
+        Utils.addTopMarginStatusBarHeight( this, viewMapper.planetBackground );
+        Utils.setScale( viewMapper.planetBackground, 1.3f );
     }
 
     @Override

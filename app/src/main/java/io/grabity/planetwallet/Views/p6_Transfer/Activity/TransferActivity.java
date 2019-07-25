@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -46,7 +45,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     private ERC20 erc20;
 
     private boolean isQRScan = false;
-
 
 
     @Override
@@ -111,7 +109,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_TRANSFER_QRCODE ) ) {
-            if ( !isQRScan ){
+            if ( !isQRScan ) {
                 isQRScan = true;
                 Utils.hideKeyboard( this, getCurrentFocus( ) );
                 requestPermissions( C.requestCode.QR_CODE, Manifest.permission.CAMERA );
@@ -119,7 +117,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
         }
     }
-
 
 
     @Override
@@ -245,8 +242,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             allPlanets = ( ArrayList< Planet > ) returnVO.getResult( );
             if ( allPlanets != null ) {
                 if ( allPlanets.size( ) == 0 ) {
-
-
                     if ( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ) {
                         if ( BitCoinManager.getInstance( ).validateAddress( viewMapper.etSearch.getText( ).toString( ) ) ) {
                             noSearchView( false );
@@ -263,34 +258,26 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
                             return;
                         }
                     }
-
-
                     noSearchView( true );
                     addressSearchView( false );
                     clipView( );
-
                 } else {
-
-
                     for ( int i = 0; i < allPlanets.size( ); i++ ) {
                         if ( Utils.equals( allPlanets.get( i ).getName( ), planet.getName( ) ) ) {
                             allPlanets.remove( i );
                             break;
                         }
                     }
-
                     if ( allPlanets.size( ) == 0 ) {
                         noSearchView( true );
                         addressSearchView( false );
                         clipView( );
                         return;
                     }
-
                     noSearchView( false );
                     addressSearchView( false );
                     clipView( );
                 }
-
             }
             viewMapper.listView.setAdapter( new TransferAdapter( this, allPlanets ) );
 
@@ -315,15 +302,9 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     }
 
     private void searchViewThemeSet( ) {
-        if ( getCurrentTheme( ) ) {
-            viewMapper.etSearch.setTextColor( Color.parseColor( "#000000" ) );
-            viewMapper.etSearch.setHintTextColor( Color.parseColor( "#aaaaaa" ) );
-            viewMapper.etSearch.setBackgroundColor( Color.parseColor( "#FCFCFC" ) );
-        } else {
-            viewMapper.etSearch.setTextColor( Color.parseColor( "#FFFFFF" ) );
-            viewMapper.etSearch.setHintTextColor( Color.parseColor( "#5C5964" ) );
-            viewMapper.etSearch.setBackgroundColor( Color.parseColor( "#111117" ) );
-        }
+        viewMapper.etSearch.setTextColor( !getCurrentTheme( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#000000" ) );
+        viewMapper.etSearch.setHintTextColor( !getCurrentTheme( ) ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#aaaaaa" ) );
+        viewMapper.etSearch.setBackgroundColor( !getCurrentTheme( ) ? Color.parseColor( "#111117" ) : Color.parseColor( "#FCFCFC" ) );
     }
 
     private void updateSearchView( ) {

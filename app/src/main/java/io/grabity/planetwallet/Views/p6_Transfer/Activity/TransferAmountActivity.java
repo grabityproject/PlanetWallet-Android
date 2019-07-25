@@ -3,7 +3,6 @@ package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -51,20 +50,9 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         super.viewInit( );
 
         if ( Utils.getScrennHeight( this ) <= 1920 ) {
-            viewMapper.textBalance.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
-                @Override
-                public void onGlobalLayout( ) {
-                    viewMapper.textBalance.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-
-                    viewMapper.textBalance.setPadding( 0, ( int ) Utils.dpToPx( TransferAmountActivity.this, 24 ), 0, 0 );
-                    viewMapper.textAmount.setPadding( 0, ( int ) Utils.dpToPx( TransferAmountActivity.this, 20 ), 0, 0 );
-                    ( ( ViewGroup.MarginLayoutParams ) viewMapper.groupInputAmount.getLayoutParams( ) ).bottomMargin = ( int ) Utils.dpToPx( TransferAmountActivity.this, 20 );
-
-                    viewMapper.groupInputAmount.requestLayout( );
-                    viewMapper.textBalance.requestLayout( );
-                    viewMapper.textAmount.requestLayout( );
-                }
-            } );
+            Utils.setPadding( viewMapper.textBalance, 0, 24, 0, 0 );
+            Utils.setPadding( viewMapper.textAmount, 0, 20, 0, 0 );
+            Utils.addBottomMargin( viewMapper.groupInputAmount, 20 );
         }
 
 

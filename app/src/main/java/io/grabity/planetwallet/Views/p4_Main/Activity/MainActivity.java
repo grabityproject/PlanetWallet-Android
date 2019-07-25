@@ -78,7 +78,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.overScrollWrapper.addOnRefreshListener( this );
 
         // Toolbar
-        viewMapper.toolBar.setTopMarginFullScreen( );
+        viewMapper.toolBar.setToolBarHeight( );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MENU ) );
         viewMapper.toolBar.setRightButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MUTIUNIVERSE ) );

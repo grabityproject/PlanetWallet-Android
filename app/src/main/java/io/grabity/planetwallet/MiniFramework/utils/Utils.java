@@ -864,6 +864,13 @@ public class Utils {
         return textView.getMeasuredWidth( );
     }
 
+    public static float getTextWidth( TextView textView ) {
+        if ( textView != null && textView.getText( ) != null ) {
+            return textView.getPaint( ).measureText( textView.getText( ).toString( ) );
+        }
+        return -1;
+    }
+
     public static String getFileExtension( String filePath ) {
         String[] path = filePath.split( "\\." );
         if ( path.length > 0 ) {
@@ -1125,12 +1132,52 @@ public class Utils {
         }
     }
 
+    public static void addBottomMargin( View target, int margin ) {
+        try {
+            ( ( ViewGroup.MarginLayoutParams ) target.getLayoutParams( ) ).bottomMargin = ( int ) dpToPx( target.getContext( ), margin );
+            target.requestLayout( );
+        } catch ( Exception e ) {
+            e.printStackTrace( );
+        }
+    }
+
     public static void addTopMarginStatusBarHeight( Context context, View target ) {
         try {
             ( ( ViewGroup.MarginLayoutParams ) target.getLayoutParams( ) ).topMargin = ( int ) Utils.getDeviceStatusBarHeight( context );
             target.requestLayout( );
         } catch ( Exception e ) {
             e.printStackTrace( );
+        }
+    }
+
+    public static void setViewSize( View target, float width, float height ) {
+        if ( target != null ) {
+            target.getLayoutParams( ).width = ( int ) width;
+            target.getLayoutParams( ).height = ( int ) height;
+            target.requestLayout( );
+        }
+    }
+
+
+    public static void setViewSize( View target, float size ) {
+        if ( target != null ) {
+            target.getLayoutParams( ).width = ( int ) size;
+            target.getLayoutParams( ).height = ( int ) size;
+            target.requestLayout( );
+        }
+    }
+
+    public static void setScale( View target, float scale ) {
+        if ( target != null ) {
+            target.setScaleX( scale );
+            target.setScaleY( scale );
+        }
+    }
+
+    public static void setPadding( View target, int left, int top, int right, int bottom ) {
+        if ( target != null ) {
+            target.setPadding( ( int ) dpToPx( target.getContext( ), left ), ( int ) dpToPx( target.getContext( ), top ), ( int ) dpToPx( target.getContext( ), right ), ( int ) dpToPx( target.getContext( ), bottom ) );
+            target.requestLayout( );
         }
     }
 
