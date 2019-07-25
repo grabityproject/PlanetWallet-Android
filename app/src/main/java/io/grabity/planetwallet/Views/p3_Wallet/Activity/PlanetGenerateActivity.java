@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 
 import com.pentasecurity.cryptowallet.exceptions.DecryptionErrorException;
 
+import java.util.Objects;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
@@ -88,7 +90,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         );
 
         viewMapper.etPlanetName.setTypeface( FontManager.getInstance( ).getFont( FontManager.BOLD ) );
-        viewMapper.etPlanetName.setSelection( viewMapper.etPlanetName.getText( ).length( ) );
+        viewMapper.etPlanetName.setSelection( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) );
 
         viewMapper.etPlanetName.setOnEditorActionListener( this );
         viewMapper.etPlanetName.addTextChangedListener( this );
@@ -160,7 +162,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         viewMapper.planetBackground.requestLayout( );
         viewMapper.shadowBackground.requestLayout( );
 
-        viewMapper.cursor.setX( ( Utils.getScreenWidth( this ) / 2.0f + viewMapper.etPlanetName.getPaint( ).measureText( viewMapper.etPlanetName.getText( ).toString( ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
+        viewMapper.cursor.setX( ( Utils.getScreenWidth( this ) / 2.0f + viewMapper.etPlanetName.getPaint( ).measureText( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
 
     }
 
@@ -206,7 +208,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             // Todo Network 통신 다음 저장 기능 구현 현재는 그냥 저장
             if ( planet != null ) {
 
-                if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
+                if ( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) == 0 ) {
                     CustomToast.makeText( this, localized( R.string.planet_generate_name_not_blank_title ) ).show( );
                     return;
                 }
@@ -285,7 +287,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
             }
 
         }
-        planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+        planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
         viewMapper.planetView.setData( planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
     }
@@ -299,7 +301,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         BitCoinManager.getInstance( ).generateMaster( pinCode );
 
         planet = BitCoinManager.getInstance( ).addPlanet( pinCode );
-        planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+        planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
 
         viewMapper.planetView.setData( planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
@@ -324,7 +326,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 return;
             }
         }
-        planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+        planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
         viewMapper.planetView.setData( planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
     }
@@ -334,7 +336,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         EthereumManager.getInstance( ).generateMaster( pinCode );
 
         planet = EthereumManager.getInstance( ).addPlanet( pinCode );
-        planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+        planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
 
         viewMapper.planetView.setData( planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
@@ -370,7 +372,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
     @Override
     public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
-        if ( viewMapper.etPlanetName.getText( ).length( ) != 0 ) {
+        if ( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) != 0 ) {
             plantName = viewMapper.etPlanetName.getText( ).toString( );
             cursor = viewMapper.etPlanetName.getSelectionStart( );
         } else {
@@ -386,7 +388,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
     @Override
     public void afterTextChanged( Editable s ) {
-        if ( viewMapper.etPlanetName.getText( ).length( ) != 0 ) {
+        if ( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) != 0 ) {
             if ( !Utils.isPlanetName( viewMapper.etPlanetName.getText( ).toString( ) ) ) {
                 viewMapper.etPlanetName.setText( plantName );
                 try {

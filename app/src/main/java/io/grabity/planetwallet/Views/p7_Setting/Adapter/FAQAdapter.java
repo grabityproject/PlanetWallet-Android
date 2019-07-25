@@ -23,16 +23,16 @@ public class FAQAdapter extends AdvanceArrayAdapter< Board > {
 
     @Override
     public void bindData( ViewMapper viewMapper, Board item, int position ) {
-        ( ( BoardItem ) viewMapper ).title.setText( item.getSubject( ) );
+        ( ( BoardItem ) viewMapper ).TextTitle.setText( item.getSubject( ) );
     }
 
     class BoardItem extends ViewMapper {
 
-        TextView title;
+        TextView TextTitle;
 
         public BoardItem( View itemView ) {
             super( itemView );
-            title = findViewById( R.id.text_item_board_title );
+            TextTitle = findViewById( R.id.text_item_board_title );
         }
     }
 

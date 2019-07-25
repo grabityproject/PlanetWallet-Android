@@ -124,13 +124,13 @@ public class C {
 
     }
 
-    public static class pincertification {
-
-        public static int CHANGE = 10;
-        public static int MNEMONIC = 11;
-        public static int PRIVATEKEY = 12;
-        public static int TRANSFER = 13;
+    public static class currency {
+        public final static String USD = "USD";
+        public final static String KRW = "KRW";
+        public final static String CNY = "CNY";
     }
+
+
 
 
 }

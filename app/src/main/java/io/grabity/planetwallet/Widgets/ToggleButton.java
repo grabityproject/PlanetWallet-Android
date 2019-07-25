@@ -29,7 +29,6 @@ public class ToggleButton extends View implements View.OnClickListener, Themeabl
     private Paint circlePaint;
     private Paint maskPaint;
 
-    private Path clipPath;
     private RectF clipRectF;
 
     private boolean isOn = false;
@@ -62,7 +61,6 @@ public class ToggleButton extends View implements View.OnClickListener, Themeabl
     void viewInit( ) {
         circlePaint = new Paint( Paint.ANTI_ALIAS_FLAG );
         maskPaint = new Paint( Paint.ANTI_ALIAS_FLAG );
-        clipPath = new Path( );
 
         circlePaint.setColor( Color.WHITE );
         maskPaint.setColor( Color.BLACK );

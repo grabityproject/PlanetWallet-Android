@@ -66,7 +66,6 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
 
             viewMapper.btnMnemonic.setVisibility( planet.getPathIndex( ) != -1 ? View.VISIBLE : View.GONE );
 
-            //localized change
             viewMapper.textType.setText( localized( R.string.detail_planet_universe, CoinType.of( planet.getCoinType( ) ).name( ) ) );
             viewMapper.textAddressType.setText( localized( R.string.detail_planet_address, CoinType.of( planet.getCoinType( ) ).name( ) ) );
 

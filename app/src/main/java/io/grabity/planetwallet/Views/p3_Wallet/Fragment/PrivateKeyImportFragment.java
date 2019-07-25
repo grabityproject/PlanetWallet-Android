@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -76,11 +78,10 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
         } else if ( v == viewMapper.btnSubmit ) {
 
             if ( getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) != null ) {
-                if ( viewMapper.etPrivateKey.getText( ) == null ) return;
                 if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
 
                     try {
-                        Planet btcPlanet = BitCoinManager.getInstance( ).importPrivateKey( viewMapper.etPrivateKey.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
+                        Planet btcPlanet = BitCoinManager.getInstance( ).importPrivateKey( Objects.requireNonNull( viewMapper.etPrivateKey.getText( ) ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
 
                         if ( PlanetStore.getInstance( ).getPlanet( btcPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( btcPlanet );
@@ -95,7 +96,7 @@ public class PrivateKeyImportFragment extends PlanetWalletFragment implements Vi
                 } else if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
 
                     try {
-                        Planet ethPlanet = EthereumManager.getInstance( ).importPrivateKey( viewMapper.etPrivateKey.getText( ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
+                        Planet ethPlanet = EthereumManager.getInstance( ).importPrivateKey( Objects.requireNonNull( viewMapper.etPrivateKey.getText( ) ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
 
                         if ( PlanetStore.getInstance( ).getPlanet( ethPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( ethPlanet );

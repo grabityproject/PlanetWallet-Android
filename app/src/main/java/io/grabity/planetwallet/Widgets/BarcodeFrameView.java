@@ -94,14 +94,6 @@ public class BarcodeFrameView extends RelativeLayout {
             path.moveTo( Utils.dpToPx( getContext( ), 4 ), borderlineWidth / 2.0f );
             path.quadTo( Utils.dpToPx( getContext( ), 4 ), Utils.dpToPx( getContext( ), 4 ), borderlineWidth / 2.0f, Utils.dpToPx( getContext( ), 4 ) );
             canvas.drawLine( borderlineWidth / 2.0f, Utils.dpToPx( getContext( ), 4 ), borderlineWidth, Utils.dpToPx( getContext( ), 4 ), paint );
-
-//            canvas.drawLine( 10, 100, 10, 50, paint );
-//            path.reset( );
-//            path.moveTo( 10, 50 );
-//            path.quadTo( 10, 10, 50, 10 );
-//            canvas.drawLine( 50, 10, 100, 10, paint );
-
-
             canvas.drawPath( path, paint );
             canvas.rotate( 90, width / 2.0f, height / 2.0f );
 

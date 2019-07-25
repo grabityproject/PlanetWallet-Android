@@ -54,7 +54,6 @@ public class EthereumManager {
         try {
             JniWrapper.CheckMnemonicValid( mnemonicPhrase );
         } catch ( Exception e ) {
-            PLog.e( "Not 니모닉" );
             return null;
         }
 
@@ -200,46 +199,16 @@ public class EthereumManager {
             if ( masterKeyPair != null ) {
                 HDKeyPair childKeyPair = hdKeyPairService.deriveHDKeyPair( masterKeyPair, PcwfUtils.getHDPath( "0/0" ) );
 
-                //add
-//                KeyPairStore.getInstance( ).keyPairMapRemove( masterKeyPair.getId( ) );
-//                KeyPairStore.getInstance( ).keyPairMapRemove( childKeyPair.getId( ) );
-//
-//                PWDBManager.getInstance( ).deleteData( new KeyPair( ), "keyId='" + masterKeyPair.getId( ) + "'" );
-//                PWDBManager.getInstance( ).deleteData( new KeyPair( ), "keyId='" + childKeyPair.getId( ) + "'" );
-
-
-//                KeyPairStore.getInstance( ).deleteKeyPair( masterKeyPair.getId( ) );
-//                KeyPairStore.getInstance( ).deleteKeyPair( childKeyPair.getId( ) );
-
 
                 KeyPairStore.getInstance( ).generateKeyPairDelete( masterKeyPair.getId( ) );
                 KeyPairStore.getInstance( ).generateKeyPairDelete( childKeyPair.getId( ) );
 
-                //기존
-//                ArrayList< Planet > ethPlanets = PlanetStore.getInstance().getPlanetList( "ETH" );
-//                PLog.e( "ETH Planets size : " + ethPlanets.size( ) );
-//                if ( ethPlanets.size( ) == 0 ) {
-//                    KeyPairStore.getInstance( ).generateKeyPairDelete( masterKeyPair.getId( ) );
-//                    KeyPairStore.getInstance( ).generateKeyPairDelete( childKeyPair.getId( ) );
-//                } else {
-//                    KeyPairStore.getInstance( ).deleteKeyPair( masterKeyPair.getId( ) );
-//                    KeyPairStore.getInstance( ).deleteKeyPair( childKeyPair.getId( ) );
-//                }
+
                 PlanetStore.getInstance( ).delete( childKeyPair.getId( ) );
             }
 
             KeyPairStore.getInstance( ).saveMasterKeyPair( CoinType.ETH.getCoinType( ), TextUtils.join( " ", mnemonic ), ethCoinAccountKey, pinCode );
 
-//            masterKeyPair = KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.ETH.getCoinType( ), pinCode );
-//            HDKeyPair childKeyPair = hdKeyPairService.deriveHDKeyPair( masterKeyPair, PcwfUtils.getHDPath( "0/0" ) );
-//            String childKeyId = KeyPairStore.getInstance( ).saveKeyPair( childKeyPair, pinCode );
-//            WalletAccount account = ethWalletAccountService.createHDWalletAccount(
-//                    masterKeyPair.getId( ),
-//                    CoinType.ETH.name( ),
-//                    DefinedCurrency.of( CoinType.ETH.getCoinType( ) ),
-//                    "0/0" );
-//
-//            PlanetStore.getInstance( ).save( walletAccountToPlanet( childKeyId, account, CoinType.ETH ) );
         }
 
     }

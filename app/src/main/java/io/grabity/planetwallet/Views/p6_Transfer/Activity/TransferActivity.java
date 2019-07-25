@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -40,11 +41,12 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     private ViewMapper viewMapper;
     private ArrayList< Planet > allPlanets;
 
-    private TransferAdapter adapter;
-
     private Planet planet;
     private Transfer transfer;
     private ERC20 erc20;
+
+    private boolean isQRScan = false;
+
 
 
     @Override
@@ -109,10 +111,16 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_TRANSFER_QRCODE ) ) {
-            Utils.hideKeyboard( this, getCurrentFocus( ) );
-            requestPermissions( C.requestCode.QR_CODE, Manifest.permission.CAMERA );
+            if ( !isQRScan ){
+                isQRScan = true;
+                Utils.hideKeyboard( this, getCurrentFocus( ) );
+                requestPermissions( C.requestCode.QR_CODE, Manifest.permission.CAMERA );
+            }
+
         }
     }
+
+
 
     @Override
     protected void neverNotAllowed( int code, String permission ) {
@@ -302,6 +310,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void onResume( ) {
         super.onResume( );
+        isQRScan = false;
         clipView( );
     }
 

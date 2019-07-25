@@ -29,9 +29,6 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     private ViewPagerAdapter< PlanetWalletFragment > adapter;
     private ArrayList< PlanetWalletFragment > fragments;
 
-    private MnemonicImportFragment mnemonicImportFragment;
-    private PrivateKeyImportFragment privateKeyImportFragment;
-
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -69,8 +66,8 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     protected void setData( ) {
         super.setData( );
         fragments = new ArrayList<>( );
-        fragments.add( mnemonicImportFragment = MnemonicImportFragment.newInstance( ) );
-        fragments.add( privateKeyImportFragment = PrivateKeyImportFragment.newInstance( ) );
+        fragments.add( MnemonicImportFragment.newInstance( ) );
+        fragments.add( PrivateKeyImportFragment.newInstance( ) );
 
         adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
         viewMapper.viewPager.setAdapter( adapter );

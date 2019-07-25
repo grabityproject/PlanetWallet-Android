@@ -236,22 +236,9 @@ public class BitCoinManager {
             HDKeyPair masterKeyPair = KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.BTC.getCoinType( ), pinCode );
             if ( masterKeyPair != null ) {
                 HDKeyPair childKeyPair = hdKeyPairService.deriveHDKeyPair( masterKeyPair, PcwfUtils.getHDPath( "0/0" ) );
-//                PWDBManager.getInstance( ).deleteData( new KeyPair( ), "keyId = '" + masterKeyPair.getId( ) + "'" );
-//                PWDBManager.getInstance( ).deleteData( new KeyPair( ), "keyId = '" + childKeyPair.getId( ) + "'" );
 
                 KeyPairStore.getInstance( ).generateKeyPairDelete( masterKeyPair.getId( ) );
                 KeyPairStore.getInstance( ).generateKeyPairDelete( childKeyPair.getId( ) );
-
-                //기존
-//                ArrayList< Planet > btcPlanets = PlanetStore.getInstance( ).getPlanetList( "BTC" );
-//                PLog.e( "BTC Planet size : " + btcPlanets.size( ) );
-//                if ( btcPlanets.size( ) == 0 ) {
-//                    KeyPairStore.getInstance( ).generateKeyPairDelete( masterKeyPair.getId( ) );
-//                    KeyPairStore.getInstance( ).generateKeyPairDelete( childKeyPair.getId( ) );
-//                } else {
-//                    KeyPairStore.getInstance( ).deleteKeyPair( masterKeyPair.getId( ) );
-//                    KeyPairStore.getInstance( ).deleteKeyPair( childKeyPair.getId( ) );
-//                }
 
 
                 PlanetStore.getInstance( ).delete( childKeyPair.getId( ) );
@@ -259,15 +246,6 @@ public class BitCoinManager {
 
             KeyPairStore.getInstance( ).saveMasterKeyPair( CoinType.BTC.getCoinType( ), TextUtils.join( " ", mnemonic ), btcCoinAccountKey, pinCode );
 
-//            masterKeyPair = KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.BTC.getCoinType( ), pinCode );
-//            HDKeyPair childKeyPair = hdKeyPairService.deriveHDKeyPair( masterKeyPair, PcwfUtils.getHDPath( "0/0" ) );
-//            String childKeyId = KeyPairStore.getInstance( ).saveKeyPair( childKeyPair, pinCode );
-//            WalletAccount account = btcWalletAccountService.createHDWalletAccount(
-//                    masterKeyPair.getId( ),
-//                    CoinType.BTC.name( ),
-//                    DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
-//                    "0/0" );
-//            PlanetStore.getInstance( ).save( walletAccountToPlanet( childKeyId, account, CoinType.BTC ) );
         }
 
     }

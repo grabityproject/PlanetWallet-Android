@@ -9,19 +9,19 @@
         android:layout_height="70dp">
 
         <io.grabity.planetwallet.Widgets.StretchImageView
-            android:id="@+id/image_item_tokenadd_icon"
+            android:id="@+id/image_item_token_add_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
-            android:id="@+id/text_item_tokenadd_tokenname"
+            android:id="@+id/text_item_token_add_token_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/image_item_tokenadd_icon"
+            android:layout_toRightOf="@id/image_item_token_add_icon"
             android:textColor="#FFF"
             android:textSize="16dp"
             app:themeTextColor="#000"
@@ -29,7 +29,7 @@
 
 
         <io.grabity.planetwallet.Widgets.CircleImageView
-            android:id="@+id/btn_item_tokenadd_tokenadd_removebtn"
+            android:id="@+id/btn_item_token_add_refresh"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_alignParentRight="true"
@@ -41,7 +41,7 @@
             app:themeSrc="#EDEDED" />
 
         <View
-            android:id="@+id/view_item_tokenadd_clickbtn"
+            android:id="@+id/view_item_token_add_clickbtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true" />

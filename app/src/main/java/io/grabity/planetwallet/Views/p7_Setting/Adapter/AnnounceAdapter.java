@@ -23,20 +23,20 @@ public class AnnounceAdapter extends AdvanceArrayAdapter< Board > {
 
     @Override
     public void bindData( ViewMapper viewMapper, Board item, int position ) {
-        ( ( BoardItem ) viewMapper ).title.setText( item.getSubject( ) );
-        ( ( BoardItem ) viewMapper ).date.setVisibility( View.VISIBLE );
-        ( ( BoardItem ) viewMapper ).date.setText( item.getCreated_at( ) );
+        ( ( BoardItem ) viewMapper ).textTitle.setText( item.getSubject( ) );
+        ( ( BoardItem ) viewMapper ).textDate.setVisibility( View.VISIBLE );
+        ( ( BoardItem ) viewMapper ).textDate.setText( item.getCreated_at( ) );
     }
 
     class BoardItem extends ViewMapper {
 
-        TextView title;
-        TextView date;
+        TextView textTitle;
+        TextView textDate;
 
         public BoardItem( View itemView ) {
             super( itemView );
-            title = findViewById( R.id.text_item_board_title );
-            date = findViewById( R.id.text_item_board_date );
+            textTitle = findViewById( R.id.text_item_board_title );
+            textDate = findViewById( R.id.text_item_board_date );
         }
     }
 

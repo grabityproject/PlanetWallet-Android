@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.KeyboardManager;
@@ -75,7 +77,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         );
 
         viewMapper.etPlanetName.setTypeface( Typeface.createFromAsset( getAssets( ), "fonts/WorkSans-Bold.otf" ) );
-        viewMapper.etPlanetName.setSelection( viewMapper.etPlanetName.getText( ).length( ) );
+        viewMapper.etPlanetName.setSelection( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) );
 
         viewMapper.etPlanetName.setOnEditorActionListener( this );
         viewMapper.etPlanetName.addTextChangedListener( this );
@@ -93,7 +95,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         } else {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
 
-            planet.setName( viewMapper.etPlanetName.getText( ).toString( ) );
+            planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
             viewMapper.planetView.setData( planet.getAddress( ) );
             viewMapper.planetBackground.setData( planet.getAddress( ) );
 
@@ -106,7 +108,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         super.onClick( v );
         if ( v == viewMapper.btnSubmit ) {
 
-            if ( viewMapper.etPlanetName.getText( ).length( ) == 0 ) {
+            if ( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) == 0 ) {
                 CustomToast.makeText( this, localized( R.string.planet_name_name_not_blank_title ) ).show( );
                 return;
             }
@@ -157,7 +159,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
 
     @Override
     public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
-        if ( viewMapper.etPlanetName.getText( ).length( ) != 0 ) {
+        if ( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) != 0 ) {
             plantName = viewMapper.etPlanetName.getText( ).toString( );
             cursor = viewMapper.etPlanetName.getSelectionStart( );
         } else {
@@ -172,7 +174,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
 
     @Override
     public void afterTextChanged( Editable s ) {
-        if ( viewMapper.etPlanetName.getText( ).length( ) != 0 ) {
+        if ( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) != 0 ) {
             if ( !Utils.isPlanetName( viewMapper.etPlanetName.getText( ).toString( ) ) ) {
                 viewMapper.etPlanetName.setText( plantName );
                 try {

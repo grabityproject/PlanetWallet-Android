@@ -94,21 +94,19 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
         super.onReceive( error, requestCode, resultCode, statusCode, result );
 
         if ( !error ) {
-            if ( statusCode == 200 ) {
-                if ( requestCode == 0 ) {
-                    ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
-                    if ( returnVO.isSuccess( ) ) {
+            if ( statusCode == 200 && requestCode == 0 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+                if ( returnVO.isSuccess( ) ) {
 
-                        Planet planet = ( Planet ) returnVO.getResult( );
-                        planet.setKeyId( this.planet.getKeyId( ) );
-                        PlanetStore.getInstance( ).update( planet );
+                    Planet planet = ( Planet ) returnVO.getResult( );
+                    planet.setKeyId( this.planet.getKeyId( ) );
+                    PlanetStore.getInstance( ).update( planet );
 
-                        setResult( RESULT_OK );
-                        super.onBackPressed( );
+                    setResult( RESULT_OK );
+                    super.onBackPressed( );
 
-                    } else {
-                        PLog.e( returnVO.getResult( ).getClass( ) + result );
-                    }
+                } else {
+                    PLog.e( returnVO.getResult( ).getClass( ) + result );
                 }
             } else {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );

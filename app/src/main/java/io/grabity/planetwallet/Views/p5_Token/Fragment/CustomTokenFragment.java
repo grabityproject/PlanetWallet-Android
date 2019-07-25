@@ -84,11 +84,15 @@ public class CustomTokenFragment extends PlanetWalletFragment implements View.On
 
         if ( viewMapper.etAddress.getText( ).length( ) >= 1 ) {
             if ( viewMapper.addressWaring.getHeight( ) == 0 ) {
-                new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ) ).start( );
+                resizeAnimation( 0, 40 );
             }
         } else {
-            new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 40 ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), 0 ) ).start( );
+            resizeAnimation( 40, 0 );
         }
+    }
+
+    private void resizeAnimation( int startDP, int EndDP ) {
+        new ResizeAnimation( ).init( viewMapper.addressWaring, 500, ( int ) Utils.dpToPx( getPlanetWalletActivity( ), startDP ), ( int ) Utils.dpToPx( getPlanetWalletActivity( ), EndDP ) ).start( );
     }
 
     @Override

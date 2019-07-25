@@ -72,7 +72,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
             new Get( this ).action( Route.URL( "version", "android" ), 0, 0, null );
         }
 
-        items = new ArrayList<>( Arrays.asList( "USD", "KRW", "CNY" ) );
+        items = new ArrayList<>( Arrays.asList( C.currency.USD , C.currency.KRW , C.currency.CNY) );
         adapter = new PopupCurrencyAdapter( this, items );
     }
 

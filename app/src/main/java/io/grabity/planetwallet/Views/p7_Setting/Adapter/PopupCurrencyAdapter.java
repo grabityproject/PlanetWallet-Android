@@ -23,17 +23,17 @@ public class PopupCurrencyAdapter extends AdvanceArrayAdapter< String > {
 
     @Override
     public void bindData( ViewMapper viewMapper, String item, int position ) {
-        ( ( CurrencyItem ) viewMapper ).currencyName.setText( item == null ? "" : item );
+        ( ( CurrencyItem ) viewMapper ).TextCurrencyName.setText( item == null ? "" : item );
     }
 
 
     class CurrencyItem extends ViewMapper {
 
-        TextView currencyName;
+        TextView TextCurrencyName;
 
         public CurrencyItem( View itemView ) {
             super( itemView );
-            currencyName = findViewById( R.id.text_item_popup_currency );
+            TextCurrencyName = findViewById( R.id.text_item_popup_currency );
         }
     }
 }

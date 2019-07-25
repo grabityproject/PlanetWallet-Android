@@ -113,23 +113,13 @@ public class KeyPairStore implements HDKeyPairStore {
         insertData.setKeyId( keyId );
         insertData.setValue( bufData( privateKey, publicKey, chainCode, phraseBytes ) );
         insertData.setMaster( "-2" );
-//        Log.e( getClass( ).getSimpleName( ), "saveKeyPair with phrase " + keyId + ", " + PWDBManager.getInstance( ).insertData( insertData ) );
 
         if ( !keyPairMap.containsKey( keyId ) ) {
             PWDBManager.getInstance( ).insertData( insertData );
             keyPairMap.put( keyId, insertData );
         }
 
-//        if ( keyPairMap.get( keyId ) == null ) {
-//            PLog.e( "keyPairMap.get( keyId ) == null" );
-//            PWDBManager.getInstance( ).insertData( insertData );
-//            keyPairMap.put( keyId, insertData );
-//        }
-//        if ( !keyPairMap.containsKey( keyId ) ) {
-//            keyPairMap.put( keyId, insertData );
-//        } else {
-//            keyPairMap.replace( keyId, insertData );
-//        }
+
         return keyId;
     }
 

@@ -28,9 +28,6 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
     private ViewPagerAdapter< PlanetWalletFragment > adapter;
     private ArrayList< PlanetWalletFragment > fragments;
 
-    private TokenListFragment tokenListFragment;
-    private CustomTokenFragment customTokenFragment;
-
     private Planet planet;
 
     @Override
@@ -74,8 +71,8 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
 
             fragments = new ArrayList<>( );
-            fragments.add( tokenListFragment = TokenListFragment.newInstance( ) );
-            fragments.add( customTokenFragment = CustomTokenFragment.newInstance( ) );
+            fragments.add( TokenListFragment.newInstance( ) );
+            fragments.add( CustomTokenFragment.newInstance( ) );
 
             adapter = new ViewPagerAdapter<>( getSupportFragmentManager( ), fragments );
             viewMapper.viewPager.setAdapter( adapter );
