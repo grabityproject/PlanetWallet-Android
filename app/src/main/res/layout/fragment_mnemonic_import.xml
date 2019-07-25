@@ -118,7 +118,6 @@
     </ScrollView>
 
 
-
     <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
@@ -130,9 +129,6 @@
         android:textSize="18dp"
         app:buttonType="A"
         app:defaultTheme="Dark" />
-
-
-
 
 
 </RelativeLayout>

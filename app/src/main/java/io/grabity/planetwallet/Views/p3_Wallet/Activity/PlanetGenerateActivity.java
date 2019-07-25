@@ -108,7 +108,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         try {
             if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
 
-                viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( !getCurrentTheme( ) ? R.drawable.image_toolbar_close_gray : R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
+                viewMapper.toolBar.addLeftButton( ToolBar.ButtonItem( !getCurrentTheme( ) ? R.drawable.image_toolbar_close_gray : R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
                 viewMapper.toolBar.setOnToolBarClickListener( this );
 
                 if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {

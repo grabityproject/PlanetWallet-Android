@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -23,27 +22,29 @@ import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetGenerateActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
+import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.FontTextView;
-import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
+import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 
 public class PinCodeCertificationActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, BioMetricManager.OnBioAuthListener {
 
     private ViewMapper viewMapper;
-    private ArrayList< RoundRelativeLayout > passwordViews;
+
+    private ArrayList< CircleImageView > indicatorViews;
     private ArrayList< FontTextView > numberButtons;
     private ArrayList< FontTextView > alphabetButtons;
 
-    private ArrayList< String > keyList;
-    private long backPressedTime = 0;
+    private ArrayList< String > inputKeyList;
 
-    private char[] pincode;
+    private long backPressedTime = 0;
+    private char[] pinCode;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_pincode_certification );
+        setContentView( R.layout.activity_pincode );
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );
@@ -52,48 +53,49 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        if ( Utils.getScrennHeight( this ) <= 1920 ) {
-            viewMapper.groupPasswordView.setPadding( ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ), ( int ) Utils.dpToPx( PinCodeCertificationActivity.this, 42 ) );
-            viewMapper.passwordTitle.setPadding( 0, 0, 0, 0 );
-            viewMapper.groupPasswordView.requestLayout( );
-            viewMapper.passwordTitle.requestLayout( );
-        }
 
+        setBarViewsCornerRadius( );
+
+        viewMapper.toolBar.setOnToolBarClickListener( this );
+        viewMapper.viewTitleMargin.setVisibility( Utils.getScrennHeight( this ) <= 1920 ? View.GONE : View.VISIBLE );
         viewMapper.btnDeleteNumber.setOnClickListener( this );
         viewMapper.btnDeleteAlphabet.setOnClickListener( this );
+        viewMapper.btnReset.setOnClickListener( this );
 
-        passwordViews = Utils.getAllViewsFromParentView( viewMapper.inputPassword, RoundRelativeLayout.class );
-        numberButtons = Utils.getAllViewsFromParentView( viewMapper.inputNumber, FontTextView.class );
-        alphabetButtons = Utils.getAllViewsFromParentView( viewMapper.inputAlphabet, FontTextView.class );
+        indicatorViews = Utils.getAllViewsFromParentView( viewMapper.groupIndicators, CircleImageView.class );
+        numberButtons = Utils.getAllViewsFromParentView( viewMapper.groupNumberPad, FontTextView.class );
+        alphabetButtons = Utils.getAllViewsFromParentView( viewMapper.groupAlphabetPad, FontTextView.class );
 
         Collections.shuffle( numberButtons );
         Collections.shuffle( alphabetButtons );
 
-        if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE || getRequestCode( ) == C.requestCode.TRANSFER || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT || getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT || getRequestCode( ) == C.requestCode.BIO_METRIC ) {
-            viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( !getCurrentTheme( ) ? R.drawable.image_toolbar_close_gray : R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
-            viewMapper.toolBar.setOnToolBarClickListener( this );
+        if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ||
+                getRequestCode( ) == C.requestCode.TRANSFER ||
+                getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT ||
+                getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT ||
+                getRequestCode( ) == C.requestCode.BIO_METRIC ) {
+            viewMapper.toolBar.addLeftButton( ToolBar.ButtonItem( !getCurrentTheme( ) ? R.drawable.image_toolbar_close_gray : R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
         }
 
+        setTitleMessage( true );
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
-
         for ( int i = 0; i < numberButtons.size( ); i++ ) {
             numberButtons.get( i ).setText( String.valueOf( i ) );
             numberButtons.get( i ).setTag( String.valueOf( i ) );
             numberButtons.get( i ).setOnClickListener( this );
-
         }
         for ( int i = 0; i < alphabetButtons.size( ); i++ ) {
             alphabetButtons.get( i ).setText( Character.toString( ( char ) ( i + 65 ) ) );
             alphabetButtons.get( i ).setTag( Character.toString( ( char ) ( i + 65 ) ) );
             alphabetButtons.get( i ).setOnClickListener( this );
         }
-        keyList = new ArrayList<>( );
+        inputKeyList = new ArrayList<>( );
 
-        setPasswordView( );
+        setIndicatorView( );
         setBioMetric( );
     }
 
@@ -123,142 +125,154 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnDeleteNumber || v == viewMapper.btnDeleteAlphabet ) {
-            if ( keyList.size( ) > 0 ) {
-                keyList.remove( keyList.size( ) - 1 );
-                setPasswordView( );
+
+            if ( inputKeyList.size( ) > 0 ) {
+                inputKeyList.remove( inputKeyList.size( ) - 1 );
+
+                setIndicatorView( );
             }
+
         } else {
-            String tag = String.valueOf( v.getTag( ) );
+
             if ( v.getTag( ) != null ) {
-                keyList.add( tag );
-                setPasswordMessage( true );
 
-                if ( keyList.size( ) == 5 ) {
-                    StringBuilder stringBuffer = new StringBuilder( );
-                    for ( int i = 0; i < keyList.size( ); i++ ) {
-                        stringBuffer.append( keyList.get( i ) );
-                    }
-                    String strKeyList = stringBuffer.toString( );
+                inputKeyList.add( String.valueOf( v.getTag( ) ) );
+                setTitleMessage( true );
 
-                    if ( Utils.equals( Utils.sha256( strKeyList ), KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD, strKeyList.toCharArray( ) ) ) ) {
+                if ( inputKeyList.size( ) == indicatorViews.size( ) ) {
 
-                        getPlanetWalletApplication( ).setPINCODE( strKeyList.toCharArray( ) );
-                        pincode = strKeyList.toCharArray( );
+                    char[] insertValue = Utils.join( inputKeyList ).toCharArray( );
+
+                    if ( Utils.equals( Utils.sha256( Utils.join( inputKeyList ) ), KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD, insertValue ) ) ) {
+
+                        getPlanetWalletApplication( ).setPINCODE( insertValue );
+                        pinCode = insertValue;
                         switchAction( );
 
                     } else {
-                        keyList.clear( );
-                        setPasswordMessage( false );
+                        inputKeyList.clear( );
+                        setTitleMessage( false );
                     }
+
                 }
-                setPasswordView( );
 
             }
+            setIndicatorView( );
         }
     }
 
-    void setPasswordMessage( boolean isPassword ) {
-        viewMapper.passwordTitle.setText( isPassword ? localized( R.string.pincode_certification_verification_code_title ) : localized( R.string.pincode_certification_code_incorrect_title ) );
-        viewMapper.passwordSubtitle.setText( isPassword ? localized( R.string.pincode_certification_sub_title ) : localized( R.string.pincode_certification_sub_title_error ) );
+    private void setTitleMessage( boolean isPassword ) {
+        if ( isPassword ) {
 
-        if ( !getPlanetWalletApplication( ).getCurrentTheme( ) ) {
-            viewMapper.passwordTitle.setTextColor( isPassword ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#FF0050" ) );
+            viewMapper.textTitle.setText( localized( R.string.pincode_certification_verification_code_title ) );
+            viewMapper.textSubtitle.setText( localized( R.string.pincode_certification_sub_title ) );
+
+            viewMapper.textTitle.setTextColor( getCurrentTheme( ) ? Color.parseColor( "#000000" ) : Color.parseColor( "#FFFFFF" ) );
+            viewMapper.textSubtitle.setTextColor( getCurrentTheme( ) ? Color.parseColor( "#aaaaaa" ) : Color.parseColor( "#5C5964" ) );
+
         } else {
-            viewMapper.passwordTitle.setTextColor( isPassword ? Color.parseColor( "#000000" ) : Color.parseColor( "#FF0050" ) );
+
+            viewMapper.textTitle.setText( localized( R.string.pincode_certification_code_incorrect_title ) );
+            viewMapper.textSubtitle.setText( localized( R.string.pincode_certification_sub_title_error ) );
+
+            viewMapper.textTitle.setTextColor( Color.parseColor( "#FF0050" ) );
+            viewMapper.textSubtitle.setTextColor( Color.parseColor( "#FF0050" ) );
+
         }
-        viewMapper.passwordSubtitle.setTextColor( isPassword ? Color.parseColor( !getCurrentTheme( ) ? "#5C5964" : "#aaaaaa" ) : Color.parseColor( "#FF0050" ) );
     }
 
-    void setPasswordView( ) {
-        for ( int i = 0; i < passwordViews.size( ); i++ ) {
-            LinearLayout.LayoutParams params;
-            if ( i < keyList.size( ) ) {
-                params = new LinearLayout.LayoutParams( ( int ) Utils.dpToPx( this, 16 ), ( int ) Utils.dpToPx( this, 16 ) );
+    private void setIndicatorView( ) {
+        for ( int i = 0; i < indicatorViews.size( ); i++ ) {
+            if ( i < inputKeyList.size( ) ) {
+                indicatorViews.get( i ).animate( ).alpha( 1.0f ).setDuration( 100 ).start( );
             } else {
-                params = new LinearLayout.LayoutParams( ( int ) Utils.dpToPx( this, 16 ), ( int ) Utils.dpToPx( this, 2 ) );
-
-                passwordViews.get( i ).setBackground_color_normal( !getPlanetWalletApplication( ).getCurrentTheme( ) ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#BCBDD5" ) );
-                viewMapper.decorationViewHeight.setBackgroundColor( !getPlanetWalletApplication( ).getCurrentTheme( ) ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#BCBDD5" ) );
-                viewMapper.decorationViewWidth.setBackgroundColor( !getPlanetWalletApplication( ).getCurrentTheme( ) ? Color.parseColor( "#5C5964" ) : Color.parseColor( "#BCBDD5" ) );
+                indicatorViews.get( i ).setAlpha( 0.0f );
             }
-            params.rightMargin = ( int ) Utils.dpToPx( this, 12 );
-            passwordViews.get( i ).setLayoutParams( params );
+        }
+        viewMapper.groupNumberPad.setVisibility( inputKeyList.size( ) < 4 ? View.VISIBLE : View.GONE );
+        viewMapper.groupAlphabetPad.setVisibility( viewMapper.groupNumberPad.getVisibility( ) == View.VISIBLE ? View.GONE : View.VISIBLE );
+    }
 
-            if ( !getPlanetWalletApplication( ).getCurrentTheme( ) ) {
-                passwordViews.get( i ).setBackground_color_normal( i < keyList.size( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#5C5964" ) );
-            } else {
-                passwordViews.get( i ).setBackground_color_normal( i < keyList.size( ) ? Color.parseColor( "#000000" ) : Color.parseColor( "#BCBDD5" ) );
-            }
-
-            viewMapper.inputNumber.setVisibility( keyList.size( ) <= 3 ? View.VISIBLE : View.GONE );
-            viewMapper.inputAlphabet.setVisibility( keyList.size( ) >= 4 ? View.VISIBLE : View.GONE );
-
-            float dp = Utils.dpToPx( this, 2 );
-            CornerRound.radius( viewMapper.decorationViewHeight, dp, dp, dp, dp, dp, dp, dp, dp );
-            CornerRound.radius( viewMapper.decorationViewWidth, dp, dp, dp, dp, dp, dp, dp, dp );
+    private void setBarViewsCornerRadius( ) {
+        ArrayList< PWView > barViews = Utils.getAllViewsFromParentView( viewMapper.groupIndicators, PWView.class );
+        float dp = Utils.dpToPx( this, 2 );
+        for ( PWView view : barViews ) {
+            CornerRound.radius( view, dp, dp, dp, dp, dp, dp, dp, dp );
         }
     }
 
     private void switchAction( ) {
 
-        if ( pincode != null ) {
-            if ( getRequestCode( ) == C.requestCode.PLANET_MNEMONIC_EXPORT || getRequestCode( ) == C.requestCode.PLANET_PRIVATEKEY_EXPORT ) {
+        if ( pinCode != null ) {
+            switch ( getRequestCode( ) ) {
+                case C.requestCode.PLANET_MNEMONIC_EXPORT:
+                case C.requestCode.PLANET_PRIVATEKEY_EXPORT: {
 
-                Intent intent = new Intent( );
-                intent.putExtra( C.bundleKey.PINCODE, pincode );
-                setResult( RESULT_OK, intent );
+                    Intent intent = new Intent( );
+                    intent.putExtra( C.bundleKey.PINCODE, pinCode );
+                    setResult( RESULT_OK, intent );
 
-            } else if ( getRequestCode( ) == C.requestCode.SETTING_CHANGE_PINCODE ) {
-
-                Bundle bundle = new Bundle( );
-                bundle.putCharArray( C.bundleKey.PINCODE, pincode );
-                setTransition( Transition.SLIDE_UP );
-                sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, bundle );
-                return;
-
-            } else if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
-
-                setResult( RESULT_OK );
-
-            } else if ( getRequestCode( ) == C.requestCode.TRANSFER ) {
-
-                setResult( RESULT_OK );
-
-            } else if ( getRequestCode( ) == C.requestCode.BIO_METRIC ) {
-
-                if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( false ) ) ) {
-                    Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( true ) );
-                    BioMetricManager.getInstance( ).generateSecretKey( );
-                    BioMetricManager.getInstance( ).saveKey( pincode );
-                } else {
-                    Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) );
-                    BioMetricManager.getInstance( ).removeKey( );
+                    break;
                 }
-                setResult( RESULT_OK );
 
-            } else {
 
-                if ( PlanetStore.getInstance( ).getPlanetList( ).size( ) == 0 ) {
+                case C.requestCode.SETTING_CHANGE_PINCODE: {
 
                     Bundle bundle = new Bundle( );
-                    bundle.putCharArray( C.bundleKey.PINCODE, pincode );
-                    sendAction( PlanetGenerateActivity.class, bundle );
+                    bundle.putCharArray( C.bundleKey.PINCODE, pinCode );
+                    setTransition( Transition.SLIDE_UP );
+                    sendAction( C.requestCode.SETTING_CHANGE_PINCODE, PinCodeRegistrationActivity.class, bundle );
 
-                } else {
-
-                    sendAction( MainActivity.class );
-
+                    return;
                 }
 
+
+                case C.requestCode.PINCODE_IS_NULL:
+                case C.requestCode.TRANSFER: {
+                    setResult( RESULT_OK );
+                    break;
+                }
+
+
+                case C.requestCode.BIO_METRIC: {
+
+                    if ( Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( false ) ) ) {
+                        Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( true ) );
+                        BioMetricManager.getInstance( ).generateSecretKey( );
+                        BioMetricManager.getInstance( ).saveKey( pinCode );
+                    } else {
+                        Utils.setPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) );
+                        BioMetricManager.getInstance( ).removeKey( );
+                    }
+                    setResult( RESULT_OK );
+
+                    break;
+                }
+
+                default: {
+
+                    if ( PlanetStore.getInstance( ).getPlanetList( ).size( ) == 0 ) {
+
+                        Bundle bundle = new Bundle( );
+                        bundle.putCharArray( C.bundleKey.PINCODE, pinCode );
+                        sendAction( PlanetGenerateActivity.class, bundle );
+
+                    } else {
+
+                        sendAction( MainActivity.class );
+
+                    }
+
+                }
+                break;
             }
             finish( );
         }
-
     }
 
     @Override
     public void onBackPressed( ) {
-        if ( keyList.size( ) == 0 ) {
+        if ( inputKeyList.size( ) == 0 ) {
             if ( getRequestCode( ) < 0 ) {
                 finish( );
             } else {
@@ -275,12 +289,11 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
                     super.onBackPressed( );
                 }
 
-
             }
 
         } else {
-            keyList.remove( keyList.size( ) - 1 );
-            setPasswordView( );
+            inputKeyList.remove( inputKeyList.size( ) - 1 );
+            setIndicatorView( );
         }
     }
 
@@ -299,7 +312,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
     public void onBioAuth( boolean isResult, char[] data ) {
         if ( isResult ) {
             getPlanetWalletApplication( ).setPINCODE( data );
-            pincode = data;
+            pinCode = data;
             switchAction( );
         }
     }
@@ -309,39 +322,37 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
 
         ToolBar toolBar;
 
-        ViewGroup groupPasswordView;
-        ViewGroup inputPassword;
-        ViewGroup inputNumber;
-        ViewGroup inputAlphabet;
+        View viewTitleMargin;
+
+        ViewGroup groupIndicators;
+        ViewGroup groupNumberPad;
+        ViewGroup groupAlphabetPad;
 
         View btnDeleteNumber;
         View btnDeleteAlphabet;
 
-        FontTextView passwordTitle;
-        FontTextView passwordSubtitle;
+        FontTextView textTitle;
+        FontTextView textSubtitle;
 
-        View decorationViewWidth;
-        View decorationViewHeight;
+        View btnReset;
 
         public ViewMapper( ) {
 
             toolBar = findViewById( R.id.toolBar );
 
-            groupPasswordView = findViewById( R.id.group_pincode_certification_inputpassword_wrapper );
+            viewTitleMargin = findViewById( R.id.view_pin_code_title_margin );
+            groupIndicators = findViewById( R.id.group_pin_code_indicator );
 
-            inputPassword = findViewById( R.id.group_pincode_certification_inputpassword );
-            inputNumber = findViewById( R.id.group_pincode_certification_inputnumber );
-            inputAlphabet = findViewById( R.id.group_pincode_certification_inputalphabet );
+            groupNumberPad = findViewById( R.id.group_pin_code_number_pad );
+            groupAlphabetPad = findViewById( R.id.group_pin_code_alphabet_pad );
 
-            btnDeleteNumber = findViewById( R.id.group_pincode_certification_numberdelete );
-            btnDeleteAlphabet = findViewById( R.id.btn_pincode_certification_alphabetdelete );
+            btnDeleteNumber = findViewById( R.id.btn_pincode_registration_numberdelete );
+            btnDeleteAlphabet = findViewById( R.id.btn_pincode_registration_alphabetdelete );
 
-            passwordTitle = findViewById( R.id.text_pincode_certification_verificationcode );
-            passwordSubtitle = findViewById( R.id.text_pincode_certification_specification );
+            textTitle = findViewById( R.id.text_pin_code_title );
+            textSubtitle = findViewById( R.id.text_pin_code_subtitle );
 
-            decorationViewHeight = findViewById( R.id.view_pincode_certification_plus_height );
-            decorationViewWidth = findViewById( R.id.view_pincode_certification_plus_width );
-
+            btnReset = findViewById( R.id.btn_pin_code_reset );
         }
 
     }

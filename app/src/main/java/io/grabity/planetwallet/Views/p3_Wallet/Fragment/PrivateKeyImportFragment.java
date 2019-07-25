@@ -1,14 +1,13 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Fragment;
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;

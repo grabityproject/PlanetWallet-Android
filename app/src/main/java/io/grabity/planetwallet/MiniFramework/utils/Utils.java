@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -54,7 +55,6 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +64,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
-
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
 import io.grabity.planetwallet.Widgets.FontTextView;
@@ -1070,6 +1069,27 @@ public class Utils {
 
     public static int getDeviceStatusBarHeight( Context context ) {
         if ( context == null ) return 0;
-       return context.getResources( ).getDimensionPixelSize( context.getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
+        return context.getResources( ).getDimensionPixelSize( context.getResources( ).getIdentifier( "status_bar_height", "dimen", "android" ) );
     }
+
+    public static void postDelayed( Runnable runnable, long delay ) {
+        new Handler( ).postDelayed( runnable, delay );
+    }
+
+    public static String join( ArrayList< String > list ) {
+        StringBuilder builder = new StringBuilder( );
+        for ( String s : list ) {
+            builder.append( s );
+        }
+        return builder.toString( );
+    }
+
+    public static String join( String[] array ) {
+        StringBuilder builder = new StringBuilder( );
+        for ( String s : array ) {
+            builder.append( s );
+        }
+        return builder.toString( );
+    }
+
 }

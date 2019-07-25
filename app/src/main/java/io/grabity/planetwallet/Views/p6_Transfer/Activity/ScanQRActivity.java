@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
@@ -44,7 +43,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     protected void viewInit( ) {
         super.viewInit( );
 
-        viewMapper.toolBar.addLeftButton( new ToolBar.ButtonItem( R.drawable.image_toolbar_close_white ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.addLeftButton( ToolBar.ButtonItem( R.drawable.image_toolbar_close_white ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setTitle( localized( R.string.scan_qr_toolbar_title ) );
         viewMapper.toolBar.setTitleColor( Color.parseColor( "#FFFFFF" ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
@@ -72,7 +71,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     protected void neverNotAllowed( int code, String permission ) {
         super.neverNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
-            CustomToast.makeText( this , localized( R.string.camera_permission_never_not_allowed_title ) );
+            CustomToast.makeText( this, localized( R.string.camera_permission_never_not_allowed_title ) );
             super.onBackPressed( );
         }
     }
@@ -81,7 +80,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     protected void permissionNotAllowed( int code, String permission ) {
         super.permissionNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
-            CustomToast.makeText( this , localized( R.string.camera_permission_not_allowed_title ) );
+            CustomToast.makeText( this, localized( R.string.camera_permission_not_allowed_title ) );
             super.onBackPressed( );
         }
     }

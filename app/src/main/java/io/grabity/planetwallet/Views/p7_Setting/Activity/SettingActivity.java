@@ -66,7 +66,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         } else {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             planet = PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) );
-            viewMapper.textName.setText( localized( R.string.setting_planet_main_title,  planet.getName( ) ) );
+            viewMapper.textName.setText( localized( R.string.setting_planet_main_title, planet.getName( ) ) );
             viewMapper.planetView.setData( planet.getAddress( ) );
 
             new Get( this ).action( Route.URL( "version", "android" ), 0, 0, null );
@@ -79,7 +79,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.btnPlanet.setOnClickListener( this );
@@ -104,13 +104,13 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( !error ) {
             if ( statusCode == 200 && requestCode == 0 ) {
-                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class , Version.class );
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Version.class );
                 if ( returnVO.isSuccess( ) ) {
                     Version version = ( Version ) returnVO.getResult( );
                     viewMapper.textVersion.setText( version.getVersion( ) );
                 }
             }
-        } else{
+        } else {
             viewMapper.textVersion.setText( "1.0" );
         }
     }

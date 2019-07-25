@@ -34,7 +34,7 @@ public class MnemonicExportActivity extends PlanetWalletActivity implements Tool
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
     }
 

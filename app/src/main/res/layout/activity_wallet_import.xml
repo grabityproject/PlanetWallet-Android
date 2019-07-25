@@ -36,5 +36,4 @@
         android:layout_below="@id/tabBar" />
 
 
-
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

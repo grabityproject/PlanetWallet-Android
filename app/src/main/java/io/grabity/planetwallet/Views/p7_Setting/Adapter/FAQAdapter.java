@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Board;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;

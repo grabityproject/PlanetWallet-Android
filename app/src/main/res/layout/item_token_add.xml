@@ -13,8 +13,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            />
+            android:layout_marginLeft="20dp" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_tokenadd_tokenname"
@@ -26,7 +25,7 @@
             android:textColor="#FFF"
             android:textSize="16dp"
             app:themeTextColor="#000"
-            app:typefaceStyle="medium"/>
+            app:typefaceStyle="medium" />
 
 
         <io.grabity.planetwallet.Widgets.CircleImageView

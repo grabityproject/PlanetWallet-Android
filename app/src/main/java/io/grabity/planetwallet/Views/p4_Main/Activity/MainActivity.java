@@ -19,7 +19,6 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
@@ -85,8 +84,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.overScrollWrapper.addOnRefreshListener( this );
 
 
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MENU ) );
-        viewMapper.toolBar.setRightButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MUTIUNIVERSE ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MENU ) );
+        viewMapper.toolBar.setRightButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MUTIUNIVERSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.rippleView.setOnRippleEffectListener( this );

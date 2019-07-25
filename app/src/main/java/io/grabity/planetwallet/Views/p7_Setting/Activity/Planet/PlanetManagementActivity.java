@@ -39,8 +39,8 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
-        viewMapper.toolBar.setRightButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_ADD ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setRightButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_ADD ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.listView.setOnItemClickListener( this );
     }

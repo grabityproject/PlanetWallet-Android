@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -28,7 +27,6 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 import cz.msebera.android.httpclient.message.BasicNameValuePair;
 import cz.msebera.android.httpclient.util.EntityUtils;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 
 public class Post extends AbstractNetworkTask {
 
@@ -37,7 +35,7 @@ public class Post extends AbstractNetworkTask {
     private int resultCode;
     private HttpClient httpClient;
     private String token = null;
-    private HashMap<String, String> extraHeaders = new HashMap<>(  );
+    private HashMap< String, String > extraHeaders = new HashMap<>( );
 
     public Post( NetworkInterface in ) {
         // TODO Auto-generated constructor stub
@@ -50,7 +48,7 @@ public class Post extends AbstractNetworkTask {
         return this;
     }
 
-    public void action( String url, int requestCode, int resultCode, Object data, HashMap<String, String> extraHeaders ) {
+    public void action( String url, int requestCode, int resultCode, Object data, HashMap< String, String > extraHeaders ) {
         this.requestCode = requestCode;
         this.resultCode = resultCode;
         this.extraHeaders = extraHeaders;
@@ -110,10 +108,10 @@ public class Post extends AbstractNetworkTask {
                 HttpPost httpPost;
 
                 httpPost = new HttpPost( this.url );
-                httpPost.setHeader( "locale", Locale.getDefault().getLanguage() );
+                httpPost.setHeader( "locale", Locale.getDefault( ).getLanguage( ) );
 
-                if( extraHeaders != null && !extraHeaders.isEmpty() ){
-                    Set<String> set = extraHeaders.keySet();
+                if ( extraHeaders != null && !extraHeaders.isEmpty( ) ) {
+                    Set< String > set = extraHeaders.keySet( );
                     for ( String key : set ) {
                         httpPost.addHeader( key, extraHeaders.get( key ) );
                     }

@@ -49,8 +49,7 @@
                 android:singleLine="true"
                 android:textSize="14dp"
                 android:maxLength="20"
-                app:defaultTheme="Light">
-            </io.grabity.planetwallet.Widgets.RoundEditText>
+                app:defaultTheme="Light"></io.grabity.planetwallet.Widgets.RoundEditText>
 
 
             <io.grabity.planetwallet.Widgets.CircleImageView
@@ -75,7 +74,6 @@
             android:textSize="14dp" />
 
     </LinearLayout>
-
 
 
     <io.grabity.planetwallet.Widgets.RoundButton.RoundButton

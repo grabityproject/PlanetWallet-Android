@@ -3,8 +3,9 @@ package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.Nullable;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -41,7 +42,7 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.btnCreate.setOnClickListener( this );

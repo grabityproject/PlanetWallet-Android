@@ -36,10 +36,10 @@ public class PlanetAdapter extends AdvanceArrayAdapter< Planet > {
     @Override
     protected ViewMapper onFooterView( ViewMapper viewMapper ) {
         viewMapper.itemView.setOnClickListener( v -> {
-            if( getOnItemClickListener() != null ){
-                try{
-                    getOnItemClickListener().onItemClick( ( AdvanceRecyclerView ) viewMapper.getView().getParent(), null, -1 );
-                }catch ( ClassCastException e ){
+            if ( getOnItemClickListener( ) != null ) {
+                try {
+                    getOnItemClickListener( ).onItemClick( ( AdvanceRecyclerView ) viewMapper.getView( ).getParent( ), null, -1 );
+                } catch ( ClassCastException e ) {
                     // Do not disturb
                 }
             }

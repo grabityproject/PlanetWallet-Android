@@ -45,8 +45,7 @@
             android:src="@drawable/image_planet_generate_title_white"
             android:paddingStart="96dp"
             android:paddingEnd="96dp"
-            app:themeSrc="@drawable/image_planet_generate_title_black"
-            />
+            app:themeSrc="@drawable/image_planet_generate_title_black" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -74,7 +73,7 @@
                 android:id="@+id/cursor"
                 android:layout_width="2dp"
                 android:layout_height="28dp"
-                android:layout_alignBottom="@id/et_planet_name_name"/>
+                android:layout_alignBottom="@id/et_planet_name_name" />
 
         </RelativeLayout>
 
@@ -89,11 +88,9 @@
             android:id="@+id/planet_name_icon"
             android:layout_width="170dp"
             android:layout_height="170dp"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
     </RelativeLayout>
-
-
 
 
     <io.grabity.planetwallet.Widgets.RoundButton.RoundButton

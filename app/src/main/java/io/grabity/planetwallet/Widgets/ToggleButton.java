@@ -10,9 +10,10 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by. JcobPark on 2019. 05. 14
@@ -124,10 +125,20 @@ public class ToggleButton extends View implements View.OnClickListener, Themeabl
         return isOn;
     }
 
-    public void setOn( boolean on ) {
+    public void setOn( boolean on, boolean animate ) {
         isOn = on;
-        percent = on ? 100.0f : 0.0f;
-        invalidate( );
+        if ( animate ) {
+            ObjectAnimator animator = ObjectAnimator.ofFloat( this, "percent", on ? 100.0f : 0.0f );
+            animator.setDuration( 300 );
+            animator.start( );
+        } else {
+            percent = on ? 100.0f : 0.0f;
+            invalidate( );
+        }
+    }
+
+    public void setOn( boolean on ) {
+        setOn( on, false );
     }
 
     public float getPercent( ) {

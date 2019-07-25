@@ -96,7 +96,7 @@ public class Patch extends AbstractNetworkTask {
                 }
 
                 httpPatch.setURI( URI.create( url ) );
-                httpPatch.setHeader( "locale", Locale.getDefault().getLanguage() );
+                httpPatch.setHeader( "locale", Locale.getDefault( ).getLanguage( ) );
 
                 if ( token != null ) {
                     httpPatch.setHeader( "Authorization", "Bearer " + token );

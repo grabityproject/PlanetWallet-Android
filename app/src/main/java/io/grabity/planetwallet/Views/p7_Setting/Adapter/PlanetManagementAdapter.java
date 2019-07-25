@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;

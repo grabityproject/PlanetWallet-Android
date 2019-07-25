@@ -1,12 +1,10 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Setting;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -37,7 +35,7 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.btnPinCode.setOnClickListener( this );
         viewMapper.btnBioAuth.setOnClickListener( this );
@@ -50,16 +48,13 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void setData( ) {
         super.setData( );
+        setBioToggleView( false );
     }
 
     @Override
     protected void onResume( ) {
         super.onResume( );
-        if ( BioMetricManager.getInstance( ).isFingerPrintCheck( this ) ) {
-            viewMapper.toggle.setOn( Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( true ) ) );
-        } else {
-            viewMapper.toggle.setOn( false );
-        }
+        Utils.postDelayed( ( ) -> setBioToggleView( true ), 300 );
     }
 
     @Override
@@ -112,32 +107,33 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
         }
     }
 
-    @Override
-    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
-        super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_OK ) {
-
-        } else if ( requestCode == C.requestCode.SETTING_CHANGE_PINCODE && resultCode == RESULT_CANCELED ) {
-
+    protected void setBioToggleView( boolean animate ) {
+        if ( BioMetricManager.getInstance( ).isFingerPrintCheck( this ) ) {
+            viewMapper.toggleBioAuth.setOn( Utils.equals( Utils.getPreferenceData( this, C.pref.BIO_METRIC, String.valueOf( false ) ), String.valueOf( true ) ), animate );
+        } else {
+            viewMapper.toggleBioAuth.setOn( false, animate );
         }
     }
 
     public class ViewMapper {
+
         ToolBar toolBar;
-        ToggleButton toggle;
-        ViewGroup btnPinCode;
+
+        View btnPinCode;
+
         ViewGroup groupBio;
-
         View btnBioAuth;
-
+        ToggleButton toggleBioAuth;
 
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
-            toggle = findViewById( R.id.toggle );
+
             btnPinCode = findViewById( R.id.group_security_change_pincode );
-            btnBioAuth = findViewById( R.id.btn_security_bio );
 
             groupBio = findViewById( R.id.group_security_bio );
+            btnBioAuth = findViewById( R.id.btn_security_bio );
+            toggleBioAuth = findViewById( R.id.toggle_security_bio_auth );
+
         }
     }
 }

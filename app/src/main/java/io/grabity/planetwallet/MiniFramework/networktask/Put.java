@@ -82,7 +82,7 @@ public class Put extends AbstractNetworkTask {
                 }
 
                 httpPut = new HttpPut( this.url );
-                httpPut.setHeader( "locale", Locale.getDefault().getLanguage() );
+                httpPut.setHeader( "locale", Locale.getDefault( ).getLanguage( ) );
 
                 if ( token != null ) {
                     httpPut.setHeader( "Authorization", "Bearer " + token );

@@ -54,8 +54,7 @@
                 android:textColorHint="#5C5964"
                 android:lineSpacingExtra="8dp"
                 android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                />
+                android:paddingEnd="14dp" />
 
 
         </io.grabity.planetwallet.Widgets.RoundRelativeLayout>

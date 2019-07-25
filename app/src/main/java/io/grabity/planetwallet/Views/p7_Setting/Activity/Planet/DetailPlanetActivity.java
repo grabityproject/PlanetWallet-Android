@@ -45,13 +45,13 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.btnMnemonic.setOnClickListener( this );
         viewMapper.btnPrivateKey.setOnClickListener( this );
         viewMapper.btnName.setOnClickListener( this );
-        viewMapper.toggle.setOnToggleListener( this );
+        viewMapper.toggleHide.setOnToggleListener( this );
     }
 
     @Override
@@ -70,14 +70,14 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
             viewMapper.textType.setText( localized( R.string.detail_planet_universe, CoinType.of( planet.getCoinType( ) ).name( ) ) );
             viewMapper.textAddressType.setText( localized( R.string.detail_planet_address, CoinType.of( planet.getCoinType( ) ).name( ) ) );
 
-            viewMapper.toolBar.setTitle( planet.getName( )  );
+            viewMapper.toolBar.setTitle( planet.getName( ) );
             viewMapper.planetView.setData( planet.getAddress( ) );
             viewMapper.textAddress.setText( planet.getAddress( ) );
 
-            viewMapper.textName.setText(  planet.getName( )  );
+            viewMapper.textName.setText( planet.getName( ) );
 
-            viewMapper.groupToggle.setVisibility( Utils.equals( planet.getKeyId() , Utils.getPreferenceData( this, C.pref.LAST_PLANET_KEYID ) ) ? View.GONE : View.VISIBLE );
-            viewMapper.toggle.setOn( Utils.equals( planet.getHide(), "Y" ) );
+            viewMapper.groupToggle.setVisibility( Utils.equals( planet.getKeyId( ), Utils.getPreferenceData( this, C.pref.LAST_PLANET_KEYID ) ) ? View.GONE : View.VISIBLE );
+            viewMapper.toggleHide.setOn( Utils.equals( planet.getHide( ), "Y" ) );
 
             viewMapper.textName.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
                 @Override
@@ -90,7 +90,6 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
                         viewMapper.btnName.setX( viewMapper.textName.getPaint( ).measureText( viewMapper.textName.getText( ).toString( ) ) + Utils.dpToPx( DetailPlanetActivity.this, 6 ) );
                         viewMapper.btnName.requestLayout( );
                     }
-
                 }
             } );
         }
@@ -177,7 +176,7 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
     public class ViewMapper {
 
         ToolBar toolBar;
-        ToggleButton toggle;
+        ToggleButton toggleHide;
 
         TextView textType;
         TextView textAddress;
@@ -195,19 +194,18 @@ public class DetailPlanetActivity extends PlanetWalletActivity implements ToolBa
         public ViewMapper( ) {
 
             toolBar = findViewById( R.id.toolBar );
-            toggle = findViewById( R.id.toggle );
+
+            toggleHide = findViewById( R.id.toggle_detail_planet_hide );
             textType = findViewById( R.id.text_detail_planet_type );
             textAddress = findViewById( R.id.text_detail_planet_address );
             textAddressType = findViewById( R.id.text_detail_planet_address_type );
             textName = findViewById( R.id.text_detail_planet_name );
-
 
             btnName = findViewById( R.id.btn_detail_planet_name_change );
             btnMnemonic = findViewById( R.id.group_detail_planet_mnemonic_backup );
             btnPrivateKey = findViewById( R.id.group_detail_planet_privatekey_backup );
 
             groupToggle = findViewById( R.id.group_detail_planet_toggle );
-
             planetView = findViewById( R.id.planet_detail_planet_planetview );
 
         }

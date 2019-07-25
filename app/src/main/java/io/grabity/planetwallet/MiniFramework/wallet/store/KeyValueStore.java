@@ -29,7 +29,7 @@ public class KeyValueStore {
         this.storageCrypter = storageCrypter;
     }
 
-    public void setValue( String key, String value) {
+    public void setValue( String key, String value ) {
         if ( context != null && key != null && value != null ) {
             boolean remove = context.getSharedPreferences( "KeyValueStore", Context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
             boolean save = context.getSharedPreferences( "KeyValueStore", Context.MODE_PRIVATE ).edit( ).putString( key, byteArrayToHexString( this.storageCrypter.singleEncrypt( value.getBytes( ) ) ) ).commit( );

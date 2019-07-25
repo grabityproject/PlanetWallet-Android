@@ -59,13 +59,13 @@ public class PlanetCursor extends View {
     }
 
     private void show( ) {
-        try{
+        try {
             ObjectAnimator animator = ObjectAnimator.ofInt( this, "cursorRenderTime", 0, 100 );
             animator.setDuration( 1000 );
             animator.setRepeatMode( ValueAnimator.RESTART );
             animator.setRepeatCount( ValueAnimator.INFINITE );
             animator.start( );
-        }catch ( ClassCastException e ){
+        } catch ( ClassCastException e ) {
 
         }
 

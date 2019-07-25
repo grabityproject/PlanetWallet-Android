@@ -192,8 +192,7 @@
                     android:id="@+id/list_main_planets_list"
                     android:layout_width="match_parent"
                     android:layout_height="186dp"
-                    android:paddingTop="40dp"
-                    />
+                    android:paddingTop="40dp" />
 
                 <View
                     android:id="@+id/view_main_top_view"

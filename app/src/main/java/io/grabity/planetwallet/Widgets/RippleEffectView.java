@@ -6,12 +6,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import androidx.annotation.Nullable;
 
 public class RippleEffectView extends View implements Themeable {
 
@@ -151,7 +150,7 @@ public class RippleEffectView extends View implements Themeable {
 
     public void setPercent( float percent ) {
         this.percent = percent;
-        if ( this.percent > 0 ){
+        if ( this.percent > 0 ) {
             isRippleAnimationStatus = false;
         } else if ( this.percent == 0 ) {
             isRippleAnimationStatus = true;

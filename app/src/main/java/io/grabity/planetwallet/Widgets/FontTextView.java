@@ -67,6 +67,7 @@ public class FontTextView extends androidx.appcompat.widget.AppCompatTextView im
     public void setFontStyle( int fontStyle ) {
         this.fontStyle = fontStyle;
     }
+
     @Override
     public void setTheme( boolean theme ) {
         if ( themeTextColor != null ) {

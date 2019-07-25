@@ -93,6 +93,6 @@
         android:textSize="18dp"
         android:textStyle="bold"
         app:buttonType="A"
-        app:defaultTheme="Dark"/>
+        app:defaultTheme="Dark" />
 
 </RelativeLayout>

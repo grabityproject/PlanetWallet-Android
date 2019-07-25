@@ -45,11 +45,11 @@
                 android:id="@+id/text_detail_planet_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:paddingEnd="6dp"
                 android:textColor="#000"
                 android:textSize="24dp"
-                android:maxLines="1"
-                android:ellipsize="end"
                 app:themeTextColor="#FFF"
                 app:typefaceStyle="medium" />
 
@@ -57,10 +57,10 @@
                 android:id="@+id/btn_detail_planet_name_change"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:padding="2dp"
                 android:layout_alignTop="@id/text_detail_planet_name"
                 android:layout_alignBottom="@id/text_detail_planet_name"
                 android:layout_toEndOf="@id/text_detail_planet_name"
+                android:padding="2dp"
                 android:src="@drawable/image_detail_planet_edit_blue"
                 app:themeSrc="@drawable/image_detail_planet_edit_black" />
 
@@ -124,7 +124,7 @@
                 app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.ToggleButton
-                android:id="@+id/toggle"
+                android:id="@+id/toggle_detail_planet_hide"
                 android:layout_width="52dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"

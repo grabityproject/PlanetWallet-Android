@@ -12,15 +12,13 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="40dp">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_splash"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_splash"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true" />
 
     </RelativeLayout>
-
-
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWLinearLayout>

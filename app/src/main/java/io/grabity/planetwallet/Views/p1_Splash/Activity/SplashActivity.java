@@ -45,8 +45,6 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         setData( );
 
 
-
-
     }
 
     @Override

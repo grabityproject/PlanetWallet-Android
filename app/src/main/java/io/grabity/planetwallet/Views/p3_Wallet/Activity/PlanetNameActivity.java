@@ -66,7 +66,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         viewMapper.btnSubmit.setOnClickListener( this );
         ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( this, 68 ) + Utils.getDeviceStatusBarHeight( this ) );
         viewMapper.toolBar.requestLayout( );
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         viewMapper.shadowBackground.setShadowColor(

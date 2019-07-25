@@ -20,8 +20,7 @@
         android:id="@+id/tabBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tabbarHeight"
-        android:layout_below="@id/toolBar"
-         />
+        android:layout_below="@id/toolBar" />
 
     <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
         android:id="@+id/pwview"
@@ -32,13 +31,11 @@
         app:themeBackground="#EDEDED" />
 
 
-
     <io.grabity.planetwallet.Widgets.LockableViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/pwview"
-        />
+        android:layout_below="@id/pwview" />
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

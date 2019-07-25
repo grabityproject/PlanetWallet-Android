@@ -11,12 +11,12 @@
         android:paddingTop="20dp"
         android:paddingEnd="20dp">
 
-       <io.grabity.planetwallet.Widgets.StretchImageView
-           android:id="@+id/image_footer_planets"
-           android:layout_width="22dp"
-           android:layout_height="22dp"
-           android:src="@drawable/image_planet_add_black"
-           app:themeSrc="@drawable/image_planet_add_white" />
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/image_footer_planets"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/image_planet_add_black"
+            app:themeSrc="@drawable/image_planet_add_white" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_planets_name"

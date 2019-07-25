@@ -8,7 +8,6 @@ import org.spongycastle.util.Arrays;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.R;
@@ -141,12 +140,11 @@ public class Planet implements Serializable {
             HDKeyPair keyPair = keyPairStore.getKeyPair( getKeyId( ), pinCode );
 
             if ( keyPair != null ) {
-                return JniWrapper.GenBase58CheckEncode( Arrays.concatenate( new byte[]{ ( byte ) 0x80 }, keyPair.getPrivateKey( ), new byte[]{ 0x01 }) );
+                return JniWrapper.GenBase58CheckEncode( Arrays.concatenate( new byte[]{ ( byte ) 0x80 }, keyPair.getPrivateKey( ), new byte[]{ 0x01 } ) );
             }
         }
         return null;
     }
-
 
 
     public String getMnemonic( KeyPairStore keyPairStore, char[] pinCode ) {

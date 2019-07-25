@@ -4,15 +4,12 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
-import io.grabity.planetwallet.R;
 
 public class ERCPopupView extends View implements View.OnTouchListener {
 
@@ -62,7 +59,7 @@ public class ERCPopupView extends View implements View.OnTouchListener {
 
             @Override
             public void onAnimationEnd( Animator animation ) {
-                    isOpen = true;
+                isOpen = true;
             }
 
             @Override
@@ -95,7 +92,7 @@ public class ERCPopupView extends View implements View.OnTouchListener {
 
             @Override
             public void onAnimationCancel( Animator animation ) {
-                    isOpen = false;
+                isOpen = false;
             }
 
             @Override

@@ -55,7 +55,6 @@
             app:themeBackground="#1E1E28" />
 
     </RelativeLayout>
-    
 
 
     <WebView

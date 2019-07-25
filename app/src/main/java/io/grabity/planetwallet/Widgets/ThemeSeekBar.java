@@ -2,8 +2,9 @@ package io.grabity.planetwallet.Widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.appcompat.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatSeekBar;
 
 import io.grabity.planetwallet.R;
 
@@ -35,9 +36,9 @@ public class ThemeSeekBar extends AppCompatSeekBar implements Themeable {
         if ( defaultTheme > 0 ) {
             theme = ( defaultTheme == 2 ) != theme;
             if ( !theme ) {
-                this.setProgressDrawable( getResources().getDrawable( R.drawable.seekbar_background_black ) );
-            } else{
-                this.setProgressDrawable( getResources().getDrawable( R.drawable.seekbar_background_white ) );
+                this.setProgressDrawable( getResources( ).getDrawable( R.drawable.seekbar_background_black ) );
+            } else {
+                this.setProgressDrawable( getResources( ).getDrawable( R.drawable.seekbar_background_white ) );
             }
         }
     }

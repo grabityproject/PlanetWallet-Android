@@ -1,9 +1,10 @@
 package io.grabity.planetwallet.Widgets.ListPopupView;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
 import io.grabity.planetwallet.Common.components.AbsPopupView.PopupView;

@@ -6,8 +6,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import androidx.annotation.Px;
-import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -21,6 +19,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Px;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 

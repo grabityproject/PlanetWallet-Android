@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
-import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.VO.KeyPair;
 import io.grabity.planetwallet.VO.Planet;
 

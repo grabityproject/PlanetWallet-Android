@@ -19,12 +19,12 @@
         android:layout_height="match_parent"
         android:layout_above="@id/group_wallet_add_btn">
 
-    <io.grabity.planetwallet.Widgets.StretchImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center"
-        android:src="@drawable/image_walletadd_black"
-        app:themeSrc="@drawable/image_walletadd_white" />
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:src="@drawable/image_walletadd_black"
+            app:themeSrc="@drawable/image_walletadd_white" />
 
     </FrameLayout>
 

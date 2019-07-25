@@ -3,13 +3,13 @@ package io.grabity.planetwallet.Widgets;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import androidx.core.app.ActivityCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -36,7 +36,6 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
         super( context, attrs );
         init( );
     }
-
 
 
     void init( ) {
@@ -109,7 +108,6 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
             }
         }
     }
-
 
 
     public OnBarcodeDetectListener getOnBarcodeDetectListener( ) {

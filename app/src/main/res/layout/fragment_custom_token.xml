@@ -33,8 +33,7 @@
                 app:defaultTheme="Dark"
                 android:singleLine="true"
                 android:paddingStart="14dp"
-                android:paddingEnd="56dp"
-                />
+                android:paddingEnd="56dp" />
 
             <io.grabity.planetwallet.Widgets.CircleImageView
                 android:id="@+id/btn_custom_token_clear"
@@ -47,7 +46,6 @@
                 app:themeSrc="@drawable/image_input_clear_black" />
 
         </RelativeLayout>
-
 
 
         <RelativeLayout

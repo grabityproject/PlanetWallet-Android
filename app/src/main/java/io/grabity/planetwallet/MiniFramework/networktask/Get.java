@@ -72,7 +72,7 @@ public class Get extends AbstractNetworkTask {
 
                 }
                 HttpGet httpGet = new HttpGet( this.url );
-                httpGet.setHeader( "locale", Locale.getDefault().getLanguage() );
+                httpGet.setHeader( "locale", Locale.getDefault( ).getLanguage( ) );
 
                 if ( token != null ) {
                     httpGet.setHeader( "Authorization", "Bearer " + token );

@@ -68,7 +68,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         }
 
 
-        viewMapper.toolBar.setLeftButton( new ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
+        viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         amountButtons = Utils.getAllViewsFromParentView( viewMapper.groupInputAmount, FontTextView.class );
@@ -99,9 +99,9 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
             if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
-            } else{
+                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+                viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
+            } else {
                 viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
             }
 

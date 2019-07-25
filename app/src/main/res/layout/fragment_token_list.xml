@@ -20,8 +20,7 @@
             android:paddingEnd="56dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#5C5964"
-            android:textSize="14dp"
-            />
+            android:textSize="14dp" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_tokenlist_nosearch_icon"

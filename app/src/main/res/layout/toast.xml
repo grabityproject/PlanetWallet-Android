@@ -11,8 +11,7 @@
         android:layout_height="40dp"
         android:layout_centerInParent="true"
         app:backgroundColor="#CC1E1E28"
-        app:cornerRadius="4dp"
-        >
+        app:cornerRadius="4dp">
 
         <TextView
             android:id="@+id/text_toast_message"
@@ -21,7 +20,7 @@
             android:text="Copied to Clipboard"
             android:textColor="#FFF"
             android:gravity="center"
-            android:textSize="16dp"/>
+            android:textSize="16dp" />
     </io.grabity.planetwallet.Widgets.RoundRelativeLayout>
 
 

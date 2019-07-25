@@ -1,58 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="86dp"-->
-        <!--android:paddingStart="20dp"-->
-        <!--android:paddingEnd="18dp">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="86dp"-->
+    <!--android:paddingStart="20dp"-->
+    <!--android:paddingEnd="18dp">-->
 
-        <!--<io.grabity.planetwallet.Widgets.CircleImageView-->
-            <!--android:id="@+id/image_item_transfer_address_search_background"-->
-            <!--android:layout_width="40dp"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:src="#1E1E28"-->
-            <!--app:themeSrc="#F9F9F9"-->
-            <!--app:borderWidth="1dp"-->
-            <!--app:borderColor="#1E1E28"-->
-            <!--android:layout_centerVertical="true"/>-->
+    <!--<io.grabity.planetwallet.Widgets.CircleImageView-->
+    <!--android:id="@+id/image_item_transfer_address_search_background"-->
+    <!--android:layout_width="40dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:src="#1E1E28"-->
+    <!--app:themeSrc="#F9F9F9"-->
+    <!--app:borderWidth="1dp"-->
+    <!--app:borderColor="#1E1E28"-->
+    <!--android:layout_centerVertical="true"/>-->
 
-        <!--<io.grabity.planetwallet.Widgets.StretchImageView-->
-            <!--android:id="@+id/image_item_transfer_address_search_icon"-->
-            <!--android:layout_width="40dp"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:padding="10dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:src="@drawable/icon_transfer_eth_black"/>-->
+    <!--<io.grabity.planetwallet.Widgets.StretchImageView-->
+    <!--android:id="@+id/image_item_transfer_address_search_icon"-->
+    <!--android:layout_width="40dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:padding="10dp"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:src="@drawable/icon_transfer_eth_black"/>-->
 
-        <!--<io.grabity.planetwallet.Widgets.StretchImageView-->
-            <!--android:id="@+id/image_item_transfer_address_search_arrow"-->
-            <!--android:layout_width="20dp"-->
-            <!--android:layout_height="20dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:src="@drawable/image_arrow_right_gray"-->
-            <!--app:themeSrc="@drawable/image_arrow_right_blue"-->
-            <!--/>-->
+    <!--<io.grabity.planetwallet.Widgets.StretchImageView-->
+    <!--android:id="@+id/image_item_transfer_address_search_arrow"-->
+    <!--android:layout_width="20dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:src="@drawable/image_arrow_right_gray"-->
+    <!--app:themeSrc="@drawable/image_arrow_right_blue"-->
+    <!--/>-->
 
-        <!--<io.grabity.planetwallet.Widgets.FontTextView-->
-            <!--android:id="@+id/text_item_transfer_address_search_address"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_alignTop="@id/image_item_transfer_address_search_icon"-->
-            <!--android:layout_alignBottom="@id/image_item_transfer_address_search_icon"-->
-            <!--android:layout_toRightOf="@id/image_item_transfer_address_search_icon"-->
-            <!--android:layout_toLeftOf="@id/image_item_transfer_address_search_arrow"-->
-            <!--android:paddingStart="20dp"-->
-            <!--android:paddingEnd="20dp"-->
-            <!--android:text="0xf291b69799516156fAA7F9ed4c39536335Ab797A"-->
-            <!--android:textSize="16dp"-->
-            <!--android:textColor="#FFF"-->
-            <!--app:typefaceStyle="medium"-->
-            <!--app:themeTextColor="#000"/>-->
+    <!--<io.grabity.planetwallet.Widgets.FontTextView-->
+    <!--android:id="@+id/text_item_transfer_address_search_address"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignTop="@id/image_item_transfer_address_search_icon"-->
+    <!--android:layout_alignBottom="@id/image_item_transfer_address_search_icon"-->
+    <!--android:layout_toRightOf="@id/image_item_transfer_address_search_icon"-->
+    <!--android:layout_toLeftOf="@id/image_item_transfer_address_search_arrow"-->
+    <!--android:paddingStart="20dp"-->
+    <!--android:paddingEnd="20dp"-->
+    <!--android:text="0xf291b69799516156fAA7F9ed4c39536335Ab797A"-->
+    <!--android:textSize="16dp"-->
+    <!--android:textColor="#FFF"-->
+    <!--app:typefaceStyle="medium"-->
+    <!--app:themeTextColor="#000"/>-->
 
     <!--</RelativeLayout>-->
 

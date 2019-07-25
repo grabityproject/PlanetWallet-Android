@@ -8,15 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="86dp"
         android:paddingStart="20dp"
-        android:paddingEnd="18dp"
-        >
+        android:paddingEnd="18dp">
 
         <io.grabity.planetwallet.Widgets.PlanetView
             android:id="@+id/planet_item_transfer_name_search_planetview"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            />
+            android:layout_centerVertical="true" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_transfer_name_search_name"
@@ -29,7 +27,7 @@
             app:typefaceStyle="medium"
             android:layout_alignTop="@id/planet_item_transfer_name_search_planetview"
             android:layout_toRightOf="@id/planet_item_transfer_name_search_planetview"
-            android:paddingStart="20dp"/>
+            android:paddingStart="20dp" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_transfer_name_search_address"
@@ -41,14 +39,9 @@
             android:textSize="14dp"
             android:text="0x5632...123f"
             android:textColor="#5C5964"
-            app:themeTextColor="#AAAAAA"/>
+            app:themeTextColor="#AAAAAA" />
 
     </RelativeLayout>
-
-
-
-
-
 
 
 </RelativeLayout>

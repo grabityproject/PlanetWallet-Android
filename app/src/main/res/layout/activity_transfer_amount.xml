@@ -18,7 +18,7 @@
             app:defaultTheme="Dark"
             app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
             app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue"
-            app:toolbarBottomWidth="1dp"/>
+            app:toolbarBottomWidth="1dp" />
 
 
         <RelativeLayout
@@ -34,8 +34,7 @@
             <io.grabity.planetwallet.Widgets.PlanetView
                 android:id="@+id/planet_transfer_amount_planetview"
                 android:layout_width="28dp"
-                android:layout_height="28dp"
-                />
+                android:layout_height="28dp" />
 
             <io.grabity.planetwallet.Widgets.FontTextView
                 android:id="@+id/text_transfer_amount_planet_name"
@@ -48,8 +47,7 @@
                 android:ellipsize="end"
                 app:typefaceStyle="semibold"
                 android:layout_toRightOf="@id/planet_transfer_amount_planetview"
-                android:paddingStart="10dp"
-                />
+                android:paddingStart="10dp" />
 
         </RelativeLayout>
 
@@ -63,7 +61,7 @@
             app:typefaceStyle="semibold"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -77,8 +75,7 @@
         app:typefaceStyle="semibold"
         android:layout_below="@id/group_toolBar"
         android:gravity="center"
-        android:paddingTop="50dp"
-        />
+        android:paddingTop="50dp" />
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_transfer_amount_amount"
@@ -90,7 +87,7 @@
         app:typefaceStyle="medium"
         android:layout_below="@id/text_transfer_amount_balance"
         android:gravity="center"
-        android:paddingTop="44dp"/>
+        android:paddingTop="44dp" />
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_transfer_amount_amount_usd"
@@ -101,8 +98,7 @@
         android:gravity="center"
         android:paddingTop="6dp"
         android:textColor="#5C5964"
-        app:themeTextColor="#aaaaaa"
-        />
+        app:themeTextColor="#aaaaaa" />
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_transfer_amount_error_message"
@@ -115,8 +111,7 @@
         android:paddingTop="6dp"
         android:textColor="#FF0050"
         app:themeTextColor="#FF0050"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/group_transfer_amount_input_amount"

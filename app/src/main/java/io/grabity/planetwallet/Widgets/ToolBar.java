@@ -196,7 +196,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
         if ( button.getResource( ) > 0 ) {
             imageViewLeft.setOnClickListener( this );
-            imageViewLeft.setImageResource( button.getResource() );
+            imageViewLeft.setImageResource( button.getResource( ) );
             button.setView( imageViewLeft );
             items.add( button );
         }
@@ -205,6 +205,14 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
 
     public ArrayList< ButtonItem > getButtonItems( ) {
         return items;
+    }
+
+    public static ButtonItem ButtonItem( ) {
+        return new ButtonItem( );
+    }
+
+    public static ButtonItem ButtonItem( int resource ) {
+        return new ButtonItem( resource );
     }
 
     public static class ButtonItem {
@@ -246,6 +254,7 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
             this.view = view;
 
         }
+
     }
 
     public void setOnToolBarClickListener( OnToolBarClickListener onToolBarClickListener ) {

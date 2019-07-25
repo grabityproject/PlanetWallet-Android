@@ -5,13 +5,14 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -276,7 +277,7 @@ public class SlideDrawerLayout extends ViewGroup {
         View getCurrentPositionView = triggers.get( currentMovingPosition ).view;
 
         if ( doNotEventViews != null ) {
-            for ( int i = 0; i< doNotEventViews.size(); i++ ){
+            for ( int i = 0; i < doNotEventViews.size( ); i++ ) {
                 doNotEventViews.get( i ).setOnTouchListener( ( v, event1 ) -> true );
             }
         }

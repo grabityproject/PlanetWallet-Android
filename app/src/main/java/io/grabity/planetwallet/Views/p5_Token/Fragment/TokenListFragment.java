@@ -15,7 +15,6 @@ import java.util.HashMap;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;

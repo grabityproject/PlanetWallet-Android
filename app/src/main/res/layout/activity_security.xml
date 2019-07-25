@@ -65,12 +65,12 @@
                 app:themeTextColor="#FFF" />
 
             <io.grabity.planetwallet.Widgets.ToggleButton
-                android:id="@+id/toggle"
+                android:id="@+id/toggle_security_bio_auth"
                 android:layout_width="52dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                app:defaultTheme="Light"/>
+                app:defaultTheme="Light" />
 
             <Button
                 android:id="@+id/btn_security_bio"
@@ -78,7 +78,7 @@
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="#00000000"/>
+                android:background="#00000000" />
 
 
         </RelativeLayout>
