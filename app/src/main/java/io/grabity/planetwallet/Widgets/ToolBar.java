@@ -352,4 +352,8 @@ public class ToolBar extends RelativeLayout implements View.OnClickListener, The
         float px = dp * ( metrics.densityDpi / 160f );
         return px;
     }
+
+    public void setTopMarginFullScreen( ) {
+        Utils.addTopMarginStatusBarHeight( getContext( ), this );
+    }
 }

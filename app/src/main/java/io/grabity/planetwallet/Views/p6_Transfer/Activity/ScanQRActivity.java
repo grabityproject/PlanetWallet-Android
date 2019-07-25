@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import androidx.annotation.Nullable;
 
@@ -43,21 +41,12 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
     protected void viewInit( ) {
         super.viewInit( );
 
+        viewMapper.toolBar.setTopMarginFullScreen( );
         viewMapper.toolBar.addLeftButton( ToolBar.ButtonItem( R.drawable.image_toolbar_close_white ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setTitle( localized( R.string.scan_qr_toolbar_title ) );
         viewMapper.toolBar.setTitleColor( Color.parseColor( "#FFFFFF" ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.barcodeReaderView.setOnBarcodeDetectListener( this );
-
-        viewMapper.toolBar.getViewTreeObserver( ).addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener( ) {
-            @Override
-            public void onGlobalLayout( ) {
-                viewMapper.toolBar.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
-                ( ( ViewGroup.MarginLayoutParams ) viewMapper.toolBar.getLayoutParams( ) ).height = ( int ) ( Utils.dpToPx( ScanQRActivity.this, 68 ) + Utils.getDeviceStatusBarHeight( ScanQRActivity.this ) );
-                viewMapper.toolBar.requestLayout( );
-            }
-        } );
-
 
     }
 

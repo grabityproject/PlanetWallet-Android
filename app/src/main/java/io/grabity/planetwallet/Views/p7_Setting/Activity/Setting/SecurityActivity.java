@@ -54,7 +54,7 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void onResume( ) {
         super.onResume( );
-        Utils.postDelayed( ( ) -> setBioToggleView( true ), 300 );
+        Utils.postDelayed( ( ) -> setBioToggleView( true ), 400 );
     }
 
     @Override

@@ -32,7 +32,7 @@ public class ERC20Popup extends AbsSlideUpView implements View.OnTouchListener {
     private float contentHeight = -1.0f;
     private float defaultY = -1.0f;
     private boolean isMove = false;
-    boolean isAbleMoving = false;
+    private boolean isAbleMoving = false;
 
     private float defaultPopupTop = -1.0f;
 

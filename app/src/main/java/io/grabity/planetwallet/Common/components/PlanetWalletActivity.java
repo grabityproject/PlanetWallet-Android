@@ -229,8 +229,9 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     protected void setData( ) {
     }
 
-    public void setTransition( Transition transition ) {
+    public PlanetWalletActivity setTransition( Transition transition ) {
         this.transition = transition;
+        return this;
     }
 
     public PlanetWalletApplication getPlanetWalletApplication( ) {
