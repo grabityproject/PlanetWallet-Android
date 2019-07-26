@@ -27,8 +27,8 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
     private ViewMapper viewMapper;
     private ArrayList< FontTextView > amountButtons;
     private ArrayList< String > amount;
+    private String inputAmount;
 
-    private StringBuffer amountBuffer;
 
     private Planet planet;
     private Transfer transfer;
@@ -60,7 +60,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
         amountButtons = Utils.getAllViewsFromParentView( viewMapper.groupInputAmount, FontTextView.class );
-        viewMapper.btnAmonutDelete.setOnClickListener( this );
+        viewMapper.btnAmountDelete.setOnClickListener( this );
         viewMapper.btnSubmit.setOnClickListener( this );
         viewMapper.btnSubmit.setEnabled( false );
 
@@ -68,7 +68,6 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             amountButtons.get( i ).setOnClickListener( this );
         }
         amount = new ArrayList<>( );
-        amountBuffer = new StringBuffer( );
 
         //default
         amount.add( "0" );
@@ -131,7 +130,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
             setTransition( Transition.SLIDE_SIDE );
             sendAction( TransferConfirmActivity.class, bundle );
-        } else if ( v == viewMapper.btnAmonutDelete ) {
+        } else if ( v == viewMapper.btnAmountDelete ) {
             if ( amount.size( ) > 0 ) {
                 amount.remove( amount.size( ) - 1 );
 
@@ -145,40 +144,42 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             //Todo 임시 자릿수 제한 10자리
             if ( amount.size( ) >= 10 ) return;
 
-            if ( ( ( FontTextView ) v ).getText( ).equals( "." ) ) {
-                if ( !amount.toString( ).contains( "." ) ) {
-                    amount.add( ( ( FontTextView ) v ).getText( ).toString( ) );
-                }
-            } else if ( ( ( FontTextView ) v ).getText( ).equals( "0" ) ) {
-                if ( amount.toString( ).contains( "." ) || !amount.get( 0 ).equals( "0" ) ) {
-                    amount.add( ( ( FontTextView ) v ).getText( ).toString( ) );
-                }
-            } else {
-                if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
-                    amount.set( 0, ( ( FontTextView ) v ).getText( ).toString( ) );
-                } else {
-                    amount.add( ( ( FontTextView ) v ).getText( ).toString( ) );
-                }
-            }
+            inputAmountCheck( ( ( FontTextView ) v ).getText( ).toString( ) );
             setAmount( );
+
+        }
+    }
+
+    void inputAmountCheck( String s ) {
+        switch ( s ) {
+            case ".":
+                if ( !amount.toString( ).contains( "." ) ) amount.add( s );
+                break;
+            case "0":
+                if ( amount.toString( ).contains( "." ) || !amount.get( 0 ).equals( "0" ) ) amount.add( s );
+                break;
+            default:
+                if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
+                    amount.set( 0, s );
+                } else {
+                    amount.add( s );
+                }
+                break;
         }
     }
 
     void setAmount( ) {
-        amountBuffer.setLength( 0 );
-        for ( int i = 0; i < amount.size( ); i++ ) {
-            amountBuffer.append( amount.get( i ) );
-        }
-        viewMapper.textAmount.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0" : amountBuffer.toString( ) );
+        inputAmount = Utils.join( amount );
+        viewMapper.textAmount.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0" : inputAmount );
 
         //Todo 언어별로 원화변경 및 계산
-        viewMapper.textAmountUSD.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0 USD" : String.format( "%s USD", String.valueOf( Float.valueOf( amountBuffer.toString( ) ) / 2f ) ) );
+        viewMapper.textAmountUSD.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0 USD" : String.format( "%s USD", String.valueOf( Float.valueOf( inputAmount ) / 2f ) ) );
         viewMapper.btnSubmit.setEnabled( btnEnable( ) );
     }
 
     private boolean btnEnable( ) {
         if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
-            viewMapper.texterror.setVisibility( View.GONE );
+            viewMapper.textError.setVisibility( View.GONE );
             viewMapper.textAmountUSD.setVisibility( View.VISIBLE );
             return false;
         } else {
@@ -206,7 +207,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         if ( myBalance == null || toBalance == null ) return false;
         BigDecimal mB = new BigDecimal( myBalance );
         BigDecimal tB = new BigDecimal( toBalance );
-        viewMapper.texterror.setVisibility( mB.compareTo( tB ) > 0 ? View.GONE : View.VISIBLE );
+        viewMapper.textError.setVisibility( mB.compareTo( tB ) > 0 ? View.GONE : View.VISIBLE );
         viewMapper.textAmountUSD.setVisibility( mB.compareTo( tB ) > 0 ? View.VISIBLE : View.GONE );
         if ( mB.compareTo( tB ) > 0 ) return true;
         return false;
@@ -232,10 +233,10 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         TextView textBalance;
         TextView textAmount;
         TextView textAmountUSD;
-        TextView texterror;
+        TextView textError;
 
         ViewGroup groupInputAmount;
-        View btnAmonutDelete;
+        View btnAmountDelete;
         View btnSubmit;
 
 
@@ -249,9 +250,9 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             textBalance = findViewById( R.id.text_transfer_amount_balance );
             textAmount = findViewById( R.id.text_transfer_amount_amount );
             textAmountUSD = findViewById( R.id.text_transfer_amount_amount_usd );
-            texterror = findViewById( R.id.text_transfer_amount_error_message );
+            textError = findViewById( R.id.text_transfer_amount_error_message );
             groupInputAmount = findViewById( R.id.group_transfer_amount_input_amount );
-            btnAmonutDelete = findViewById( R.id.group_transfer_amount_delete );
+            btnAmountDelete = findViewById( R.id.group_transfer_amount_delete );
             btnSubmit = findViewById( R.id.btn_submit );
 
         }

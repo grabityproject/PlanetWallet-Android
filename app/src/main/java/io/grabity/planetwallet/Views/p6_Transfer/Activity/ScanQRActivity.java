@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -13,6 +15,7 @@ import java.util.regex.Pattern;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
@@ -99,6 +102,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
             Matcher m = p.matcher( contents );
             if ( m.find( ) ) {
                 address = m.group( 0 );
+                viewMapper.barcodeReaderView.resourceRelease( );
             }
         } else if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
             Pattern p = Pattern.compile( "1[0-9a-fA-F]{33}$" );
@@ -106,12 +110,16 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
             if ( m.find( ) ) {
                 address = m.group( 0 );
+                viewMapper.barcodeReaderView.resourceRelease( );
             }
         }
 
+        PLog.e( "address check : " + address );
+
         if ( address == null ) return;
         setResult( RESULT_OK, new Intent( ).putExtra( C.bundleKey.QRCODE, address ) );
-        runOnUiThread( ScanQRActivity.super::onBackPressed );
+        new Handler( Looper.getMainLooper( ) ).post( ScanQRActivity.super::onBackPressed );
+
 
     }
 

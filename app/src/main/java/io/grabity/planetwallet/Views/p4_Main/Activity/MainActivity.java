@@ -367,7 +367,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.textBlurPlanetName.setText( selectedPlanet.getName( ) );
         viewMapper.textBottomPlanetName.setText( selectedPlanet.getName( ) );
 
+
         setUpNotice( );
+
+
     }
 
     @Override
@@ -419,6 +422,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
                 viewMapper.slideDrawer.close( );
                 Utils.postDelayed( ( ) -> setTransition( Transition.SLIDE_UP ).sendAction( WalletAddActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ) ), 250 );
+
 
             } else {
                 selectedPlanet = planetList.get( position );

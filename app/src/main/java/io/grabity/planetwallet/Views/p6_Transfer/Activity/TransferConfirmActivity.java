@@ -105,6 +105,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 if ( returnVO.isSuccess( ) ) {
                     ETHGasPrice ethGasPrice = ( ETHGasPrice ) returnVO.getResult( );
 
+
                     fee.add( new BigDecimal( ethGasPrice.getSafeLow( ) ).movePointLeft( 9 ).multiply( ETHGasPrice.DEFALUT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
                     fee.add( new BigDecimal( ethGasPrice.getStandard( ) ).movePointLeft( 9 ).multiply( ETHGasPrice.DEFALUT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
                     fee.add( new BigDecimal( ethGasPrice.getFast( ) ).movePointLeft( 9 ).multiply( ETHGasPrice.DEFALUT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
@@ -113,13 +114,13 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 }
             } else {
                 for ( int i = 0; i < 4; i++ ) {
-                    fee.add( new BigDecimal( ETHGasPrice.DEFALUT_GAS_GWEI ).movePointLeft( 9 ).multiply( ETHGasPrice.DEFALUT_GAS_LIMIT ).stripTrailingZeros( ).toEngineeringString( ) );
+                    fee.add( ETHGasPrice.DEFAULT_FEE );
                 }
             }
             feeSetting( );
         } else {
             for ( int i = 0; i < 4; i++ ) {
-                fee.add( new BigDecimal( ETHGasPrice.DEFALUT_GAS_GWEI ).movePointLeft( 9 ).multiply( ETHGasPrice.DEFALUT_GAS_LIMIT ).stripTrailingZeros( ).toEngineeringString( ) );
+                fee.add( ETHGasPrice.DEFAULT_FEE );
             }
             feeSetting( );
         }
@@ -161,7 +162,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         if ( v == viewMapper.btnFeeOption ) {
             FeePopup.newInstance( this )
                     .setOnFeePopupSaveClickListener( this )
-                    .setFee( "0.00042", CoinType.of( planet.getCoinType( ) ).name( ) )
+                    .setFee( ETHGasPrice.DEFAULT_FEE, CoinType.of( planet.getCoinType( ) ).name( ) )
                     .show( );
         } else if ( v == viewMapper.btnFeeReset ) {
             viewMapper.groupSeekBar.setVisibility( View.VISIBLE );
@@ -234,7 +235,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {
         if ( fee.get( progress ) == null )
-            viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), new BigDecimal( ETHGasPrice.DEFALUT_GAS_GWEI ).movePointLeft( 9 ).multiply( ETHGasPrice.DEFALUT_GAS_LIMIT ).stripTrailingZeros( ).toEngineeringString( ) ) );
+            viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), ETHGasPrice.DEFAULT_FEE ) );
         viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( progress ) ) );
     }
 

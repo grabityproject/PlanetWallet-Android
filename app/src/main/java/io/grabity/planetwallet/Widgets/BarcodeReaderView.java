@@ -43,7 +43,6 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
         barcodeDetector = new BarcodeDetector.Builder( getContext( ) )
                 .build( );
         barcodeDetector.setProcessor( this );
-
     }
 
     @Override
@@ -68,8 +67,21 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
     @Override
     public void surfaceDestroyed( SurfaceHolder surfaceHolder ) {
         cameraSource.stop( );    // SurfaceView가 종료되었을 때, Mobile Vision API 종료
-
     }
+
+    public void barCodeDetectorStop( ) {
+        barcodeDetector.release( );
+    }
+
+
+
+    public void resourceRelease( ) {
+        this.post( ( ) -> {
+            cameraSource.release( ); //카메라 해제
+            barcodeDetector.release( ); // 바코드인식기능해제
+        } );
+    }
+
 
     @Override
     protected void onSizeChanged( int w, int h, int oldw, int oldh ) {
@@ -85,6 +97,7 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
                 .setRequestedPreviewSize( h, w )
                 .setAutoFocusEnabled( true )  // AutoFocus를 안하면 초점을 못 잡아서 화질이 많이 흐립니다.
                 .build( );
+
 
         getHolder( ).removeCallback( this );
         getHolder( ).addCallback( this );
@@ -104,7 +117,6 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
             Log.e( "Detection", barcodeContents );
             if ( onBarcodeDetectListener != null ) {
                 onBarcodeDetectListener.onBarcodeDetect( barcodeContents );
-
             }
         }
     }

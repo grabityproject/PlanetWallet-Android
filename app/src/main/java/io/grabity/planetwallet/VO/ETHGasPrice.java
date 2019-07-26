@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 
 public class ETHGasPrice {
 
-    public static BigDecimal DEFALUT_GAS_LIMIT = BigDecimal.valueOf( 21000 );
-    public static String DEFALUT_GAS_GWEI = "20.0";
+    public final static BigDecimal DEFALUT_GAS_LIMIT = BigDecimal.valueOf( 21000 );
+    public final static String DEFALUT_GAS_GWEI = "20.0";
+    public final static String DEFAULT_FEE = "0.00042";
 
     private String safeLow;
     private String standard;

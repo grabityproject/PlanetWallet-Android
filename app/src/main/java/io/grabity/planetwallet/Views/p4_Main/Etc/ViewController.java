@@ -116,6 +116,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
             viewMapper.groupBackground.setScaleY( scale );
         }
 
+
         if ( !viewMapper.overScrollWrapper.isRefreshing( ) ) {
             if ( loaderStart ) {
                 viewMapper.lottiePullToRefresh.setAnimation( "lottie/loader_loading.json" );
@@ -164,6 +165,7 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         ( ( ViewGroup.MarginLayoutParams ) viewMapper.shadowBackground.getLayoutParams( ) ).topMargin = ( int ) -backgroundTopMargin;
         viewMapper.planetBackground.requestLayout( );
         viewMapper.shadowBackground.requestLayout( );
+
 
     }
 
