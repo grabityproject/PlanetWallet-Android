@@ -104,14 +104,14 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
         }
 
         if ( scrollY > 0 ) {
-            viewMapper.groupBackground.setTop( ( int ) -scrollY );
+            viewMapper.groupBackground.setY( ( int ) -scrollY );
             viewMapper.groupBackground.setScaleX( 1.0f );
             viewMapper.groupBackground.setScaleY( 1.0f );
 
         } else {
 
             float scale = ( float ) ( 1.0 - scrollY / ( Utils.getScreenWidth( activity ) / 2.0f ) * 0.5f );
-            viewMapper.groupBackground.setTop( 0 );
+            viewMapper.groupBackground.setY( 0 );
             viewMapper.groupBackground.setScaleX( scale );
             viewMapper.groupBackground.setScaleY( scale );
         }

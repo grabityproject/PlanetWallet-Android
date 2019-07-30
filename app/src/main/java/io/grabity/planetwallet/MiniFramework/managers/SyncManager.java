@@ -63,8 +63,8 @@ public class SyncManager {
             }
 
 
-        } ).action( Route.URL( "planet", "sync" ), 0, 0, addresses );
-        PLog.e( "Route.URL( \"planet\", \"sync\" ), 0, 0, addresses : " + Route.URL( "planet", "sync" ), 0, 0, addresses );
+        } ).action( Route.URL( "sync", "planets" ), 0, 0, addresses );
+        PLog.e( "Route.URL( \"sync\", \"planets\" ), 0, 0, addresses : " + Route.URL( "sync", "planets" ), 0, 0, addresses );
     }
 
     public enum SyncType {

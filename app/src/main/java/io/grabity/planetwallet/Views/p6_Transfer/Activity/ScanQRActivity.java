@@ -91,7 +91,6 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
             finish( );
         } else {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-            PLog.e( "planet.getCoinType() : " + planet.getCoinType( ) );
         }
     }
 
@@ -106,7 +105,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 viewMapper.barcodeReaderView.resourceRelease( );
             }
         } else if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-            Pattern p = Pattern.compile( "^[13][a-km-zA-HJ-NP-Z0-9]{26,33}$" );
+            Pattern p = Pattern.compile( "^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$" );
             Matcher m = p.matcher( contents );
 
             if ( m.find( ) ) {
@@ -114,8 +113,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 viewMapper.barcodeReaderView.resourceRelease( );
             }
         }
-
-        PLog.e( "address check : " + address );
+        
 
         if ( address == null ) return;
         setResult( RESULT_OK, new Intent( ).putExtra( C.bundleKey.QRCODE, address ) );
