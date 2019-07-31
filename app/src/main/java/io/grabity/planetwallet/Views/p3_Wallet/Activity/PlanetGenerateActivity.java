@@ -116,7 +116,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
 
 
-                    if ( KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.BTC.getCoinType( ), getPlanetWalletApplication( ).getPINCODE( ) ) == null ) {
+                    if ( KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.BTC.getCoinType( ), C.PINCODE ) == null ) {
 
                         btcMaster = true;
                         generateBtcPlanet( );
@@ -208,7 +208,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 request.setPlanet( planet.getName( ) );
                 request.setSignature(
                         Signer.getInstance( ).sign( planet.getName( ),
-                                planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
+                                planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) ) );
                 request.setAddress( planet.getAddress( ) );
 
                 PLog.e( "URL : " + Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ) );
@@ -261,14 +261,14 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     void addBtcPlanet( ) {
         if ( planet != null ) {
             KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
-            planet = BitCoinManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
+            planet = BitCoinManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, C.PINCODE );
 
             if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
                 addBtcPlanet( );
                 return;
             }
         } else {
-            planet = BitCoinManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
+            planet = BitCoinManager.getInstance( ).addPlanet( C.PINCODE );
             if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
                 addBtcPlanet( );
                 return;
@@ -282,7 +282,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
 
     void generateBtcPlanet( ) {
-        char[] pinCode = getPlanetWalletApplication( ).getPINCODE( );
+        char[] pinCode = C.PINCODE;
         if ( pinCode == null ) {
             return;
         }
@@ -300,14 +300,14 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     void addEthPlanet( ) {
         if ( planet != null ) {
             KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
-            planet = EthereumManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
+            planet = EthereumManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, C.PINCODE );
 
             if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
                 addEthPlanet( );
                 return;
             }
         } else {
-            planet = EthereumManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
+            planet = EthereumManager.getInstance( ).addPlanet( C.PINCODE );
 
             if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
                 addEthPlanet( );

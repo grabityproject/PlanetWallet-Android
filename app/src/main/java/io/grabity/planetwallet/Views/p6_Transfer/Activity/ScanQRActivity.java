@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
@@ -113,7 +112,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 viewMapper.barcodeReaderView.resourceRelease( );
             }
         }
-        
+
 
         if ( address == null ) return;
         setResult( RESULT_OK, new Intent( ).putExtra( C.bundleKey.QRCODE, address ) );

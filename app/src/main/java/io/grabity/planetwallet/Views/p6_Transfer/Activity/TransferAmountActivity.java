@@ -156,7 +156,8 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 if ( !amount.toString( ).contains( "." ) ) amount.add( s );
                 break;
             case "0":
-                if ( amount.toString( ).contains( "." ) || !amount.get( 0 ).equals( "0" ) ) amount.add( s );
+                if ( amount.toString( ).contains( "." ) || !amount.get( 0 ).equals( "0" ) )
+                    amount.add( s );
                 break;
             default:
                 if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {

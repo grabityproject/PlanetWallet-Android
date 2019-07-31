@@ -15,7 +15,6 @@ import java.util.Objects;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
@@ -81,12 +80,10 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
             viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
             viewMapper.etPassword.setSelection( viewMapper.etPassword.length( ) );
         } else if ( v == viewMapper.btnSubmit ) {
-            PLog.e( "니모닉 : " + viewMapper.etMnemonic.getText( ).toString( ) );
-
-            if ( getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) != null ) {
+            if ( C.PINCODE != null ) {
                 if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
                     try {
-                        Planet btcPlanet = BitCoinManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), Objects.requireNonNull( viewMapper.etPassword.getText( ) ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
+                        Planet btcPlanet = BitCoinManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), Objects.requireNonNull( viewMapper.etPassword.getText( ) ).toString( ), C.PINCODE );
 
                         if ( PlanetStore.getInstance( ).getPlanet( btcPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( btcPlanet );
@@ -100,7 +97,7 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
 
                 } else if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
                     try {
-                        Planet ethPlanet = EthereumManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), Objects.requireNonNull( viewMapper.etPassword.getText( ) ).toString( ), getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
+                        Planet ethPlanet = EthereumManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), Objects.requireNonNull( viewMapper.etPassword.getText( ) ).toString( ), C.PINCODE );
 
                         if ( PlanetStore.getInstance( ).getPlanet( ethPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( ethPlanet );

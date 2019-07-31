@@ -120,7 +120,7 @@ public class Get extends AbstractNetworkTask {
                     "<--------- HTTP Get Method---------> \n" +
                             "<--------- StatusCode : " + result[ 0 ] + "--------->\n" +
                             "<--------- Time : " + this.netWorkTime + " ms--------->" );
-            if( in != null )
+            if ( in != null )
                 in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
         }
     }

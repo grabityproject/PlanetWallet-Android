@@ -74,7 +74,6 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
     }
 
 
-
     public void resourceRelease( ) {
         this.post( ( ) -> {
             cameraSource.release( ); //카메라 해제

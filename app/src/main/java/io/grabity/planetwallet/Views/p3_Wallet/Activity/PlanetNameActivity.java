@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
@@ -120,7 +119,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             request.setPlanet( planet.getName( ) );
             request.setSignature(
                     Signer.getInstance( ).sign( planet.getName( ),
-                            planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
+                            planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) ) );
             request.setAddress( planet.getAddress( ) );
 
             new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );

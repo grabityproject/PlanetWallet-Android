@@ -36,9 +36,9 @@ public class ThemeSeekBar extends AppCompatSeekBar implements Themeable {
         if ( defaultTheme > 0 ) {
             theme = ( defaultTheme == 2 ) != theme;
             if ( !theme ) {
-                this.setProgressDrawable( getResources().getDrawable( R.drawable.seekbar_background_black , null ) );
+                this.setProgressDrawable( getResources( ).getDrawable( R.drawable.seekbar_background_black, null ) );
             } else {
-                this.setProgressDrawable( getResources().getDrawable( R.drawable.seekbar_background_white , null ) );
+                this.setProgressDrawable( getResources( ).getDrawable( R.drawable.seekbar_background_white, null ) );
             }
         }
     }

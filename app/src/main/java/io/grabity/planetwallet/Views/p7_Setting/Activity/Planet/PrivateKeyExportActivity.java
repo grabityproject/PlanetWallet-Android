@@ -48,9 +48,9 @@ public class PrivateKeyExportActivity extends PlanetWalletActivity implements To
             Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             String privateKey = null;
             if ( planet.getCoinType( ).equals( CoinType.ETH.getCoinType( ) ) ) {
-                privateKey = planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+                privateKey = planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE );
             } else {
-                privateKey = planet.getPrivateKeyBase58Encode( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
+                privateKey = planet.getPrivateKeyBase58Encode( KeyPairStore.getInstance( ), C.PINCODE );
             }
 
 
