@@ -58,6 +58,7 @@ public class SyncManager {
                         }
                     }
                 }
+                
             } else {
                 onSyncListener.onSyncComplete( SyncType.PLANET, false, false );
             }
