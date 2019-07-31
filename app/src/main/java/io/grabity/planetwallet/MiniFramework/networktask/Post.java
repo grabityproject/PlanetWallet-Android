@@ -35,6 +35,8 @@ public class Post extends AbstractNetworkTask {
     private int resultCode;
     private HttpClient httpClient;
     private String token = null;
+
+    private String deviceKey = null;
     private HashMap< String, String > extraHeaders = new HashMap<>( );
 
     public Post( NetworkInterface in ) {
@@ -45,6 +47,11 @@ public class Post extends AbstractNetworkTask {
 
     public Post setToken( String token ) {
         this.token = token;
+        return this;
+    }
+
+    public Post setDeviceKey( String deviceKey ) {
+        this.deviceKey = deviceKey;
         return this;
     }
 
@@ -120,6 +127,11 @@ public class Post extends AbstractNetworkTask {
                 if ( token != null ) {
                     httpPost.setHeader( "Authorization", "Bearer " + token );
                 }
+
+                if ( deviceKey != null ) {
+                    httpPost.setHeader( "device-key", deviceKey );
+                }
+
                 if ( data != null ) {
 
                     if ( isRaw ) {
@@ -200,8 +212,8 @@ public class Post extends AbstractNetworkTask {
                     "\n < ---------HTTP Post Method---------> \n" +
                             "<---------StatusCode :" + result[ 0 ] + "--------->\n" +
                             "< ---------Time :" + this.netWorkTime + "ms--------->" );
-
-            in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
+            if ( in != null )
+                in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
         }
     }
 }

@@ -42,7 +42,7 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     private String deviceKey = null;
 
-    public char[] PINCODE = null;
+    private char[] PINCODE = null;
 
     private ArrayList< OnMessagingListener > messagingListeners = new ArrayList<>( );
 
@@ -126,6 +126,7 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void setPINCODE( @Nullable char[] PINCODE ) {
         this.PINCODE = PINCODE;
+        C.PINCODE = this.PINCODE;
     }
 
     public void addOnMessagingListener( OnMessagingListener listener ) {
@@ -144,6 +145,7 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void setDeviceKey( String deviceKey ) {
         this.deviceKey = deviceKey;
+        C.DEVICE_KEY = deviceKey;
     }
 }
 

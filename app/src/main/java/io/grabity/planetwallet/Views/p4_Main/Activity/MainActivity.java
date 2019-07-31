@@ -17,6 +17,8 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
+import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
@@ -26,6 +28,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
 import io.grabity.planetwallet.Views.p4_Main.Adapter.MainAdapter;
@@ -183,10 +186,59 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             setUpNotice( );
 
+            getBalance( );
 
             if ( viewController != null )
                 viewController.updateBlurView( getCurrentTheme( ) );
         }
+    }
+
+    private void getBalance( ) {
+        new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", CoinType.of( selectedPlanet.getCoinType( ) ).name( ), selectedPlanet.getName( ) ), 0, 0, null );
+        for ( int i = 0; i < selectedPlanet.getItems( ).size( ); i++ ) {
+            if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
+
+                if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getItems( ).get( i ).getCoinType( ) ) ) {
+                    new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", CoinType.ETH.name( ), selectedPlanet.getName( ) ), 1, i, null );
+                } else {
+                    ERC20 erc20 = ( ERC20 ) selectedPlanet.getItems( ).get( i );
+                    new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", erc20.getSymbol( ), selectedPlanet.getName( ) ), 1, i, null );
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
+        super.onReceive( error, requestCode, resultCode, statusCode, result );
+
+        if ( !error ) {
+
+            if ( requestCode == 0 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+                if ( returnVO.isSuccess( ) ) {
+                    Planet p = ( Planet ) returnVO.getResult( );
+                    selectedPlanet.setBalance( p.getBalance( ) );
+                    viewMapper.textBlurBalance.setText( selectedPlanet.getBalance( ) );
+                }
+
+            } else if ( requestCode == 1 ) {
+
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+                if ( returnVO.isSuccess( ) ) {
+                    Planet p = ( Planet ) returnVO.getResult( );
+                    if ( resultCode != 0 )
+                        ( ( ERC20 ) selectedPlanet.getItems( ).get( resultCode ) ).setBalance( p.getBalance( ) );
+                    else
+                        ( ( ETH ) selectedPlanet.getItems( ).get( resultCode ) ).setBalance( p.getBalance( ) );
+                }
+                Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
+
+            }
+
+        }
+
     }
 
     void setUpNotice( ) {
@@ -229,7 +281,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
                 footerViewMapper.btnAddToken.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
                 footerViewMapper.btnAddToken.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#EDEDED" : "#1E1E28" ) );
-
 
             }
         }
@@ -445,6 +496,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     public void onRefresh( ) {
         SyncManager.getInstance( ).syncPlanet( this );
+        getBalance( );
     }
 
     @Override

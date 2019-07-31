@@ -7,6 +7,9 @@ import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferConfirmActivit
 
 public class C {
 
+    public static char[] PINCODE;
+    public static String DEVICE_KEY;
+
     public static class url {
     }
 
@@ -129,8 +132,6 @@ public class C {
         public final static String KRW = "KRW";
         public final static String CNY = "CNY";
     }
-
-
 
 
 }

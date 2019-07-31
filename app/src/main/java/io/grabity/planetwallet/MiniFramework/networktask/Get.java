@@ -22,6 +22,8 @@ public class Get extends AbstractNetworkTask {
     private HttpClient httpClient;
     private String token = null;
 
+    private String deviceKey = null;
+
     public Get( NetworkInterface in ) {
         this.httpClient = new DefaultHttpClient( );
         this.in = in;
@@ -32,10 +34,20 @@ public class Get extends AbstractNetworkTask {
         return this;
     }
 
+    public Get setDeviceKey( String deviceKey ) {
+        this.deviceKey = deviceKey;
+        return this;
+    }
+
     public void action( String url, int requestCode, int resultCode, Object data ) {
+        this.execute( url, requestCode, resultCode, data );
+    }
+
+
+    public AsyncTask< Void, Void, String[] > execute( String url, int requestCode, int resultCode, Object data ) {
         this.requestCode = requestCode;
         this.resultCode = resultCode;
-        new GetTask( url, httpClient, in, data ).execute( );
+        return new GetTask( url, httpClient, in, data ).execute( );
     }
 
     protected class GetTask extends AsyncTask< Void, Void, String[] > {
@@ -77,6 +89,11 @@ public class Get extends AbstractNetworkTask {
                 if ( token != null ) {
                     httpGet.setHeader( "Authorization", "Bearer " + token );
                 }
+
+                if ( deviceKey != null ) {
+                    httpGet.setHeader( "device-key", deviceKey );
+                }
+
                 HttpResponse response = httpClient.execute( httpGet );
                 return new String[]{ String.valueOf( response.getStatusLine( ).getStatusCode( ) ), EntityUtils.toString( response.getEntity( ) ), "true" };
 
@@ -103,7 +120,8 @@ public class Get extends AbstractNetworkTask {
                     "<--------- HTTP Get Method---------> \n" +
                             "<--------- StatusCode : " + result[ 0 ] + "--------->\n" +
                             "<--------- Time : " + this.netWorkTime + " ms--------->" );
-            in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
+            if( in != null )
+                in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
         }
     }
 }

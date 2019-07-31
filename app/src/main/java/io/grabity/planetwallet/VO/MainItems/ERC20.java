@@ -70,9 +70,8 @@ public class ERC20 extends ETH implements MainItem, Serializable {
 
     @Override
     public String getBalance( ) {
-//        if ( balance == null ) return "0";
-//        return balance;
-        return "100";
+        if ( balance == null ) return "0";
+        return balance;
     }
 
     @Override

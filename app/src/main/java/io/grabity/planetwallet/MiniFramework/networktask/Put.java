@@ -110,7 +110,8 @@ public class Put extends AbstractNetworkTask {
                     "<--------- HTTP Put Method---------> \n" +
                             "<--------- StatusCode : " + result[ 0 ] + "--------->\n" +
                             "<--------- Time : " + this.netWorkTime + " ms--------->" );
-            in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
+            if ( in != null )
+                in.onReceive( !Boolean.parseBoolean( result[ 2 ] ), requestCode, resultCode, Integer.parseInt( result[ 0 ] ), result[ 1 ] );
         }
     }
 }

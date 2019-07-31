@@ -185,9 +185,8 @@ public class Planet implements Serializable {
     }
 
     public String getBalance( ) {
-//        if ( balance == null ) return "0";
-//        return balance;
-        return "100";
+        if ( balance == null ) return "0";
+        return balance;
     }
 
     public void setBalance( String balance ) {
