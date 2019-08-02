@@ -12,11 +12,15 @@ import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
@@ -85,6 +89,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
+
             if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
                 erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
                 viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
@@ -92,12 +97,54 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
             }
 
+            getBalance( );
+
 
             toolBarSetView( );
         }
     }
 
-    void toolBarSetView( ) {
+
+    //Todo 일단 ETH만 적용
+
+    private void getBalance( ) {
+        if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
+            if ( getSerialize( C.bundleKey.ERC20 ) != null ) { //ERC20
+                new Get( this ).setDeviceKey( C.DEVICE_KEY )
+                        .action( Route.URL( "balance", erc20.getSymbol( ), planet.getName( ) ), 0, 1, null );
+            } else { // ETH
+                new Get( this ).setDeviceKey( C.DEVICE_KEY )
+                        .action( Route.URL( "balance", CoinType.ETH.name( ), planet.getName( ) ), 0, 0, null );
+            }
+        } else if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) { //BTC
+
+        }
+    }
+
+    @Override
+    public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
+        super.onReceive( error, requestCode, resultCode, statusCode, result );
+        if ( !error ) {
+            if ( requestCode == 0 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, resultCode == 0 ? Planet.class : ERC20.class );
+                if ( returnVO.isSuccess( ) ) {
+                    if ( resultCode == 0 ) {
+                        Planet p = ( Planet ) returnVO.getResult( );
+                        planet.setBalance( p.getBalance( ) );
+                        viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+                    } else if ( resultCode == 1 ) {
+                        ERC20 e = ( ERC20 ) returnVO.getResult( );
+                        erc20.setBalance( e.getBalance( ) );
+                        viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    private void toolBarSetView( ) {
         viewMapper.groupPlanet.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ? View.VISIBLE : View.GONE );
         viewMapper.textAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
         if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {

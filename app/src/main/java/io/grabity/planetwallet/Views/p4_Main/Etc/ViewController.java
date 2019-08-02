@@ -29,6 +29,12 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
     float backgroundTopMargin = 0.0f;
 
     boolean loaderStart = false;
+    boolean bottomScroll = false;
+
+    public boolean isBottomScroll( ) {
+        return bottomScroll;
+    }
+
 
     public ViewController( MainActivity activity, ViewMapper viewMapper ) {
         this.activity = activity;
@@ -107,15 +113,14 @@ public class ViewController implements AdvanceRecyclerView.OnScrollListener, Sli
             viewMapper.groupBackground.setY( ( int ) -scrollY );
             viewMapper.groupBackground.setScaleX( 1.0f );
             viewMapper.groupBackground.setScaleY( 1.0f );
-
         } else {
-
             float scale = ( float ) ( 1.0 - scrollY / ( Utils.getScreenWidth( activity ) / 2.0f ) * 0.5f );
             viewMapper.groupBackground.setY( 0 );
             viewMapper.groupBackground.setScaleX( scale );
             viewMapper.groupBackground.setScaleY( scale );
         }
 
+        bottomScroll = scrollY < 0;
 
         if ( !viewMapper.overScrollWrapper.isRefreshing( ) ) {
             if ( loaderStart ) {

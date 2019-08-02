@@ -24,7 +24,7 @@ public class Planet implements Serializable {
     private String hide;
     private String address;
     private String name;
-    private String balance = "100";
+    private String balance;
 
     private String signature;
     private String planet;

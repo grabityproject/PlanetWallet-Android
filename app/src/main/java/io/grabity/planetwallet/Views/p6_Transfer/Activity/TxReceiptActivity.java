@@ -94,7 +94,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         viewMapper.textFee.setText( transfer.getFee( ) );
         //Todo node
         viewMapper.textDate.setText( "2019. 06. 13 13:05:10" );
-        viewMapper.btnTxHash.setText( "0x1507f1c7fba98b4ab985a4de07fd476920009a94401641b68249deec0f077cf7" );
+        viewMapper.btnTxHash.setText( transfer.getTxHash( ) );
         viewMapper.btnTxHash.underLine( );
 
         if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {

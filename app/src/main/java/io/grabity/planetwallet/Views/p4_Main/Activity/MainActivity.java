@@ -18,6 +18,7 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -64,6 +65,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     private ArrayList< Planet > planetList;
 
     private long backPressedTime = 0;
+    private int mainListCount = 0;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -185,19 +187,23 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
 
             setUpNotice( );
-
             getBalance( );
+
 
             if ( viewController != null )
                 viewController.updateBlurView( getCurrentTheme( ) );
         }
+
+
     }
 
     private void getBalance( ) {
-        new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", CoinType.of( selectedPlanet.getCoinType( ) ).name( ), selectedPlanet.getName( ) ), 0, 0, null );
-        for ( int i = 0; i < selectedPlanet.getItems( ).size( ); i++ ) {
-            if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
+        new Get( this ).setDeviceKey( C.DEVICE_KEY ).
+                action( Route.URL( "balance", CoinType.of( selectedPlanet.getCoinType( ) ).name( ), selectedPlanet.getName( ) ), 0, 0, null );
 
+        if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
+            mainListCount = selectedPlanet.getItems( ).size( );
+            for ( int i = 0; i < selectedPlanet.getItems( ).size( ); i++ ) {
                 if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getItems( ).get( i ).getCoinType( ) ) ) {
                     new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", CoinType.ETH.name( ), selectedPlanet.getName( ) ), 1, i, null );
                 } else {
@@ -209,31 +215,60 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         }
     }
 
+
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-
         if ( !error ) {
+            //todo 임시
+            if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
+                viewMapper.overScrollWrapper.completeRefresh( );
+                return;
+            }
 
             if ( requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
                 if ( returnVO.isSuccess( ) ) {
                     Planet p = ( Planet ) returnVO.getResult( );
+                    p.setKeyId( this.selectedPlanet.getKeyId( ) );
+
                     selectedPlanet.setBalance( p.getBalance( ) );
                     viewMapper.textBlurBalance.setText( selectedPlanet.getBalance( ) );
+
+                    PlanetStore.getInstance( ).update( p );
                 }
 
             } else if ( requestCode == 1 ) {
 
+                mainListCount -= 1;
+
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
                 if ( returnVO.isSuccess( ) ) {
                     Planet p = ( Planet ) returnVO.getResult( );
-                    if ( resultCode != 0 )
+                    if ( resultCode != 0 ) {
                         ( ( ERC20 ) selectedPlanet.getItems( ).get( resultCode ) ).setBalance( p.getBalance( ) );
-                    else
+                        ERC20Store.getInstance( ).update( ( ERC20 ) selectedPlanet.getItems( ).get( resultCode ) );
+                    } else {
                         ( ( ETH ) selectedPlanet.getItems( ).get( resultCode ) ).setBalance( p.getBalance( ) );
+                    }
+
                 }
-                Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
+
+                if ( mainListCount == 1 ) {
+                    if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
+                        viewMapper.overScrollWrapper.completeRefresh( );
+                        Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
+                    } else {
+                        if ( !viewController.isBottomScroll( ) ) {
+                            Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
+                        } else {
+                            PLog.e( "밑으로 스크롤 중입니다." );
+                        }
+
+                    }
+
+
+                }
 
             }
 
@@ -499,13 +534,13 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onRefresh( ) {
-        SyncManager.getInstance( ).syncPlanet( this );
         getBalance( );
+        SyncManager.getInstance( ).syncPlanet( this );
     }
 
     @Override
     public void onSyncComplete( SyncManager.SyncType syncType, boolean complete, boolean isUpdated ) {
-        viewMapper.overScrollWrapper.completeRefresh( );
+
     }
 
 

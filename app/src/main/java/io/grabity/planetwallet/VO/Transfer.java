@@ -11,10 +11,34 @@ public class Transfer implements Serializable {
     private String toBalance;
     private String Choice;
     private String fee;
+    private String serializeTx;
+    private String txHash;
+
 
 
     public Transfer( ) {
 
+    }
+
+    public Transfer( String serializeTx ) {
+        this.serializeTx = serializeTx;
+    }
+
+    public String getTxHash( ) {
+        return txHash;
+    }
+
+    public void setTxHash( String txHash ) {
+        this.txHash = txHash;
+    }
+
+
+    public String getSerializeTx( ) {
+        return serializeTx;
+    }
+
+    public void setSerializeTx( String serializeTx ) {
+        this.serializeTx = serializeTx;
     }
 
     public String getToAddress( ) {

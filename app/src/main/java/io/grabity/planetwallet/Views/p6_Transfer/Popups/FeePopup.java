@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.ETHGasProvider;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 
@@ -33,11 +34,13 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
     private float contentHeight = -1.0f;
     private float defaultY = -1.0f;
     private boolean isMove = false;
-
     private boolean isAbleMoving = false;
+
+    private boolean isERC = false;
 
     private String fee;
     private String coinType;
+
 
     private float defaultFeePopupTop = -1.0f;
     private int statusBar = -1;
@@ -98,6 +101,9 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         limit = new ArrayList<>( );
         priceBuffer = new StringBuffer( );
         limitBuffer = new StringBuffer( );
+
+        viewMapper.textGasPrice.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI );
+        viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( ) );
 
         setList( price, viewMapper.textGasPrice );
         setList( limit, viewMapper.textGasLimit );
@@ -197,12 +203,12 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
                 //QA 이후 주석해제 -> 리밋이나 프라이스가 빈 경우 자동으로 기본값세팅
                 if ( viewMapper.textGasPrice.getText( ).length( ) == 0 ) {
-                    viewMapper.textGasPrice.setText( "1" );
+                    viewMapper.textGasPrice.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI );
                     setList( price, viewMapper.textGasPrice );
                     setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
                 }
                 if ( viewMapper.textGasLimit.getText( ).length( ) == 0 ) {
-                    viewMapper.textGasLimit.setText( "21000" );
+                    viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( ) );
                     setList( limit, viewMapper.textGasLimit );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                 }
@@ -215,13 +221,23 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
 
             } else {
-                if ( Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 ) {
+
+                if ( !isERC ? Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 : Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 100000 ) {
                     Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_limit_least_title ), Toast.LENGTH_SHORT ).show( );
-                    viewMapper.textGasLimit.setText( "21000" );
+                    viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( ) );
                     setList( limit, viewMapper.textGasLimit );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                     return;
-                } else if ( Integer.valueOf( viewMapper.textGasPrice.getText( ).toString( ) ) < 1 ) {
+                }
+
+//                    if ( Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 ) {
+//                        Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_limit_least_title ), Toast.LENGTH_SHORT ).show( );
+//                        viewMapper.textGasLimit.setText( "21000" );
+//                        setList( limit, viewMapper.textGasLimit );
+//                        setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
+//                        return;
+//                    }
+                else if ( Integer.valueOf( viewMapper.textGasPrice.getText( ).toString( ) ) < 1 ) {
                     Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_price_least_title ), Toast.LENGTH_SHORT ).show( );
                     viewMapper.textGasPrice.setText( "1" );
                     setList( price, viewMapper.textGasPrice );
@@ -229,7 +245,8 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
                     return;
                 }
                 if ( onFeePopupSaveClickListener != null ) {
-                    onFeePopupSaveClickListener.onFeePopupSaveClick( viewMapper.textGasFee.getText( ).toString( ) );
+                    onFeePopupSaveClickListener.onFeePopupSaveClick(
+                            viewMapper.textGasFee.getText( ).toString( ), viewMapper.textGasPrice.getText( ).toString( ), viewMapper.textGasLimit.getText( ).toString( ) );
                 }
             }
 
@@ -309,8 +326,13 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         return this;
     }
 
+    public FeePopup setERC( boolean isERC ) {
+        this.isERC = isERC;
+        return this;
+    }
+
     public interface OnFeePopupSaveClickListener {
-        void onFeePopupSaveClick( String fee );
+        void onFeePopupSaveClick( String fee, String gasPrice, String gasLimit );
     }
 
     public String getFee( ) {

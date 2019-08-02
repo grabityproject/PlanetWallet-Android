@@ -63,6 +63,8 @@ public class C {
         public final static String COINTYPE = "cointype";
         public final static String TRANSFER = "TRANSFER";
 
+        public final static String TRANSACTION = "transaction";
+
     }
 
     public static class transferChoice {
