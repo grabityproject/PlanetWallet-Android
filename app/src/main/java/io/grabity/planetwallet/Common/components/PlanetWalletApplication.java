@@ -97,6 +97,12 @@ public class PlanetWalletApplication extends MultiDexApplication {
                 .build( );
         ImageLoader.getInstance( ).init( config );
 
+
+        if ( ImageLoader.getInstance( ).isInited( ) ) { //clearCache
+            ImageLoader.getInstance( ).clearMemoryCache( );
+            ImageLoader.getInstance( ).clearDiskCache( );
+        }
+
     }
 
 

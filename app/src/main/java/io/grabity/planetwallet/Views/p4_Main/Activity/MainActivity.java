@@ -3,6 +3,7 @@ package io.grabity.planetwallet.Views.p4_Main.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -65,7 +66,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     private ArrayList< Planet > planetList;
 
     private long backPressedTime = 0;
-    private int mainListCount = 0;
+    private int ercTokenCount = 0;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -162,6 +163,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 selectedPlanet.setItems( new ArrayList<>( ) );
                 ETH eth = new ETH( );
                 eth.setAddress( selectedPlanet.getAddress( ) );
+                //ETH 일 경우 첫번째 리스트 ETH값은 기존에 DB에 존재하는 값으로 우선세팅 , test로 일단 주석처리하기
+//                eth.setBalance( selectedPlanet.getBalance( ) );
                 selectedPlanet.getItems( ).add( eth );
                 for ( ERC20 erc20 : tokenList ) {
                     selectedPlanet.getItems( ).add( erc20 );
@@ -189,6 +192,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             setUpNotice( );
             getBalance( );
 
+            if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
+                viewMapper.overScrollWrapper.completeRefresh( );
+            }
 
             if ( viewController != null )
                 viewController.updateBlurView( getCurrentTheme( ) );
@@ -202,15 +208,14 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 action( Route.URL( "balance", CoinType.of( selectedPlanet.getCoinType( ) ).name( ), selectedPlanet.getName( ) ), 0, 0, null );
 
         if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
-            mainListCount = selectedPlanet.getItems( ).size( );
+            ercTokenCount = selectedPlanet.getItems( ).size( );
             for ( int i = 0; i < selectedPlanet.getItems( ).size( ); i++ ) {
                 if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getItems( ).get( i ).getCoinType( ) ) ) {
-                    new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", CoinType.ETH.name( ), selectedPlanet.getName( ) ), 1, i, null );
+                    new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", CoinType.ETH.name( ), selectedPlanet.getName( ) ), selectedPlanet.get_id( ), i, null );
                 } else {
                     ERC20 erc20 = ( ERC20 ) selectedPlanet.getItems( ).get( i );
-                    new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", erc20.getSymbol( ), selectedPlanet.getName( ) ), 1, i, null );
+                    new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", erc20.getSymbol( ), selectedPlanet.getName( ) ), selectedPlanet.get_id( ), i, null );
                 }
-
             }
         }
     }
@@ -220,9 +225,12 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( !error ) {
-            //todo 임시
+
+            //todo BTC 임시
             if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
-                viewMapper.overScrollWrapper.completeRefresh( );
+                if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
+                    viewMapper.overScrollWrapper.completeRefresh( );
+                }
                 return;
             }
 
@@ -238,26 +246,27 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                     PlanetStore.getInstance( ).update( p );
                 }
 
-            } else if ( requestCode == 1 ) {
-
-                mainListCount -= 1;
+            } else if ( requestCode >= 1 && selectedPlanet.get_id( ) == requestCode ) {
+                ercTokenCount -= 1;
 
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
                 if ( returnVO.isSuccess( ) ) {
                     Planet p = ( Planet ) returnVO.getResult( );
                     if ( resultCode != 0 ) {
+
                         ( ( ERC20 ) selectedPlanet.getItems( ).get( resultCode ) ).setBalance( p.getBalance( ) );
                         ERC20Store.getInstance( ).update( ( ERC20 ) selectedPlanet.getItems( ).get( resultCode ) );
+
                     } else {
                         ( ( ETH ) selectedPlanet.getItems( ).get( resultCode ) ).setBalance( p.getBalance( ) );
                     }
 
                 }
 
-                if ( mainListCount == 1 ) {
+                if ( ercTokenCount == 0 ) {
                     if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
                         viewMapper.overScrollWrapper.completeRefresh( );
-                        Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
+                        new Handler( ).postDelayed( ( ) -> Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( ), 500 );
                     } else {
                         if ( !viewController.isBottomScroll( ) ) {
                             Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
@@ -266,8 +275,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                         }
 
                     }
-
-
                 }
 
             }
@@ -280,11 +287,13 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         //textNotice
         if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
             viewMapper.textNotice.setVisibility( selectedPlanet.getPathIndex( ) >= 0 && Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_BTC, String.valueOf( false ) ), String.valueOf( false ) ) ?
-                    View.VISIBLE : View.GONE );
+                    View.VISIBLE : View.INVISIBLE );
         } else if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
             viewMapper.textNotice.setVisibility( selectedPlanet.getPathIndex( ) >= 0 && Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH, String.valueOf( false ) ), String.valueOf( false ) ) ?
-                    View.VISIBLE : View.GONE );
+                    View.VISIBLE : View.INVISIBLE );
         }
+
+
     }
 
     @Override
@@ -435,6 +444,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     protected void onResume( ) {
         super.onResume( );
+
         viewMapper.rippleView.ripple( false );
         viewMapper.rippleView.setTheme( getCurrentTheme( ) );
         viewMapper.shadowBackground.setShadowColor(
@@ -452,7 +462,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
         viewMapper.textBlurPlanetName.setText( selectedPlanet.getName( ) );
         viewMapper.textBottomPlanetName.setText( selectedPlanet.getName( ) );
-
 
         setUpNotice( );
 
@@ -554,7 +563,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public SlideDrawerLayout slideDrawer;
 
         public AdvanceRecyclerView listMain;
-
         public TextView textNotice;
         public View viewTrigger;
         public View groupBlur;

@@ -120,21 +120,21 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 if ( returnVO.isSuccess( ) ) {
                     ethGasPrice = ( ETHGasProvider ) returnVO.getResult( );
 
-                    fee.add( new BigDecimal( ethGasPrice.getSafeLow( ) ).movePointLeft( 9 ).multiply( ETHGasProvider.ETH_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
-                    fee.add( new BigDecimal( ethGasPrice.getStandard( ) ).movePointLeft( 9 ).multiply( ETHGasProvider.ETH_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
-                    fee.add( new BigDecimal( ethGasPrice.getFast( ) ).movePointLeft( 9 ).multiply( ETHGasProvider.ETH_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
-                    fee.add( new BigDecimal( ethGasPrice.getFastest( ) ).movePointLeft( 9 ).multiply( ETHGasProvider.ETH_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
+                    fee.add( new BigDecimal( ethGasPrice.getSafeLow( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
+                    fee.add( new BigDecimal( ethGasPrice.getStandard( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
+                    fee.add( new BigDecimal( ethGasPrice.getFast( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
+                    fee.add( new BigDecimal( ethGasPrice.getFastest( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
 
                 }
             } else {
                 for ( int i = 0; i < 4; i++ ) {
-                    fee.add( ETHGasProvider.ETH_DEFAULT_FEE );
+                    fee.add( !isERC ? ETHGasProvider.ETH_DEFAULT_FEE : ETHGasProvider.ERC_DEFAULT_FEE );
                 }
             }
             feeSetting( );
         } else {
             for ( int i = 0; i < 4; i++ ) {
-                fee.add( ETHGasProvider.ETH_DEFAULT_FEE );
+                fee.add( !isERC ? ETHGasProvider.ETH_DEFAULT_FEE : ETHGasProvider.ERC_DEFAULT_FEE );
             }
             feeSetting( );
         }
@@ -283,19 +283,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 } else {
                     bundle.putSerializable( C.bundleKey.PLANET, planet );
                     transfer.setSerializeTx( transaction( planet, null ) );
-
-//                    transaction = new Transaction( new ETH( ) )
-//                            .setDeviceKey( C.DEVICE_KEY )
-//                            .from( planet.getAddress( ) )
-//                            .to( transfer.getToAddress( ) )
-//                            .value( new BigDecimal( transfer.getToBalance( ) ).movePointRight( 18 ).toString( ) )
-//                            .gasPrice( new BigDecimal( gasPrice ).movePointRight( 9 ).toString( ) )
-//                            .gasLimit( gasLimit );
-//
-//                    String serializeTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) );
-//                    PLog.e( "ETH serializeTx : " + serializeTx );
-//
-//                    transfer.setSerializeTx( serializeTx );
                 }
             }
             transfer.setFee( viewMapper.textFee.getText( ).toString( ) );

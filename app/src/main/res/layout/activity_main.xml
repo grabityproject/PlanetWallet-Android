@@ -142,7 +142,7 @@
                 android:textColor="#FFF"
                 android:textSize="14dp"
                 android:text="@string/main_notice_title"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
 
             <io.grabity.planetwallet.Widgets.ToolBar
