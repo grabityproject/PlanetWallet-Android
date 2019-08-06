@@ -223,6 +223,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
             } else {
 
                 if ( !isERC ? Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 : Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 100000 ) {
+
                     Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_limit_least_title ), Toast.LENGTH_SHORT ).show( );
                     viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( ) );
                     setList( limit, viewMapper.textGasLimit );

@@ -53,6 +53,8 @@ public class TokenAddActivity extends PlanetWalletActivity implements ViewPager.
 
         viewMapper.tabBar.setViewPager( viewMapper.viewPager );
         viewMapper.viewPager.addOnPageChangeListener( this );
+        viewMapper.viewPager.setLockPager( true );
+
     }
 
     @Override

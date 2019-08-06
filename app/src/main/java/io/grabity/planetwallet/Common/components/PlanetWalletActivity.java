@@ -304,7 +304,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         if ( transition == Transition.SLIDE_SIDE )
             overridePendingTransition( R.anim.right_in, R.anim.left_out );
         if ( transition == Transition.SLIDE_UP )
-            overridePendingTransition( R.anim.bottom_in, R.anim.top_out );
+            overridePendingTransition( R.anim.bottom_in, R.anim.no );
     }
 
     private void setExitTransition( ) {
@@ -313,7 +313,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         if ( transition == Transition.SLIDE_SIDE )
             overridePendingTransition( R.anim.left_in, R.anim.right_out );
         if ( transition == Transition.SLIDE_UP )
-            overridePendingTransition( R.anim.top_in, R.anim.bottom_out );
+            overridePendingTransition( R.anim.no, R.anim.bottom_out );
     }
 
     public String localized( int id, Object... formats ) {

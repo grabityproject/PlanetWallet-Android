@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -27,6 +26,7 @@ import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.transaction.Transaction;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.ETHGasProvider;
+import io.grabity.planetwallet.VO.ErrorResult;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.Planet;
@@ -35,6 +35,7 @@ import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p6_Transfer.Popups.FeePopup;
 import io.grabity.planetwallet.Widgets.CircleImageView;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -48,7 +49,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     private Transfer transfer;
     private ArrayList< String > fee;
     private Transaction transaction;
-    private ETHGasProvider ethGasPrice;
+    private ETHGasProvider ethGasProvider;
 
     private String gasPrice;
     private String gasLimit;
@@ -118,12 +119,12 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             if ( statusCode == 200 && requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ETHGasProvider.class );
                 if ( returnVO.isSuccess( ) ) {
-                    ethGasPrice = ( ETHGasProvider ) returnVO.getResult( );
+                    ethGasProvider = ( ETHGasProvider ) returnVO.getResult( );
 
-                    fee.add( new BigDecimal( ethGasPrice.getSafeLow( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
-                    fee.add( new BigDecimal( ethGasPrice.getStandard( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
-                    fee.add( new BigDecimal( ethGasPrice.getFast( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
-                    fee.add( new BigDecimal( ethGasPrice.getFastest( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
+                    fee.add( new BigDecimal( ethGasProvider.getSafeLow( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
+                    fee.add( new BigDecimal( ethGasProvider.getStandard( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
+                    fee.add( new BigDecimal( ethGasProvider.getFast( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
+                    fee.add( new BigDecimal( ethGasProvider.getFastest( ) ).movePointLeft( 9 ).multiply( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ).stripTrailingZeros( ).toString( ) );
 
                 }
             } else {
@@ -142,7 +143,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     }
 
     void gasPriceAndLimitSetting( int progress, boolean isERC ) {
-        if ( ethGasPrice == null ) {
+        if ( ethGasProvider == null ) {
             gasPrice = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI;
             gasLimit = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( );
             return;
@@ -150,24 +151,21 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
         switch ( progress ) {
             case 0:
-                gasPrice = ethGasPrice.getSafeLow( );
+                gasPrice = ethGasProvider.getSafeLow( );
                 break;
             case 1:
-                gasPrice = ethGasPrice.getStandard( );
+                gasPrice = ethGasProvider.getStandard( );
                 break;
             case 2:
-                gasPrice = ethGasPrice.getFast( );
+                gasPrice = ethGasProvider.getFast( );
                 break;
             case 3:
-                gasPrice = ethGasPrice.getFastest( );
+                gasPrice = ethGasProvider.getFastest( );
                 break;
             default:
                 gasPrice = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI;
         }
         gasLimit = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( );
-
-        PLog.e( "gasPrice : " + gasPrice );
-        PLog.e( "gasLimit : " + gasLimit );
 
 
     }
@@ -181,6 +179,8 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     void viewSetting( ) {
         viewMapper.groupPlanet.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ? View.VISIBLE : View.GONE );
         viewMapper.groupAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
+        viewMapper.groupSeekBar.setVisibility( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? View.VISIBLE : View.GONE );
+        viewMapper.groupFeeOption.setVisibility( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? View.VISIBLE : View.GONE );
         viewMapper.textFromName.setText( planet.getName( ) );
         if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
             viewMapper.planetView.setData( transfer.getToAddress( ) );
@@ -209,8 +209,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         if ( v == viewMapper.btnFeeOption ) {
             FeePopup.newInstance( this )
                     .setOnFeePopupSaveClickListener( this )
-//                    .setFee( ETHGasProvider.ETH_DEFAULT_FEE, CoinType.of( planet.getCoinType( ) ).name( ) )
-                    .setFee( !isERC ? ETHGasProvider.ETH_DEFAULT_FEE : ETHGasProvider.ERC_DEFAULT_FEE , CoinType.of( planet.getCoinType( ) ).name( ) )
+                    .setFee( !isERC ? ETHGasProvider.ETH_DEFAULT_FEE : ETHGasProvider.ERC_DEFAULT_FEE, CoinType.of( planet.getCoinType( ) ).name( ) )
                     .setERC( isERC )
                     .show( );
         } else if ( v == viewMapper.btnFeeReset ) {
@@ -298,14 +297,12 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                             bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
                             setTransition( Transition.SLIDE_UP );
                             sendAction( TxReceiptActivity.class, bundle );
-                        } else {
-                            Toast.makeText( this, "거래를 완료할수 없습니다.", Toast.LENGTH_SHORT ).show( );
                         }
                     } else {
-                        Toast.makeText( this, "거래를 완료할수 없습니다.", Toast.LENGTH_SHORT ).show( );
+                        CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
                     }
                 } else {
-                    Toast.makeText( this, "거래를 완료할수 없습니다.", Toast.LENGTH_SHORT ).show( );
+                    CustomToast.makeText( this, "네트워크 상태를 체크해주세요." ).show( );
                 }
             } ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "transfer", transaction.getSymbol( ) ), 0, 0, new Transfer( transfer.getSerializeTx( ) ) );
         } else if ( requestCode == C.requestCode.TRANSFER && resultCode == RESULT_CANCELED ) {

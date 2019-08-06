@@ -248,7 +248,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
             }
         } else {
-            CustomToast.makeText( this, result ).show( );
+            CustomToast.makeText( this, "네트워크 상태를 확인해주세요." ).show( );
         }
     }
 

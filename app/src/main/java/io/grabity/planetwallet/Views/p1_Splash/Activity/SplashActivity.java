@@ -27,6 +27,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Device;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
+import io.grabity.planetwallet.Widgets.CustomToast;
 
 
 public class SplashActivity extends PlanetWalletActivity implements Animator.AnimatorListener, OnMessagingListener, SyncManager.OnSyncListener {
@@ -43,7 +44,6 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );
-
 
     }
 
@@ -114,7 +114,8 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
 
         if ( getPlanetWalletApplication( ).getDeviceKey( ) == null || !isSync ) {
 
-            new Handler( ).postDelayed( this::sendActionSwitch, 500 );
+//            new Handler( ).postDelayed( this::sendActionSwitch, 500 );
+            CustomToast.makeText( this, "네트워크 상태를 확인해주세요." ).show( );
 
         } else {
             if ( KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD ) == null ) {

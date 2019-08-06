@@ -49,7 +49,6 @@ public class SyncManager {
                                     }
                                 }
                             } );
-
                             onSyncListener.onSyncComplete( SyncType.PLANET, true, isUpdated.get( ) );
 
                         } catch ( ClassCastException e ) {
@@ -60,7 +59,7 @@ public class SyncManager {
                 }
 
             } else {
-                onSyncListener.onSyncComplete( SyncType.PLANET, false, false );
+//                onSyncListener.onSyncComplete( SyncType.PLANET, false, false );
             }
 
 

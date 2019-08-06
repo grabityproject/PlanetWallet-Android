@@ -19,7 +19,6 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -154,7 +153,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
 
     void setUpViews( ) {
-
         if ( selectedPlanet != null ) {
             Utils.setPreferenceData( this, C.pref.LAST_PLANET_KEYID, selectedPlanet.getKeyId( ) );
 
@@ -163,8 +161,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 selectedPlanet.setItems( new ArrayList<>( ) );
                 ETH eth = new ETH( );
                 eth.setAddress( selectedPlanet.getAddress( ) );
-                //ETH 일 경우 첫번째 리스트 ETH값은 기존에 DB에 존재하는 값으로 우선세팅 , test로 일단 주석처리하기
-//                eth.setBalance( selectedPlanet.getBalance( ) );
+                eth.setBalance( selectedPlanet.getBalance( ) );
                 selectedPlanet.getItems( ).add( eth );
                 for ( ERC20 erc20 : tokenList ) {
                     selectedPlanet.getItems( ).add( erc20 );
@@ -225,7 +222,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( !error ) {
-
             //todo BTC 임시
             if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
                 if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
@@ -266,19 +262,23 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 if ( ercTokenCount == 0 ) {
                     if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
                         viewMapper.overScrollWrapper.completeRefresh( );
-                        new Handler( ).postDelayed( ( ) -> Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( ), 500 );
+                        new Handler( ).postDelayed( ( ) -> Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( ), 300 );
                     } else {
                         if ( !viewController.isBottomScroll( ) ) {
                             Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
                         } else {
-                            PLog.e( "밑으로 스크롤 중입니다." );
+                            Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
                         }
 
                     }
                 }
 
             }
-
+        } else {
+            if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
+                viewMapper.overScrollWrapper.completeRefresh( );
+            }
+            CustomToast.makeText( this, "네트워크 상태를 체크해주세요." ).show( );
         }
 
     }
