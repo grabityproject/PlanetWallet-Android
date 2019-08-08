@@ -26,6 +26,7 @@ public class C {
         public final static int WALLET_CREATE = 220;
 
         public final static int MAIN_TOKEN_ADD = 230;
+        public final static int MAIN_PLANET_ADD = 231;
 
         public final static int SETTING_CHANGE_PINCODE = 240;
 
@@ -64,6 +65,8 @@ public class C {
         public final static String TRANSFER = "TRANSFER";
 
         public final static String TRANSACTION = "transaction";
+
+        public final static String TX ="tx";
 
     }
 

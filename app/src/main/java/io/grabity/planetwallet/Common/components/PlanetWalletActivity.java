@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -267,6 +268,13 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     public void sendAction( Class< ? > targetClass, int... flags ) {
         Intent intent = new Intent( this, targetClass );
         for ( int f : flags ) intent.addFlags( f );
+        startActivity( putTransitionToBundle( intent, transition ) );
+        setEnterTransition( );
+    }
+
+    public void sendAction( String uri ) {
+        Intent intent = new Intent( Intent.ACTION_VIEW );
+        intent.setData( Uri.parse( uri ) );
         startActivity( putTransitionToBundle( intent, transition ) );
         setEnterTransition( );
     }

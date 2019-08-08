@@ -94,7 +94,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
         if ( planet != null ) {
             setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
-            sendAction( C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+            sendAction( getRequestCode() == C.requestCode.MAIN_PLANET_ADD ? C.requestCode.MAIN_PLANET_ADD : C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
         }
 
     }
@@ -102,7 +102,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
+        if ( requestCode == C.requestCode.PLANET_ADD || requestCode == C.requestCode.MAIN_PLANET_ADD && resultCode == RESULT_OK ) {
             setResult( RESULT_OK );
             super.onBackPressed( );
         }

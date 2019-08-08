@@ -50,7 +50,6 @@
             android:layout_height="wrap_content"
             android:textColor="#5c5964"
             android:textSize="16dp"
-            android:text="12312312322"
             app:themeTextColor="#aaaaaa" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView

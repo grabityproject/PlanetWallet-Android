@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -108,7 +109,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         super.setData( );
 
         try {
-            if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+            if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
 
                 viewMapper.toolBar.addLeftButton( ToolBar.ButtonItem( !getCurrentTheme( ) ? R.drawable.image_toolbar_close_gray : R.drawable.image_toolbar_close_blue ).setTag( C.tag.TOOLBAR_CLOSE ) );
                 viewMapper.toolBar.setOnToolBarClickListener( this );
@@ -169,7 +170,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         if ( v == viewMapper.btnRefresh ) {
 
             try {
-                if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+                if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
                     if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
 
                         if ( btcMaster ) {
@@ -232,11 +233,11 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
                     PlanetStore.getInstance( ).save( planet );
 
-                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode() == C.requestCode.MAIN_PLANET_ADD ) {
                         setResult( RESULT_OK );
                         super.onBackPressed( );
 
-                    } else {
+                    }  else {
                         sendAction( MainActivity.class );
                         finish( );
                     }

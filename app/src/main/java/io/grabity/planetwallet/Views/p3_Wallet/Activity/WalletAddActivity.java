@@ -92,10 +92,11 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
+        if ( requestCode == C.requestCode.PLANET_ADD || requestCode == C.requestCode.MAIN_PLANET_ADD && resultCode == RESULT_OK ) {
             setResult( RESULT_OK );
-            onBackPressed( );
+            super.onBackPressed( );
         }
+
     }
 
     @Override
@@ -104,12 +105,12 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
         if ( popup == popupCreate ) {
             new Handler( ).postDelayed( ( ) -> {
                 setTransition( Transition.SLIDE_UP );
-                sendAction( C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.COINTYPE, items.get( position ).getCoinType( ) ) );
+                sendAction( getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ? C.requestCode.MAIN_PLANET_ADD : C.requestCode.PLANET_ADD, PlanetGenerateActivity.class, Utils.createIntBundle( C.bundleKey.COINTYPE, items.get( position ).getCoinType( ) ) );
             }, 200 );
         } else if ( popup == popupImport ) {
             new Handler( ).postDelayed( ( ) -> {
                 setTransition( Transition.SLIDE_SIDE );
-                sendAction( C.requestCode.PLANET_ADD, WalletImportActivity.class, Utils.createIntBundle( C.bundleKey.COINTYPE, items.get( position ).getCoinType( ) ) );
+                sendAction( getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ? C.requestCode.MAIN_PLANET_ADD : C.requestCode.PLANET_ADD, WalletImportActivity.class, Utils.createIntBundle( C.bundleKey.COINTYPE, items.get( position ).getCoinType( ) ) );
             }, 200 );
         }
     }

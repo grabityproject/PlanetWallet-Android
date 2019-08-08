@@ -137,7 +137,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
                 if ( returnVO.isSuccess( ) ) {
 
                     PlanetStore.getInstance( ).save( planet );
-                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD ) {
+                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
                         setResult( RESULT_OK );
                         super.onBackPressed( );
 

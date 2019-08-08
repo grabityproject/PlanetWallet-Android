@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <io.grabity.planetwallet.Widgets.PlanetView
+            android:id="@+id/planet_item_tx_list_planetview"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"/>
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_tx_list_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/planet_item_tx_list_planetview"
+            android:layout_alignTop="@id/planet_item_tx_list_planetview"
+            android:layout_toLeftOf="@id/image_item_tx_list_arrow"
+            android:textColor="#FFF"
+            app:themeTextColor="#000"
+            />
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_tx_list_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#FFF"
+            app:themeTextColor="#000"
+            android:layout_below="@id/planet_item_tx_list_planetview"/>
+        
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/image_item_tx_list_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignTop="@id/planet_item_tx_list_planetview"
+            android:layout_alignParentRight="true"
+            />
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_tx_list_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_below="@id/planet_item_tx_list_planetview"
+            android:textColor="#FFF"
+            app:themeTextColor="#000"
+            android:layout_alignParentRight="true"/>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -15,6 +15,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,6 +73,7 @@ import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
 import io.grabity.planetwallet.Widgets.FontTextView;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Utils {
 
@@ -1180,5 +1184,34 @@ public class Utils {
             target.requestLayout( );
         }
     }
+
+
+    //Todo 일단 보류 계속 false로 떨어지는 현상
+    public static boolean isNetwork( Context context ) {
+
+        final boolean[] isNetwork = { false };
+
+        ConnectivityManager connectivityManager = ( ConnectivityManager ) context.getSystemService( CONNECTIVITY_SERVICE );
+        NetworkRequest.Builder networkBuilder = new NetworkRequest.Builder( );
+
+        connectivityManager.registerNetworkCallback( networkBuilder.build( ), new ConnectivityManager.NetworkCallback( ) {
+            @Override
+            public void onAvailable( Network network ) {
+                super.onAvailable( network );
+                isNetwork[ 0 ] = true;
+                connectivityManager.unregisterNetworkCallback( this );
+            }
+
+            @Override
+            public void onLost( Network network ) {
+                super.onLost( network );
+                isNetwork[ 0 ] = false;
+                connectivityManager.unregisterNetworkCallback( this );
+            }
+        } );
+
+        return isNetwork[ 0 ];
+    }
+
 
 }

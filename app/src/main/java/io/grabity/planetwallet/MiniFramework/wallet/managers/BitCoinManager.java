@@ -182,7 +182,8 @@ public class BitCoinManager {
         WalletAccount account = btcWalletAccountService.createHDWalletAccount(
                 masterKeyPair.getId( ),
                 CoinType.BTC.name( ),
-                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
+//                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
+                DefinedCurrency.of( 251658240 ),
                 "0/" + index );
 
         Planet planet = new Planet( );
@@ -208,7 +209,8 @@ public class BitCoinManager {
         WalletAccount account = btcWalletAccountService.createHDWalletAccount(
                 masterKeyPair.getId( ),
                 CoinType.BTC.name( ),
-                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
+//                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
+                DefinedCurrency.of( 251658240 ),
                 "0/" + index );
 
         Planet planet = new Planet( );

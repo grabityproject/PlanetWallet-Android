@@ -2,13 +2,26 @@ package io.grabity.planetwallet.VO.MainItems;
 
 import java.io.Serializable;
 
+import io.grabity.planetwallet.R;
+
 public class BTC implements MainItem, Serializable {
 
     private String planetName;
     private String balance;
     private String date;
 
+    private int iconRes = R.drawable.icon_bit;
+
     public BTC( ) {
+    }
+
+
+    public int getIconRes( ) {
+        return iconRes;
+    }
+
+    public void setIconRes( int iconRes ) {
+        this.iconRes = iconRes;
     }
 
     public String getPlanetName( ) {

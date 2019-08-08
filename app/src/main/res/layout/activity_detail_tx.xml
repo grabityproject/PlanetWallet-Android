@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000"
+    app:themeBackground="#FFF">
+
+    <io.grabity.planetwallet.Widgets.ToolBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        app:blackThemeLeftSrc="@drawable/image_toolbar_back_gray"
+        app:defaultTheme="Dark"
+        app:toolbarBottomWidth="1dp"
+        app:toolbarTitle="DetailTx"
+        app:whiteThemeLeftSrc="@drawable/image_toolbar_back_blue">
+    </io.grabity.planetwallet.Widgets.ToolBar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:orientation="vertical"
+        android:layout_below="@id/toolBar">
+
+    <RelativeLayout
+        android:id="@+id/group_detail_tx_to"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_detail_tx_to_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="To"
+            android:textColor="#FFF"
+            app:themeTextColor="#000"/>
+
+        <io.grabity.planetwallet.Widgets.PlanetView
+            android:id="@+id/planet_detail_tx_to_planetView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/text_detail_tx_to_title"/>
+
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_detail_tx_to_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/planet_detail_tx_to_planetView"
+            android:layout_alignTop="@id/planet_detail_tx_to_planetView"
+            android:textColor="#FFF"
+            app:themeTextColor="#000"
+            />
+
+    </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/group_detail_tx_from"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@id/group_detail_tx_to">
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_from_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="From"
+                android:textColor="#FFF"
+                app:themeTextColor="#000"/>
+
+            <io.grabity.planetwallet.Widgets.PlanetView
+                android:id="@+id/planet_detail_tx_from_planetView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/text_detail_tx_from_title"/>
+
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_from_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/planet_detail_tx_from_planetView"
+                android:layout_alignTop="@id/planet_detail_tx_from_planetView"
+                android:textColor="#FFF"
+                app:themeTextColor="#000"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight">
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_amount_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Amount"
+                android:textColor="#FFF"
+                android:textSize="14dp"
+                app:themeTextColor="#000" />
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/text_detail_tx_amount_title"
+                android:maxLines="1"
+                android:paddingStart="20dp"
+                android:gravity="end"
+                android:ellipsize="end"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="#FFF"
+                android:textSize="16dp"
+                app:themeTextColor="#000" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight">
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_fee_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Fee"
+                android:textColor="#FFF"
+                android:textSize="14dp"
+                app:themeTextColor="#000" />
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/text_detail_tx_fee_title"
+                android:maxLines="1"
+                android:paddingStart="20dp"
+                android:gravity="end"
+                android:ellipsize="end"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="#FFF"
+                android:textSize="16dp"
+                app:themeTextColor="#000" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listHeight">
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Date"
+                android:textColor="#FFF"
+                android:textSize="14dp"
+                app:themeTextColor="#000" />
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/text_detail_tx_date_title"
+                android:maxLines="1"
+                android:paddingStart="20dp"
+                android:gravity="end"
+                android:ellipsize="end"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="#FFF"
+                android:textSize="16dp"
+                app:themeTextColor="#000" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:paddingTop="10dp">
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_txid_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="txID"
+                android:textColor="#FFF"
+                android:textSize="14dp"
+                app:themeTextColor="#000"
+                android:paddingEnd="54dp" />
+
+            <io.grabity.planetwallet.Widgets.FontTextView
+                android:id="@+id/text_detail_tx_txid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/text_detail_tx_txid_title"
+                android:textColor="#FFF"
+                android:textSize="16dp"
+                app:themeTextColor="#000" />
+
+        </RelativeLayout>
+
+
+
+
+    </LinearLayout>
+
+
+    <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Explorer"
+        android:textSize="18dp"
+        app:buttonType="A"
+        app:defaultTheme="Dark" />
+
+
+
+</io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

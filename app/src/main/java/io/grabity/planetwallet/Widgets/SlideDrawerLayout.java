@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
@@ -263,6 +264,7 @@ public class SlideDrawerLayout extends ViewGroup {
 
             if ( onTrigger ) isGoToOutside = false;
             return onTrigger;
+
         }
     }
 
@@ -308,6 +310,7 @@ public class SlideDrawerLayout extends ViewGroup {
 
                     } else if ( currentMovingPosition == Position.BOTTOM ) {
 
+
                         float moveY = ( event.getRawY( ) - thisLocations[ 1 ] ) + triggers.get( Position.BOTTOM ).getOffset( ) + ( triggers.get( Position.BOTTOM ).isSticky( ) ? 0 : ( getHeight( ) - beforeTouchPositionY ) );
                         if ( getHeight( ) - getCurrentPositionView.getHeight( ) < moveY ) {
                             getCurrentPositionView.setY( moveY );
@@ -323,19 +326,24 @@ public class SlideDrawerLayout extends ViewGroup {
 
                 } else if ( event.getAction( ) == MotionEvent.ACTION_CANCEL || event.getAction( ) == MotionEvent.ACTION_UP ) {
 
+
                     if ( !isGoToOutside && isOnTriggerView( currentMovingPosition, event.getRawX( ) - thisLocations[ 0 ], event.getRawY( ) - thisLocations[ 1 ] ) ) {
                         slideAnimation( currentMovingPosition, false );
-                        if ( triggers.get( currentMovingPosition ).getTrigger( ) != null )
+                        if ( triggers.get( currentMovingPosition ).getTrigger( ) != null ) {
                             triggers.get( currentMovingPosition ).getTrigger( ).performClick( );
+                        }
+
+                        if ( currentMovingPosition == Position.BOTTOM ) {
+                            slideAnimation( currentMovingPosition, true );
+                        }
+
 
                     } else {
-
                         if ( currentMovingPosition == Position.TOP ) {
                             float moveY = ( event.getRawY( ) - thisLocations[ 1 ] ) + triggers.get( Position.TOP ).getOffset( ) + ( triggers.get( currentMovingPosition ).isSticky( ) ? 0 : -beforeTouchPositionY );
                             slideAnimation( Position.TOP, getCurrentPositionView.getHeight( ) * 2.0 / 5.0 < moveY );
 
                         } else if ( currentMovingPosition == Position.BOTTOM ) {
-
                             float moveY = ( event.getRawY( ) - thisLocations[ 1 ] ) + triggers.get( Position.BOTTOM ).getOffset( ) + ( triggers.get( Position.BOTTOM ).isSticky( ) ? 0 : ( getHeight( ) - beforeTouchPositionY ) );
                             slideAnimation( Position.BOTTOM, ( ( getHeight( ) - getCurrentPositionView.getHeight( ) * 2.0 / 5.0 ) > moveY ) );
                         }
@@ -495,6 +503,7 @@ public class SlideDrawerLayout extends ViewGroup {
                 animator = ObjectAnimator.ofFloat( target, "x", open ? getWidth( ) - target.getHeight( ) : getWidth( ) ).setDuration( 200 );
             } else if ( position == Position.BOTTOM ) {
                 animator = ObjectAnimator.ofFloat( target, "y", open ? getHeight( ) - target.getHeight( ) : getHeight( ) + triggers.get( position ).getOffset( ) ).setDuration( 200 );
+//                animator = ObjectAnimator.ofFloat( target, "y", open ? getHeight( ) - target.getHeight( ) : getHeight( ) ).setDuration( 200 );
             }
 
             if ( animator != null ) {
