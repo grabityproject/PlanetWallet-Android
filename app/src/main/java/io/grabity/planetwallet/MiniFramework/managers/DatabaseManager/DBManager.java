@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 
 /**
@@ -78,6 +79,7 @@ public abstract class DBManager {
 
         try {
             Cursor cursor = sqLiteDatabase.rawQuery( String.format( "SELECT %s FROM %s %s", selector, table, condition, Locale.US ), null );
+            PLog.e( String.format( "SELECT %s FROM %s %s", selector, table, condition ) );
             while ( cursor.moveToNext( ) ) {
                 T item = type.newInstance( );
                 Field[] fields = type.getDeclaredFields( );

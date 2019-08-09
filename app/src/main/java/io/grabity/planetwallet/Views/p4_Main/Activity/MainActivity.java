@@ -21,6 +21,7 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -72,10 +73,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     private long backPressedTime = 0;
     private int ercTokenCount = 0;
+    private int ercbottomClick = 0;
 
     //임시적용
     private ArrayList< Tx > btcTxs;
-//    private ArrayList< ERC20 > items;
+    private ArrayList< ERC20 > ercBalanceItems;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -137,6 +139,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         super.setData( );
         planetList = PlanetStore.getInstance( ).getPlanetList( false );
         viewMapper.listPlanets.setAdapter( new PlanetAdapter( this, planetList ) );
+        ercBalanceItems = new ArrayList<>( );
 
         String keyId = Utils.getPreferenceData( this, C.pref.LAST_PLANET_KEYID );
         if ( keyId.length( ) == 0 ) {
@@ -243,6 +246,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     void setUpViews( ) {
         if ( selectedPlanet != null ) {
             Utils.setPreferenceData( this, C.pref.LAST_PLANET_KEYID, selectedPlanet.getKeyId( ) );
+            ercBalanceItems.clear( );
 
             if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
                 ArrayList< ERC20 > tokenList = ERC20Store.getInstance( ).getTokenList( selectedPlanet.getKeyId( ), false );
@@ -343,6 +347,12 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
                         ( ( ERC20 ) selectedPlanet.getItems( ).get( resultCode ) ).setBalance( p.getBalance( ) );
                         ERC20Store.getInstance( ).update( ( ERC20 ) selectedPlanet.getItems( ).get( resultCode ) );
+
+                        //balance 가 존재하는 erc add
+                        if ( Float.valueOf( p.getBalance( ) ) > 0 ) {
+                            ercBalanceItems.add( ( ( ERC20 ) selectedPlanet.getItems( ).get( resultCode ) ) );
+                        }
+
                     } else {
                         ( ( ETH ) selectedPlanet.getItems( ).get( resultCode ) ).setBalance( p.getBalance( ) );
                     }
@@ -447,10 +457,17 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             //Todo item change
 
             if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
-
-                if ( selectedPlanet.getItems( ).size( ) > 1 ) {
-
+                ercbottomClick += 1;
+                if ( ercbottomClick == ercBalanceItems.size( ) + 1 || ercBalanceItems.size( ) == 0 ) ercbottomClick = 0;
+                if ( ercbottomClick == 0 ) { //ETH
+                    PLog.e( "selectedPlanet.getBalance() : " + selectedPlanet.getBalance( ) );
+                    PLog.e( "selectedPlanet.getSymbol() : " + selectedPlanet.getSymbol( ) );
+                } else { // erc
+                    PLog.e( "ercBalanceItems.get( ercbottomClick - 1 ).getName() : " + ercBalanceItems.get( ercbottomClick - 1 ).getName( ) );
+                    PLog.e( "ercBalanceItems.get( ercbottomClick - 1 ).getBalance() : " + ercBalanceItems.get( ercbottomClick - 1 ).getBalance( ) );
+                    PLog.e( "ercBalanceItems.get( ercbottomClick - 1 ).getSymbol() : " + ercBalanceItems.get( ercbottomClick - 1 ).getSymbol( ) );
                 }
+
 
             }
 

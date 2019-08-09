@@ -32,6 +32,7 @@ public class SlideDrawerLayout extends ViewGroup {
     private SparseArray< Trigger > triggers;
 
     private boolean isGettingTriggerLocation = false;
+    private boolean inSideSlide = false;
 
     private int[] thisLocations = new int[ 2 ];
 
@@ -42,6 +43,9 @@ public class SlideDrawerLayout extends ViewGroup {
 
     private float beforeTouchPositionX;
     private float beforeTouchPositionY;
+
+    private float inSideTouchPositionX;
+    private float inSideTouchPositionY;
 
     private int currentMovingPosition = -1;
 
@@ -223,6 +227,9 @@ public class SlideDrawerLayout extends ViewGroup {
         beforeTouchPositionX = ( ev.getRawX( ) - thisLocations[ 0 ] );
         beforeTouchPositionY = ( ev.getRawY( ) - thisLocations[ 1 ] );
 
+        inSideTouchPositionX = ( ev.getRawX( ) - thisLocations[ 0 ] );
+        inSideTouchPositionY = ( ev.getRawY( ) - thisLocations[ 1 ] );
+
         if ( bypassAreaViews != null ) {
             for ( int i = 0; i < bypassAreaViews.size( ); i++ ) {
                 int[] cood = new int[]{ -1, -1 };
@@ -290,8 +297,9 @@ public class SlideDrawerLayout extends ViewGroup {
 
                 if ( event.getAction( ) == MotionEvent.ACTION_MOVE ) {
 
-                    if ( !isGoToOutside && !isOnTriggerView( currentMovingPosition, event.getRawX( ) - thisLocations[ 0 ], event.getRawY( ) - thisLocations[ 1 ] ) )
+                    if ( !isGoToOutside && !isOnTriggerView( currentMovingPosition, event.getRawX( ) - thisLocations[ 0 ], event.getRawY( ) - thisLocations[ 1 ] ) ) {
                         isGoToOutside = true;
+                    }
 
                     if ( currentMovingPosition == Position.TOP ) {
 
@@ -310,9 +318,13 @@ public class SlideDrawerLayout extends ViewGroup {
 
                     } else if ( currentMovingPosition == Position.BOTTOM ) {
 
-
                         float moveY = ( event.getRawY( ) - thisLocations[ 1 ] ) + triggers.get( Position.BOTTOM ).getOffset( ) + ( triggers.get( Position.BOTTOM ).isSticky( ) ? 0 : ( getHeight( ) - beforeTouchPositionY ) );
                         if ( getHeight( ) - getCurrentPositionView.getHeight( ) < moveY ) {
+
+
+                            if ( !inSideSlide ) {
+                                inSideSlideCheck( event.getRawY( ) - thisLocations[ 1 ] );
+                            }
                             getCurrentPositionView.setY( moveY );
                             if ( onSlideDrawerListener != null ) {
                                 onSlideDrawerListener.onSlide( Position.BOTTOM,
@@ -334,7 +346,11 @@ public class SlideDrawerLayout extends ViewGroup {
                         }
 
                         if ( currentMovingPosition == Position.BOTTOM ) {
-                            slideAnimation( currentMovingPosition, true );
+                            if ( !inSideSlide && isInSideTouchORClick( event.getRawX( ) - thisLocations[ 0 ], event.getRawY( ) - thisLocations[ 1 ] ) ) {
+                                slideAnimation( currentMovingPosition, true );
+                                onTrigger = false;
+                            }
+                            inSideSlide = false;
                         }
 
 
@@ -448,6 +464,28 @@ public class SlideDrawerLayout extends ViewGroup {
                 ( triggerX <= x && x <= triggerX + triggers.get( position ).getTrigger( ).getWidth( ) )
                         &&
                         ( triggerY <= y && y <= triggerY + triggers.get( position ).getTrigger( ).getHeight( ) );
+    }
+
+    protected boolean isInSideTouchORClick( float x, float y ) {
+        float clickDp = Utils.dpToPx( getContext( ), 16 );
+
+        return x + clickDp > inSideTouchPositionX && y + clickDp > inSideTouchPositionY;
+
+//        if ( x + clickDp > inSideTouchPositionX && y + clickDp > inSideTouchPositionY ) {
+//            return true; //클릭으로판단
+//        } else {
+//            return false; //터치로판단
+//        }
+    }
+
+    protected boolean inSideSlideCheck( float y ) {
+        float clickDp = Utils.dpToPx( getContext(), 16 );
+        if ( y + clickDp < inSideTouchPositionY  ) {
+            inSideSlide = true;
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

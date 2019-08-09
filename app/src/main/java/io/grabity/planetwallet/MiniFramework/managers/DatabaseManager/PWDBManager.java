@@ -66,9 +66,20 @@ public class PWDBManager extends DBManager {
                 "master TEXT" +
                 ")";
 
+        String SearchTable = "CREATE TABLE Search( " +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "keyId TEXT," +
+                "name TEXT," +
+                "address TEXT," +
+                "symbol TEXT" +
+                ")";
+
+
         db.execSQL( createPlanetTable );
         db.execSQL( createERC20Table );
         db.execSQL( keyPairTable );
+        db.execSQL( SearchTable );
+
     }
 
     @Override

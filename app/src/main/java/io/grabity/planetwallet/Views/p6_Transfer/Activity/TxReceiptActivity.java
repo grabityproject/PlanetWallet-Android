@@ -12,9 +12,11 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.store.SearchStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.VO.Search;
 import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.FontTextView;
@@ -76,8 +78,10 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
 
 
             viewSetting( );
+            searchSave( );
         }
     }
+
 
     private void transferStackCleanUp( ) {
         if ( C.transferClass.transferActivity != null && C.transferClass.transferAmountActivity != null && C.transferClass.transferConfirmActivity != null ) {
@@ -110,8 +114,20 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
             viewMapper.imageIconBackground.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
             viewMapper.textAddress.setText( transfer.getToAddress( ) );
             Utils.addressForm( viewMapper.textAddress, viewMapper.textAddress.getText( ).toString( ) );
-
         }
+    }
+
+
+    private void searchSave( ) {
+
+        Search search = new Search( );
+        search.setKeyId( planet.getKeyId( ) );
+        search.setAddress( transfer.getToAddress( ) );
+        search.setSymbol( getSerialize( C.bundleKey.ERC20 ) != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
+        if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) search.setName( transfer.getToName( ) );
+
+        SearchStore.getInstance( ).save( search );
+
     }
 
     void amountViewSetting( String type ) {

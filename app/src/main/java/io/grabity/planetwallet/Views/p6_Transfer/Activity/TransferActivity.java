@@ -18,15 +18,18 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
+import io.grabity.planetwallet.MiniFramework.wallet.store.SearchStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
+import io.grabity.planetwallet.VO.Search;
 import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Views.p6_Transfer.Adapter.TransferAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
@@ -45,6 +48,9 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     private ERC20 erc20;
 
     private boolean isQRScan = false;
+
+    //test 진행
+    private ArrayList< Search > searches;
 
 
     @Override
@@ -82,13 +88,27 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         if ( getSerialize( C.bundleKey.PLANET ) == null ) {
             finish( );
         } else {
-
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+
+
             if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
                 erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
                 viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, erc20.getName( ) ) );
+
+                searches = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), erc20.getSymbol( ) );
+
             } else {
                 viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
+
+                searches = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), CoinType.of( planet.getCoinType( ) ).name( ) );
+            }
+
+            PLog.e( "searches.size() : " + searches.size( ) );
+
+            for ( int i = 0; i < searches.size( ); i++ ) {
+                PLog.e( "i : " + i );
+                PLog.e( "searches.get( i ).getAddress() : " + searches.get( i ).getAddress( ) );
+                PLog.e( "searches.get( i ).getName() : " + searches.get( i ).getName( ) );
             }
 
 
@@ -109,6 +129,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             Utils.hideKeyboard( this, getCurrentFocus( ) );
             super.onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_TRANSFER_QRCODE ) ) {
+
             if ( !isQRScan ) {
                 isQRScan = true;
                 Utils.hideKeyboard( this, getCurrentFocus( ) );
