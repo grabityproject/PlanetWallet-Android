@@ -24,6 +24,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.ErrorResult;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
@@ -92,6 +93,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
+
 
         if ( !error ) {
             if ( statusCode == 200 && requestCode == 0 ) {

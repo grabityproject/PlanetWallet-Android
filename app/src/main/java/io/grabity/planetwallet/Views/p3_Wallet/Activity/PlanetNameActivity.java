@@ -131,6 +131,8 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
+
+
         if ( !error ) {
             if ( statusCode == 200 && requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
@@ -149,10 +151,9 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             } else {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
                 ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
+                if ( errorResult == null ) return;
                 CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
             }
-        } else {
-            CustomToast.makeText( this, "네트워크 상태를 확인해주세요." ).show( );
         }
 
     }

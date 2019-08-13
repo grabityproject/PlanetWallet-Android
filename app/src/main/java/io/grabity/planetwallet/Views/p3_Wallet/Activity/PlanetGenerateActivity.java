@@ -1,6 +1,5 @@
 package io.grabity.planetwallet.Views.p3_Wallet.Activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -193,8 +192,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
         } else if ( v == viewMapper.btnSelect ) {
 
-
-            // Todo Network 통신 다음 저장 기능 구현 현재는 그냥 저장
             if ( planet != null ) {
 
                 if ( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).length( ) == 0 ) {
@@ -224,7 +221,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-
         if ( !error ) {
             if ( statusCode == 200 && requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
@@ -232,11 +228,11 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
                     PlanetStore.getInstance( ).save( planet );
 
-                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode() == C.requestCode.MAIN_PLANET_ADD ) {
+                    if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
                         setResult( RESULT_OK );
                         super.onBackPressed( );
 
-                    }  else {
+                    } else {
                         sendAction( MainActivity.class );
                         finish( );
                     }
@@ -248,8 +244,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 if ( errorResult == null ) return;
                 CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
             }
-        } else {
-            CustomToast.makeText( this, "네트워크 상태를 확인해주세요." ).show( );
         }
     }
 

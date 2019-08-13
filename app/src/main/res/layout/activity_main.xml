@@ -76,7 +76,16 @@
                         android:layout_height="44dp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="20dp"
-                        app:data="" />
+                        app:data=""
+                        android:visibility="visible"/>
+
+                    <io.grabity.planetwallet.Widgets.CircleImageView
+                        android:id="@+id/image_main_blur_erc_icon"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:visibility="gone"/>
 
                     <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_main_blur_planet_name"
@@ -237,7 +246,7 @@
                 app:cornerRadius="20dp">
 
                 <LinearLayout
-                    android:id="@+id/group_main_bottom_symbol"
+                    android:id="@+id/group_main_bottom_coin_name"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginTop="16dp"
@@ -253,15 +262,15 @@
                         app:themeBackground="#CCCCCC" />
 
                     <io.grabity.planetwallet.Widgets.FontTextView
-                        android:id="@+id/text_main_bottom_symbol"
+                        android:id="@+id/text_main_bottom_coin_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="bottom"
-                        android:paddingTop="22dp"
+                        android:paddingTop="20dp"
                         android:textColor="#000"
                         android:textSize="18dp"
-                        app:typefaceStyle="bold" />
+                        app:typefaceStyle="semibold" />
 
                 </LinearLayout>
 
@@ -269,7 +278,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@id/group_main_bottom_symbol"
+                    android:layout_below="@id/group_main_bottom_coin_name"
                     android:background="#EDEDED" />
 
                 <View
@@ -283,7 +292,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:gravity="center_horizontal"
-                    android:layout_below="@id/group_main_bottom_symbol"
+                    android:layout_below="@id/group_main_bottom_coin_name"
                     android:orientation="vertical">
 
                     <io.grabity.planetwallet.Widgets.BarcodeView
@@ -309,8 +318,11 @@
                         android:id="@+id/text_main_bottom_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingStart="62dp"
+                        android:paddingEnd="62dp"
                         android:gravity="center"
                         android:textColor="#000000"
+                        android:lineSpacingExtra ="6dp"
                         android:textSize="14dp" />
 
                 </LinearLayout>

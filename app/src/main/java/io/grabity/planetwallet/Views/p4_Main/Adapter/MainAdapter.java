@@ -62,7 +62,7 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
 
             ERC20 erc20 = ( ERC20 ) item;
             ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), ( ( ETHItem ) viewMapper ).imageIcon );
-            ( ( ETHItem ) viewMapper ).textName.setText( erc20.getName( ) );
+            ( ( ETHItem ) viewMapper ).textName.setText( erc20.getSymbol( ) );
             ( ( ETHItem ) viewMapper ).textBalance.setText( erc20.getBalance( ) );
             //todo 화폐단위 임시고정
             ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", erc20.getBalance( ) ) );

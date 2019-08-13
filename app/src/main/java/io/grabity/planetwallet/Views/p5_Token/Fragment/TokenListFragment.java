@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
@@ -78,6 +79,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
+
         if ( !error ) {
             if ( requestCode == 0 && statusCode == 200 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ERC20.class );
@@ -108,8 +110,6 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
                     viewMapper.listView.setOnItemClickListener( this );
                 }
             }
-        } else {
-            CustomToast.makeText( getContext( ), result ).show( );
         }
     }
 
@@ -155,7 +155,8 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
         filterItems.clear( );
         for ( int i = 0; i < items.size( ); i++ ) {
-            if ( items.get( i ).getName( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) ) ) {
+            if ( items.get( i ).getName( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) )
+                    || items.get( i ).getSymbol( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) ) ) {
                 filterItems.add( items.get( i ) );
             }
         }

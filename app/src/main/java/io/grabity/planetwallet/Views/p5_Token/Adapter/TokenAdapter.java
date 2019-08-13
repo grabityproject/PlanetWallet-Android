@@ -34,7 +34,7 @@ public class TokenAdapter extends AdvanceArrayAdapter< ERC20 > {
     public void bindData( ViewMapper viewMapper, ERC20 item, int position ) {
 
         ImageLoader.getInstance( ).displayImage( "http://test.planetwallet.io" + item.getImg_path( ), ( ( EthItem ) viewMapper ).icon );
-        ( ( EthItem ) viewMapper ).textTokenName.setText( item.getName( ) );
+        ( ( EthItem ) viewMapper ).textTokenName.setText( item.getSymbol( ) );
 
         if ( item.isCheck( ) ) {
             ( ( EthItem ) viewMapper ).btnTokenRefresh.setImageResource( R.drawable.image_checkbox_on );

@@ -25,10 +25,8 @@ public class PWDBManager extends DBManager {
         return "TESSss2C_DATABASE";
     }
 
-    @Override
-    protected int getDatabaseVersion( ) {
-        return 5;
-    }
+    @Override                                    //5
+    protected int getDatabaseVersion( ) { return 6; }
 
     @Override
     protected void createDatabase( SQLiteDatabase db ) {
@@ -84,6 +82,16 @@ public class PWDBManager extends DBManager {
 
     @Override
     protected void updateDatabase( SQLiteDatabase db, int oldVersion, int newVersion ) {
+
+//        String SearchTable = "CREATE TABLE Search( " +
+//                "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+//                "keyId TEXT," +
+//                "name TEXT," +
+//                "address TEXT," +
+//                "symbol TEXT" +
+//                ")";
+//        db.execSQL( SearchTable );
+
 
     }
 

@@ -2,6 +2,9 @@ package io.grabity.planetwallet.Common.components;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkRequest;
 
 import androidx.annotation.Nullable;
 import androidx.multidex.MultiDex;
@@ -45,7 +48,6 @@ public class PlanetWalletApplication extends MultiDexApplication {
     private char[] PINCODE = null;
 
     private ArrayList< OnMessagingListener > messagingListeners = new ArrayList<>( );
-
 
     static {
         System.loadLibrary( "pallet_core-0.1.0-x64_shared" );
@@ -97,12 +99,6 @@ public class PlanetWalletApplication extends MultiDexApplication {
                 .build( );
         ImageLoader.getInstance( ).init( config );
 
-
-        if ( ImageLoader.getInstance( ).isInited( ) ) { //clearCache
-            ImageLoader.getInstance( ).clearMemoryCache( );
-            ImageLoader.getInstance( ).clearDiskCache( );
-        }
-
     }
 
 
@@ -135,6 +131,7 @@ public class PlanetWalletApplication extends MultiDexApplication {
         C.PINCODE = this.PINCODE;
     }
 
+
     public void addOnMessagingListener( OnMessagingListener listener ) {
         if ( messagingListeners == null ) messagingListeners = new ArrayList<>( );
         messagingListeners.add( listener );
@@ -153,6 +150,7 @@ public class PlanetWalletApplication extends MultiDexApplication {
         this.deviceKey = deviceKey;
         C.DEVICE_KEY = deviceKey;
     }
+
 }
 
 

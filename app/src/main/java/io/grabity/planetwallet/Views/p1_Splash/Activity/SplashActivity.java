@@ -1,12 +1,6 @@
 package io.grabity.planetwallet.Views.p1_Splash.Activity;
 
 import android.animation.Animator;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
-import android.net.NetworkRequest;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -33,6 +27,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Device;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeRegistrationActivity;
+import io.grabity.planetwallet.Widgets.CustomToast;
 
 
 public class SplashActivity extends PlanetWalletActivity implements Animator.AnimatorListener, OnMessagingListener, SyncManager.OnSyncListener {
@@ -49,49 +44,8 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );
-
     }
 
-    //network test
-
-    void s( ) {
-
-        PLog.e( "Utils.isNetwork( this ) : " + Utils.isNetwork( this ) );
-
-
-//        ConnectivityManager connectivityManager = ( ConnectivityManager ) getSystemService( CONNECTIVITY_SERVICE );
-//
-//        NetworkRequest.Builder builder = new NetworkRequest.Builder( );
-//
-////        builder.addCapability( NetworkCapabilities.NET_CAPABILITY_INTERNET );
-//
-//        connectivityManager.registerNetworkCallback( builder.build( ), new ConnectivityManager.NetworkCallback( ) {
-//            @Override
-//            public void onAvailable( Network network ) {
-//                super.onAvailable( network );
-//                PLog.e( "onAvailable" );
-//
-//            }
-//
-//            @Override
-//            public void onLost( Network network ) {
-//                super.onLost( network );
-//                PLog.e( "onLost" );
-//            }
-//
-//            @Override
-//            public void onCapabilitiesChanged( Network network, NetworkCapabilities networkCapabilities ) {
-//                super.onCapabilitiesChanged( network, networkCapabilities );
-//
-//                PLog.e( "networkCapabilities.hasTransport( NetworkCapabilities.TRANSPORT_WIFI ) :  " + networkCapabilities.hasTransport( NetworkCapabilities.TRANSPORT_WIFI ) );
-//                PLog.e( "networkCapabilities.hasTransport( NetworkCapabilities.TRANSPORT_CELLULAR ) : " + networkCapabilities.hasTransport( NetworkCapabilities.TRANSPORT_CELLULAR ) );
-//                PLog.e( "networkCapabilities.hasTransport( NetworkCapabilities.TRANSPORT_ETHERNET ) : " + networkCapabilities.hasTransport( NetworkCapabilities.TRANSPORT_ETHERNET ) );
-//
-//            }
-//        } );
-
-
-    }
 
     @Override
     protected void viewInit( ) {
@@ -157,11 +111,13 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
     }
 
     public void sendActionSwitch( ) {
-
         if ( getPlanetWalletApplication( ).getDeviceKey( ) == null || !isSync ) {
-
-            new Handler( ).postDelayed( this::sendActionSwitch, 500 );
-//            CustomToast.makeText( this, "네트워크 상태를 확인해주세요." ).show( );
+            if ( Utils.equals( Utils.getPreferenceData( this, C.pref.LAST_PLANET_KEYID ), "" ) ) {
+                isSync = true;
+                new Handler( ).postDelayed( this::sendActionSwitch, 500 );
+            } else {
+                CustomToast.makeText( this, "Sync Fail" ).show( );
+            }
 
         } else {
             if ( KeyValueStore.getInstance( ).getValue( C.pref.PASSWORD ) == null ) {
@@ -205,7 +161,7 @@ public class SplashActivity extends PlanetWalletActivity implements Animator.Ani
     @Override
     public void onSyncComplete( SyncManager.SyncType syncType, boolean complete, boolean isUpdated ) {
         PLog.e( syncType.name( ) + ", complete : " + complete + ", isUpdated : " + isUpdated );
-        isSync = true;
+        isSync = complete;
     }
 
     public class ViewMapper {

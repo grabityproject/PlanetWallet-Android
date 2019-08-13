@@ -18,6 +18,7 @@ import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
 
+    //todo 임시
     private ViewMapper viewMapper;
     private Tx tx;
 
@@ -52,14 +53,14 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
     }
 
     void setUpView( ) {
-        viewMapper.planetViewTo.setData( tx.getToAddress( ) );
-        viewMapper.planetViewFrom.setData( tx.getFromAddress( ) );
-        viewMapper.textToAddress.setText( tx.getToAddress( ) );
-        viewMapper.textFromAddress.setText( tx.getFromAddress( ) );
-        viewMapper.textFee.setText( tx.getFee( ) );
-        viewMapper.textAmount.setText( String.format( "%s " + tx.getSymbol( ), tx.getAmount( ) ) );
-        viewMapper.textDate.setText( tx.getDate( ) );
-        viewMapper.textTxID.setText( tx.getTxId( ) );
+        viewMapper.planetViewTo.setData( tx.getTo( ) );
+        viewMapper.planetViewFrom.setData( tx.getFrom( ) );
+        viewMapper.textToAddress.setText( tx.getTo( ) );
+        viewMapper.textFromAddress.setText( tx.getFrom( ) );
+//        viewMapper.textFee.setText( tx.getFee( ) );
+//        viewMapper.textAmount.setText( String.format( "%s " + tx.getSymbol( ), tx.getAmount( ) ) );
+//        viewMapper.textDate.setText( tx.getDate( ) );
+//        viewMapper.textTxID.setText( tx.getTxId( ) );
         viewMapper.textTxID.underLine( );
 
     }
@@ -75,8 +76,8 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnSubmit ) {
-            PLog.e( "uri : " + "https://ropsten.etherscan.io/tx/" + tx.getTxId( ) );
-            sendAction( "https://ropsten.etherscan.io/tx/" + tx.getTxId( ) );
+//            PLog.e( "uri : " + "https://ropsten.etherscan.io/tx/" + tx.getTxId( ) );
+//            sendAction( "https://ropsten.etherscan.io/tx/" + tx.getTxId( ) );
         }
     }
 

@@ -34,14 +34,15 @@ public class SyncManager {
         new Post( ( error, requestCode, resultCode, statusCode, result ) -> {
             if ( !error ) {
                 if ( requestCode == 0 && statusCode == 200 ) {
+                    PLog.e( "result : " + result );
                     AtomicBoolean isUpdated = new AtomicBoolean( false );
                     ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class );
                     if ( returnVO.isSuccess( ) ) {
                         try {
                             LinkedTreeMap resultMap = ( LinkedTreeMap ) returnVO.getResult( );
                             planets.forEach( planet -> {
-                                if ( resultMap.get( planet.getAddress( ) ) != null ) {
-                                    LinkedTreeMap resultPlanet = ( LinkedTreeMap ) resultMap.get( planet.getAddress( ) );
+                                if ( resultMap.get( planet.getAddress( ).toLowerCase( ) ) != null ) {
+                                    LinkedTreeMap resultPlanet = ( LinkedTreeMap ) resultMap.get( planet.getAddress( ).toLowerCase( ) );
                                     if ( resultPlanet != null && resultPlanet.get( "name" ) != null && !planet.getName( ).equals( resultPlanet.get( "name" ) ) ) {
                                         planet.setName( String.valueOf( resultPlanet.get( "name" ) ) );
                                         PlanetStore.getInstance( ).update( planet );
@@ -54,7 +55,7 @@ public class SyncManager {
 
                         } catch ( ClassCastException e ) {
                             PLog.e( e.getMessage( ) );
-                            onSyncListener.onSyncComplete( SyncType.PLANET, false, false );
+                            onSyncListener.onSyncComplete( SyncType.PLANET, true, false );
                         }
                     }
                 }

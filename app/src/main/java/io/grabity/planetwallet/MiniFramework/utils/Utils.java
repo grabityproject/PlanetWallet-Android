@@ -205,30 +205,37 @@ public class Utils {
 
                             if ( Double.class.equals( field.getType( ) ) ) {
 
-                                method.invoke( returnObject, Double.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
+                                if( map.get( field.getName( ) ) != null )
+                                    method.invoke( returnObject, Double.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
 
                             } else if ( Float.class.equals( field.getType( ) ) ) {
 
-                                method.invoke( returnObject, Float.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
+                                if( map.get( field.getName( ) ) != null )
+                                    method.invoke( returnObject, Float.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
 
                             } else if ( Long.class.equals( field.getType( ) ) ) {
 
-                                method.invoke( returnObject, Long.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
+                                if( map.get( field.getName( ) ) != null )
+                                    method.invoke( returnObject, Long.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
+
 
                             } else if ( Integer.class.equals( field.getType( ) ) ) {
 
                                 try {
-                                    method.invoke( returnObject, Integer.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
+                                    if( map.get( field.getName( ) ) != null )
+                                        method.invoke( returnObject, Integer.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
                                 } catch ( NumberFormatException e ) {
                                     method.invoke( returnObject, 0 );
                                 }
                             } else if ( Boolean.class.equals( field.getType( ) ) ) {
 
-                                method.invoke( returnObject, Boolean.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
+                                if( map.get( field.getName( ) ) != null )
+                                    method.invoke( returnObject, Boolean.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
 
                             } else if ( String.class.equals( field.getType( ) ) ) {
 
-                                method.invoke( returnObject, String.valueOf( map.get( field.getName( ) ) ) );
+                                if( map.get( field.getName( ) ) != null )
+                                    method.invoke( returnObject, String.valueOf( map.get( field.getName( ) ) ) );
 
                             } else if ( List.class.equals( field.getType( ) ) ) {
 
@@ -1184,34 +1191,5 @@ public class Utils {
             target.requestLayout( );
         }
     }
-
-
-    //Todo 일단 보류 계속 false로 떨어지는 현상
-    public static boolean isNetwork( Context context ) {
-
-        final boolean[] isNetwork = { false };
-
-        ConnectivityManager connectivityManager = ( ConnectivityManager ) context.getSystemService( CONNECTIVITY_SERVICE );
-        NetworkRequest.Builder networkBuilder = new NetworkRequest.Builder( );
-
-        connectivityManager.registerNetworkCallback( networkBuilder.build( ), new ConnectivityManager.NetworkCallback( ) {
-            @Override
-            public void onAvailable( Network network ) {
-                super.onAvailable( network );
-                isNetwork[ 0 ] = true;
-                connectivityManager.unregisterNetworkCallback( this );
-            }
-
-            @Override
-            public void onLost( Network network ) {
-                super.onLost( network );
-                isNetwork[ 0 ] = false;
-                connectivityManager.unregisterNetworkCallback( this );
-            }
-        } );
-
-        return isNetwork[ 0 ];
-    }
-
 
 }

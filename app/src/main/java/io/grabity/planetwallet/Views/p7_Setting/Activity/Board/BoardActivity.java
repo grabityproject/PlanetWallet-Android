@@ -18,6 +18,7 @@ import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.AnnounceAdapter;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.FAQAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, AdvanceRecyclerView.OnItemClickListener {
@@ -67,6 +68,7 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
+
         if ( !error ) {
             ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Board.class );
             if ( returnVO.isSuccess( ) ) {

@@ -26,7 +26,6 @@ import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.transaction.Transaction;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.ETHGasProvider;
-import io.grabity.planetwallet.VO.ErrorResult;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.Planet;
@@ -277,8 +276,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
                     transfer.setSerializeTx( transaction( planet, erc20 ) );
 
-                    PLog.e( "transaction.getSymbol() 1 : " + transaction.getSymbol( ) );
-
                 } else {
                     bundle.putSerializable( C.bundleKey.PLANET, planet );
                     transfer.setSerializeTx( transaction( planet, null ) );
@@ -286,6 +283,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             }
             transfer.setFee( viewMapper.textFee.getText( ).toString( ) );
             PLog.e( "transfer.getSerializeTx() : " + transfer.getSerializeTx( ) );
+
             new Post( ( error, requestCode1, resultCode1, statusCode, result ) -> {
                 PLog.e( "result : " + result );
                 if ( !error ) {
@@ -302,7 +300,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                         CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
                     }
                 } else {
-                    CustomToast.makeText( this, "네트워크 상태를 체크해주세요." ).show( );
+                    CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
                 }
             } ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "transfer", transaction.getSymbol( ) ), 0, 0, new Transfer( transfer.getSerializeTx( ) ) );
         } else if ( requestCode == C.requestCode.TRANSFER && resultCode == RESULT_CANCELED ) {

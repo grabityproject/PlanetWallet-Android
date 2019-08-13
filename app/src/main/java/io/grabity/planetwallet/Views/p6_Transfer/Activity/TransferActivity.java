@@ -289,13 +289,8 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
                             break;
                         }
                     }
-                    if ( allPlanets.size( ) == 0 ) {
-                        noSearchView( true );
-                        addressSearchView( false );
-                        clipView( );
-                        return;
-                    }
-                    noSearchView( false );
+
+                    noSearchView( allPlanets.size( ) == 0 );
                     addressSearchView( false );
                     clipView( );
                 }

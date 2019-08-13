@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ import io.grabity.planetwallet.Views.p8_Tx.Activity.TxListActivity;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.BarcodeView;
+import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper;
 import io.grabity.planetwallet.Widgets.PlanetView;
@@ -165,82 +167,82 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     }
 
-    void setUpBTCDummy( ) {
-        btcTxs = new ArrayList<>( );
-        {
-            Tx tx = new Tx( );
-            tx.setToAddress( "0x896d5615376e551Feace5A808E03356314A44177" );
-            tx.setFromAddress( selectedPlanet.getAddress( ) );
-            tx.setAmount( "1.2" );
-            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
-            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
-            tx.setSymbol( CoinType.BTC.name( ) );
-            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 ), "MMMM dd, HH:mm" ) );
-            btcTxs.add( tx );
-        }
-
-        {
-            Tx tx = new Tx( );
-            tx.setToAddress( selectedPlanet.getAddress( ) );
-            tx.setFromAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
-            tx.setAmount( "-0.82" );
-            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
-            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
-            tx.setSymbol( CoinType.BTC.name( ) );
-            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 ), "MMMM dd, HH:mm" ) );
-            btcTxs.add( tx );
-        }
-
-        {
-            Tx tx = new Tx( );
-            tx.setToAddress( "0xc08Bd31D490145e6e3028BBF8BBD83fa354BB8e6" );
-            tx.setFromAddress( selectedPlanet.getAddress( ) );
-            tx.setAmount( "42.1" );
-            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
-            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
-            tx.setSymbol( CoinType.BTC.name( ) );
-            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 ), "MMMM dd, HH:mm" ) );
-            btcTxs.add( tx );
-        }
-
-        {
-            Tx tx = new Tx( );
-            tx.setToAddress( selectedPlanet.getAddress( ) );
-            tx.setFromAddress( "0x54800670857d2c96D2cC1b4C6c79fc23991732ce" );
-            tx.setAmount( "-19.2" );
-            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
-            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
-            tx.setSymbol( CoinType.BTC.name( ) );
-            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 ), "MMMM dd, HH:mm" ) );
-            btcTxs.add( tx );
-        }
-
-        {
-            Tx tx = new Tx( );
-            tx.setToAddress( "0x5DdDd4F7c394a388f755588fe43eD7C24B114718" );
-            tx.setFromAddress( selectedPlanet.getAddress( ) );
-            tx.setAmount( "12.2" );
-            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
-            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
-            tx.setSymbol( CoinType.BTC.name( ) );
-            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) ), "MMMM dd, HH:mm" ) );
-            btcTxs.add( tx );
-        }
-
-        ArrayList< MainItem > items = new ArrayList<>( );
-
-        for ( int i = 0; i < btcTxs.size( ); i++ ) {
-            BTC item = new BTC( );
-            item.setBalance( btcTxs.get( i ).getAmount( ) );
-            item.setDate( btcTxs.get( i ).getDate( ) );
-            item.setIconRes( btcTxs.get( i ).getAmount( ).contains( "-" ) ? R.drawable.image_btc_increase : R.drawable.image_btc_discrease );
-            item.setPlanetName( selectedPlanet.getName( ) );
-
-            items.add( item );
-        }
-        selectedPlanet.setItems( items );
-
-    }
+//    void setUpBTCDummy( ) {
+//        btcTxs = new ArrayList<>( );
+//        {
+//            Tx tx = new Tx( );
+//            tx.setToAddress( "0x896d5615376e551Feace5A808E03356314A44177" );
+//            tx.setFromAddress( selectedPlanet.getAddress( ) );
+//            tx.setAmount( "1.2" );
+//            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
+//            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
+//            tx.setSymbol( CoinType.BTC.name( ) );
+//            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 ), "MMMM dd, HH:mm" ) );
+//            btcTxs.add( tx );
+//        }
+//
+//        {
+//            Tx tx = new Tx( );
+//            tx.setToAddress( selectedPlanet.getAddress( ) );
+//            tx.setFromAddress( "0x501c94659d2c00b134a9ba418aa182f14bf72e56" );
+//            tx.setAmount( "-0.82" );
+//            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
+//            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
+//            tx.setSymbol( CoinType.BTC.name( ) );
+//            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 ), "MMMM dd, HH:mm" ) );
+//            btcTxs.add( tx );
+//        }
+//
+//        {
+//            Tx tx = new Tx( );
+//            tx.setToAddress( "0xc08Bd31D490145e6e3028BBF8BBD83fa354BB8e6" );
+//            tx.setFromAddress( selectedPlanet.getAddress( ) );
+//            tx.setAmount( "42.1" );
+//            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
+//            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
+//            tx.setSymbol( CoinType.BTC.name( ) );
+//            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 ), "MMMM dd, HH:mm" ) );
+//            btcTxs.add( tx );
+//        }
+//
+//        {
+//            Tx tx = new Tx( );
+//            tx.setToAddress( selectedPlanet.getAddress( ) );
+//            tx.setFromAddress( "0x54800670857d2c96D2cC1b4C6c79fc23991732ce" );
+//            tx.setAmount( "-19.2" );
+//            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
+//            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
+//            tx.setSymbol( CoinType.BTC.name( ) );
+//            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) - 1000 * 60 * 60 * 24 ), "MMMM dd, HH:mm" ) );
+//            btcTxs.add( tx );
+//        }
+//
+//        {
+//            Tx tx = new Tx( );
+//            tx.setToAddress( "0x5DdDd4F7c394a388f755588fe43eD7C24B114718" );
+//            tx.setFromAddress( selectedPlanet.getAddress( ) );
+//            tx.setAmount( "12.2" );
+//            tx.setFee( String.format( "%s " + CoinType.of( selectedPlanet.getCoinType( ) ).name( ), "0.0001" ) );
+//            tx.setTxId( "0xc0208af555b75c4230c406bfc61c632f38095b1f7a5bcf579837f9f9de07a906" );
+//            tx.setSymbol( CoinType.BTC.name( ) );
+//            tx.setDate( Utils.dateFormat( new Date( System.currentTimeMillis( ) ), "MMMM dd, HH:mm" ) );
+//            btcTxs.add( tx );
+//        }
+//
+//        ArrayList< MainItem > items = new ArrayList<>( );
+//
+//        for ( int i = 0; i < btcTxs.size( ); i++ ) {
+//            BTC item = new BTC( );
+//            item.setBalance( btcTxs.get( i ).getAmount( ) );
+//            item.setDate( btcTxs.get( i ).getDate( ) );
+//            item.setIconRes( btcTxs.get( i ).getAmount( ).contains( "-" ) ? R.drawable.image_btc_increase : R.drawable.image_btc_discrease );
+//            item.setPlanetName( selectedPlanet.getName( ) );
+//
+//            items.add( item );
+//        }
+//        selectedPlanet.setItems( items );
+//
+//    }
 
 
     void setUpViews( ) {
@@ -261,7 +263,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             } else if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
                 //BTC dummy
-                setUpBTCDummy( );
+//                setUpBTCDummy( );
 
             }
             viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) == null ? new ArrayList<>( ) : selectedPlanet.getItems( ) ) );
@@ -269,18 +271,18 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             viewMapper.toolBar.setTitle( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
             viewMapper.barcodeView.setData( selectedPlanet.getAddress( ) );
+
+            viewMapper.textBottomCoinName.setText( CoinType.of( selectedPlanet.getCoinType( ) ).getCoinName( ) );
             viewMapper.textBottomPlanetName.setText( selectedPlanet.getName( ) );
             viewMapper.textBottomAddress.setText( selectedPlanet.getAddress( ) );
 
             viewMapper.planetBackground.setData( selectedPlanet.getAddress( ) );
             viewMapper.planetBlur.setData( selectedPlanet.getAddress( ) );
 
-            viewMapper.textBlurCoinName.setText( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
-
 
             viewMapper.textBlurPlanetName.setText( selectedPlanet.getName( ) );
             viewMapper.textBlurBalance.setText( selectedPlanet.getBalance( ) );
-
+            viewMapper.textBlurCoinName.setText( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
 
             setUpNotice( );
             getBalance( );
@@ -296,6 +298,18 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     }
 
     private void getBalance( ) {
+
+//        new Get( this ).setDeviceKey( C.DEVICE_KEY ).
+//                action( Route.URL( "tx", "list", CoinType.of( selectedPlanet.getCoinType( ) ).name( ), selectedPlanet.getName( ) ), 200, 0, null );
+//
+//
+//        new Get( this ).setDeviceKey( C.DEVICE_KEY ).
+//                action( Route.URL( "tx", "list", "GBT", "Jacob___balance" ), 201, 0, null );
+
+//        new Get( this ).setDeviceKey( C.DEVICE_KEY ).
+//                action( Route.URL( "balance", CoinType.BTC.name( ), selectedPlanet.getName( ) ), 202, 0, null );
+
+
         new Get( this ).setDeviceKey( C.DEVICE_KEY ).
                 action( Route.URL( "balance", CoinType.of( selectedPlanet.getCoinType( ) ).name( ), selectedPlanet.getName( ) ), 0, 0, null );
 
@@ -317,14 +331,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( !error ) {
-            //todo BTC 임시
-            if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
-                if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
-                    viewMapper.overScrollWrapper.completeRefresh( );
-                }
-                return;
-            }
-
             if ( requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
                 if ( returnVO.isSuccess( ) ) {
@@ -371,8 +377,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                         }
 
                     }
-
-
                 }
 
             }
@@ -380,7 +384,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
                 viewMapper.overScrollWrapper.completeRefresh( );
             }
-            CustomToast.makeText( this, "네트워크 상태를 체크해주세요." ).show( );
+
+
         }
 
     }
@@ -458,14 +463,20 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
                 ercbottomClick += 1;
-                if ( ercbottomClick == ercBalanceItems.size( ) + 1 || ercBalanceItems.size( ) == 0 ) ercbottomClick = 0;
+                if ( ercbottomClick == ercBalanceItems.size( ) + 1 || ercBalanceItems.size( ) == 0 )
+                    ercbottomClick = 0;
                 if ( ercbottomClick == 0 ) { //ETH
-                    PLog.e( "selectedPlanet.getBalance() : " + selectedPlanet.getBalance( ) );
-                    PLog.e( "selectedPlanet.getSymbol() : " + selectedPlanet.getSymbol( ) );
+                    viewMapper.planetBlur.setVisibility( View.VISIBLE );
+                    viewMapper.imageBlurIcon.setVisibility( View.INVISIBLE );
+                    viewMapper.textBlurBalance.setText( selectedPlanet.getBalance( ) );
+                    viewMapper.textBlurCoinName.setText( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
                 } else { // erc
-                    PLog.e( "ercBalanceItems.get( ercbottomClick - 1 ).getName() : " + ercBalanceItems.get( ercbottomClick - 1 ).getName( ) );
-                    PLog.e( "ercBalanceItems.get( ercbottomClick - 1 ).getBalance() : " + ercBalanceItems.get( ercbottomClick - 1 ).getBalance( ) );
-                    PLog.e( "ercBalanceItems.get( ercbottomClick - 1 ).getSymbol() : " + ercBalanceItems.get( ercbottomClick - 1 ).getSymbol( ) );
+                    viewMapper.imageBlurIcon.setVisibility( View.VISIBLE );
+                    viewMapper.planetBlur.setVisibility( View.INVISIBLE );
+                    viewMapper.textBlurBalance.setText( ercBalanceItems.get( ercbottomClick - 1 ).getBalance( ) );
+                    viewMapper.textBlurCoinName.setText( ercBalanceItems.get( ercbottomClick - 1 ).getSymbol( ) );
+                    ImageLoader.getInstance( ).displayImage( "http://test.planetwallet.io" + ercBalanceItems.get( ercbottomClick - 1 ).getImg_path( ), viewMapper.imageBlurIcon );
+
                 }
 
 
@@ -682,6 +693,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onSyncComplete( SyncManager.SyncType syncType, boolean complete, boolean isUpdated ) {
+        PLog.e( syncType.name( ) + ", complete : " + complete + ", isUpdated : " + isUpdated );
+        if ( complete && isUpdated ) {
+            selectedPlanet = PlanetStore.getInstance( ).getPlanet( selectedPlanet.getKeyId( ) );
+            setUpViews( );
+        }
 
     }
 
@@ -709,7 +725,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         View btnTransfer;
         BarcodeView barcodeView;
 
-
+        TextView textBottomCoinName;
         TextView textBottomPlanetName;
         TextView textBottomAddress;
 
@@ -723,6 +739,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         public ShadowView shadowBackground;
 
         PlanetView planetBlur;
+        CircleImageView imageBlurIcon;
 
         View btnBottomBlur;
 
@@ -757,11 +774,13 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             shadowBackground = findViewById( R.id.shadow_main_background );
 
             planetBlur = findViewById( R.id.planet_main_blur_planetview );
+            imageBlurIcon = findViewById( R.id.image_main_blur_erc_icon );
 
             btnBottomBlur = findViewById( R.id.btn_main_blur );
 
             lottiePullToRefresh = findViewById( R.id.lottie_main_pull_to_refresh );
 
+            textBottomCoinName = findViewById( R.id.text_main_bottom_coin_name );
             textBottomPlanetName = findViewById( R.id.text_main_bottom_name );
             textBottomAddress = findViewById( R.id.text_main_bottom_address );
 

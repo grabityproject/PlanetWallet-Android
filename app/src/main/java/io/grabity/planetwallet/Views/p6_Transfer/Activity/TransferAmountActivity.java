@@ -124,6 +124,8 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
+
+
         if ( !error ) {
             if ( requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, resultCode == 0 ? Planet.class : ERC20.class );
@@ -140,7 +142,6 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 }
             }
         } else {
-            CustomToast.makeText( this, "네트워크 상태를 체크해주세요." ).show( );
             super.onBackPressed( );
         }
 
@@ -241,11 +242,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 return balanceCheck( planet.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
             } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
 
-                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                    return balanceCheck( erc20.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
-                } else {
-                    return balanceCheck( planet.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
-                }
+                return balanceCheck( getSerialize( C.bundleKey.ERC20 ) != null ? erc20.getBalance( ) : planet.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
 
             }
             return false;

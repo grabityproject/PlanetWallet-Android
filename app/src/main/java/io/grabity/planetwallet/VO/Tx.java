@@ -1,33 +1,33 @@
 package io.grabity.planetwallet.VO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import jnr.ffi.annotations.In;
 
 public class Tx implements Serializable {
 
-    //todo 임시
-    String toAddress;
-    String fromAddress;
+    String id;
+    String tx_id;
+    String contract;
+    String to;
+    String from;
+    String nonce;
     String amount;
+    String gasPrice;
+    String gasLimit;
     String fee;
-    String date;
+    String coin;
     String symbol;
-    String txId;
+    String rawTransaction;
+//    String utxos;
+    String status;
+    String to_planet;
+    String from_planet;
 
-    public String getToAddress( ) {
-        return toAddress;
-    }
+    String created_at;
+    String updated_at;
 
-    public void setToAddress( String toAddress ) {
-        this.toAddress = toAddress;
-    }
-
-    public String getFromAddress( ) {
-        return fromAddress;
-    }
-
-    public void setFromAddress( String fromAddress ) {
-        this.fromAddress = fromAddress;
-    }
 
     public String getAmount( ) {
         return amount;
@@ -45,13 +45,6 @@ public class Tx implements Serializable {
         this.fee = fee;
     }
 
-    public String getDate( ) {
-        return date;
-    }
-
-    public void setDate( String date ) {
-        this.date = date;
-    }
 
     public String getSymbol( ) {
         return symbol;
@@ -61,11 +54,123 @@ public class Tx implements Serializable {
         this.symbol = symbol;
     }
 
-    public String getTxId( ) {
-        return txId;
+    public String getId( ) {
+        return id;
     }
 
-    public void setTxId( String txId ) {
-        this.txId = txId;
+    public void setId( String id ) {
+        this.id = id;
+    }
+
+    public String getTx_id( ) {
+        return tx_id;
+    }
+
+    public void setTx_id( String tx_id ) {
+        this.tx_id = tx_id;
+    }
+
+    public String getContract( ) {
+        return contract;
+    }
+
+    public void setContract( String contract ) {
+        this.contract = contract;
+    }
+
+    public String getTo( ) {
+        return to;
+    }
+
+    public void setTo( String to ) {
+        this.to = to;
+    }
+
+    public String getFrom( ) {
+        return from;
+    }
+
+    public void setFrom( String from ) {
+        this.from = from;
+    }
+
+    public String getNonce( ) {
+        return nonce;
+    }
+
+    public void setNonce( String nonce ) {
+        this.nonce = nonce;
+    }
+
+    public String getGasPrice( ) {
+        return gasPrice;
+    }
+
+    public void setGasPrice( String gasPrice ) {
+        this.gasPrice = gasPrice;
+    }
+
+    public String getGasLimit( ) {
+        return gasLimit;
+    }
+
+    public void setGasLimit( String gasLimit ) {
+        this.gasLimit = gasLimit;
+    }
+
+    public String getCoin( ) {
+        return coin;
+    }
+
+    public void setCoin( String coin ) {
+        this.coin = coin;
+    }
+
+    public String getRawTransaction( ) {
+        return rawTransaction;
+    }
+
+    public void setRawTransaction( String rawTransaction ) {
+        this.rawTransaction = rawTransaction;
+    }
+
+    public String getStatus( ) {
+        return status;
+    }
+
+    public void setStatus( String status ) {
+        this.status = status;
+    }
+
+    public String getTo_planet( ) {
+        return to_planet;
+    }
+
+    public void setTo_planet( String to_planet ) {
+        this.to_planet = to_planet;
+    }
+
+    public String getFrom_planet( ) {
+        return from_planet;
+    }
+
+    public void setFrom_planet( String from_planet ) {
+        this.from_planet = from_planet;
+    }
+
+    public String getCreated_at( ) {
+        return created_at;
+    }
+
+    public void setCreated_at( String created_at ) {
+        this.created_at = created_at;
+    }
+
+    public String getUpdated_at( ) {
+        return updated_at;
+    }
+
+    public void setUpdated_at( String updated_at ) {
+        this.updated_at = updated_at;
     }
 }
