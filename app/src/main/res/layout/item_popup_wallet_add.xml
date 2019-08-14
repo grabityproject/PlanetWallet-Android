@@ -15,7 +15,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_bit" />
+            android:src="@drawable/icon_btc" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_popup_wallet_add_coin_name"

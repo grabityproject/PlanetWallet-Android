@@ -22,23 +22,22 @@ import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.VO.Tx;
-import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferActivity;
 import io.grabity.planetwallet.Views.p8_Tx.Adapter.TxAdapter;
+import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
-import io.grabity.planetwallet.Widgets.BarcodeView;
-import io.grabity.planetwallet.Widgets.PlanetView;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, AdvanceRecyclerView.OnItemClickListener {
-
-    //Todo 임시작업
+public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, AdvanceRecyclerView.OnItemClickListener, AdvanceArrayAdapter.OnAttachViewListener {
 
     private ViewMapper viewMapper;
     private Planet planet;
     private ERC20 erc20;
 
     ArrayList< Tx > txlist;
+
+    HeaderViewMapper headerViewMapper;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -57,12 +56,9 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
         viewMapper.toolBar.setOnToolBarClickListener( this );
         viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
 
-        viewMapper.btnQRCode.setOnClickListener( this );
-        viewMapper.btnTransfer.setOnClickListener( this );
-
         viewMapper.listView.setOnItemClickListener( this );
-
-
+        viewMapper.listView.setOnAttachViewListener( this );
+        viewMapper.listView.addHeaderView( R.layout.header_tx );
     }
 
     @Override
@@ -78,37 +74,43 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
             }
             setUpViews( );
-
-
         }
     }
 
+
     void setUpViews( ) {
 
-        if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-
-            viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
-            ImageLoader.getInstance( ).displayImage( "http://test.planetwallet.io" + erc20.getImg_path( ), viewMapper.imageIcon );
-        } else {
-            viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
-            viewMapper.imageIcon.setImageResource( planet.getIconRes( ) );
-        }
-
-        viewMapper.textName.setText( planet.getName( ) );
-        viewMapper.planetView.setData( planet.getAddress( ) );
-        viewMapper.textAddress.setText( Utils.addressReduction( planet.getAddress( ) ) );
-        viewMapper.barcodeView.setData( planet.getAddress( ) );
+        viewMapper.toolBar.setTitle( getSerialize( C.bundleKey.ERC20 ) != null ? erc20.getName( ) : CoinType.of( planet.getCoinType( ) ).getCoinName( ) );
 
         getBalance( );
         getTxList( );
+    }
+
+    @Override
+    public void onAttachView( int resId, int position, View view, boolean screenshotFlag ) {
+        if ( !screenshotFlag ) {
+            if ( resId == R.layout.header_tx && position == 0 ) {
+                headerViewMapper = new HeaderViewMapper( view );
+                headerViewMapper.btnTransfer.setOnClickListener( this );
+                headerViewMapper.btnReceive.setOnClickListener( this );
+                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+                    headerViewMapper.textBalance.setText( String.format( "%s " + erc20.getSymbol( ), Utils.balanceReduction( Utils.moveLeftPoint( erc20.getBalance( ), 18 ) ) ) );
+                    headerViewMapper.textCurrency.setText( String.format( "%s USD", Utils.balanceReduction( Utils.moveLeftPoint( erc20.getBalance( ), 18 ) ) ) );
+                    ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), headerViewMapper.imageIcon );
+                } else {
+                    headerViewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.balanceReduction( Utils.moveLeftPoint( planet.getBalance( ), 18 ) ) ) );
+                    headerViewMapper.textCurrency.setText( String.format( "%s USD", Utils.balanceReduction( Utils.moveLeftPoint( planet.getBalance( ), 18 ) ) ) );
+                    headerViewMapper.imageIcon.setImageResource( Utils.equals( CoinType.ETH.getCoinType( ), planet.getCoinType( ) ) ? R.drawable.icon_eth : R.drawable.icon_btc );
+                }
+
+            }
+        }
     }
 
     void getTxList( ) {
 
         new Get( this ).setDeviceKey( C.DEVICE_KEY ).
                 action( Route.URL( "tx", "list", getSerialize( C.bundleKey.ERC20 ) != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ), planet.getName( ) ), 1, 0, null );
-//        viewMapper.listView.setAdapter( new TxAdapter( this, items ) );
-
     }
 
     @Override
@@ -121,14 +123,10 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
     @Override
     public void onClick( View v ) {
         super.onClick( v );
-        if ( v == viewMapper.btnQRCode ) {
-            viewMapper.barcodeView.setVisibility( viewMapper.barcodeView.getVisibility( ) == View.GONE ? View.VISIBLE : View.GONE );
-        } else if ( v == viewMapper.btnTransfer ) {
-            if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                sendAction( TransferActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.ERC20, erc20 ) ) );
-            } else {
-                sendAction( TransferActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
-            }
+        if ( v == headerViewMapper.btnReceive ) {
+            CustomToast.makeText( this, "Receive" ).show( );
+        } else if ( v == headerViewMapper.btnTransfer ) {
+            CustomToast.makeText( this, "Transfer" ).show( );
         }
     }
 
@@ -157,11 +155,9 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                     if ( resultCode == 0 ) {
                         Planet p = ( Planet ) returnVO.getResult( );
                         planet.setBalance( p.getBalance( ) );
-                        viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
                     } else if ( resultCode == Integer.valueOf( erc20.get_id( ) ) ) {
                         ERC20 e = ( ERC20 ) returnVO.getResult( );
                         erc20.setBalance( e.getBalance( ) );
-                        viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
                     }
                 }
             } else if ( requestCode == 1 ) {
@@ -173,7 +169,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                         PLog.e( "txlist size : " + txlist.size( ) );
 
 
-                        viewMapper.listView.setAdapter( new TxAdapter( this, txlist, planet.getName( ) ) );
+                        viewMapper.listView.setAdapter( new TxAdapter( this, txlist, planet.getAddress( ) ) );
                     }
                 }
 
@@ -193,33 +189,30 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
         ToolBar toolBar;
         AdvanceRecyclerView listView;
-        PlanetView planetView;
-        BarcodeView barcodeView;
-
-        TextView textBalance;
-        TextView textAddress;
-        TextView textName;
-        StretchImageView imageIcon;
-
-        View btnQRCode;
-        View btnTransfer;
 
         public ViewMapper( ) {
 
             toolBar = findViewById( R.id.toolBar );
             listView = findViewById( R.id.listView );
-            planetView = findViewById( R.id.planet_tx_list_planetview );
-            barcodeView = findViewById( R.id.barcode_tx_list_barcodeView );
+        }
+    }
 
+    public class HeaderViewMapper {
+        View headerView;
 
-            textBalance = findViewById( R.id.text_tx_list_balance );
-            textAddress = findViewById( R.id.text_tx_list_address );
-            textName = findViewById( R.id.text_tx_list_name );
+        StretchImageView imageIcon;
+        TextView textBalance;
+        TextView textCurrency;
+        View btnReceive;
+        View btnTransfer;
 
-            imageIcon = findViewById( R.id.image_tx_list_icon );
-
-            btnQRCode = findViewById( R.id.btn_tx_list_qr_code );
-            btnTransfer = findViewById( R.id.btn_tx_list_transfer );
+        public HeaderViewMapper( View headerView ) {
+            this.headerView = headerView;
+            imageIcon = headerView.findViewById( R.id.image_tx_header_icon );
+            textBalance = headerView.findViewById( R.id.text_tx_header_balance );
+            textCurrency = headerView.findViewById( R.id.text_tx_header_currency );
+            btnReceive = headerView.findViewById( R.id.btn_tx_header_receive );
+            btnTransfer = headerView.findViewById( R.id.btn_tx_header_transfer );
         }
     }
 }

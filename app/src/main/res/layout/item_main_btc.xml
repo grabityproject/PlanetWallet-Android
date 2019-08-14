@@ -37,7 +37,7 @@
             android:layout_height="20dp"
             android:layout_alignBottom="@id/text_item_main_btc_name"
             android:layout_alignParentRight="true"
-            android:src="@drawable/image_btc_increase" />
+            android:src="@drawable/image_tx_list_sent" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_btc_value"

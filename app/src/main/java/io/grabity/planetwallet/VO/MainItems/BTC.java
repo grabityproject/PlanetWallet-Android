@@ -10,7 +10,7 @@ public class BTC implements MainItem, Serializable {
     private String balance;
     private String date;
 
-    private int iconRes = R.drawable.icon_bit;
+    private int iconRes = R.drawable.icon_btc;
 
     public BTC( ) {
     }

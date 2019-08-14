@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="24dp">
+
+    <io.grabity.planetwallet.Widgets.StretchImageView
+        android:id="@+id/image_tx_header_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerHorizontal="true"/>
+
+    <io.grabity.planetwallet.Widgets.FontTextView
+        android:id="@+id/text_tx_header_balance"
+        android:layout_below="@id/image_tx_header_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="28dp"
+        android:textColor="#FFF"
+        app:themeTextColor="#000"
+        app:typefaceStyle="semibold"
+        android:gravity="center"
+        android:paddingTop="16dp"/>
+
+    <io.grabity.planetwallet.Widgets.FontTextView
+        android:id="@+id/text_tx_header_currency"
+        android:layout_below="@id/text_tx_header_balance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        app:themeTextColor="#000"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:paddingTop="4dp" />
+
+    <LinearLayout
+        android:id="@+id/group_tx_header_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/text_tx_header_currency"
+        android:paddingTop="30dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="30dp">
+
+        <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+            android:id="@+id/btn_tx_header_receive"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Receive"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:buttonType="C"
+            app:defaultTheme="Dark" />
+
+        <io.grabity.planetwallet.Widgets.RoundButton.RoundButton
+            android:id="@+id/btn_tx_header_transfer"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Transfer"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:buttonType="A"
+            app:defaultTheme="Dark"/>
+
+    </LinearLayout>
+
+    <io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView
+        android:layout_below="@id/group_tx_header_btn"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1E1E28"
+        app:themeBackground="#EDEDED" />
+
+
+</RelativeLayout>

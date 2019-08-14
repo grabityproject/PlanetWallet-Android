@@ -10,22 +10,34 @@
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_token_add_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp" />
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_token_add_token_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/image_item_token_add_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/image_item_token_add_icon"
+            android:textColor="#FFF"
+            android:textSize="16dp"
+            android:includeFontPadding="false"
+            app:themeTextColor="#000"
+            app:typefaceStyle="medium" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_token_add_token_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/image_item_token_add_icon"
-            android:textColor="#FFF"
-            android:textSize="16dp"
-            app:themeTextColor="#000"
-            app:typefaceStyle="medium" />
+            android:textColor="#5c5964"
+            android:layout_below="@id/text_item_token_add_token_symbol"
+            android:layout_alignLeft="@id/text_item_token_add_token_symbol"
+            android:textSize="14dp"
+            app:themeTextColor="#AAAAAA"
+            app:typefaceStyle="medium"/>
 
 
         <io.grabity.planetwallet.Widgets.CircleImageView

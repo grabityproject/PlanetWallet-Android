@@ -34,7 +34,8 @@ public class TokenAdapter extends AdvanceArrayAdapter< ERC20 > {
     public void bindData( ViewMapper viewMapper, ERC20 item, int position ) {
 
         ImageLoader.getInstance( ).displayImage( "http://test.planetwallet.io" + item.getImg_path( ), ( ( EthItem ) viewMapper ).icon );
-        ( ( EthItem ) viewMapper ).textTokenName.setText( item.getSymbol( ) );
+        ( ( EthItem ) viewMapper ).textTokenSymbol.setText( item.getSymbol( ) );
+        ( ( EthItem ) viewMapper ).textTokenName.setText( item.getName( ) );
 
         if ( item.isCheck( ) ) {
             ( ( EthItem ) viewMapper ).btnTokenRefresh.setImageResource( R.drawable.image_checkbox_on );
@@ -76,6 +77,7 @@ public class TokenAdapter extends AdvanceArrayAdapter< ERC20 > {
     public class EthItem extends ViewMapper {
         StretchImageView icon;
         CircleImageView btnTokenRefresh;
+        TextView textTokenSymbol;
         TextView textTokenName;
         View clickView;
 
@@ -83,6 +85,7 @@ public class TokenAdapter extends AdvanceArrayAdapter< ERC20 > {
             super( itemView );
 
             icon = findViewById( R.id.image_item_token_add_icon );
+            textTokenSymbol = findViewById( R.id.text_item_token_add_token_symbol );
             textTokenName = findViewById( R.id.text_item_token_add_token_name );
             clickView = findViewById( R.id.view_item_token_add_clickbtn );
             btnTokenRefresh = findViewById( R.id.btn_item_token_add_refresh );

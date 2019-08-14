@@ -6,56 +6,63 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
-
-        <io.grabity.planetwallet.Widgets.PlanetView
-            android:id="@+id/planet_item_tx_list_planetview"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp" />
-
-        <io.grabity.planetwallet.Widgets.FontTextView
-            android:id="@+id/text_item_tx_list_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:layout_toRightOf="@id/planet_item_tx_list_planetview"
-            android:layout_alignTop="@id/planet_item_tx_list_planetview"
-            android:layout_toLeftOf="@id/image_item_tx_list_arrow"
-            android:textColor="#FFF"
-            app:themeTextColor="#000"
-            />
-
-        <io.grabity.planetwallet.Widgets.FontTextView
-            android:id="@+id/text_item_tx_list_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="#FFF"
-            app:themeTextColor="#000"
-            android:layout_below="@id/planet_item_tx_list_planetview"/>
         
         <io.grabity.planetwallet.Widgets.StretchImageView
-            android:id="@+id/image_item_tx_list_arrow"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignTop="@id/planet_item_tx_list_planetview"
-            android:layout_alignParentRight="true"
+            android:id="@+id/image_item_tx_list_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true" />
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_tx_list_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/image_item_tx_list_icon"
+            android:layout_centerVertical="true"
+            android:textColor="#FFF"
+            android:paddingStart="10dp"
+            android:includeFontPadding="false"
+            app:themeTextColor="#000"
+            app:typefaceStyle="medium"
             />
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_tx_list_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#5c5964"
+            android:textSize="16dp"
+            app:themeTextColor="#aaaaaa"
+            android:layout_alignParentRight="true"
+            android:paddingTop="14dp"
+            android:paddingStart="6dp" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_tx_list_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:layout_below="@id/planet_item_tx_list_planetview"
+            android:layout_toLeftOf="@id/text_item_tx_list_symbol"
+            android:paddingTop="14dp"
             android:textColor="#FFF"
+            android:textSize="16dp"
             app:themeTextColor="#000"
-            android:layout_alignParentRight="true"/>
+            app:typefaceStyle="medium"
+            />
 
-
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_tx_list_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#5c5964"
+            app:themeTextColor="#aaaaaa"
+            android:layout_below="@id/text_item_tx_list_balance"
+            android:layout_alignParentRight="true"
+            android:textSize="14dp"
+            />
 
     </RelativeLayout>
 

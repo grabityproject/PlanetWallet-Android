@@ -109,7 +109,7 @@ public class Planet implements Serializable {
 
     public int getIconRes( ) {
         if ( getCoinType( ) != null && getCoinType( ).equals( CoinType.BTC.getCoinType( ) ) ) {
-            return R.drawable.icon_bit;
+            return R.drawable.icon_btc;
         } else if ( getCoinType( ) != null && getCoinType( ).equals( CoinType.ETH.getCoinType( ) ) ) {
             return R.drawable.icon_eth;
         }

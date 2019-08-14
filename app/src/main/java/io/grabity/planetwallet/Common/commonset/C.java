@@ -1,6 +1,8 @@
 package io.grabity.planetwallet.Common.commonset;
 
 
+import android.annotation.SuppressLint;
+
 import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferActivity;
 import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferAmountActivity;
 import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferConfirmActivity;
@@ -75,11 +77,16 @@ public class C {
         public final static String ADDRESS = "address";
     }
 
+    @SuppressLint( "StaticFieldLeak" )
     public static class transferClass {
         public static TransferActivity transferActivity = null;
         public static TransferAmountActivity transferAmountActivity = null;
         public static TransferConfirmActivity transferConfirmActivity = null;
+    }
 
+    public static class transferStatus {
+        public final static String PENDING = "pending";
+        public final static String CONFIRMED = "confirmed";
     }
 
     public static class theme {

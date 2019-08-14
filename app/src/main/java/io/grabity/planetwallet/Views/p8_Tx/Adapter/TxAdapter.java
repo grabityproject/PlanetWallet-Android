@@ -1,24 +1,22 @@
 package io.grabity.planetwallet.Views.p8_Tx.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 
+import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Tx;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
-import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
 public class TxAdapter extends AdvanceArrayAdapter< Tx > {
 
-    //todo 임시
-    String planetName;
+    String planetAddress;
 
     public TxAdapter( Context context, ArrayList< Tx > objects ) {
         super( context, objects );
@@ -26,7 +24,7 @@ public class TxAdapter extends AdvanceArrayAdapter< Tx > {
 
     public TxAdapter( Context context, ArrayList< Tx > objects, String planetName ) {
         super( context, objects );
-        this.planetName = planetName;
+        this.planetAddress = planetName;
     }
 
     @Override
@@ -37,36 +35,40 @@ public class TxAdapter extends AdvanceArrayAdapter< Tx > {
     @Override
     public void bindData( ViewMapper viewMapper, Tx item, int position ) {
 
-        if ( item.getTo_planet( ) == null ) {
-            ( ( TxItem ) viewMapper ).planetView.setVisibility( View.INVISIBLE );
-        } else {
-            ( ( TxItem ) viewMapper ).planetView.setVisibility( View.VISIBLE );
-            ( ( TxItem ) viewMapper ).planetView.setData( Utils.equals( planetName, item.getTo_planet( ) ) ? item.getFrom( ) : item.getTo( ) );
+        if ( Utils.equals( item.getStatus( ), C.transferStatus.PENDING ) ) {
+            ( ( TxItem ) viewMapper ).imageStatusIcon.setImageResource( !getTheme( ) ? R.drawable.image_tx_list_pending_gray : R.drawable.image_tx_list_pending_blue );
+            ( ( TxItem ) viewMapper ).textStatus.setText( "pending" );
+            ( ( TxItem ) viewMapper ).textBalance.setText( String.format( "-%s", Utils.moveLeftPoint( item.getAmount( ), 18 ) ) );
+        } else if ( Utils.equals( item.getStatus( ), C.transferStatus.CONFIRMED ) ) {
+            ( ( TxItem ) viewMapper ).imageStatusIcon.setImageResource( Utils.equals( planetAddress, item.getFrom( ) ) ? R.drawable.image_tx_list_sent : R.drawable.image_tx_list_received );
+            ( ( TxItem ) viewMapper ).textStatus.setText( Utils.equals( planetAddress, item.getFrom( ) ) ? "Sent" : "Received" );
+            ( ( TxItem ) viewMapper ).textBalance.setText( Utils.equals( planetAddress, item.getFrom( ) ) ? String.format( "-%s", Utils.moveLeftPoint( item.getAmount( ), 18 ) ) : String.format( "%s", Utils.moveLeftPoint( item.getAmount( ), 18 ) ) );
+            if ( Utils.equals( planetAddress, item.getFrom( ) ) )
+                ( ( TxItem ) viewMapper ).textBalance.setTextColor( Color.parseColor( "#00E291" ) );
         }
-        ( ( TxItem ) viewMapper ).textAddress.setText( Utils.equals( planetName, item.getTo_planet( ) ) ? item.getFrom( ) : item.getTo( ) );
-        ( ( TxItem ) viewMapper ).textBalance.setText( String.format( "%s " + item.getSymbol( ), new BigDecimal( item.getAmount( ) ).movePointLeft( 18 ).stripTrailingZeros( ).toString( ) ) );
-        ( ( TxItem ) viewMapper ).textDate.setText( Utils.dateFormat( new Date( Long.parseLong( item.getCreated_at( ) ) ), "MMMM dd, HH:mm" ) );
-        ( ( TxItem ) viewMapper ).imageIcon.setImageResource( Utils.equals( planetName, item.getTo_planet( ) ) ? R.drawable.image_btc_increase : R.drawable.image_btc_discrease );
-
+        ( ( TxItem ) viewMapper ).textSymbol.setText( item.getSymbol( ) );
+        ( ( TxItem ) viewMapper ).textCurrency.setText( String.format( "%s USD ", Utils.moveLeftPoint( item.getAmount( ), 18 ) ) );
 
     }
 
     class TxItem extends ViewMapper {
 
-        PlanetView planetView;
-        TextView textAddress;
+        StretchImageView imageStatusIcon;
+        TextView textStatus;
         TextView textBalance;
-        TextView textDate;
-        StretchImageView imageIcon;
+        TextView textSymbol;
+        TextView textCurrency;
+
 
         public TxItem( View itemView ) {
             super( itemView );
 
-            planetView = findViewById( R.id.planet_item_tx_list_planetview );
-            textAddress = findViewById( R.id.text_item_tx_list_address );
+            imageStatusIcon = findViewById( R.id.image_item_tx_list_icon );
+            textStatus = findViewById( R.id.text_item_tx_list_status );
             textBalance = findViewById( R.id.text_item_tx_list_balance );
-            textDate = findViewById( R.id.text_item_tx_list_date );
-            imageIcon = findViewById( R.id.image_item_tx_list_arrow );
+            textSymbol = findViewById( R.id.text_item_tx_list_symbol );
+            textCurrency = findViewById( R.id.text_item_tx_list_currency );
+
         }
     }
 }

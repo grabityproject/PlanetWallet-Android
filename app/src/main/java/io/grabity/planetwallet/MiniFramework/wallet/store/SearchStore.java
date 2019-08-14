@@ -29,16 +29,9 @@ public class SearchStore {
     }
 
     public void save( Search search ) {
-        String name = search.getName( );
 
-        if ( name == null ) {
-            if ( PWDBManager.getInstance( ).select( Search.class, "Search", "keyId='" + search.getKeyId( ) + "'" + " AND " + "address='" + search.getAddress( ) + "'" + " AND " + "symbol='" + search.getSymbol( ) + "'", null ).size( ) == 0 ) {
-                PWDBManager.getInstance( ).insertData( search );
-            }
-        } else {
-            if ( PWDBManager.getInstance( ).select( Search.class, "Search", "keyId='" + search.getKeyId( ) + "'" + " AND " + "name='" + search.getName( ) + "'" + " AND " + "symbol='" + search.getSymbol( ) + "'", null ).size( ) == 0 ) {
-                PWDBManager.getInstance( ).insertData( search );
-            }
+        if ( PWDBManager.getInstance( ).select( Search.class, "Search", "keyId='" + search.getKeyId( ) + "'" + " AND " + "name='" + search.getName( ) + "'" + " AND " + "symbol='" + search.getSymbol( ) + "'", null ).size( ) == 0 ) {
+            PWDBManager.getInstance( ).insertData( search );
         }
 
     }

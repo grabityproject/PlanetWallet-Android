@@ -15,9 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,6 +49,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormatSymbols;
@@ -73,7 +71,6 @@ import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
 import io.grabity.planetwallet.Widgets.FontTextView;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
-import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Utils {
 
@@ -205,36 +202,36 @@ public class Utils {
 
                             if ( Double.class.equals( field.getType( ) ) ) {
 
-                                if( map.get( field.getName( ) ) != null )
+                                if ( map.get( field.getName( ) ) != null )
                                     method.invoke( returnObject, Double.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
 
                             } else if ( Float.class.equals( field.getType( ) ) ) {
 
-                                if( map.get( field.getName( ) ) != null )
+                                if ( map.get( field.getName( ) ) != null )
                                     method.invoke( returnObject, Float.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
 
                             } else if ( Long.class.equals( field.getType( ) ) ) {
 
-                                if( map.get( field.getName( ) ) != null )
+                                if ( map.get( field.getName( ) ) != null )
                                     method.invoke( returnObject, Long.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
 
 
                             } else if ( Integer.class.equals( field.getType( ) ) ) {
 
                                 try {
-                                    if( map.get( field.getName( ) ) != null )
+                                    if ( map.get( field.getName( ) ) != null )
                                         method.invoke( returnObject, Integer.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
                                 } catch ( NumberFormatException e ) {
                                     method.invoke( returnObject, 0 );
                                 }
                             } else if ( Boolean.class.equals( field.getType( ) ) ) {
 
-                                if( map.get( field.getName( ) ) != null )
+                                if ( map.get( field.getName( ) ) != null )
                                     method.invoke( returnObject, Boolean.valueOf( String.valueOf( map.get( field.getName( ) ) ) ) );
 
                             } else if ( String.class.equals( field.getType( ) ) ) {
 
-                                if( map.get( field.getName( ) ) != null )
+                                if ( map.get( field.getName( ) ) != null )
                                     method.invoke( returnObject, String.valueOf( map.get( field.getName( ) ) ) );
 
                             } else if ( List.class.equals( field.getType( ) ) ) {
@@ -1069,6 +1066,12 @@ public class Utils {
         return address.substring( 0, 2 ).equals( "0x" ) ? address.substring( 0, 6 ) + "..." + endString : address.substring( 0, 4 ) + "..." + endString;
     }
 
+    public static String balanceReduction( String balance ) {
+        if ( balance == null ) return "";
+        if ( balance.length( ) <= 8 ) return balance;
+        return balance.substring( 0, 8 );
+    }
+
     public static void addressForm( View v, String address ) {
         if ( address == null ) return;
         if ( address.length( ) < 8 ) return;
@@ -1191,5 +1194,23 @@ public class Utils {
             target.requestLayout( );
         }
     }
+
+    public static String moveLeftPoint( String s, int leftPoint ) {
+        if ( s == null || leftPoint < 0 ) return "";
+        return new BigDecimal( s ).movePointLeft( leftPoint ).stripTrailingZeros( ).toString( );
+    }
+
+    public static String moveRightPoint( String s, int rightPoint ) {
+        if ( s == null || rightPoint < 0 ) return "";
+        return new BigDecimal( s ).movePointRight( rightPoint ).stripTrailingZeros( ).toString( );
+    }
+
+    public static String feeCalculation( String strPrice, String strLimit ) {
+        if ( strPrice == null || strLimit == null ) return "";
+        BigDecimal price = new BigDecimal( strPrice );
+        BigDecimal limit = new BigDecimal( strLimit );
+        return limit.multiply( price ).stripTrailingZeros( ).toString( );
+    }
+
 
 }

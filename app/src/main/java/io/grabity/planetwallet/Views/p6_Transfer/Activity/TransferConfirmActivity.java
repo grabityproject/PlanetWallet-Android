@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -186,10 +188,16 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             viewMapper.textPlanetName.setText( transfer.getToName( ) );
             viewMapper.textPlanetAddress.setText( Utils.addressReduction( transfer.getToAddress( ) ) );
         } else if ( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ) {
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_bit_white );
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_eth_black : R.drawable.icon_transfer_eth_white );
+            if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+                Utils.setPadding( viewMapper.imageIcon, 0,0,0,0 );
+                ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), viewMapper.imageIcon );
+                viewMapper.imageIconBackground.setVisibility( View.INVISIBLE );
+            } else {
+                if ( !getCurrentTheme( ) ) {
+                    viewMapper.imageIcon.setImageResource( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_eth_black );
+                } else{
+                    viewMapper.imageIcon.setImageResource( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ? R.drawable.icon_transfer_bit_white : R.drawable.icon_transfer_eth_white );
+                }
             }
             viewMapper.imageIconBackground.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
             viewMapper.textAddress.setText( transfer.getToAddress( ) );
