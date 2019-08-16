@@ -37,7 +37,7 @@
             android:layout_alignLeft="@id/text_item_token_add_token_symbol"
             android:textSize="14dp"
             app:themeTextColor="#AAAAAA"
-            app:typefaceStyle="medium"/>
+            app:typefaceStyle="medium" />
 
 
         <io.grabity.planetwallet.Widgets.CircleImageView

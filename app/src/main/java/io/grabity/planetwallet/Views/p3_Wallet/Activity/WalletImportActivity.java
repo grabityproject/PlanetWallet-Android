@@ -94,7 +94,7 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
 
         if ( planet != null ) {
             setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
-            sendAction( getRequestCode() == C.requestCode.MAIN_PLANET_ADD ? C.requestCode.MAIN_PLANET_ADD : C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+            sendAction( getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ? C.requestCode.MAIN_PLANET_ADD : C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
         }
 
     }

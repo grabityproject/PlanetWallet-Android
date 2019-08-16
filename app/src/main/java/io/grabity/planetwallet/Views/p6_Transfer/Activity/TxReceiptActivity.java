@@ -120,7 +120,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
 
     private void searchSave( ) {
 
-        if ( !Utils.equals( transfer.getChoice(), C.transferChoice.PLANET_NAME ) ) return;
+        if ( !Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) return;
         Search search = new Search( );
         search.setKeyId( planet.getKeyId( ) );
         search.setAddress( transfer.getToAddress( ) );

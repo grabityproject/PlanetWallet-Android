@@ -125,8 +125,7 @@
                 android:background="#1E1E28"
                 app:themeBackground="#EDEDED"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                />
+                android:layout_marginEnd="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -258,7 +257,7 @@
                         android:layout_centerVertical="true"
                         android:gravity="center|end"
                         android:paddingStart="130dp"
-                        android:lineSpacingExtra ="4dp"
+                        android:lineSpacingExtra="4dp"
                         android:textColor="#FFF"
                         android:textSize="16dp"
                         app:themeTextColor="#000" />
@@ -370,8 +369,7 @@
                         android:textColor="#FFF"
                         android:textSize="14dp"
                         android:lineSpacingExtra="4dp"
-                        app:themeTextColor="#000"
-                        />
+                        app:themeTextColor="#000" />
 
                 </RelativeLayout>
 
@@ -399,9 +397,6 @@
         </RelativeLayout>
 
     </ScrollView>
-
-
-
 
 
 </io.grabity.planetwallet.Widgets.PlanetWalletViews.PWRelativeLayout>

@@ -9,7 +9,7 @@
         android:id="@+id/image_tx_header_icon"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_tx_header_balance"
@@ -21,7 +21,7 @@
         app:themeTextColor="#000"
         app:typefaceStyle="semibold"
         android:gravity="center"
-        android:paddingTop="16dp"/>
+        android:paddingTop="16dp" />
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_tx_header_currency"
@@ -69,7 +69,7 @@
             android:textSize="16dp"
             android:textStyle="bold"
             app:buttonType="A"
-            app:defaultTheme="Dark"/>
+            app:defaultTheme="Dark" />
 
     </LinearLayout>
 

@@ -24,7 +24,6 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.ErrorResult;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
-import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 import io.grabity.planetwallet.Widgets.ToolBar;
 

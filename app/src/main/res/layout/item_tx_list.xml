@@ -9,7 +9,7 @@
         android:layout_height="70dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
-        
+
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_tx_list_icon"
             android:layout_width="24dp"
@@ -27,8 +27,7 @@
             android:paddingStart="10dp"
             android:includeFontPadding="false"
             app:themeTextColor="#000"
-            app:typefaceStyle="medium"
-            />
+            app:typefaceStyle="medium" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_tx_list_symbol"
@@ -50,8 +49,7 @@
             android:textColor="#FFF"
             android:textSize="16dp"
             app:themeTextColor="#000"
-            app:typefaceStyle="medium"
-            />
+            app:typefaceStyle="medium" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_tx_list_currency"
@@ -61,8 +59,7 @@
             app:themeTextColor="#aaaaaa"
             android:layout_below="@id/text_item_tx_list_balance"
             android:layout_alignParentRight="true"
-            android:textSize="14dp"
-            />
+            android:textSize="14dp" />
 
     </RelativeLayout>
 

@@ -15,7 +15,6 @@ import java.util.HashMap;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
@@ -28,7 +27,6 @@ import io.grabity.planetwallet.Views.p5_Token.Adapter.TokenAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.CircleImageView;
-import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
 public class TokenListFragment extends PlanetWalletFragment implements View.OnClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< ERC20 > {

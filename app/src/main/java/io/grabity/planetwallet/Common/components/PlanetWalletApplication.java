@@ -2,9 +2,6 @@ package io.grabity.planetwallet.Common.components;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkRequest;
 
 import androidx.annotation.Nullable;
 import androidx.multidex.MultiDex;

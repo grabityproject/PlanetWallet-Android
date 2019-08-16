@@ -1,9 +1,6 @@
 package io.grabity.planetwallet.VO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import jnr.ffi.annotations.In;
 
 public class Tx implements Serializable {
 
@@ -20,7 +17,7 @@ public class Tx implements Serializable {
     String coin;
     String symbol;
     String rawTransaction;
-//    String utxos;
+    //    String utxos;
     String status;
     String to_planet;
     String from_planet;

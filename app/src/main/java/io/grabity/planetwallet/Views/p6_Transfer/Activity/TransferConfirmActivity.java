@@ -189,13 +189,13 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             viewMapper.textPlanetAddress.setText( Utils.addressReduction( transfer.getToAddress( ) ) );
         } else if ( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ) {
             if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                Utils.setPadding( viewMapper.imageIcon, 0,0,0,0 );
+                Utils.setPadding( viewMapper.imageIcon, 0, 0, 0, 0 );
                 ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), viewMapper.imageIcon );
                 viewMapper.imageIconBackground.setVisibility( View.INVISIBLE );
             } else {
                 if ( !getCurrentTheme( ) ) {
                     viewMapper.imageIcon.setImageResource( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_eth_black );
-                } else{
+                } else {
                     viewMapper.imageIcon.setImageResource( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ? R.drawable.icon_transfer_bit_white : R.drawable.icon_transfer_eth_white );
                 }
             }

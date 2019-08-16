@@ -18,7 +18,6 @@ import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.AnnounceAdapter;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.FAQAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
-import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, AdvanceRecyclerView.OnItemClickListener {

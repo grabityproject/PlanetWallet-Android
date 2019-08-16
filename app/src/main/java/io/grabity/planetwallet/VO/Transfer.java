@@ -15,7 +15,6 @@ public class Transfer implements Serializable {
     private String txHash;
 
 
-
     public Transfer( ) {
 
     }
