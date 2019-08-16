@@ -22,6 +22,7 @@ import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.VO.Tx;
+import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferActivity;
 import io.grabity.planetwallet.Views.p8_Tx.Adapter.TxAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
@@ -126,7 +127,12 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
         if ( v == headerViewMapper.btnReceive ) {
             CustomToast.makeText( this, "Receive" ).show( );
         } else if ( v == headerViewMapper.btnTransfer ) {
-            CustomToast.makeText( this, "Transfer" ).show( );
+            if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+                sendAction( TransferActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.ERC20, erc20 ) ) );
+            } else {
+                sendAction( TransferActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+            }
+//
         }
     }
 
@@ -166,9 +172,6 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 if ( statusCode == 200 ) {
                     if ( returnVO.isSuccess( ) ) {
                         txlist = ( ArrayList< Tx > ) returnVO.getResult( );
-                        PLog.e( "txlist size : " + txlist.size( ) );
-
-
                         viewMapper.listView.setAdapter( new TxAdapter( this, txlist, planet.getAddress( ) ) );
                     }
                 }
@@ -181,7 +184,15 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        sendAction( DetailTxActivity.class, Utils.createSerializableBundle( C.bundleKey.TX, txlist.get( position ) ) );
+
+        if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+            sendAction( DetailTxActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.TX, txlist.get( position ) ),
+                    Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.ERC20, erc20 ) ) );
+        } else {
+            sendAction( DetailTxActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.TX, txlist.get( position ) ),
+                    Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) ) );
+        }
+
 
     }
 

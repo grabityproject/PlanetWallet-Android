@@ -191,26 +191,26 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
 
-            groupPlanet = findViewById( R.id.group_detail_tx_planet );
-            groupAddress = findViewById( R.id.group_detail_tx_address );
+            groupPlanet = findViewById( R.id.group_tx_receipt_planet );
+            groupAddress = findViewById( R.id.group_tx_receipt_address );
 
             btnShare = findViewById( R.id.group_tx_receipt_share );
             btnSubmit = findViewById( R.id.btn_submit );
-            btnTxHash = findViewById( R.id.text_detail_tx_txhash );
+            btnTxHash = findViewById( R.id.text_tx_receipt_txhash );
 
-            planetView = findViewById( R.id.planet_detail_tx_planetview );
-            imageIconBackground = findViewById( R.id.image_detail_tx_address_background );
-            imageIcon = findViewById( R.id.image_detail_tx_address_icon );
+            planetView = findViewById( R.id.planet_tx_receipt_planetview );
+            imageIconBackground = findViewById( R.id.image_tx_receipt_address_background );
+            imageIcon = findViewById( R.id.image_tx_receipt_coin_icon );
 
-            textPlanetName = findViewById( R.id.text_detail_tx_planet_name );
-            textPlanetAddress = findViewById( R.id.text_detail_tx_planet_address );
-            textAddress = findViewById( R.id.text_detail_tx_address );
+            textPlanetName = findViewById( R.id.text_tx_receipt_planet_name );
+            textPlanetAddress = findViewById( R.id.text_tx_receipt_planet_address );
+            textAddress = findViewById( R.id.text_tx_receipt_address );
 
-            textAmount = findViewById( R.id.text_detail_tx_amount );
-            textAmountList = findViewById( R.id.text_detail_tx_amount_ );
-            textFromName = findViewById( R.id.text_detail_tx_from_name );
-            textFee = findViewById( R.id.text_detail_tx_fee );
-            textDate = findViewById( R.id.text_detail_tx_date );
+            textAmount = findViewById( R.id.text_tx_receipt_amount );
+            textAmountList = findViewById( R.id.text_tx_receipt_amount_ );
+            textFromName = findViewById( R.id.text_tx_receipt_from_name );
+            textFee = findViewById( R.id.text_tx_receipt_fee );
+            textDate = findViewById( R.id.text_tx_receipt_date );
         }
     }
 }

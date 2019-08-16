@@ -21,7 +21,6 @@ import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.VO.Transfer;
-import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -92,14 +91,12 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
 
             if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
                 erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
+                viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), Utils.balanceReduction( Utils.moveLeftPoint( erc20.getBalance( ), 18 ) ) ) );
             } else {
-                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.balanceReduction( Utils.moveLeftPoint( planet.getBalance( ), 18 ) ) ) );
             }
 
             getBalance( );
-
-
             toolBarSetView( );
         }
     }
@@ -133,11 +130,11 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                     if ( resultCode == 0 ) {
                         Planet p = ( Planet ) returnVO.getResult( );
                         planet.setBalance( p.getBalance( ) );
-                        viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), planet.getBalance( ) ) );
+                        viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.balanceReduction( Utils.moveLeftPoint( planet.getBalance( ), 18 ) ) ) );
                     } else if ( resultCode == 1 ) {
                         ERC20 e = ( ERC20 ) returnVO.getResult( );
                         erc20.setBalance( e.getBalance( ) );
-                        viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), erc20.getBalance( ) ) );
+                        viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), Utils.balanceReduction( Utils.moveLeftPoint( erc20.getBalance( ), 18 ) ) ) );
                     }
                 }
             }
