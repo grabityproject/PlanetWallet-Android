@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Widgets.AdvanceRecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.Widgets.Themeable;
 
@@ -60,9 +62,12 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
         viewInit( );
     }
 
+    @SuppressLint( "WrongConstant" )
     private void viewInit( ) {
         setLayoutManager( new LinearLayoutManager( getContext( ), LinearLayoutManager.VERTICAL, false ) );
         onScrollListeners = new ArrayList<>( );
+        defScrollListener = new OnDefScrollListener( );
+        addOnScrollListener( defScrollListener );
     }
 
     public void setLayout( int layout ) {
@@ -70,6 +75,7 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
     }
 
 
+    @SuppressLint( "WrongConstant" )
     public void setLayout( int layout, int spanCount ) {
         switch ( layout ) {
             case VERTICAL:
@@ -92,9 +98,13 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
                 break;
         }
 
-        if ( getAdapter( ) != null && getAdapter( ) instanceof AdvanceArrayAdapter ) {
-            ( ( AdvanceArrayAdapter ) getAdapter( ) ).setLayoutManager( getLayoutManager( ) );
+        if ( getAdapter( ) != null ) {
+            getAdapter( ).setLayoutManager( getLayoutManager( ) );
         }
+    }
+
+    public AdvanceArrayAdapter getAdapter( ) {
+        return ( AdvanceArrayAdapter ) super.getAdapter( );
     }
 
     @Override
@@ -260,6 +270,7 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
             super.onScrolled( recyclerView, dx, dy );
             scrollX += dx;
             scrollY += dy;
+            PLog.e( scrollY );
             if ( onScrollListeners != null ) {
                 for ( OnScrollListener listener : onScrollListeners ) {
                     listener.onScrolled( recyclerView, dx, dy, scrollX, scrollY );
@@ -290,8 +301,6 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
         if ( onScrollListeners != null ) {
             onScrollListeners.add( onScrollListener );
         }
-        defScrollListener = new OnDefScrollListener( );
-        addOnScrollListener( defScrollListener );
     }
 
     public interface OnScrollListener {

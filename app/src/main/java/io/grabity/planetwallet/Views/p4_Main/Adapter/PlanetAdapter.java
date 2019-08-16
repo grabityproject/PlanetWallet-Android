@@ -15,8 +15,6 @@ import io.grabity.planetwallet.Widgets.PlanetView;
 
 public class PlanetAdapter extends AdvanceArrayAdapter< Planet > {
 
-    public static final int FOOTER_POSTION = -1;
-
     public PlanetAdapter( Context context, ArrayList< Planet > objects ) {
         super( context, objects );
     }
@@ -38,7 +36,7 @@ public class PlanetAdapter extends AdvanceArrayAdapter< Planet > {
         viewMapper.itemView.setOnClickListener( v -> {
             if ( getOnItemClickListener( ) != null ) {
                 try {
-                    getOnItemClickListener( ).onItemClick( ( AdvanceRecyclerView ) viewMapper.getView( ).getParent( ), null, -1 );
+                    getOnItemClickListener( ).onItemClick( ( AdvanceRecyclerView ) viewMapper.getView( ).getParent( ), null, getItemCount( ) + 1 );
                 } catch ( ClassCastException e ) {
                     // Do not disturb
                 }

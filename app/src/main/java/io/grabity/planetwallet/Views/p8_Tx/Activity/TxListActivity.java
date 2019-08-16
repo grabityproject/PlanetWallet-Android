@@ -71,8 +71,10 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
         } else {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
 
-            if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
-                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
+                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
+                }
             }
             setUpViews( );
         }
@@ -80,8 +82,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
 
     void setUpViews( ) {
-
-        viewMapper.toolBar.setTitle( getSerialize( C.bundleKey.ERC20 ) != null ? erc20.getName( ) : CoinType.of( planet.getCoinType( ) ).getCoinName( ) );
+        viewMapper.toolBar.setTitle( erc20 != null ? erc20.getName( ) : CoinType.of( planet.getCoinType( ) ).getCoinName( ) );
 
         getBalance( );
         getTxList( );
@@ -94,14 +95,18 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 headerViewMapper = new HeaderViewMapper( view );
                 headerViewMapper.btnTransfer.setOnClickListener( this );
                 headerViewMapper.btnReceive.setOnClickListener( this );
-                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+
+                if ( erc20 != null ) {
                     headerViewMapper.textBalance.setText( String.format( "%s " + erc20.getSymbol( ), Utils.balanceReduction( Utils.moveLeftPoint( erc20.getBalance( ), 18 ) ) ) );
                     headerViewMapper.textCurrency.setText( String.format( "%s USD", Utils.balanceReduction( Utils.moveLeftPoint( erc20.getBalance( ), 18 ) ) ) );
                     ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), headerViewMapper.imageIcon );
+
                 } else {
+
                     headerViewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.balanceReduction( Utils.moveLeftPoint( planet.getBalance( ), 18 ) ) ) );
                     headerViewMapper.textCurrency.setText( String.format( "%s USD", Utils.balanceReduction( Utils.moveLeftPoint( planet.getBalance( ), 18 ) ) ) );
                     headerViewMapper.imageIcon.setImageResource( Utils.equals( CoinType.ETH.getCoinType( ), planet.getCoinType( ) ) ? R.drawable.icon_eth : R.drawable.icon_btc );
+
                 }
 
             }
@@ -111,7 +116,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
     void getTxList( ) {
 
         new Get( this ).setDeviceKey( C.DEVICE_KEY ).
-                action( Route.URL( "tx", "list", getSerialize( C.bundleKey.ERC20 ) != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ), planet.getName( ) ), 1, 0, null );
+                action( Route.URL( "tx", "list", erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ), planet.getName( ) ), 1, 0, null );
     }
 
     @Override
@@ -127,7 +132,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
         if ( v == headerViewMapper.btnReceive ) {
             CustomToast.makeText( this, "Receive" ).show( );
         } else if ( v == headerViewMapper.btnTransfer ) {
-            if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+            if ( erc20 != null ) {
                 sendAction( TransferActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.ERC20, erc20 ) ) );
             } else {
                 sendAction( TransferActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
@@ -139,7 +144,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
     private void getBalance( ) {
         if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-            if ( getSerialize( C.bundleKey.ERC20 ) != null ) { //ERC20
+            if ( erc20 != null ) { //ERC20
                 new Get( this ).setDeviceKey( C.DEVICE_KEY )
                         .action( Route.URL( "balance", erc20.getSymbol( ), planet.getName( ) ), 0, Integer.valueOf( erc20.get_id( ) ), null );
             } else { // ETH
@@ -185,7 +190,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
 
-        if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+        if ( erc20 != null ) {
             sendAction( DetailTxActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.TX, txlist.get( position ) ),
                     Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.ERC20, erc20 ) ) );
         } else {

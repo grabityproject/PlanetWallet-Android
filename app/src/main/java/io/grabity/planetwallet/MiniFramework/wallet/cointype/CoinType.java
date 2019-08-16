@@ -45,6 +45,8 @@ public enum CoinType {
             return CoinType.BTC;
         } else if ( coinType == 60 ) {
             return CoinType.ETH;
+        } else if ( coinType == -60 ) {
+            return CoinType.ERC20;
         }
         return CoinType.NULL;
     }

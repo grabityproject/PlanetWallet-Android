@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
@@ -49,7 +48,7 @@ public class SlideDrawerLayout extends ViewGroup {
 
     private int currentMovingPosition = -1;
 
-    private OnSlideDrawerListener onSlideDrawerListener;
+    private ArrayList< OnSlideDrawerListener > onSlideDrawerListeners = new ArrayList<>( );
 
     private ArrayList< View > bypassAreaViews;
     private ArrayList< View > doNotEventViews;
@@ -307,8 +306,8 @@ public class SlideDrawerLayout extends ViewGroup {
                         if ( 0 > moveY ) {
                             getCurrentPositionView.setY( moveY );
 
-                            if ( onSlideDrawerListener != null ) {
-                                onSlideDrawerListener.onSlide(
+                            {
+                                onSlide(
                                         Position.TOP,
                                         ( moveY + getCurrentPositionView.getHeight( ) ) / ( getCurrentPositionView.getHeight( ) + triggers.get( Position.TOP ).getOffset( ) ),
                                         0,
@@ -326,8 +325,8 @@ public class SlideDrawerLayout extends ViewGroup {
                                 inSideSlideCheck( event.getRawY( ) - thisLocations[ 1 ] );
                             }
                             getCurrentPositionView.setY( moveY );
-                            if ( onSlideDrawerListener != null ) {
-                                onSlideDrawerListener.onSlide( Position.BOTTOM,
+                            {
+                                onSlide( Position.BOTTOM,
                                         1.0f - ( moveY - ( getHeight( ) - getCurrentPositionView.getHeight( ) ) ) / ( ( float ) getCurrentPositionView.getHeight( ) + triggers.get( Position.BOTTOM ).getOffset( ) ),
                                         0,
                                         moveY );
@@ -382,8 +381,8 @@ public class SlideDrawerLayout extends ViewGroup {
                     float moveY = -beforeTouchPositionY + ( event.getRawY( ) - thisLocations[ 1 ] );
                     if ( 0 >= moveY ) {
                         getCurrentPositionView.setY( moveY );
-                        if ( onSlideDrawerListener != null ) {
-                            onSlideDrawerListener.onSlide( Position.TOP,
+                        {
+                            onSlide( Position.TOP,
                                     ( getCurrentPositionView.getHeight( ) + moveY ) / ( ( float ) getCurrentPositionView.getHeight( ) + triggers.get( Position.TOP ).getOffset( ) ),
                                     0,
                                     moveY );
@@ -397,8 +396,8 @@ public class SlideDrawerLayout extends ViewGroup {
 
                     if ( getHeight( ) - getCurrentPositionView.getHeight( ) <= moveY ) {
                         getCurrentPositionView.setY( moveY );
-                        if ( onSlideDrawerListener != null ) {
-                            onSlideDrawerListener.onSlide( Position.BOTTOM,
+                        {
+                            onSlide( Position.BOTTOM,
                                     1.0f - ( ( moveY - ( getHeight( ) - getCurrentPositionView.getHeight( ) ) ) / ( ( float ) getCurrentPositionView.getHeight( ) + triggers.get( Position.BOTTOM ).getOffset( ) ) ),
                                     0,
                                     moveY );
@@ -479,8 +478,8 @@ public class SlideDrawerLayout extends ViewGroup {
     }
 
     protected boolean inSideSlideCheck( float y ) {
-        float clickDp = Utils.dpToPx( getContext(), 16 );
-        if ( y + clickDp < inSideTouchPositionY  ) {
+        float clickDp = Utils.dpToPx( getContext( ), 16 );
+        if ( y + clickDp < inSideTouchPositionY ) {
             inSideSlide = true;
             return true;
         } else {
@@ -518,12 +517,9 @@ public class SlideDrawerLayout extends ViewGroup {
     }
 
 
-    public OnSlideDrawerListener getOnSlideDrawerListener( ) {
-        return onSlideDrawerListener;
-    }
-
-    public void setOnSlideDrawerListener( OnSlideDrawerListener onSlideDrawerListener ) {
-        this.onSlideDrawerListener = onSlideDrawerListener;
+    public void addOnSlideDrawerListener( OnSlideDrawerListener onSlideDrawerListener ) {
+        if ( onSlideDrawerListeners == null ) onSlideDrawerListeners = new ArrayList<>( );
+        onSlideDrawerListeners.add( onSlideDrawerListener );
     }
 
 
@@ -549,15 +545,15 @@ public class SlideDrawerLayout extends ViewGroup {
                     @Override
                     public void onAnimationUpdate( ValueAnimator animation ) {
                         float value = ( Float ) animation.getAnimatedValue( );
-                        if ( onSlideDrawerListener != null ) {
+                        {
                             if ( position == Position.TOP ) {
-                                onSlideDrawerListener.onSlide( Position.TOP,
+                                onSlide( Position.TOP,
                                         1.0f + ( value / triggers.get( Position.TOP ).getView( ).getHeight( ) ),
                                         0,
                                         value );
                             } else if ( position == Position.BOTTOM ) {
 
-                                onSlideDrawerListener.onSlide( Position.BOTTOM,
+                                onSlide( Position.BOTTOM,
                                         1.0f - ( ( value - ( getHeight( ) - triggers.get( Position.BOTTOM ).getView( ).getHeight( ) ) ) / ( triggers.get( Position.BOTTOM ).getView( ).getHeight( ) + triggers.get( Position.BOTTOM ).getOffset( ) ) ),
                                         0,
                                         value );
@@ -570,10 +566,17 @@ public class SlideDrawerLayout extends ViewGroup {
         }
     }
 
+    private void onSlide( int position, float percent, float x, float y ) {
+        if ( onSlideDrawerListeners != null ) {
+            for ( OnSlideDrawerListener listener : onSlideDrawerListeners ) {
+                listener.onSlide( position, percent, x, y );
+            }
+        }
+    }
+
     public interface OnSlideDrawerListener {
         void onSlide( int position, float percent, float x, float y );
     }
-
 
     public class Trigger {
 

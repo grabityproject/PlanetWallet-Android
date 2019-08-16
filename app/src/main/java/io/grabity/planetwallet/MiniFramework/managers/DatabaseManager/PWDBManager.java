@@ -26,7 +26,7 @@ public class PWDBManager extends DBManager {
     }
 
     @Override                                    //5
-    protected int getDatabaseVersion( ) { return 6; }
+    protected int getDatabaseVersion( ) { return 7; }
 
     @Override
     protected void createDatabase( SQLiteDatabase db ) {

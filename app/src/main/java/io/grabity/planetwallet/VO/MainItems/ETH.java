@@ -31,6 +31,7 @@ public class ETH implements MainItem, Serializable {
     }
 
     public String getSymbol( ) {
+        if ( symbol == null ) symbol = CoinType.ETH.name( );
         return symbol;
     }
 

@@ -12,7 +12,6 @@ import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.BTC;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
@@ -27,9 +26,7 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
 
     @Override
     public ViewMapper viewMapping( int position ) {
-        if ( getObjects( ).get( position ).getCoinType( ).equals( CoinType.BTC.getCoinType( ) ) ) {
-            return new BTCItem( View.inflate( getContext( ), R.layout.item_main_btc, null ) );
-        } else if ( Math.abs( getObjects( ).get( position ).getCoinType( ) ) == CoinType.ETH.getCoinType( ) ) {
+        if ( Math.abs( getObjects( ).get( position ).getCoinType( ) ) == CoinType.ETH.getCoinType( ) ) {
             return new ETHItem( View.inflate( getContext( ), R.layout.item_main_eth, null ) );
         } else {
             return null;
@@ -39,18 +36,7 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
     @Override
     public void bindData( ViewMapper viewMapper, MainItem item, int position ) {
 
-        if ( Utils.equals( CoinType.BTC.getCoinType( ), item.getCoinType( ) ) ) {
-
-            BTC btc = ( BTC ) item;
-            ( ( BTCItem ) viewMapper ).imageIcon.setImageResource(
-                    btc.getBalance( ) != null && btc.getBalance( ).contains( "-" ) ?
-                            R.drawable.image_btc_increase : R.drawable.image_btc_discrease );
-            ( ( BTCItem ) viewMapper ).textName.setText( btc.getPlanetName( ) );
-            ( ( BTCItem ) viewMapper ).textBalance.setText( btc.getBalance( ).replace( "-", "" ) );
-            ( ( BTCItem ) viewMapper ).textTime.setText( btc.getDate( ) );
-
-        } else if ( Utils.equals( CoinType.ETH.getCoinType( ), item.getCoinType( ) ) ) {
-
+        if ( Utils.equals( CoinType.ETH.getCoinType( ), item.getCoinType( ) ) ) {
 
             ETH eth = ( ETH ) item;
             ( ( ETHItem ) viewMapper ).textName.setText( CoinType.ETH.name( ) );

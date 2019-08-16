@@ -68,7 +68,9 @@ public class C {
 
         public final static String TRANSACTION = "transaction";
 
-        public final static String TX ="tx";
+        public final static String TX = "tx";
+
+        public final static String MAIN_ITEM = "mainItem";
 
     }
 
