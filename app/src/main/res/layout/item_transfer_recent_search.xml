@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <io.grabity.planetwallet.Widgets.FontTextView
+        android:id="@+id/text_item_transfer_recent_search_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#5c5964"
+        android:textSize="14dp"
+        android:text="Recent"
+        app:themeTextColor="#aaaaaa"
+        android:paddingTop="20dp"
+        android:paddingStart="20dp"
+        android:visibility="gone"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:paddingStart="20dp"
+        android:layout_below="@id/text_item_transfer_recent_search_title">
+
+        <io.grabity.planetwallet.Widgets.PlanetView
+            android:id="@+id/planet_item_transfer_recent_search_planetview"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true" />
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_transfer_recent_search_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#FFF"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:themeTextColor="#000"
+            app:typefaceStyle="medium"
+            android:layout_alignTop="@id/planet_item_transfer_recent_search_planetview"
+            android:layout_toRightOf="@id/planet_item_transfer_recent_search_planetview"
+            android:paddingStart="20dp"
+            android:paddingEnd="70dp"/>
+
+        <io.grabity.planetwallet.Widgets.FontTextView
+            android:id="@+id/text_item_transfer_recent_search_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/planet_item_transfer_recent_search_planetview"
+            android:layout_toRightOf="@id/planet_item_transfer_recent_search_planetview"
+            android:paddingStart="20dp"
+            android:textSize="14dp"
+            android:textColor="#5C5964"
+            app:themeTextColor="#AAAAAA" />
+
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/image_item_transfer_recent_delete"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/image_transfer_search_delete_gray"
+            app:themeSrc="@drawable/image_transfer_search_delete_blue"
+            android:padding="20dp"
+            />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

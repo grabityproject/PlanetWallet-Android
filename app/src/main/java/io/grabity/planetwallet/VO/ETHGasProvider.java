@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 
 public class ETHGasProvider {
 
-    public final static BigDecimal ETH_DEFAULT_GAS_LIMIT = BigDecimal.valueOf( 21000 );
+    //    public final static BigDecimal ETH_DEFAULT_GAS_LIMIT = BigDecimal.valueOf( 21000 );
+    public final static String ETH_DEFAULT_GAS_LIMIT = "21000";
     public final static String ETH_DEFAULT_GAS_GWEI = "20";
     public final static String ETH_DEFAULT_FEE = "0.00042";
 
-    public final static BigDecimal ERC_DEFAULT_GAS_LIMIT = BigDecimal.valueOf( 100000 );
+//    public final static BigDecimal ERC_DEFAULT_GAS_LIMIT = BigDecimal.valueOf( 100000 );
+    public final static String ERC_DEFAULT_GAS_LIMIT = "100000";
     public final static String ERC_DEFAULT_GAS_GWEI = "10";
     public final static String ERC_DEFAULT_FEE = "0.001";
 

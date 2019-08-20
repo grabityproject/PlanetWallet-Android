@@ -61,6 +61,8 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
                 viewMapper.listView.getViewTreeObserver( ).removeOnGlobalLayoutListener( this );
                 updateBlurView( getActivity( ).getCurrentTheme( ) );
                 viewMapper.imageBlurView.setY( ( ( View ) viewMapper.imageBlurView.getParent( ) ).getHeight( ) - viewMapper.listView.getHeight( ) );
+
+                viewMapper.textNotice.setY( viewMapper.groupBottomPanel.getY( ) + viewMapper.groupBottomPanel.getHeight( ) - viewMapper.textNotice.getHeight( ) );
             }
         } );
         viewMapper.listView.addOnScrollListener( this );
@@ -133,7 +135,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
                 viewMapper.imageIcon.setImageResource( R.drawable.icon_btc );
 
                 viewMapper.textTokenType.setVisibility( View.GONE );
-                viewMapper.textBalance.setText( item.getBalance( ) );
+                viewMapper.textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( item, item.getBalance( ) ) ) );
                 viewMapper.textName.setText( CoinType.BTC.getCoinName( ) );
                 viewMapper.textUnit.setText( CoinType.BTC.name( ) );
 
@@ -145,7 +147,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
                 viewMapper.imageIcon.setImageResource( R.drawable.icon_eth );
 
                 viewMapper.textTokenType.setVisibility( View.GONE );
-                viewMapper.textBalance.setText( item.getBalance( ) );
+                viewMapper.textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( item, item.getBalance( ) ) ) );
                 viewMapper.textName.setText( CoinType.ETH.getCoinName( ) );
                 viewMapper.textUnit.setText( CoinType.ETH.name( ) );
 
@@ -160,7 +162,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
                 viewMapper.textTokenType.setVisibility( View.VISIBLE );
                 viewMapper.textTokenType.setText( CoinType.of( item.getCoinType( ) ).name( ) );
-                viewMapper.textBalance.setText( item.getBalance( ) );
+                viewMapper.textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( item, item.getBalance( ) ) ) );
                 viewMapper.textName.setText( item.getName( ) );
                 viewMapper.textUnit.setText( item.getSymbol( ) );
 
@@ -254,6 +256,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
         TextView textTokenType;
         TextView textBalance;
         TextView textUnit;
+        TextView textNotice;
         View btnNext;
 
         AdvanceRecyclerView listView;
@@ -269,6 +272,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
             textTokenType = findViewById( R.id.text_bottom_panel_token_type );
             textBalance = findViewById( R.id.text_bottom_panel_balance );
             textUnit = findViewById( R.id.text_bottom_panel_unit );
+            textNotice = findViewById( R.id.text_main_notice );
             btnNext = findViewById( R.id.btn_bottom_panel_next );
 
             listView = findViewById( R.id.list_main );

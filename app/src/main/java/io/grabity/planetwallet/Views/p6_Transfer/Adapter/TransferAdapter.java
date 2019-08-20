@@ -26,7 +26,7 @@ public class TransferAdapter extends AdvanceArrayAdapter< Planet > {
     @Override
     public void bindData( ViewMapper viewMapper, Planet item, int position ) {
 
-        ( ( NameSearchItem ) viewMapper ).planet.setData( item.getAddress( ) );
+        ( ( NameSearchItem ) viewMapper ).planetView.setData( item.getAddress( ) );
         ( ( NameSearchItem ) viewMapper ).textName.setText( item.getName( ) );
         ( ( NameSearchItem ) viewMapper ).textNameAddress.setText( Utils.addressReduction( item.getAddress( ) ) );
 
@@ -35,13 +35,13 @@ public class TransferAdapter extends AdvanceArrayAdapter< Planet > {
 
     class NameSearchItem extends ViewMapper {
 
-        PlanetView planet;
+        PlanetView planetView;
         TextView textName;
         TextView textNameAddress;
 
         public NameSearchItem( View itemView ) {
             super( itemView );
-            planet = findViewById( R.id.planet_item_transfer_name_search_planetview );
+            planetView = findViewById( R.id.planet_item_transfer_name_search_planetview );
             textName = findViewById( R.id.text_item_transfer_name_search_name );
             textNameAddress = findViewById( R.id.text_item_transfer_name_search_address );
         }

@@ -16,15 +16,15 @@ import io.grabity.planetwallet.Widgets.StretchImageView;
 
 public class TxAdapter extends AdvanceArrayAdapter< Tx > {
 
-    String planetAddress;
+    private String decimals;
 
     public TxAdapter( Context context, ArrayList< Tx > objects ) {
         super( context, objects );
     }
 
-    public TxAdapter( Context context, ArrayList< Tx > objects, String planetName ) {
+    public TxAdapter( Context context, ArrayList< Tx > objects, String decimals ) {
         super( context, objects );
-        this.planetAddress = planetName;
+        this.decimals = decimals;
     }
 
     @Override
@@ -35,19 +35,22 @@ public class TxAdapter extends AdvanceArrayAdapter< Tx > {
     @Override
     public void bindData( ViewMapper viewMapper, Tx item, int position ) {
 
+
         if ( Utils.equals( item.getStatus( ), C.transferStatus.PENDING ) ) {
             ( ( TxItem ) viewMapper ).imageStatusIcon.setImageResource( !getTheme( ) ? R.drawable.image_tx_list_pending_gray : R.drawable.image_tx_list_pending_blue );
             ( ( TxItem ) viewMapper ).textStatus.setText( "pending" );
-            ( ( TxItem ) viewMapper ).textBalance.setText( String.format( "-%s", Utils.moveLeftPoint( item.getAmount( ), 18 ) ) );
+            ( ( TxItem ) viewMapper ).textBalance.setText( String.format( "-%s", Utils.balanceReduction( Utils.toMaxUnit( ( int ) Math.abs( Double.valueOf( decimals ) ), item.getAmount( ) ) ) ) );
+
         } else if ( Utils.equals( item.getStatus( ), C.transferStatus.CONFIRMED ) ) {
-            ( ( TxItem ) viewMapper ).imageStatusIcon.setImageResource( Utils.equals( planetAddress, item.getFrom( ) ) ? R.drawable.image_tx_list_sent : R.drawable.image_tx_list_received );
-            ( ( TxItem ) viewMapper ).textStatus.setText( Utils.equals( planetAddress, item.getFrom( ) ) ? "Sent" : "Received" );
-            ( ( TxItem ) viewMapper ).textBalance.setText( Utils.equals( planetAddress, item.getFrom( ) ) ? String.format( "-%s", Utils.moveLeftPoint( item.getAmount( ), 18 ) ) : String.format( "%s", Utils.moveLeftPoint( item.getAmount( ), 18 ) ) );
-            if ( Utils.equals( planetAddress, item.getFrom( ) ) )
+            ( ( TxItem ) viewMapper ).imageStatusIcon.setImageResource( Utils.equals( item.getType( ), C.transferType.RECEIVED ) ? R.drawable.image_tx_list_received : R.drawable.image_tx_list_sent );
+            ( ( TxItem ) viewMapper ).textStatus.setText( Utils.equals( item.getType( ), C.transferType.RECEIVED ) ? "Received" : "Sent" );
+            ( ( TxItem ) viewMapper ).textBalance.setText( Utils.equals( item.getType( ), C.transferType.RECEIVED ) ? String.format( "%s", Utils.balanceReduction( Utils.toMaxUnit( ( int ) Math.abs( Double.valueOf( decimals ) ), item.getAmount( ) ) ) ) : String.format( "-%s", Utils.balanceReduction( Utils.toMaxUnit( ( int ) Math.abs( Double.valueOf( decimals ) ), item.getAmount( ) ) ) ) );
+
+            if ( Utils.equals( item.getType( ), C.transferType.RECEIVED ) )
                 ( ( TxItem ) viewMapper ).textBalance.setTextColor( Color.parseColor( "#00E291" ) );
         }
         ( ( TxItem ) viewMapper ).textSymbol.setText( item.getSymbol( ) );
-        ( ( TxItem ) viewMapper ).textCurrency.setText( String.format( "%s USD ", Utils.moveLeftPoint( item.getAmount( ), 18 ) ) );
+        ( ( TxItem ) viewMapper ).textCurrency.setText( String.format( "%s USD ", item.getAmount( ) ) );
 
     }
 

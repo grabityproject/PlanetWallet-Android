@@ -16,7 +16,6 @@ import io.grabity.planetwallet.MiniFramework.wallet.store.SearchStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.VO.Search;
 import io.grabity.planetwallet.VO.Transfer;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.FontTextView;
@@ -26,8 +25,6 @@ import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
-
-    //Todo 거래완료후 그 값을 이용해 setting
 
     private ViewMapper viewMapper;
     private Planet planet;
@@ -69,13 +66,14 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
-            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
-                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                amountViewSetting( erc20.getName( ) );
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
+                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
+                    amountViewSetting( erc20.getName( ) );
+                }
             } else {
                 amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
             }
-
 
             viewSetting( );
             searchSave( );
@@ -96,8 +94,6 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         viewMapper.groupAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
         viewMapper.textFromName.setText( planet.getName( ) );
         viewMapper.textFee.setText( transfer.getFee( ) );
-        //Todo node
-        viewMapper.textDate.setText( "2019. 06. 13 13:05:10" );
         viewMapper.btnTxHash.setText( transfer.getTxHash( ) );
         viewMapper.btnTxHash.underLine( );
 
@@ -121,12 +117,14 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
     private void searchSave( ) {
 
         if ( !Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) return;
-        Search search = new Search( );
-        search.setKeyId( planet.getKeyId( ) );
-        search.setAddress( transfer.getToAddress( ) );
-        search.setSymbol( getSerialize( C.bundleKey.ERC20 ) != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
-        search.setName( transfer.getToName( ) );
-        SearchStore.getInstance( ).save( search );
+        Planet searchPlanet = new Planet( );
+        searchPlanet.setKeyId( planet.getKeyId( ) );
+        searchPlanet.setAddress( transfer.getToAddress( ) );
+        searchPlanet.setName( transfer.getToName( ) );
+        searchPlanet.setSymbol( getSerialize( C.bundleKey.MAIN_ITEM ) != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
+        //date add
+
+        SearchStore.getInstance( ).save( searchPlanet );
 
     }
 
@@ -139,10 +137,8 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnTxHash ) {
-            //Todo 이더스캔 및 거래결과 확인
 
         } else if ( v == viewMapper.btnShare ) {
-            //Todo 공유기능
 
         } else if ( v == viewMapper.btnSubmit ) {
             super.onBackPressed( );

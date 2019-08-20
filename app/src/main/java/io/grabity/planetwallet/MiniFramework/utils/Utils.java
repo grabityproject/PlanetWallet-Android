@@ -68,6 +68,8 @@ import java.util.regex.Pattern;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
+import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.Widgets.FontTextView;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
@@ -1069,7 +1071,8 @@ public class Utils {
     public static String balanceReduction( String balance ) {
         if ( balance == null ) return "";
         if ( balance.length( ) <= 8 ) return balance;
-        return balance.substring( 0, 8 );
+        return new BigDecimal( balance.substring( 0, 8 ) ).stripTrailingZeros( ).toString( );
+//        return balance.substring( 0, 8 );
     }
 
     public static void addressForm( View v, String address ) {
@@ -1197,19 +1200,61 @@ public class Utils {
 
     public static String moveLeftPoint( String s, int leftPoint ) {
         if ( s == null || leftPoint < 0 ) return "";
-        return new BigDecimal( s ).movePointLeft( leftPoint ).stripTrailingZeros( ).toString( );
+        return new BigDecimal( s ).movePointLeft( leftPoint ).toString( );
     }
 
     public static String moveRightPoint( String s, int rightPoint ) {
         if ( s == null || rightPoint < 0 ) return "";
-        return new BigDecimal( s ).movePointRight( rightPoint ).stripTrailingZeros( ).toString( );
+        return new BigDecimal( s ).movePointRight( rightPoint ).toString( );
+    }
+
+    public static String ofZeroClear( String s ) {
+        if ( s == null ) return "";
+        return new BigDecimal( s ).stripTrailingZeros( ).toString( );
     }
 
     public static String feeCalculation( String strPrice, String strLimit ) {
         if ( strPrice == null || strLimit == null ) return "";
         BigDecimal price = new BigDecimal( strPrice );
         BigDecimal limit = new BigDecimal( strLimit );
-        return limit.multiply( price ).stripTrailingZeros( ).toString( );
+        return price.multiply( limit ).stripTrailingZeros( ).toString( );
+    }
+
+
+    public static String toMaxUnit( int precision, String balance ) {
+        if ( balance == null || precision < 0 ) return "";
+        if ( balance.equals( "0" ) ) return "0";
+        return moveLeftPoint( balance, precision );
+    }
+
+    public static String toMaxUnit( CoinType coinType, String balance ) {
+        return toMaxUnit( coinType.getPrecision( ), balance );
+    }
+
+    public static String toMaxUnit( MainItem item, String balance ) {
+        if ( Utils.equals( item.getClass( ), ERC20.class ) ) {
+            ERC20 erc20 = ( ERC20 ) item;
+            if ( erc20.getDecimals( ) == null ) return balance;
+            return toMaxUnit( ( int ) Math.abs( Double.valueOf( erc20.getDecimals( ) ) ), balance );
+        } else {
+            return toMaxUnit( CoinType.of( item.getCoinType( ) ), balance );
+        }
+
+    }
+
+    public static String convertUnit( String value, int from, int to ) {
+        if ( value == null || from < 0 || to < 0 ) return "";
+        if ( from == to ) return value;
+        if ( from < to ) return moveLeftPoint( value, to - from );
+        return moveRightPoint( value, from - to );
+    }
+
+    public static String firstUpperCase( String s ) {
+        if ( s == null || s.length( ) == 0 ) return "";
+        String ss = s.substring( 0, 1 );
+        String sss = s.substring( 1 );
+
+        return ss.toUpperCase( ) + sss;
     }
 
 

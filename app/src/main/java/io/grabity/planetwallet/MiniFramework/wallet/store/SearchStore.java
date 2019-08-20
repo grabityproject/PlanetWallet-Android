@@ -3,7 +3,7 @@ package io.grabity.planetwallet.MiniFramework.wallet.store;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
-import io.grabity.planetwallet.VO.Search;
+import io.grabity.planetwallet.VO.Planet;
 
 public class SearchStore {
 
@@ -16,28 +16,31 @@ public class SearchStore {
         return instance;
     }
 
-    public ArrayList< Search > getSearchList( String keyId ) {
+    public ArrayList< Planet > getSearchList( String keyId ) {
         return getSearchList( keyId, null );
     }
 
-    public ArrayList< Search > getSearchList( String keyId, String symbol ) {
+    public ArrayList< Planet > getSearchList( String keyId, String symbol ) {
         if ( symbol == null ) {
-            return PWDBManager.getInstance( ).select( Search.class, "Search", "keyId='" + keyId + "'" + " ORDER BY _id DESC", null );
+            return PWDBManager.getInstance( ).select( Planet.class, "Search", "keyId='" + keyId + "'" + " ORDER BY _id DESC", null );
         } else {
-            return PWDBManager.getInstance( ).select( Search.class, "Search", "keyId='" + keyId + "'" + " AND " + "symbol='" + symbol + "'" + " ORDER BY _id DESC", null );
+            return PWDBManager.getInstance( ).select( Planet.class, "Search", "keyId='" + keyId + "'" + " AND " + "symbol='" + symbol + "'" + " ORDER BY _id DESC", null );
         }
     }
 
-    public void save( Search search ) {
+    public void save( Planet planet ) {
 
-        if ( PWDBManager.getInstance( ).select( Search.class, "Search", "keyId='" + search.getKeyId( ) + "'" + " AND " + "name='" + search.getName( ) + "'" + " AND " + "symbol='" + search.getSymbol( ) + "'", null ).size( ) == 0 ) {
-            PWDBManager.getInstance( ).insertData( search );
+        if ( PWDBManager.getInstance( ).select( Planet.class, "Search", "keyId='" + planet.getKeyId( ) + "'" + " AND " + "name='" + planet.getName( ) + "'" + " AND " + "symbol='" + planet.getSymbol( ) + "'", null ).size( ) == 0 ) {
+            PWDBManager.getInstance( ).insertData( "Search", planet );
+        } else {
+            this.delete( planet );
+            PWDBManager.getInstance( ).insertData( "Search", planet );
         }
 
     }
 
-    public void delete( Search search ) {
-        PWDBManager.getInstance( ).deleteData( search );
+    public void delete( Planet planet ) {
+        PWDBManager.getInstance( ).deleteData( "Search", planet, "keyId='" + planet.getKeyId( ) + "'" + " AND " + "address='" + planet.getAddress( ) + "'" + " AND " + "symbol='" + planet.getSymbol( ) + "'" );
     }
 
 }

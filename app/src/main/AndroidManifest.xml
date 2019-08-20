@@ -172,6 +172,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
+        <activity
+            android:name=".Views.p8_Tx.Activity.DetailAddressActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
