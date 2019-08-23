@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.Widgets.Themeable;
 
@@ -270,7 +269,6 @@ public class AdvanceRecyclerView extends RecyclerView implements Themeable {
             super.onScrolled( recyclerView, dx, dy );
             scrollX += dx;
             scrollY += dy;
-            PLog.e( scrollY );
             if ( onScrollListeners != null ) {
                 for ( OnScrollListener listener : onScrollListeners ) {
                     listener.onScrolled( recyclerView, dx, dy, scrollX, scrollY );

@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="70dp"
         android:paddingStart="20dp"
         android:paddingEnd="18dp">
 
@@ -37,7 +37,6 @@
             android:layout_toRightOf="@id/planet_item_transfer_name_search_planetview"
             android:paddingStart="20dp"
             android:textSize="14dp"
-            android:text="0x5632...123f"
             android:textColor="#5C5964"
             app:themeTextColor="#AAAAAA" />
 

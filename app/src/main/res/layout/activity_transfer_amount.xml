@@ -75,7 +75,9 @@
         app:typefaceStyle="semibold"
         android:layout_below="@id/group_toolBar"
         android:gravity="center"
-        android:paddingTop="50dp" />
+        android:paddingTop="50dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"/>
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_transfer_amount_amount"
@@ -87,7 +89,9 @@
         app:typefaceStyle="medium"
         android:layout_below="@id/text_transfer_amount_balance"
         android:gravity="center"
-        android:paddingTop="44dp" />
+        android:paddingTop="44dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"/>
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_transfer_amount_amount_usd"

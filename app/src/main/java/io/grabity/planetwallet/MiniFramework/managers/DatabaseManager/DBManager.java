@@ -143,6 +143,8 @@ public abstract class DBManager {
                         if ( methodName.substring( 3 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
                             Object item = method.invoke( object );
                             if ( item != null ) {
+
+
                                 contentValues.put( field.getName( ), String.valueOf( item ) );
                             }
                             break;

@@ -272,13 +272,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         setEnterTransition( );
     }
 
-    public void sendAction( String uri ) {
-        Intent intent = new Intent( Intent.ACTION_VIEW );
-        intent.setData( Uri.parse( uri ) );
-        startActivity( putTransitionToBundle( intent, transition ) );
-        setEnterTransition( );
-    }
-
     public void sendAction( Class< ? > targetClass, Bundle bundle, int... flags ) {
         Intent intent = new Intent( this, targetClass );
         if ( bundle != null ) intent.putExtras( bundle );
@@ -299,6 +292,13 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         intent.putExtras( bundle );
         for ( int f : flags ) intent.addFlags( f );
         startActivityForResult( putTransitionToBundle( intent, transition ), requestCode );
+        setEnterTransition( );
+    }
+
+    public void sendActionUri( String uri ) {
+        Intent intent = new Intent( Intent.ACTION_VIEW );
+        intent.setData( Uri.parse( uri ) );
+        startActivity( putTransitionToBundle( intent, transition ) );
         setEnterTransition( );
     }
 

@@ -89,11 +89,11 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
 
-            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.ERC20 ) != null ) {
-                erc20 = ( ERC20 ) getSerialize( C.bundleKey.ERC20 );
-                viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), Utils.balanceReduction( Utils.moveLeftPoint( erc20.getBalance( ), 18 ) ) ) );
+            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+                erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
+                viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), Utils.ofZeroClear( Utils.toMaxUnit( erc20, erc20.getBalance( ) ) ) ) );
             } else {
-                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.balanceReduction( Utils.moveLeftPoint( planet.getBalance( ), 18 ) ) ) );
+                viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.ofZeroClear( Utils.toMaxUnit( CoinType.of( planet.getCoinType( ) ), planet.getBalance( ) ) ) ) );
             }
 
             getBalance( );
@@ -106,7 +106,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
 
     private void getBalance( ) {
         if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-            if ( getSerialize( C.bundleKey.ERC20 ) != null ) { //ERC20
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) { //ERC20
                 new Get( this ).setDeviceKey( C.DEVICE_KEY )
                         .action( Route.URL( "balance", erc20.getSymbol( ), planet.getName( ) ), 0, 1, null );
             } else { // ETH
@@ -130,11 +130,11 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                     if ( resultCode == 0 ) {
                         Planet p = ( Planet ) returnVO.getResult( );
                         planet.setBalance( p.getBalance( ) );
-                        viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.balanceReduction( Utils.moveLeftPoint( planet.getBalance( ), 18 ) ) ) );
+                        viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.ofZeroClear( Utils.toMaxUnit( CoinType.of( planet.getCoinType( ) ), planet.getBalance( ) ) ) ) );
                     } else if ( resultCode == 1 ) {
                         ERC20 e = ( ERC20 ) returnVO.getResult( );
                         erc20.setBalance( e.getBalance( ) );
-                        viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), Utils.balanceReduction( Utils.moveLeftPoint( erc20.getBalance( ), 18 ) ) ) );
+                        viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), Utils.ofZeroClear( Utils.toMaxUnit( erc20, erc20.getBalance( ) ) ) ) );
                     }
                 }
             }
@@ -165,9 +165,9 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
 
             } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
 
-                if ( getSerialize( C.bundleKey.ERC20 ) != null ) {
+                if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
                     bundle.putSerializable( C.bundleKey.PLANET, planet );
-                    bundle.putSerializable( C.bundleKey.ERC20, erc20 );
+                    bundle.putSerializable( C.bundleKey.MAIN_ITEM, erc20 );
                 } else {
                     bundle.putSerializable( C.bundleKey.PLANET, planet );
                 }
@@ -187,9 +187,6 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             }
             setAmount( );
         } else if ( v instanceof FontTextView ) {
-
-            //Todo 임시 자릿수 제한 10자리
-            if ( amount.size( ) >= 10 ) return;
 
             inputAmountCheck( ( ( FontTextView ) v ).getText( ).toString( ) );
             setAmount( );
@@ -235,13 +232,16 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 return false;
             }
 
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                return balanceCheck( planet.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
 
-                return balanceCheck( getSerialize( C.bundleKey.ERC20 ) != null ? erc20.getBalance( ) : planet.getBalance( ), viewMapper.textAmount.getText( ).toString( ) );
-
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
+                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
+                    return balanceCheck( Utils.toMaxUnit( erc20, erc20.getBalance( ) ), viewMapper.textAmount.getText( ).toString( ) );
+                }
+            } else {
+                return balanceCheck( Utils.toMaxUnit( CoinType.of( planet.getCoinType( ) ), planet.getBalance( ) ), viewMapper.textAmount.getText( ).toString( ) );
             }
+
             return false;
         }
     }

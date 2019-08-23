@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Tx implements Serializable {
 
+    String type;
     String id;
     String tx_id;
     String contract;
@@ -21,9 +22,16 @@ public class Tx implements Serializable {
     String status;
     String to_planet;
     String from_planet;
-
     String created_at;
     String updated_at;
+
+    public String getType( ) {
+        return type;
+    }
+
+    public void setType( String type ) {
+        this.type = type;
+    }
 
 
     public String getAmount( ) {
@@ -170,4 +178,5 @@ public class Tx implements Serializable {
     public void setUpdated_at( String updated_at ) {
         this.updated_at = updated_at;
     }
+
 }

@@ -180,7 +180,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
             erc20.setKeyId( planet.getKeyId( ) );
             erc20.setContract( item.getContract( ) );
             erc20.setSymbol( item.getSymbol( ) );
-            erc20.setDecimal( item.getDecimal( ) );
+            erc20.setDecimals( item.getDecimals( ) );
             erc20.setName( item.getName( ) );
             erc20.setImg_path( item.getImg_path( ) );
             erc20.setHide( item.isCheck( ) ? "N" : "Y" );

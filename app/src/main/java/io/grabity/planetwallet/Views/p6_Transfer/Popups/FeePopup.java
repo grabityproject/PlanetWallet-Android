@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
@@ -103,7 +102,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         limitBuffer = new StringBuffer( );
 
         viewMapper.textGasPrice.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI );
-        viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( ) );
+        viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT );
 
         setList( price, viewMapper.textGasPrice );
         setList( limit, viewMapper.textGasLimit );
@@ -208,7 +207,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
                     setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
                 }
                 if ( viewMapper.textGasLimit.getText( ).length( ) == 0 ) {
-                    viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( ) );
+                    viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT );
                     setList( limit, viewMapper.textGasLimit );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                 }
@@ -225,20 +224,11 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
                 if ( !isERC ? Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 : Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 100000 ) {
 
                     Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_limit_least_title ), Toast.LENGTH_SHORT ).show( );
-                    viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT.toString( ) : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT.toString( ) );
+                    viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT );
                     setList( limit, viewMapper.textGasLimit );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                     return;
-                }
-
-//                    if ( Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 ) {
-//                        Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_limit_least_title ), Toast.LENGTH_SHORT ).show( );
-//                        viewMapper.textGasLimit.setText( "21000" );
-//                        setList( limit, viewMapper.textGasLimit );
-//                        setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
-//                        return;
-//                    }
-                else if ( Integer.valueOf( viewMapper.textGasPrice.getText( ).toString( ) ) < 1 ) {
+                } else if ( Integer.valueOf( viewMapper.textGasPrice.getText( ).toString( ) ) < 1 ) {
                     Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_price_least_title ), Toast.LENGTH_SHORT ).show( );
                     viewMapper.textGasPrice.setText( "1" );
                     setList( price, viewMapper.textGasPrice );
@@ -254,13 +244,10 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         } else {
             if ( v instanceof FontTextView ) {
                 if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasPrice ) {
-
-                    //Todo 자릿수 제한 2
                     if ( price.size( ) >= 2 ) return;
                     price.add( ( ( FontTextView ) v ).getText( ).toString( ) );
                     setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
                 } else if ( getActivity( ).getCurrentFocus( ) == viewMapper.groupGasLimit ) {
-                    //Todo limit 자릿수 제한 6
                     if ( limit.size( ) >= 6 ) return;
                     limit.add( ( ( FontTextView ) v ).getText( ).toString( ) );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
@@ -308,9 +295,9 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
     private void feeCalculation( ) {
         if ( viewMapper.textGasLimit.getText( ).length( ) != 0 && viewMapper.textGasPrice.getText( ).length( ) != 0 ) {
-            BigDecimal price = new BigDecimal( viewMapper.textGasPrice.getText( ).toString( ) ).movePointLeft( 9 );
-            BigDecimal limit = new BigDecimal( viewMapper.textGasLimit.getText( ).toString( ) );
-            viewMapper.textGasFee.setText( String.valueOf( limit.multiply( price ).stripTrailingZeros( ) ) );
+
+            viewMapper.textGasFee.setText( Utils.feeCalculation( Utils.convertUnit( viewMapper.textGasPrice.getText( ).toString( ), 9, 18 ), viewMapper.textGasLimit.getText( ).toString( ) ) );
+
         } else {
             viewMapper.textGasFee.setText( "0.0" );
         }

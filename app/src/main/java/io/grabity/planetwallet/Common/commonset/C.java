@@ -91,6 +91,11 @@ public class C {
         public final static String CONFIRMED = "confirmed";
     }
 
+    public static class transferType{
+        public final static String RECEIVED = "received";
+        public final static String SENT = "sent";
+    }
+
     public static class theme {
 
         public final static String DARK = "DARK";

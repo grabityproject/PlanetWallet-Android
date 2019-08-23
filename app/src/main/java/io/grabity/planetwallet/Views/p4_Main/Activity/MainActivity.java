@@ -418,9 +418,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onTokenBalance( Planet p, ArrayList< MainItem > tokenList ) {
         if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
             viewMapper.overScrollWrapper.completeRefresh( );
-            Utils.postDelayed( ( ) -> viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) ) ), 300 );
+            Utils.postDelayed( ( ) -> Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( ), 300 );
         } else {
-            viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) ) );
+            Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
         }
 
     }

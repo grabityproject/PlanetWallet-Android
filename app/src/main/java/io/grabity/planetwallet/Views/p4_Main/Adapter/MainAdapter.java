@@ -40,7 +40,7 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
 
             ETH eth = ( ETH ) item;
             ( ( ETHItem ) viewMapper ).textName.setText( CoinType.ETH.name( ) );
-            ( ( ETHItem ) viewMapper ).textBalance.setText( eth.getBalance( ) );
+            ( ( ETHItem ) viewMapper ).textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( eth, eth.getBalance( ) ) ) );
             //todo 화폐단위 임시고정
             ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", eth.getBalance( ) ) );
 
@@ -49,7 +49,7 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
             ERC20 erc20 = ( ERC20 ) item;
             ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), ( ( ETHItem ) viewMapper ).imageIcon );
             ( ( ETHItem ) viewMapper ).textName.setText( erc20.getSymbol( ) );
-            ( ( ETHItem ) viewMapper ).textBalance.setText( erc20.getBalance( ) );
+            ( ( ETHItem ) viewMapper ).textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( erc20, erc20.getBalance( ) ) ) );
             //todo 화폐단위 임시고정
             ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", erc20.getBalance( ) ) );
 
@@ -73,22 +73,5 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
             textPrice = findViewById( R.id.text_item_main_eth_currency );
         }
     }
-
-    class BTCItem extends ViewMapper {
-
-        StretchImageView imageIcon;
-        TextView textName;
-        TextView textBalance;
-        TextView textTime;
-
-        public BTCItem( View itemView ) {
-            super( itemView );
-            imageIcon = findViewById( R.id.image_item_main_btc_arrow );
-            textName = findViewById( R.id.text_item_main_btc_name );
-            textTime = findViewById( R.id.text_item_main_btc_time );
-            textBalance = findViewById( R.id.text_item_main_btc_balance );
-        }
-    }
-
 
 }

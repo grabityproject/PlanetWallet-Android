@@ -31,6 +31,10 @@ public class Planet implements Serializable {
 
     private ArrayList< MainItem > items;
 
+    private Integer date;
+
+
+
     public Planet( ) {
 
     }
@@ -185,12 +189,19 @@ public class Planet implements Serializable {
     }
 
     public String getBalance( ) {
-        if ( balance == null ) return "0";
         return balance;
     }
 
     public void setBalance( String balance ) {
         this.balance = balance;
+    }
+
+    public Integer getDate( ) {
+        return date;
+    }
+
+    public void setDate( Integer date ) {
+        this.date = date;
     }
 
     @Override

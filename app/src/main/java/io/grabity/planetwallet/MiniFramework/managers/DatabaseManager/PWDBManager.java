@@ -25,9 +25,9 @@ public class PWDBManager extends DBManager {
         return "TESSss2C_DATABASE";
     }
 
-    @Override                                    //5
+    @Override                                    //7
     protected int getDatabaseVersion( ) {
-        return 7;
+        return 8;
     }
 
     @Override
@@ -74,7 +74,6 @@ public class PWDBManager extends DBManager {
                 "symbol TEXT" +
                 ")";
 
-
         db.execSQL( createPlanetTable );
         db.execSQL( createERC20Table );
         db.execSQL( keyPairTable );
@@ -94,7 +93,8 @@ public class PWDBManager extends DBManager {
 //                ")";
 //        db.execSQL( SearchTable );
 
-
+        String updateSearch = "ALTER TABLE Search ADD COLUMN date INTEGER DEFAULT 0";
+        db.execSQL( updateSearch );
     }
 
 }

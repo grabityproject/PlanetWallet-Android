@@ -51,6 +51,15 @@
             android:src="@drawable/image_search_white"
             android:visibility="invisible"
             app:themeSrc="@drawable/image_search_black" />
+        
+        <io.grabity.planetwallet.Widgets.StretchImageView
+            android:id="@+id/btn_transfer_clip"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/image_transfer_copy_paste"
+            android:visibility="gone"
+            android:padding="8dp"/>
 
         <io.grabity.planetwallet.Widgets.CircleImageView
             android:id="@+id/btn_transfer_clear"
@@ -82,20 +91,6 @@
         android:layout_below="@id/group_transfer_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <io.grabity.planetwallet.Widgets.FontTextView
-        android:id="@+id/btn_transfer_clip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14dp"
-        android:textColor="#FF0050"
-        app:themeTextColor="#FF0050"
-        android:text="@string/transfer_clip_board_title"
-        android:layout_below="@id/group_transfer_search"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:visibility="gone"
-        app:underLine="Line" />
 
     <io.grabity.planetwallet.Widgets.FontTextView
         android:id="@+id/text_transfer_noitem"
