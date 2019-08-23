@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 public class Tx implements Serializable {
 
+    String _id;
+    String keyId;
     String type;
-    String id;
     String tx_id;
     String contract;
     String to;
@@ -18,12 +19,22 @@ public class Tx implements Serializable {
     String coin;
     String symbol;
     String rawTransaction;
-    //    String utxos;
+    String utxos;
     String status;
     String to_planet;
     String from_planet;
     String created_at;
     String updated_at;
+    String decimals;
+
+
+    public String getKeyId( ) {
+        return keyId;
+    }
+
+    public void setKeyId( String keyId ) {
+        this.keyId = keyId;
+    }
 
     public String getType( ) {
         return type;
@@ -59,12 +70,12 @@ public class Tx implements Serializable {
         this.symbol = symbol;
     }
 
-    public String getId( ) {
-        return id;
+    public String get_id( ) {
+        return _id;
     }
 
-    public void setId( String id ) {
-        this.id = id;
+    public void set_id( String _id ) {
+        this._id = _id;
     }
 
     public String getTx_id( ) {
@@ -179,4 +190,19 @@ public class Tx implements Serializable {
         this.updated_at = updated_at;
     }
 
+    public String getDecimals( ) {
+        return decimals;
+    }
+
+    public void setDecimals( String decimals ) {
+        this.decimals = decimals;
+    }
+
+    public String getUtxos( ) {
+        return utxos;
+    }
+
+    public void setUtxos( String utxos ) {
+        this.utxos = utxos;
+    }
 }

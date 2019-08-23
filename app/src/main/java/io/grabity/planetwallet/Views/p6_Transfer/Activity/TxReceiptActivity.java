@@ -122,8 +122,8 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         searchPlanet.setAddress( transfer.getToAddress( ) );
         searchPlanet.setName( transfer.getToName( ) );
         searchPlanet.setSymbol( getSerialize( C.bundleKey.MAIN_ITEM ) != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
-        //date add
-
+        searchPlanet.setCoinType( planet.getCoinType( ) );
+        searchPlanet.setDate( String.valueOf( System.currentTimeMillis( ) ) );
         SearchStore.getInstance( ).save( searchPlanet );
 
     }

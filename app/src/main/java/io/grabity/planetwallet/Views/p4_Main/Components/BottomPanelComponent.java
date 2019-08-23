@@ -32,7 +32,9 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
     private Planet planet;
     private MainItem mainItem;
 
-    private int tokenIndex = 0;
+    public int tokenIndex = 0;
+
+    private LauncherChangeListener launcherChangeListener;
 
     public BottomPanelComponent( PlanetWalletActivity activity ) {
         super( activity );
@@ -69,9 +71,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
     }
 
     public void setPlanet( Planet planet ) {
-
         if ( planet != null ) {
-
             if ( Utils.equals( CoinType.of( planet.getCoinType( ) ), CoinType.BTC ) ) { // BTC Panel Data mapping
 
                 BTC item = new BTC( );
@@ -109,7 +109,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
                         } else if ( Utils.equals( CoinType.of( mainItem.getCoinType( ) ), CoinType.ERC20 ) ) { // ETH Planet current Viewing ERC20
                             try {
                                 setMainItem( planet.getItems( ).get( tokenIndex ) );
-                            } catch ( IndexOutOfBoundsException e ) {
+                            } catch ( IndexOutOfBoundsException | NullPointerException e ) {
                                 ETH item = new ETH( );
                                 item.setBalance( planet.getBalance( ) );
 
@@ -141,6 +141,9 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
                 viewMapper.btnNext.setVisibility( View.GONE );
 
+                launcherChangeListener.isChange( CoinType.BTC.getCoinName( ), null );
+
+
             } else if ( Utils.equals( mainItem.getClass( ), ETH.class ) ) {
 
                 ETH item = ( ETH ) mainItem;
@@ -155,6 +158,8 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
                 tokenIndex = 0;
 
+                launcherChangeListener.isChange( CoinType.ETH.getCoinName( ), null );
+
             } else if ( Utils.equals( mainItem.getClass( ), ERC20.class ) ) {
 
                 ERC20 item = ( ERC20 ) mainItem;
@@ -167,6 +172,9 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
                 viewMapper.textUnit.setText( item.getSymbol( ) );
 
                 viewMapper.btnNext.setVisibility( View.VISIBLE );
+
+                launcherChangeListener.isChange( item.getName( ), item );
+
 
             }
 
@@ -203,6 +211,9 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
             if ( Utils.equals( CoinType.of( planet.getItems( ).get( i ).getCoinType( ) ), CoinType.ETH ) ) {
 
+                launcherChangeListener.isChange( CoinType.ETH.getCoinName( ), null );
+
+
                 setMainItem( planet.getItems( ).get( i ) );
                 changed = true;
                 break;
@@ -211,6 +222,9 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
                 tokenIndex = i;
                 if ( !( ( ERC20 ) planet.getItems( ).get( i ) ).getBalance( ).equals( "0" ) ) {
+
+                    launcherChangeListener.isChange( ( ( ERC20 ) planet.getItems( ).get( i ) ).getName( ), planet.getItems( ).get( i ) );
+
                     setMainItem( planet.getItems( ).get( i ) );
                     changed = true;
                     break;
@@ -243,6 +257,14 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
                 PLog.e( "image width or height is 0" );
             }
         }
+    }
+
+    public interface LauncherChangeListener {
+        void isChange( String coinName, MainItem item );
+    }
+
+    public void setBottomNextClickListener( LauncherChangeListener launcherChangeListener ) {
+        this.launcherChangeListener = launcherChangeListener;
     }
 
     class ViewMapper {

@@ -8,9 +8,12 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.ViewComponent;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferActivity;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
@@ -19,7 +22,7 @@ import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class BottomLauncherComponent extends ViewComponent implements SlideDrawerLayout.OnSlideDrawerListener {
+public class BottomLauncherComponent extends ViewComponent implements SlideDrawerLayout.OnSlideDrawerListener, BottomPanelComponent.LauncherChangeListener {
 
     private ViewMapper viewMapper;
     private BottomPanelComponent bottomPanelComponent;
@@ -28,11 +31,13 @@ public class BottomLauncherComponent extends ViewComponent implements SlideDrawe
 
     private float dp20;
     private Planet planet;
+    private ERC20 erc20;
 
     public BottomLauncherComponent( PlanetWalletActivity activity, SlideDrawerLayout slideDrawerLayout ) {
         super( activity );
 
         bottomPanelComponent = new BottomPanelComponent( getActivity( ) );
+        bottomPanelComponent.setBottomNextClickListener( this );
         dp20 = Utils.dpToPx( getActivity( ), 20 );
 
         this.viewMapper = new ViewMapper( );
@@ -61,9 +66,13 @@ public class BottomLauncherComponent extends ViewComponent implements SlideDrawe
             CustomToast.makeText( getActivity( ), getActivity( ).localized( R.string.main_copy_to_clipboard ) ).show( );
 
         } else if ( v == viewMapper.btnTransfer ) {
-
             slideDrawerLayout.close( );
-            Utils.postDelayed( ( ) -> getActivity( ).setTransition( PlanetWalletActivity.Transition.SLIDE_SIDE ).sendAction( TransferActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) ), 250 );
+            if ( bottomPanelComponent.tokenIndex == 0 ) {
+                Utils.postDelayed( ( ) -> getActivity( ).setTransition( PlanetWalletActivity.Transition.SLIDE_SIDE ).sendAction( TransferActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) ), 250 );
+            } else {
+                Utils.postDelayed( ( ) -> getActivity( ).setTransition( PlanetWalletActivity.Transition.SLIDE_SIDE ).sendAction( TransferActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, erc20 ) ) ), 250 );
+            }
+
 
         }
     }
@@ -72,7 +81,7 @@ public class BottomLauncherComponent extends ViewComponent implements SlideDrawe
         this.planet = planet;
         bottomPanelComponent.setPlanet( planet );
         viewMapper.barcodeView.setData( planet.getAddress( ) );
-        viewMapper.textCoinName.setText( CoinType.of( planet.getCoinType( ) ).getCoinName( ) );
+//        viewMapper.textCoinName.setText( CoinType.of( planet.getCoinType( ) ).getCoinName( ) );
         viewMapper.textPlanetName.setText( planet.getName( ) );
         viewMapper.textAddress.setText( planet.getAddress( ) );
     }
@@ -85,6 +94,19 @@ public class BottomLauncherComponent extends ViewComponent implements SlideDrawe
     public void updateBlurView( boolean theme ) {
         if ( bottomPanelComponent != null ) {
             bottomPanelComponent.updateBlurView( theme );
+        }
+    }
+
+
+    @Override
+    public void isChange( String coinName, MainItem item ) {
+        if ( item == null ) {
+            viewMapper.textCoinName.setText( coinName );
+        } else {
+            if ( Utils.equals( item.getClass( ), ERC20.class ) ) {
+                erc20 = ( ERC20 ) item;
+            }
+            viewMapper.textCoinName.setText( coinName );
         }
     }
 

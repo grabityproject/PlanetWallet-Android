@@ -25,7 +25,7 @@ public class PWDBManager extends DBManager {
         return "TESSss2C_DATABASE";
     }
 
-    @Override                                    //7
+    @Override
     protected int getDatabaseVersion( ) {
         return 8;
     }
@@ -71,7 +71,8 @@ public class PWDBManager extends DBManager {
                 "keyId TEXT," +
                 "name TEXT," +
                 "address TEXT," +
-                "symbol TEXT" +
+                "symbol TEXT," +
+                "date INTEGER DEFAULT 0"+
                 ")";
 
         db.execSQL( createPlanetTable );
@@ -84,17 +85,7 @@ public class PWDBManager extends DBManager {
     @Override
     protected void updateDatabase( SQLiteDatabase db, int oldVersion, int newVersion ) {
 
-//        String SearchTable = "CREATE TABLE Search( " +
-//                "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-//                "keyId TEXT," +
-//                "name TEXT," +
-//                "address TEXT," +
-//                "symbol TEXT" +
-//                ")";
-//        db.execSQL( SearchTable );
 
-        String updateSearch = "ALTER TABLE Search ADD COLUMN date INTEGER DEFAULT 0";
-        db.execSQL( updateSearch );
     }
 
 }

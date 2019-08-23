@@ -14,6 +14,7 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
@@ -24,6 +25,7 @@ import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
+import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.VO.Tx;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletAddActivity;
@@ -60,8 +62,10 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     private RefreshAnimationComponent refreshAnimationComponent;
 
     private ArrayList< Planet > planetList;
+    private ArrayList< Tx > btcTxList;
 
     private Planet selectedPlanet;
+    private TxAdapter adapter;
 
 
     private long backPressedTime = 0;
@@ -167,8 +171,16 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                 viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) == null ? new ArrayList<>( ) : selectedPlanet.getItems( ) ) );
 
             } else if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
+                String btcPrefTx = Utils.getPreferenceData( this, Utils.prefTxKey( CoinType.of( selectedPlanet.getCoinType( ) ).getDefaultUnit( ), selectedPlanet.getSymbol( ), selectedPlanet.getKeyId( ) ) );
+                PLog.e( "btcPrefTx : " + btcPrefTx );
+                if ( !Utils.equals( btcPrefTx, "" ) ) {
+                    ReturnVO returnVO = Utils.jsonToVO( btcPrefTx, ReturnVO.class, Tx.class );
+                    if ( returnVO.isSuccess( ) ) {
+                        btcTxList = ( ArrayList< Tx > ) returnVO.getResult( );
+                    }
 
-                viewMapper.listMain.setAdapter( new TxAdapter( this, new ArrayList<>( ) ) );
+                }
+                viewMapper.listMain.setAdapter( adapter = new TxAdapter( this, btcTxList == null ? new ArrayList<>( ) : btcTxList ) );
 
             }
 
@@ -423,16 +435,23 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
         }
 
+
     }
 
     @Override
-    public void onTxList( Planet p, ArrayList< Tx > txList ) {
+    public void onTxList( Planet p, ArrayList< Tx > txList, String result ) {
+        Utils.setPreferenceData( this, Utils.prefTxKey( CoinType.of( p.getCoinType( ) ).getDefaultUnit( ), p.getSymbol( ), p.getKeyId( ) ), result );
+
         if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
             viewMapper.overScrollWrapper.completeRefresh( );
-            Utils.postDelayed( ( ) -> viewMapper.listMain.setAdapter( new TxAdapter( this, txList ) ), 300 );
+            adapter.setObjects( txList );
+            Utils.postDelayed( ( ) -> Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyItemRangeChanged( 1, txList.size( ) ), 300 );
         } else {
-            viewMapper.listMain.setAdapter( new TxAdapter( this, txList ) );
+            adapter.setObjects( txList );
+            Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyItemRangeChanged( 1, txList.size( ) );
         }
+
+
     }
 
 

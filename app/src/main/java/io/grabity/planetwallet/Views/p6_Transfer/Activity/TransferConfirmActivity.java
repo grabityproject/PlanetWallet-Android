@@ -92,15 +92,18 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
-            new Get( this ).action( Route.URL( "gas" ), 0, 0, null );
+            if ( !Utils.equals( planet.getCoinType( ), CoinType.BTC.getCoinType( ) ) ) {
+                new Get( this ).action( Route.URL( "gas" ), 0, 0, null );
+            }
 
-            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
-                viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, erc20.getName( ) ) );
-                amountViewSetting( erc20.getName( ) );
 
-                isERC = true;
-
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
+                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
+                    viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, erc20.getName( ) ) );
+                    amountViewSetting( erc20.getName( ) );
+                    isERC = true;
+                }
             } else {
                 viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
                 amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
@@ -181,9 +184,10 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     void viewSetting( ) {
         viewMapper.groupPlanet.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ? View.VISIBLE : View.GONE );
         viewMapper.groupAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
-        viewMapper.groupSeekBar.setVisibility( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? View.VISIBLE : View.GONE );
         viewMapper.groupFeeOption.setVisibility( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? View.VISIBLE : View.GONE );
         viewMapper.textFromName.setText( planet.getName( ) );
+        viewMapper.seekBar.setMax( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? 3 : 2 );
+
         if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
             viewMapper.planetView.setData( transfer.getToAddress( ) );
             viewMapper.textPlanetName.setText( transfer.getToName( ) );
@@ -228,6 +232,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             //reset fee
             viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 2 ) ) );
             viewMapper.seekBar.setProgress( 2 );
+
 
             gasPriceAndLimitSetting( 2, isERC );
 
@@ -343,13 +348,19 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {
-        if ( fee.get( progress ) == null ) {
-            viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), ETHGasProvider.ETH_DEFAULT_FEE ) );
-            return;
+
+        if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
+            if ( fee.get( progress ) == null ) {
+                viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), ETHGasProvider.ETH_DEFAULT_FEE ) );
+                return;
+            }
+            viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( progress ) ) );
+            gasPriceAndLimitSetting( progress, isERC );
+        } else {
+            PLog.e( "BTC" );
         }
-        PLog.e( "gas check : " + fee.get( progress ) );
-        viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( progress ) ) );
-        gasPriceAndLimitSetting( progress, isERC );
+
+
     }
 
     @Override

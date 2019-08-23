@@ -67,24 +67,27 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
     }
 
     void setUpView( ) {
-        Utils.addressForm( viewMapper.textAddress, tx.getTo( ) );
+        Utils.addressForm( viewMapper.textAddress, tx.getFrom( ) );
         viewMapper.toolBar.setTitle( Utils.equals( tx.getStatus( ), C.transferStatus.PENDING ) ? "Pending" : Utils.firstUpperCase( tx.getType( ) ) );
-        viewMapper.groupPlanet.setVisibility( tx.getTo_planet( ) != null ? View.VISIBLE : View.GONE );
-        viewMapper.groupAddress.setVisibility( tx.getTo_planet( ) != null ? View.GONE : View.VISIBLE );
+        viewMapper.groupPlanet.setVisibility( tx.getFrom_planet( ) != null ? View.VISIBLE : View.GONE );
+        viewMapper.groupAddress.setVisibility( tx.getFrom_planet( ) != null ? View.GONE : View.VISIBLE );
 
-        if ( tx.getTo_planet( ) != null ) {
+        if ( tx.getFrom_planet( ) != null ) {
             viewMapper.planetViewTo.setData( Utils.equals( tx.getType( ), C.transferType.RECEIVED ) ? tx.getFrom( ) : tx.getTo( ) );
             viewMapper.textPlanetName.setText( Utils.equals( tx.getType( ), C.transferType.RECEIVED ) ? tx.getFrom_planet( ) : tx.getTo_planet( ) );
             viewMapper.textPlanetToAddress.setText( Utils.equals( tx.getType( ), C.transferType.RECEIVED ) ? Utils.addressReduction( tx.getFrom( ) ) : Utils.addressReduction( tx.getTo( ) ) );
         } else {
-            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null )
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
                 ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), viewMapper.imageCoinIcon );
+            } else {
+                viewMapper.imageCoinIcon.setImageResource( Utils.equals( tx.getCoin( ), CoinType.ETH.getDefaultUnit( ) ) ? R.drawable.icon_eth : R.drawable.icon_btc );
+            }
         }
 
         viewMapper.textBalance.setText( String.format( "%s " + tx.getSymbol( ), Utils.balanceReduction( Utils.toMaxUnit( CoinType.of( tx.getCoin( ) ), tx.getAmount( ) ) ) ) );
         viewMapper.textStatus.setText( Utils.equals( tx.getStatus( ), C.transferStatus.PENDING ) ? "Pending" : "Completed" );
         viewMapper.textAmount.setText( String.format( "%s " + tx.getSymbol( ), Utils.balanceReduction( Utils.toMaxUnit( CoinType.of( tx.getCoin( ) ), tx.getAmount( ) ) ) ) );
-        viewMapper.textFee.setText( String.format( "%s " + tx.getSymbol( ), Utils.feeCalculation( Utils.convertUnit( tx.getGasPrice( ), 0, CoinType.of( tx.getCoin( ) ).getPrecision( ) ), tx.getGasLimit( ) ) ) );
+        viewMapper.textFee.setText( String.format( "%s " + tx.getSymbol( ), Utils.equals( tx.getCoin( ), CoinType.BTC.getDefaultUnit( ) ) ? Utils.convertUnit( tx.getFee( ), 0, Integer.valueOf( tx.getDecimals( ) ) ) : Utils.feeCalculation( Utils.convertUnit( tx.getGasPrice( ), 0, CoinType.of( tx.getCoin( ) ).getPrecision( ) ), tx.getGasLimit( ) ) ) );
         viewMapper.textTxID.setText( tx.getTx_id( ) );
         viewMapper.textTxID.underLine( );
 
@@ -104,7 +107,12 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.textTxID ) {
-            sendActionUri( "https://ropsten.etherscan.io/tx/" + tx.getTx_id( ) );
+            if ( Utils.equals( tx.getCoin() , CoinType.ETH.getDefaultUnit() ) ){
+                sendActionUri( "https://ropsten.etherscan.io/tx/" + tx.getTx_id( ) );
+            } else {
+                sendActionUri( "https://live.blockcypher.com/btc-testnet/tx/" + tx.getTx_id( ) );
+            }
+
         }
     }
 

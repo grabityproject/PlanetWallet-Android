@@ -18,8 +18,8 @@ import java.util.Objects;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -40,7 +40,7 @@ import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class TransferActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< Planet > {
+public class TransferActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< Planet >,SyncManager.OnSyncListener {
 
     private ViewMapper viewMapper;
     private ArrayList< Planet > allPlanets;
@@ -101,22 +101,25 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
             if ( Utils.checkClipboard( this, planet.getCoinType( ) ) ) {
                 if ( !Utils.equals( Utils.getClipboard( this ), planet.getAddress( ) ) )
-                viewMapper.btnClip.setVisibility( View.VISIBLE );
+                    viewMapper.btnClip.setVisibility( View.VISIBLE );
             }
             viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
 
-            searchPlanets = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
-            if ( searchPlanets.size( ) >= 20 ) {
-                SearchStore.getInstance( ).delete( searchPlanets.get( searchPlanets.size( ) - 1 ) );
-                searchPlanets = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
-            }
-
-            recentSearchAdapter = new RecentSearchAdapter( this, searchPlanets == null ? new ArrayList<>( ) : searchPlanets );
-            recentSearchAdapter.setOnInsideItemClickListener( this );
-            viewMapper.listView.setAdapter( recentSearchAdapter );
+            SyncManager.getInstance( ).recentSyncPlanet( this, planet, erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
         }
     }
 
+    @Override
+    public void onSyncComplete( SyncManager.SyncType syncType, boolean complete, boolean isUpdated ) {
+        searchPlanets = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
+        if ( searchPlanets.size( ) >= 20 ) {
+            SearchStore.getInstance( ).delete( searchPlanets.get( searchPlanets.size( ) - 1 ) );
+            searchPlanets = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
+        }
+        recentSearchAdapter = new RecentSearchAdapter( this, searchPlanets == null ? new ArrayList<>( ) : searchPlanets );
+        recentSearchAdapter.setOnInsideItemClickListener( this );
+        viewMapper.listView.setAdapter( recentSearchAdapter );
+    }
 
     @Override
     public void onToolBarClick( Object tag, View view ) {
@@ -253,7 +256,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
     @Override
     public void afterTextChanged( Editable s ) {
-        PLog.e( "최초 afterTextChanged 실행체크합니다." );
         updateSearchView( );
         new Get( this ).action( Route.URL( "planet", "search", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, "{\"q\"=\"" + viewMapper.etSearch.getText( ).toString( ) + "\"}" );
     }

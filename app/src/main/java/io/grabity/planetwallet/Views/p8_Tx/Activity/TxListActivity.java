@@ -14,6 +14,7 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -36,7 +37,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
     private ERC20 erc20;
     private TxAdapter adapter;
 
-    ArrayList< Tx > txItems;
+    private ArrayList< Tx > txItems;
 
     HeaderViewMapper headerViewMapper;
 
@@ -79,8 +80,19 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
             }
 
             viewMapper.toolBar.setTitle( erc20 != null ? erc20.getName( ) : CoinType.of( planet.getCoinType( ) ).getCoinName( ) );
-            viewMapper.listView.setAdapter( adapter = new TxAdapter( this, new ArrayList<>( ), erc20 != null ? erc20.getDecimals( ) : CoinType.of( planet.getCoinType( ) ).getPrecision( ).toString( ) ) );
+
+            String prefTx = Utils.getPreferenceData( this, Utils.prefTxKey( CoinType.of( planet.getCoinType( ) ).getDefaultUnit( ), erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).getDefaultUnit( ), planet.getKeyId( ) ) );
+
+            if ( !Utils.equals( prefTx, "" ) ) {
+                ReturnVO returnVO = Utils.jsonToVO( prefTx, ReturnVO.class, Tx.class );
+                if ( returnVO.isSuccess( ) ) {
+                    txItems = ( ArrayList< Tx > ) returnVO.getResult( );
+                }
+            }
+
         }
+        viewMapper.listView.setAdapter( adapter = new TxAdapter( this, txItems == null ? new ArrayList<>( ) : txItems ) );
+
     }
 
     @Override
@@ -188,6 +200,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Tx.class );
                 if ( statusCode == 200 ) {
                     if ( returnVO.isSuccess( ) ) {
+                        Utils.setPreferenceData( this, Utils.prefTxKey( CoinType.of( planet.getCoinType( ) ).getDefaultUnit( ), erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).getDefaultUnit( ), planet.getKeyId( ) ), result );
                         txItems = ( ArrayList< Tx > ) returnVO.getResult( );
                         adapter.setObjects( txItems );
                         Objects.requireNonNull( viewMapper.listView.getAdapter( ) ).notifyItemRangeChanged( 1, txItems.size( ) );

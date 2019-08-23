@@ -79,7 +79,7 @@ public abstract class DBManager {
 
         try {
             Cursor cursor = sqLiteDatabase.rawQuery( String.format( "SELECT %s FROM %s %s", selector, table, condition, Locale.US ), null );
-            PLog.e( String.format( "SELECT %s FROM %s %s", selector, table, condition ) );
+//            PLog.e( String.format( "SELECT %s FROM %s %s", selector, table, condition ) );
             while ( cursor.moveToNext( ) ) {
                 T item = type.newInstance( );
                 Field[] fields = type.getDeclaredFields( );

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -68,7 +69,7 @@ public class NodeService {
 
             new Get( networkInterfaces.get( coinType ) )
                     .setDeviceKey( C.DEVICE_KEY )
-                    .action( Route.URL( "tx", "list", coinType.name( ), planet.getAddress( ) ), 1, 0, null );
+                    .action( Route.URL( "tx", "list", coinType.name( ), planet.getAddress( ) ), 1, planet.get_id( ), null );
 
         } else if ( coinType == CoinType.ETH ) {
 
@@ -94,28 +95,29 @@ public class NodeService {
     private NetworkInterface btcNetworkListener = new NetworkInterface( ) {
         @Override
         public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
-
+            PLog.e( "BTC main result : " + result );
             if ( !error ) {
                 if ( requestCode == 0 ) {
 
                     ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
                     if ( returnVO.isSuccess( ) ) {
                         Planet p = ( Planet ) returnVO.getResult( );
+                        p.setKeyId( planet.getKeyId( ) );
+                        PlanetStore.getInstance( ).update( p );
                         if ( onNodeServiceListener != null ) {
+                            planet.setBalance( p.getBalance( ) );
                             onNodeServiceListener.onBalance( planet, p.getBalance( ) );
                         }
                     }
-
-                } else if ( requestCode == 1 ) {
-
+//                    requestCode == 1
+                } else if ( requestCode == 1 && planet.get_id( ) == resultCode ) {
                     ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Tx.class );
                     if ( returnVO.isSuccess( ) ) {
                         ArrayList< Tx > txList = ( ArrayList< Tx > ) returnVO.getResult( );
                         if ( onNodeServiceListener != null ) {
-                            onNodeServiceListener.onTxList( planet, txList );
+                            onNodeServiceListener.onTxList( planet, txList, result );
                         }
                     }
-
                 }
             }
 
@@ -126,7 +128,7 @@ public class NodeService {
     private NetworkInterface ethNetworkListener = new NetworkInterface( ) {
         @Override
         public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
-
+            PLog.e( "ETH main result : " + result );
             if ( requestCode > 0 && planet.get_id( ) == requestCode ) {
                 tokenCount -= 1;
             }
@@ -191,7 +193,7 @@ public class NodeService {
 
         void onTokenBalance( Planet p, ArrayList< MainItem > tokenList );
 
-        void onTxList( Planet p, ArrayList< Tx > txList );
+        void onTxList( Planet p, ArrayList< Tx > txList, String result );
 
     }
 }

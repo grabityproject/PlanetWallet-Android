@@ -82,10 +82,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="20dp"
-            android:src="@drawable/image_main_bottom_transfer_gray"
+            android:src="@drawable/image_main_bottom_next_gray"
             android:visibility="gone"
             app:position="bottom"
-            app:themeSrc="@drawable/image_main_bottom_transfer_blue" />
+            app:themeSrc="@drawable/image_main_bottom_next_blue" />
 
     </RelativeLayout>
 

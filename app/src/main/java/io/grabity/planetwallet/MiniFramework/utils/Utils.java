@@ -385,6 +385,8 @@ public class Utils {
                 context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
                 context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).putFloat( key, ( Float ) value ).commit( );
             }
+
+
         }
     }
 
@@ -1251,10 +1253,16 @@ public class Utils {
 
     public static String firstUpperCase( String s ) {
         if ( s == null || s.length( ) == 0 ) return "";
+        if ( s.length( ) == 1 ) return s;
         String ss = s.substring( 0, 1 );
         String sss = s.substring( 1 );
 
         return ss.toUpperCase( ) + sss;
+    }
+
+    public static String prefTxKey( String coin, String symbol, String keyId ) {
+        if ( coin == null || symbol == null || keyId == null ) return "";
+        return coin + "_" + symbol + "_" + keyId;
     }
 
 
