@@ -56,6 +56,11 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     protected void onResume( ) {
         super.onResume( );
         setData( );
+
+
+
+
+
     }
 
     @Override

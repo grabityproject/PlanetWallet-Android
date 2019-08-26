@@ -115,6 +115,8 @@
                 android:paddingStart="20dp"
                 android:paddingTop="106dp"
                 android:paddingEnd="20dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:paddingBottom="26dp"
                 android:textColor="#FFF"
                 android:textSize="28dp"

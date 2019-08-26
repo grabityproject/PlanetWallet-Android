@@ -141,7 +141,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
                 viewMapper.btnNext.setVisibility( View.GONE );
 
-                launcherChangeListener.isChange( CoinType.BTC.getCoinName( ), null );
+                launcherChangeListener.isLauncherChange( CoinType.BTC.getCoinName( ), null );
 
 
             } else if ( Utils.equals( mainItem.getClass( ), ETH.class ) ) {
@@ -158,7 +158,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
                 tokenIndex = 0;
 
-                launcherChangeListener.isChange( CoinType.ETH.getCoinName( ), null );
+                launcherChangeListener.isLauncherChange( CoinType.ETH.getCoinName( ), null );
 
             } else if ( Utils.equals( mainItem.getClass( ), ERC20.class ) ) {
 
@@ -173,7 +173,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
                 viewMapper.btnNext.setVisibility( View.VISIBLE );
 
-                launcherChangeListener.isChange( item.getName( ), item );
+                launcherChangeListener.isLauncherChange( item.getName( ), item );
 
 
             }
@@ -211,7 +211,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
 
             if ( Utils.equals( CoinType.of( planet.getItems( ).get( i ).getCoinType( ) ), CoinType.ETH ) ) {
 
-                launcherChangeListener.isChange( CoinType.ETH.getCoinName( ), null );
+                launcherChangeListener.isLauncherChange( CoinType.ETH.getCoinName( ), null );
 
 
                 setMainItem( planet.getItems( ).get( i ) );
@@ -223,7 +223,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
                 tokenIndex = i;
                 if ( !( ( ERC20 ) planet.getItems( ).get( i ) ).getBalance( ).equals( "0" ) ) {
 
-                    launcherChangeListener.isChange( ( ( ERC20 ) planet.getItems( ).get( i ) ).getName( ), planet.getItems( ).get( i ) );
+                    launcherChangeListener.isLauncherChange( ( ( ERC20 ) planet.getItems( ).get( i ) ).getName( ), planet.getItems( ).get( i ) );
 
                     setMainItem( planet.getItems( ).get( i ) );
                     changed = true;
@@ -260,10 +260,11 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
     }
 
     public interface LauncherChangeListener {
-        void isChange( String coinName, MainItem item );
+        void isLauncherChange( String coinName, MainItem item );
     }
 
-    public void setBottomNextClickListener( LauncherChangeListener launcherChangeListener ) {
+
+    public void setLauncherChangeListener( LauncherChangeListener launcherChangeListener ) {
         this.launcherChangeListener = launcherChangeListener;
     }
 

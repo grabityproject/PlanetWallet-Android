@@ -27,7 +27,7 @@ public class PWDBManager extends DBManager {
 
     @Override
     protected int getDatabaseVersion( ) {
-        return 8;
+        return 9;
     }
 
     @Override
@@ -85,7 +85,8 @@ public class PWDBManager extends DBManager {
     @Override
     protected void updateDatabase( SQLiteDatabase db, int oldVersion, int newVersion ) {
 
-
+        String updateSearch = "ALTER TABLE Search ADD COLUMN coinType TEXT";
+        db.execSQL( updateSearch );
     }
 
 }

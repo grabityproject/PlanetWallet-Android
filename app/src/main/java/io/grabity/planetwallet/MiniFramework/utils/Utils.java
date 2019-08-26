@@ -1073,7 +1073,7 @@ public class Utils {
     public static String balanceReduction( String balance ) {
         if ( balance == null ) return "";
         if ( balance.length( ) <= 8 ) return balance;
-        return new BigDecimal( balance.substring( 0, 8 ) ).stripTrailingZeros( ).toString( );
+        return new BigDecimal( balance.substring( 0, 8 ) ).stripTrailingZeros( ).toPlainString( );
 //        return balance.substring( 0, 8 );
     }
 
@@ -1202,24 +1202,24 @@ public class Utils {
 
     public static String moveLeftPoint( String s, int leftPoint ) {
         if ( s == null || leftPoint < 0 ) return "";
-        return new BigDecimal( s ).movePointLeft( leftPoint ).toString( );
+        return new BigDecimal( s ).movePointLeft( leftPoint ).toPlainString( );
     }
 
     public static String moveRightPoint( String s, int rightPoint ) {
         if ( s == null || rightPoint < 0 ) return "";
-        return new BigDecimal( s ).movePointRight( rightPoint ).toString( );
+        return new BigDecimal( s ).movePointRight( rightPoint ).toPlainString( );
     }
 
     public static String ofZeroClear( String s ) {
         if ( s == null ) return "";
-        return new BigDecimal( s ).stripTrailingZeros( ).toString( );
+        return new BigDecimal( s ).stripTrailingZeros( ).toPlainString( );
     }
 
     public static String feeCalculation( String strPrice, String strLimit ) {
         if ( strPrice == null || strLimit == null ) return "";
         BigDecimal price = new BigDecimal( strPrice );
         BigDecimal limit = new BigDecimal( strLimit );
-        return price.multiply( limit ).stripTrailingZeros( ).toString( );
+        return price.multiply( limit ).stripTrailingZeros( ).toPlainString( );
     }
 
 

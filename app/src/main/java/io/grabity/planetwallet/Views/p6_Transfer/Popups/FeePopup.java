@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.ETHGasProvider;
+import io.grabity.planetwallet.VO.EthereumFee;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
 
@@ -101,8 +101,8 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         priceBuffer = new StringBuffer( );
         limitBuffer = new StringBuffer( );
 
-        viewMapper.textGasPrice.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI );
-        viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT );
+        viewMapper.textGasPrice.setText( !isERC ? EthereumFee.ETH_DEFAULT_GAS_GWEI : EthereumFee.ERC_DEFAULT_GAS_GWEI );
+        viewMapper.textGasLimit.setText( !isERC ? EthereumFee.ETH_DEFAULT_GAS_LIMIT : EthereumFee.ERC_DEFAULT_GAS_LIMIT );
 
         setList( price, viewMapper.textGasPrice );
         setList( limit, viewMapper.textGasLimit );
@@ -202,12 +202,12 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
                 //QA 이후 주석해제 -> 리밋이나 프라이스가 빈 경우 자동으로 기본값세팅
                 if ( viewMapper.textGasPrice.getText( ).length( ) == 0 ) {
-                    viewMapper.textGasPrice.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI );
+                    viewMapper.textGasPrice.setText( !isERC ? EthereumFee.ETH_DEFAULT_GAS_GWEI : EthereumFee.ERC_DEFAULT_GAS_GWEI );
                     setList( price, viewMapper.textGasPrice );
                     setPriceORLimit( priceBuffer, price, viewMapper.textGasPrice );
                 }
                 if ( viewMapper.textGasLimit.getText( ).length( ) == 0 ) {
-                    viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT );
+                    viewMapper.textGasLimit.setText( !isERC ? EthereumFee.ETH_DEFAULT_GAS_LIMIT : EthereumFee.ERC_DEFAULT_GAS_LIMIT );
                     setList( limit, viewMapper.textGasLimit );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                 }
@@ -224,7 +224,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
                 if ( !isERC ? Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 21000 : Integer.valueOf( viewMapper.textGasLimit.getText( ).toString( ) ) < 100000 ) {
 
                     Toast.makeText( getActivity( ), localized( R.string.fee_popup_gas_limit_least_title ), Toast.LENGTH_SHORT ).show( );
-                    viewMapper.textGasLimit.setText( !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT );
+                    viewMapper.textGasLimit.setText( !isERC ? EthereumFee.ETH_DEFAULT_GAS_LIMIT : EthereumFee.ERC_DEFAULT_GAS_LIMIT );
                     setList( limit, viewMapper.textGasLimit );
                     setPriceORLimit( limitBuffer, limit, viewMapper.textGasLimit );
                     return;

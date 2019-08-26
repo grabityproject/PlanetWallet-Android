@@ -26,7 +26,10 @@ import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.transaction.Transaction;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.ETHGasProvider;
+import io.grabity.planetwallet.VO.BitCoinFee;
+import io.grabity.planetwallet.VO.ErrorResult;
+import io.grabity.planetwallet.VO.EthereumFee;
+import io.grabity.planetwallet.VO.MainItems.BTC;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.Planet;
@@ -49,7 +52,8 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     private Transfer transfer;
     private ArrayList< String > fee;
     private Transaction transaction;
-    private ETHGasProvider ethGasProvider;
+    private EthereumFee ethereumFee;
+    private BitCoinFee bitCoinFee;
 
     private String gasPrice;
     private String gasLimit;
@@ -78,9 +82,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         viewMapper.btnFeeReset.setOnClickListener( this );
         viewMapper.btnFeeOption.setOnClickListener( this );
         viewMapper.btnSubmit.setOnClickListener( this );
-
-        fee = new ArrayList<>( );
-
     }
 
     @Override
@@ -92,8 +93,10 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
-            if ( !Utils.equals( planet.getCoinType( ), CoinType.BTC.getCoinType( ) ) ) {
+            if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
                 new Get( this ).action( Route.URL( "gas" ), 0, 0, null );
+            } else {
+                new Get( this ).action( Route.URL( "fee", "BTC" ), 1, 0, null );
             }
 
 
@@ -101,7 +104,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
                     erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
                     viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, erc20.getName( ) ) );
-                    amountViewSetting( erc20.getName( ) );
+                    amountViewSetting( erc20.getSymbol( ) );
                     isERC = true;
                 }
             } else {
@@ -119,66 +122,74 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( !error ) {
+            fee = new ArrayList<>( );
             if ( statusCode == 200 && requestCode == 0 ) {
-                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ETHGasProvider.class );
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, EthereumFee.class );
                 if ( returnVO.isSuccess( ) ) {
-                    ethGasProvider = ( ETHGasProvider ) returnVO.getResult( );
-
-                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethGasProvider.getSafeLow( ), 9, 18 ), !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ) );
-                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethGasProvider.getStandard( ), 9, 18 ), !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ) );
-                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethGasProvider.getFast( ), 9, 18 ), !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ) );
-                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethGasProvider.getFastest( ), 9, 18 ), !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ) );
+                    ethereumFee = ( EthereumFee ) returnVO.getResult( );
+                    //GWei -> wei
+                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethereumFee.getSafeLow( ), 9, 18 ), !isERC ? EthereumFee.ETH_DEFAULT_GAS_LIMIT : EthereumFee.ERC_DEFAULT_GAS_LIMIT ) );
+                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethereumFee.getStandard( ), 9, 18 ), !isERC ? EthereumFee.ETH_DEFAULT_GAS_LIMIT : EthereumFee.ERC_DEFAULT_GAS_LIMIT ) );
+                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethereumFee.getFast( ), 9, 18 ), !isERC ? EthereumFee.ETH_DEFAULT_GAS_LIMIT : EthereumFee.ERC_DEFAULT_GAS_LIMIT ) );
+                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethereumFee.getFastest( ), 9, 18 ), !isERC ? EthereumFee.ETH_DEFAULT_GAS_LIMIT : EthereumFee.ERC_DEFAULT_GAS_LIMIT ) );
 
                 }
-            } else {
-                defaultFee( );
+            } else if ( statusCode == 200 && requestCode == 1 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, BitCoinFee.class );
+                if ( returnVO.isSuccess( ) ) {
+                    bitCoinFee = ( BitCoinFee ) returnVO.getResult( );
+                    //satoshi -> bit
+                    fee.add( Utils.ofZeroClear( Utils.convertUnit( bitCoinFee.getHourFee( ), 8, 16 ) ) );
+                    fee.add( Utils.ofZeroClear( Utils.convertUnit( bitCoinFee.getHalfHourFee( ), 8, 16 ) ) );
+                    fee.add( Utils.ofZeroClear( Utils.convertUnit( bitCoinFee.getFastestFee( ), 8, 16 ) ) );
+
+                }
             }
-            feeSetting( );
+
+            viewMapper.textFee.setText( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 2 ) ) :
+                    String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 1 ) ) );
+            gasPriceAndLimitSetting( planet.getCoinType( ), Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? 2 : 1, isERC );
+
+        }
+
+    }
+
+    void gasPriceAndLimitSetting( Integer coinType, int progress, boolean isERC ) {
+        if ( Utils.equals( coinType, CoinType.ETH.getCoinType( ) ) ) {
+            switch ( progress ) {
+                case 0:
+                    gasPrice = ethereumFee.getSafeLow( );
+                    break;
+                case 1:
+                    gasPrice = ethereumFee.getStandard( );
+                    break;
+                case 2:
+                    gasPrice = ethereumFee.getFast( );
+                    break;
+                case 3:
+                    gasPrice = ethereumFee.getFastest( );
+                    break;
+                default:
+                    gasPrice = !isERC ? EthereumFee.ETH_DEFAULT_GAS_GWEI : EthereumFee.ERC_DEFAULT_GAS_GWEI;
+            }
+            gasLimit = !isERC ? EthereumFee.ETH_DEFAULT_GAS_LIMIT : EthereumFee.ERC_DEFAULT_GAS_LIMIT;
+
         } else {
-            defaultFee( );
-            feeSetting( );
+            switch ( progress ) {
+                case 0:
+                    gasPrice = bitCoinFee.getHourFee( );
+                    break;
+                case 1:
+                    gasPrice = bitCoinFee.getHalfHourFee( );
+                    break;
+                case 2:
+                    gasPrice = bitCoinFee.getFastestFee( );
+                    break;
+            }
+
         }
 
-    }
 
-    void defaultFee( ) {
-        for ( int i = 0; i < 4; i++ ) {
-            fee.add( !isERC ? ETHGasProvider.ETH_DEFAULT_FEE : ETHGasProvider.ERC_DEFAULT_FEE );
-        }
-    }
-
-    void gasPriceAndLimitSetting( int progress, boolean isERC ) {
-        if ( ethGasProvider == null ) {
-            gasPrice = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI;
-            gasLimit = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT;
-            return;
-        }
-
-        switch ( progress ) {
-            case 0:
-                gasPrice = ethGasProvider.getSafeLow( );
-                break;
-            case 1:
-                gasPrice = ethGasProvider.getStandard( );
-                break;
-            case 2:
-                gasPrice = ethGasProvider.getFast( );
-                break;
-            case 3:
-                gasPrice = ethGasProvider.getFastest( );
-                break;
-            default:
-                gasPrice = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI;
-        }
-        gasLimit = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT;
-
-
-    }
-
-
-    void feeSetting( ) {
-        viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 2 ) ) );
-        gasPriceAndLimitSetting( 2, isERC );
     }
 
     void viewSetting( ) {
@@ -221,7 +232,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         if ( v == viewMapper.btnFeeOption ) {
             FeePopup.newInstance( this )
                     .setOnFeePopupSaveClickListener( this )
-                    .setFee( !isERC ? ETHGasProvider.ETH_DEFAULT_FEE : ETHGasProvider.ERC_DEFAULT_FEE, CoinType.of( planet.getCoinType( ) ).name( ) )
+                    .setFee( !isERC ? EthereumFee.ETH_DEFAULT_FEE : EthereumFee.ERC_DEFAULT_FEE, CoinType.of( planet.getCoinType( ) ).name( ) )
                     .setERC( isERC )
                     .show( );
         } else if ( v == viewMapper.btnFeeReset ) {
@@ -230,11 +241,10 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             viewMapper.btnFeeReset.setVisibility( View.GONE );
 
             //reset fee
-            viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 2 ) ) );
-            viewMapper.seekBar.setProgress( 2 );
-
-
-            gasPriceAndLimitSetting( 2, isERC );
+            viewMapper.textFee.setText( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 2 ) ) :
+                    String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 1 ) ) );
+            viewMapper.seekBar.setProgress( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? 2 : 1 );
+            gasPriceAndLimitSetting( planet.getCoinType( ), Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? 2 : 1, isERC );
 
 
         } else if ( v == viewMapper.btnSubmit ) {
@@ -256,8 +266,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                     .gasLimit( gasLimit );
 
             serializeTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) );
-            PLog.e( "ERC serializeTx : " + serializeTx );
-        } else {
+        } else if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
             transaction = new Transaction( new ETH( ) )
                     .setDeviceKey( C.DEVICE_KEY )
                     .from( planet.getAddress( ) )
@@ -267,7 +276,15 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                     .gasLimit( gasLimit );
 
             serializeTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) );
-            PLog.e( "ETH serializeTx : " + serializeTx );
+        } else {
+            transaction = new Transaction( new BTC( ) )
+                    .setDeviceKey( C.DEVICE_KEY )
+                    .from( planet.getAddress( ) )
+                    .to( transfer.getToAddress( ) )
+                    .value( Utils.convertUnit( transfer.getToBalance( ), 8, 0 ) )
+                    .gasPrice( gasPrice );
+
+            serializeTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) );
         }
 
         return serializeTx;
@@ -279,24 +296,17 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.TRANSFER && resultCode == RESULT_OK ) {
             Bundle bundle = new Bundle( );
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                bundle.putSerializable( C.bundleKey.PLANET, planet );
-
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-                if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
                     bundle.putSerializable( C.bundleKey.PLANET, planet );
                     bundle.putSerializable( C.bundleKey.MAIN_ITEM, erc20 );
-
                     transfer.setSerializeTx( transaction( planet, erc20 ) );
-
-                } else {
-                    bundle.putSerializable( C.bundleKey.PLANET, planet );
-                    transfer.setSerializeTx( transaction( planet, null ) );
                 }
+            } else {
+                bundle.putSerializable( C.bundleKey.PLANET, planet );
+                transfer.setSerializeTx( transaction( planet, null ) );
             }
             transfer.setFee( viewMapper.textFee.getText( ).toString( ) );
-            PLog.e( "transfer.getSerializeTx() : " + transfer.getSerializeTx( ) );
 
             new Post( ( error, requestCode1, resultCode1, statusCode, result ) -> {
                 PLog.e( "result : " + result );
@@ -311,14 +321,16 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                             sendAction( TxReceiptActivity.class, bundle );
                         }
                     } else {
-                        CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
+                        ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
+                        ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
+                        if ( errorResult == null ) return;
+                        CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
                     }
-                } else {
-                    CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
                 }
             } ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "transfer", transaction.getSymbol( ) ), 0, 0, new Transfer( transfer.getSerializeTx( ) ) );
         }
     }
+
 
     @Override
     public void onFeePopupSaveClick( String fee, String gasPrice, String gasLimit ) {
@@ -348,19 +360,9 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {
-
-        if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
-            if ( fee.get( progress ) == null ) {
-                viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), ETHGasProvider.ETH_DEFAULT_FEE ) );
-                return;
-            }
-            viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( progress ) ) );
-            gasPriceAndLimitSetting( progress, isERC );
-        } else {
-            PLog.e( "BTC" );
-        }
-
-
+        if ( fee == null ) return;
+        viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( progress ) ) );
+        gasPriceAndLimitSetting( planet.getCoinType( ), progress, isERC );
     }
 
     @Override

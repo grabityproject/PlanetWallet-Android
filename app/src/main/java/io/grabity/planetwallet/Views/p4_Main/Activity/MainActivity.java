@@ -172,7 +172,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             } else if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
                 String btcPrefTx = Utils.getPreferenceData( this, Utils.prefTxKey( CoinType.of( selectedPlanet.getCoinType( ) ).getDefaultUnit( ), selectedPlanet.getSymbol( ), selectedPlanet.getKeyId( ) ) );
-                PLog.e( "btcPrefTx : " + btcPrefTx );
                 if ( !Utils.equals( btcPrefTx, "" ) ) {
                     ReturnVO returnVO = Utils.jsonToVO( btcPrefTx, ReturnVO.class, Tx.class );
                     if ( returnVO.isSuccess( ) ) {
@@ -417,6 +416,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             selectedPlanet = PlanetStore.getInstance( ).getPlanet( selectedPlanet.getKeyId( ) );
             setUpViews( );
         }
+
 
     }
 

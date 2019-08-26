@@ -69,7 +69,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
             if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
                 if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
                     erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
-                    amountViewSetting( erc20.getName( ) );
+                    amountViewSetting( erc20.getSymbol( ) );
                 }
             } else {
                 amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
@@ -77,6 +77,8 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
 
             viewSetting( );
             searchSave( );
+
+
         }
     }
 

@@ -88,10 +88,11 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
 
-
-            if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) && getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
-                viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), Utils.ofZeroClear( Utils.toMaxUnit( erc20, erc20.getBalance( ) ) ) ) );
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
+                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
+                    viewMapper.textBalance.setText( String.format( "%s " + erc20.getSymbol( ), Utils.ofZeroClear( Utils.toMaxUnit( erc20, erc20.getBalance( ) ) ) ) );
+                }
             } else {
                 viewMapper.textBalance.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), Utils.ofZeroClear( Utils.toMaxUnit( CoinType.of( planet.getCoinType( ) ), planet.getBalance( ) ) ) ) );
             }
@@ -101,8 +102,6 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         }
     }
 
-
-    //Todo 일단 ETH만 적용
 
     private void getBalance( ) {
         if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
@@ -114,15 +113,14 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                         .action( Route.URL( "balance", CoinType.ETH.name( ), planet.getName( ) ), 0, 0, null );
             }
         } else if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) { //BTC
-
+            new Get( this ).setDeviceKey( C.DEVICE_KEY )
+                    .action( Route.URL( "balance", CoinType.BTC.name( ), planet.getName( ) ), 0, 0, null );
         }
     }
 
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-
-
         if ( !error ) {
             if ( requestCode == 0 ) {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, resultCode == 0 ? Planet.class : ERC20.class );
@@ -134,7 +132,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                     } else if ( resultCode == 1 ) {
                         ERC20 e = ( ERC20 ) returnVO.getResult( );
                         erc20.setBalance( e.getBalance( ) );
-                        viewMapper.textBalance.setText( String.format( "%s " + erc20.getName( ), Utils.ofZeroClear( Utils.toMaxUnit( erc20, erc20.getBalance( ) ) ) ) );
+                        viewMapper.textBalance.setText( String.format( "%s " + erc20.getSymbol( ), Utils.ofZeroClear( Utils.toMaxUnit( erc20, erc20.getBalance( ) ) ) ) );
                     }
                 }
             }
@@ -160,18 +158,15 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         super.onClick( v );
         if ( v == viewMapper.btnSubmit ) {
             Bundle bundle = new Bundle( );
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                bundle.putSerializable( C.bundleKey.PLANET, planet );
-
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-                if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
+                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
                     bundle.putSerializable( C.bundleKey.PLANET, planet );
                     bundle.putSerializable( C.bundleKey.MAIN_ITEM, erc20 );
-                } else {
-                    bundle.putSerializable( C.bundleKey.PLANET, planet );
                 }
+            } else {
+                bundle.putSerializable( C.bundleKey.PLANET, planet );
             }
+
             //balance setting
             transfer.setToBalance( viewMapper.textAmount.getText( ).toString( ) );
             bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
@@ -200,17 +195,35 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 if ( !amount.toString( ).contains( "." ) ) amount.add( s );
                 break;
             case "0":
-                if ( amount.toString( ).contains( "." ) || !amount.get( 0 ).equals( "0" ) )
+                if ( amount.toString( ).contains( "." ) ) {
+                    if ( amountPrecision( ) ) break;
                     amount.add( s );
+                } else if ( !amount.get( 0 ).equals( "0" ) ) {
+                    amount.add( s );
+                }
                 break;
             default:
                 if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
                     amount.set( 0, s );
                 } else {
+                    if ( amountPrecision( ) ) break;
                     amount.add( s );
                 }
                 break;
         }
+    }
+
+    boolean amountPrecision( ) {
+        if ( amount.toString( ).contains( "." ) ) {
+            String balance = Utils.join( amount ).substring( amount.indexOf( "." ) + 1 );
+
+            if ( erc20 != null ? balance.length( ) >= Math.abs( Double.valueOf( erc20.getDecimals( ) ) ) : balance.length( ) >= CoinType.of( planet.getCoinType( ) ).getPrecision( ) ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     void setAmount( ) {
@@ -246,7 +259,6 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         }
     }
 
-    //Todo 수수료 값 추가
     private boolean balanceCheck( String myBalance, String toBalance ) {
         if ( myBalance == null || toBalance == null ) return false;
         BigDecimal mB = new BigDecimal( myBalance );

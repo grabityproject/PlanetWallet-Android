@@ -1,6 +1,6 @@
 package io.grabity.planetwallet.VO;
 
-public class ETHGasProvider {
+public class EthereumFee {
 
     public final static String ETH_DEFAULT_GAS_LIMIT = "21000";
     public final static String ETH_DEFAULT_GAS_GWEI = "20";

@@ -8,9 +8,7 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.ViewComponent;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
-import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
@@ -37,7 +35,7 @@ public class BottomLauncherComponent extends ViewComponent implements SlideDrawe
         super( activity );
 
         bottomPanelComponent = new BottomPanelComponent( getActivity( ) );
-        bottomPanelComponent.setBottomNextClickListener( this );
+        bottomPanelComponent.setLauncherChangeListener( this );
         dp20 = Utils.dpToPx( getActivity( ), 20 );
 
         this.viewMapper = new ViewMapper( );
@@ -99,7 +97,7 @@ public class BottomLauncherComponent extends ViewComponent implements SlideDrawe
 
 
     @Override
-    public void isChange( String coinName, MainItem item ) {
+    public void isLauncherChange( String coinName, MainItem item ) {
         if ( item == null ) {
             viewMapper.textCoinName.setText( coinName );
         } else {
