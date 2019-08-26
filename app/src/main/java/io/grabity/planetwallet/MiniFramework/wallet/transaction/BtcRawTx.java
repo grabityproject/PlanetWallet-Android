@@ -146,14 +146,20 @@ public class BtcRawTx {
 
     private static Comparator< UTXO > heightSort = ( o1, o2 ) -> {
 
-        if ( o1.getBlock_height( ) < o2.getBlock_height( ) ) {
+        BigDecimal blockHeight1 = new BigDecimal( o1.getBlock_height( ) );
+        BigDecimal blockHeight2 = new BigDecimal( o2.getBlock_height( ) );
+
+        BigDecimal outputIndex1 = new BigDecimal( o1.getTx_output_n( ) );
+        BigDecimal outputIndex2 = new BigDecimal( o2.getTx_output_n( ) );
+
+        if ( blockHeight1.compareTo( blockHeight2 ) < 0 ) {
             return -1;
-        } else if ( o1.getBlock_height( ) > o2.getBlock_height( ) ) {
+        } else if ( blockHeight1.compareTo( blockHeight2 ) > 0 ) {
             return 1;
         } else {
-            if ( o1.getTx_output_n( ) < o2.getTx_output_n( ) ) {
+            if ( outputIndex1.compareTo( outputIndex2 ) < 0 ) {
                 return -1;
-            } else if ( o1.getTx_output_n( ) > o2.getTx_output_n( ) ) {
+            } else if ( outputIndex1.compareTo( outputIndex2 ) > 0 ) {
                 return 1;
             } else {
                 return new BigDecimal( o2.getValue( ) ).compareTo( new BigDecimal( o1.getValue( ) ) );
@@ -202,7 +208,7 @@ public class BtcRawTx {
         for ( int i = 0; i < inputs.size( ); i++ ) {
 
             String prevHashReverse = reverseHexString( inputs.get( i ).getTx_hash( ) );
-            String outputIndex = reverseHexString( paddingZeroLeft( decimalToHexString( inputs.get( i ).getTx_output_n( ).intValue( ) ), 8 ) );
+            String outputIndex = reverseHexString( paddingZeroLeft( decimalStringToHexString( inputs.get( i ).getTx_output_n( ) ), 8 ) );
 
             String script = i == inputIndex ? inputs.get( i ).getScript( ) : "";
             String scriptLength = decimalToHexString( ( script.length( ) / 2 ) );
@@ -224,7 +230,7 @@ public class BtcRawTx {
         for ( int i = 0; i < inputs.size( ); i++ ) {
 
             String prevHashReverse = reverseHexString( inputs.get( i ).getTx_hash( ) );
-            String outputIndex = reverseHexString( paddingZeroLeft( decimalToHexString( inputs.get( i ).getTx_output_n( ).intValue( ) ), 8 ) );
+            String outputIndex = reverseHexString( paddingZeroLeft( decimalStringToHexString( inputs.get( i ).getTx_output_n( ) ), 8 ) );
 
             String script = inputs.get( i ).getSignedScript( );
             String scriptLength = decimalToHexString( ( script.length( ) / 2 ) );
