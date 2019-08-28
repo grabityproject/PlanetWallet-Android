@@ -101,6 +101,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.listMain.addHeaderView( R.layout.header_main );
         viewMapper.listMain.addFooterView( R.layout.footer_main );
 
+        viewMapper.slideDrawer.addNotEventArea( viewMapper.listMain );
 
         // View Components
         topLauncherComponent = new TopLauncherComponent( this, viewMapper.slideDrawer );
