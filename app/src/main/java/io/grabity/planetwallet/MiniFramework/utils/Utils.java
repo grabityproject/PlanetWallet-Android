@@ -1078,7 +1078,7 @@ public class Utils {
     public static String balanceReduction( String balance ) {
         if ( balance == null ) return "";
         if ( balance.length( ) <= 8 ) return balance;
-        return new BigDecimal( balance.substring( 0, 8 ) ).stripTrailingZeros( ).toString( );
+        return new BigDecimal( balance.substring( 0, 8 ) ).stripTrailingZeros( ).toPlainString( );
 //        return balance.substring( 0, 8 );
     }
 

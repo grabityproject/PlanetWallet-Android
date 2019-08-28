@@ -110,6 +110,8 @@
                 android:gravity="center"
                 android:paddingTop="84dp"
                 android:paddingBottom="30dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="#FFF"
                 android:textSize="28dp"
                 app:themeTextColor="#000"
@@ -166,6 +168,7 @@
                     android:layout_height="@dimen/listHeight">
 
                     <io.grabity.planetwallet.Widgets.FontTextView
+                        android:id="@+id/text_tx_receipt_amount_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -180,6 +183,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/text_tx_receipt_amount_title"
+                        android:paddingStart="20dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:gravity="right"
                         android:textColor="#FF0050"
                         android:textSize="16dp"
                         app:themeTextColor="#FF0050" />

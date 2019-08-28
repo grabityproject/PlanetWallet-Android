@@ -82,9 +82,9 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
             }
         }
 
-        viewMapper.textBalance.setText( String.format( "%s " + tx.getSymbol( ), Utils.balanceReduction( Utils.toMaxUnit( CoinType.of( tx.getCoin( ) ), tx.getAmount( ) ) ) ) );
+        viewMapper.textBalance.setText( String.format( "%s " + tx.getSymbol( ), Utils.ofZeroClear( Utils.toMaxUnit( CoinType.of( tx.getCoin( ) ), tx.getAmount( ) ) ) ) );
         viewMapper.textStatus.setText( Utils.equals( tx.getStatus( ), C.transferStatus.PENDING ) ? "Pending" : "Completed" );
-        viewMapper.textAmount.setText( String.format( "%s " + tx.getSymbol( ), Utils.balanceReduction( Utils.toMaxUnit( CoinType.of( tx.getCoin( ) ), tx.getAmount( ) ) ) ) );
+        viewMapper.textAmount.setText( String.format( "%s " + tx.getSymbol( ), Utils.ofZeroClear( Utils.toMaxUnit( CoinType.of( tx.getCoin( ) ), tx.getAmount( ) ) ) ) );
         viewMapper.textFee.setText( String.format( "%s " + tx.getSymbol( ), Utils.equals( tx.getCoin( ), CoinType.BTC.getDefaultUnit( ) ) ? Utils.convertUnit( tx.getFee( ), 0, Integer.valueOf( tx.getDecimals( ) ) ) : Utils.feeCalculation( Utils.convertUnit( tx.getGasPrice( ), 0, CoinType.of( tx.getCoin( ) ).getPrecision( ) ), tx.getGasLimit( ) ) ) );
         viewMapper.textTxID.setText( tx.getTx_id( ) );
         viewMapper.textTxID.underLine( );
