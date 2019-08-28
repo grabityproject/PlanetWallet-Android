@@ -62,7 +62,7 @@ public class BtcRawTx {
         BigDecimal change = inputTotal.subtract( estimateFee ).subtract( amount );
 
         if ( change.intValue( ) < 0 ) return null; // inputAmount - ( fee + amount ) < 0
-        
+
         // Fee SetUp
         tx.setFee( estimateFee.toBigInteger( ).toString( 10 ) );
 
