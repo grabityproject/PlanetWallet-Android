@@ -79,7 +79,7 @@ public abstract class DBManager {
 
         try {
             Cursor cursor = sqLiteDatabase.rawQuery( String.format( "SELECT %s FROM %s %s", selector, table, condition, Locale.US ), null );
-//            PLog.e( String.format( "SELECT %s FROM %s %s", selector, table, condition ) );
+            PLog.e( String.format( "SELECT %s FROM %s %s", selector, table, condition, Locale.US ) );
             while ( cursor.moveToNext( ) ) {
                 T item = type.newInstance( );
                 Field[] fields = type.getDeclaredFields( );
@@ -150,16 +150,16 @@ public abstract class DBManager {
                             break;
                         }
                     }
-                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
-                    for ( Field field : fields ) {
-                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
-                            Object item = method.invoke( object );
-                            if ( item != null ) {
-                                contentValues.put( field.getName( ), String.valueOf( item ) );
-                            }
-                            break;
-                        }
-                    }
+//                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
+//                    for ( Field field : fields ) {
+//                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
+//                            Object item = method.invoke( object );
+//                            if ( item != null ) {
+//                                contentValues.put( field.getName( ), String.valueOf( item ) );
+//                            }
+//                            break;
+//                        }
+//                    }
                 }
 
             } catch ( InvocationTargetException | IllegalAccessException e ) {
@@ -195,16 +195,16 @@ public abstract class DBManager {
                             break;
                         }
                     }
-                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
-                    for ( Field field : fields ) {
-                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
-                            Object item = method.invoke( object );
-                            if ( item != null ) {
-                                valueSet.append( String.format( ", %s='%s'", field.getName( ), String.valueOf( item ) ) );
-                            }
-                            break;
-                        }
-                    }
+//                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
+//                    for ( Field field : fields ) {
+//                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
+//                            Object item = method.invoke( object );
+//                            if ( item != null ) {
+//                                valueSet.append( String.format( ", %s='%s'", field.getName( ), String.valueOf( item ) ) );
+//                            }
+//                            break;
+//                        }
+//                    }
                 }
 
             } catch ( InvocationTargetException | IllegalAccessException e ) {
@@ -252,16 +252,16 @@ public abstract class DBManager {
                             break;
                         }
                     }
-                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
-                    for ( Field field : fields ) {
-                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
-                            Object item = method.invoke( object );
-                            if ( item != null ) {
-                                valueSet.append( String.format( ", %s='%s'", field.getName( ), String.valueOf( item ) ) );
-                            }
-                            break;
-                        }
-                    }
+//                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
+//                    for ( Field field : fields ) {
+//                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
+//                            Object item = method.invoke( object );
+//                            if ( item != null ) {
+//                                valueSet.append( String.format( ", %s='%s'", field.getName( ), String.valueOf( item ) ) );
+//                            }
+//                            break;
+//                        }
+//                    }
                 }
 
             } catch ( InvocationTargetException | IllegalAccessException e ) {
@@ -303,16 +303,16 @@ public abstract class DBManager {
                                 break;
                             }
                         }
-                    } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
-                        for ( Field field : fields ) {
-                            if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
-                                Object item = method.invoke( object );
-                                if ( item != null ) {
-                                    valueSet.append( String.format( " AND %s='%s'", field.getName( ), String.valueOf( item ) ) );
-                                }
-                                break;
-                            }
-                        }
+//                    } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
+//                        for ( Field field : fields ) {
+//                            if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
+//                                Object item = method.invoke( object );
+//                                if ( item != null ) {
+//                                    valueSet.append( String.format( " AND %s='%s'", field.getName( ), String.valueOf( item ) ) );
+//                                }
+//                                break;
+//                            }
+//                        }
                     }
 
                 } catch ( InvocationTargetException | IllegalAccessException e ) {

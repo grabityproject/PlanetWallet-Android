@@ -1,6 +1,11 @@
 package io.grabity.planetwallet.VO;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import io.grabity.planetwallet.MiniFramework.wallet.transaction.UTXO;
 
 public class Tx implements Serializable {
 
@@ -19,14 +24,17 @@ public class Tx implements Serializable {
     String coin;
     String symbol;
     String rawTransaction;
-    String utxos;
     String status;
     String to_planet;
     String from_planet;
     String created_at;
     String updated_at;
     String decimals;
+    String actualFee;
 
+    ArrayList< UTXO > utxos;
+
+    String serializeTx;
 
     public String getKeyId( ) {
         return keyId;
@@ -60,7 +68,6 @@ public class Tx implements Serializable {
     public void setFee( String fee ) {
         this.fee = fee;
     }
-
 
     public String getSymbol( ) {
         return symbol;
@@ -198,11 +205,59 @@ public class Tx implements Serializable {
         this.decimals = decimals;
     }
 
-    public String getUtxos( ) {
+    public ArrayList< UTXO > getUtxos( ) {
         return utxos;
     }
 
-    public void setUtxos( String utxos ) {
+    public void setUtxos( ArrayList< UTXO > utxos ) {
         this.utxos = utxos;
+    }
+
+    public String getActualFee( ) {
+        return actualFee;
+    }
+
+    public void setActualFee( String actualFee ) {
+        this.actualFee = actualFee;
+    }
+
+    @NonNull
+    @Override
+    public String toString( ) {
+        StringBuilder builder = new StringBuilder( );
+
+        builder.append( "to : " );
+        builder.append( getTo( ) );
+        builder.append( ", " );
+
+        builder.append( "from : " );
+        builder.append( getFrom( ) );
+        builder.append( ", " );
+
+        builder.append( "amount : " );
+        builder.append( getAmount( ) );
+        builder.append( ", " );
+
+        builder.append( "fee : " );
+        builder.append( getFee( ) );
+        builder.append( ", " );
+
+        builder.append( "gasPrice : " );
+        builder.append( getGasPrice( ) );
+        builder.append( ", " );
+
+        builder.append( "getGasLimit : " );
+        builder.append( getGasLimit( ) );
+        builder.append( ", " );
+
+        builder.append( "getTo_planet : " );
+        builder.append( getTo_planet( ) );
+        builder.append( ", " );
+
+        builder.append( "getFrom_planet : " );
+        builder.append( getFrom_planet( ) );
+        builder.append( ", " );
+
+        return builder.toString( );
     }
 }

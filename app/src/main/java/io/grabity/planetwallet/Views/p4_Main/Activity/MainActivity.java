@@ -14,15 +14,12 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
-import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
+import io.grabity.planetwallet.MiniFramework.wallet.store.MainItemStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
-import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
@@ -62,7 +59,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     private RefreshAnimationComponent refreshAnimationComponent;
 
     private ArrayList< Planet > planetList;
-    private ArrayList< Tx > btcTxList;
+    private ArrayList< Tx > txList;
 
     private Planet selectedPlanet;
     private TxAdapter adapter;
@@ -153,36 +150,31 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             viewMapper.toolBar.setTitle( CoinType.of( selectedPlanet.getCoinType( ) ).name( ) );
 
-            bottomLauncherComponent.setPlanet( selectedPlanet );
-
             Utils.setPreferenceData( this, C.pref.LAST_PLANET_KEYID, selectedPlanet.getKeyId( ) );
 
             if ( Utils.equals( CoinType.ETH.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
 
-                ArrayList< ERC20 > tokenList = ERC20Store.getInstance( ).getTokenList( selectedPlanet.getKeyId( ), false );
-                selectedPlanet.setItems( new ArrayList<>( ) );
-                ETH eth = new ETH( );
-                eth.setAddress( selectedPlanet.getAddress( ) );
-                eth.setBalance( selectedPlanet.getBalance( ) );
-                selectedPlanet.getItems( ).add( eth );
-                for ( ERC20 erc20 : tokenList ) {
-                    selectedPlanet.getItems( ).add( erc20 );
-                }
+                selectedPlanet.setItems( MainItemStore.getInstance( ).getMainItem( selectedPlanet.getKeyId( ), false ) );
+
                 viewMapper.listMain.setAdapter( new MainAdapter( this, selectedPlanet.getItems( ) == null ? new ArrayList<>( ) : selectedPlanet.getItems( ) ) );
 
             } else if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
-                String btcPrefTx = Utils.getPreferenceData( this, Utils.prefTxKey( CoinType.of( selectedPlanet.getCoinType( ) ).getDefaultUnit( ), selectedPlanet.getSymbol( ), selectedPlanet.getKeyId( ) ) );
-                PLog.e( "btcPrefTx : " + btcPrefTx );
+
+                selectedPlanet.setItems( MainItemStore.getInstance( ).getMainItem( selectedPlanet.getKeyId( ), false ) );
+
+                String btcPrefTx = Utils.getPreferenceData( this, Utils.prefKey( CoinType.of( selectedPlanet.getCoinType( ) ).getDefaultUnit( ), selectedPlanet.getSymbol( ), selectedPlanet.getKeyId( ) ) );
                 if ( !Utils.equals( btcPrefTx, "" ) ) {
                     ReturnVO returnVO = Utils.jsonToVO( btcPrefTx, ReturnVO.class, Tx.class );
                     if ( returnVO.isSuccess( ) ) {
-                        btcTxList = ( ArrayList< Tx > ) returnVO.getResult( );
+                        txList = ( ArrayList< Tx > ) returnVO.getResult( );
                     }
-
                 }
-                viewMapper.listMain.setAdapter( adapter = new TxAdapter( this, btcTxList == null ? new ArrayList<>( ) : btcTxList ) );
+
+                viewMapper.listMain.setAdapter( adapter = new TxAdapter( this, txList == null ? new ArrayList<>( ) : txList ) );
 
             }
+
+            bottomLauncherComponent.setPlanet( selectedPlanet );
 
             if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
                 viewMapper.overScrollWrapper.completeRefresh( );
@@ -367,11 +359,15 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             if ( coinType == CoinType.ETH ) {
 
-                sendAction( TxListActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ), Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, ( Serializable ) selectedPlanet.getItems( ).get( position ) ) ) );
+                sendAction( TxListActivity.class,
+                        Utils.mergeBundles(
+                                Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ),
+                                Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, selectedPlanet.getItems( ).get( position ) ) ) );
 
             } else if ( coinType == CoinType.BTC ) {
 
-                sendAction( DetailTxActivity.class, Utils.createSerializableBundle( C.bundleKey.TX, ( Serializable ) Objects.requireNonNull( recyclerView.getAdapter( ) ).getObjects( ).get( position ) ) );
+                sendAction( DetailTxActivity.class,
+                        Utils.createSerializableBundle( C.bundleKey.TX, ( Serializable ) Objects.requireNonNull( recyclerView.getAdapter( ) ).getObjects( ).get( position ) ) );
 
             }
 
@@ -422,7 +418,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onBalance( Planet p, String balance ) {
-        selectedPlanet.setBalance( balance );
+        if ( selectedPlanet.getItems( ) != null && selectedPlanet.getItems( ).size( ) > 0 ) {
+            selectedPlanet.getItems( ).get( 0 ).setBalance( balance );
+        }
         bottomLauncherComponent.setPlanet( selectedPlanet );
     }
 
@@ -440,7 +438,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onTxList( Planet p, ArrayList< Tx > txList, String result ) {
-        Utils.setPreferenceData( this, Utils.prefTxKey( CoinType.of( p.getCoinType( ) ).getDefaultUnit( ), p.getSymbol( ), p.getKeyId( ) ), result );
+        Utils.setPreferenceData( this, Utils.prefKey( CoinType.of( p.getCoinType( ) ).getDefaultUnit( ), p.getSymbol( ), p.getKeyId( ) ), result );
 
         if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
             viewMapper.overScrollWrapper.completeRefresh( );

@@ -24,7 +24,6 @@ public class Planet implements Serializable {
     private String hide;
     private String address;
     private String name;
-    private String balance;
 
     private String signature;
     private String planet;
@@ -32,8 +31,6 @@ public class Planet implements Serializable {
     private ArrayList< MainItem > items;
 
     private String date;
-
-
 
     public Planet( ) {
 
@@ -109,6 +106,13 @@ public class Planet implements Serializable {
 
     public void setName( String name ) {
         this.name = name;
+    }
+
+    public MainItem getMainItem( ) {
+        if ( getItems( ) != null && getItems( ).size( ) > 0 ) {
+            return getItems( ).get( 0 );
+        }
+        return null;
     }
 
     public int getIconRes( ) {
@@ -187,15 +191,6 @@ public class Planet implements Serializable {
     public void setPlanet( String planet ) {
         this.planet = planet;
     }
-
-    public String getBalance( ) {
-        return balance;
-    }
-
-    public void setBalance( String balance ) {
-        this.balance = balance;
-    }
-
 
     public String getDate( ) {
         return date;

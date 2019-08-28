@@ -147,7 +147,9 @@ public class BitCoinManager {
         WalletAccount account = btcWalletAccountService.createBasicAccount(
                 keyPair.getId( ),
                 CoinType.BTC.name( ),
-                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ) );
+//                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
+                DefinedCurrency.of( 251658240 )
+        );
 
         Planet planet = new Planet( );
         planet.setAddress( account.getAddress( ) );

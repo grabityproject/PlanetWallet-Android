@@ -27,10 +27,10 @@ import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
 import io.grabity.planetwallet.MiniFramework.wallet.store.SearchStore;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
-import io.grabity.planetwallet.VO.Transfer;
+import io.grabity.planetwallet.VO.Tx;
 import io.grabity.planetwallet.Views.p6_Transfer.Adapter.RecentSearchAdapter;
 import io.grabity.planetwallet.Views.p6_Transfer.Adapter.TransferAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceRecyclerView;
@@ -40,14 +40,14 @@ import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class TransferActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< Planet >,SyncManager.OnSyncListener {
+public class TransferActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< Planet >, SyncManager.OnSyncListener {
 
     private ViewMapper viewMapper;
     private ArrayList< Planet > allPlanets;
 
     private Planet planet;
-    private Transfer transfer;
-    private ERC20 erc20;
+    private MainItem mainItem;
+    private Tx tx;
 
     private boolean isQRScan = false;
 
@@ -58,9 +58,9 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        getPlanetWalletApplication( ).recordActvityStack( this );
         setContentView( R.layout.activity_transfer );
         viewMapper = new ViewMapper( );
-        C.transferClass.transferActivity = this;
         viewInit( );
         setData( );
     }
@@ -87,34 +87,34 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void setData( ) {
         super.setData( );
-        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+        if ( getSerialize( C.bundleKey.PLANET ) == null || getSerialize( C.bundleKey.MAIN_ITEM ) == null ) {
             finish( );
         } else {
             allPlanets = new ArrayList<>( );
-            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
 
-            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
-                }
-            }
+            planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            mainItem = ( MainItem ) getSerialize( C.bundleKey.MAIN_ITEM );
+
+            tx = new Tx( );
+            tx.setFrom( planet.getAddress( ) );
+            tx.setFrom_planet( planet.getName( ) );
 
             if ( Utils.checkClipboard( this, planet.getCoinType( ) ) ) {
                 if ( !Utils.equals( Utils.getClipboard( this ), planet.getAddress( ) ) )
                     viewMapper.btnClip.setVisibility( View.VISIBLE );
             }
-            viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
 
-            SyncManager.getInstance( ).recentSyncPlanet( this, planet, erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
+            SyncManager.getInstance( ).recentSyncPlanet( this, planet, mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
         }
     }
 
     @Override
     public void onSyncComplete( SyncManager.SyncType syncType, boolean complete, boolean isUpdated ) {
-        searchPlanets = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
+        searchPlanets = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
         if ( searchPlanets.size( ) >= 20 ) {
             SearchStore.getInstance( ).delete( searchPlanets.get( searchPlanets.size( ) - 1 ) );
-            searchPlanets = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
+            searchPlanets = SearchStore.getInstance( ).getSearchList( planet.getKeyId( ), mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
         }
         recentSearchAdapter = new RecentSearchAdapter( this, searchPlanets == null ? new ArrayList<>( ) : searchPlanets );
         recentSearchAdapter.setOnInsideItemClickListener( this );
@@ -176,72 +176,35 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             viewMapper.btnClip.setVisibility( View.GONE );
         } else if ( v == viewMapper.groupSearchAddress ) {
             //주소검색
-            transfer = new Transfer( );
-            transfer.setToAddress( viewMapper.textAddress.getText( ).toString( ) );
-            transfer.setChoice( C.transferChoice.ADDRESS );
+            tx.setTo( viewMapper.textAddress.getText( ).toString( ) );
+            tx.setTo_planet( null );
 
-            Bundle bundle = new Bundle( );
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-                bundle.putSerializable( C.bundleKey.PLANET, planet );
-
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-                if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-
-                    bundle.putSerializable( C.bundleKey.PLANET, planet );
-                    bundle.putSerializable( C.bundleKey.MAIN_ITEM, erc20 );
-
-                } else {
-
-                    bundle.putSerializable( C.bundleKey.PLANET, planet );
-
-                }
-            }
-            bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
             setTransition( Transition.SLIDE_SIDE );
-            sendAction( TransferAmountActivity.class, bundle );
+            sendAction( TransferAmountActivity.class,
+                    Utils.mergeBundles(
+                            Utils.createSerializableBundle( C.bundleKey.PLANET, planet ),
+                            Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, mainItem ),
+                            Utils.createSerializableBundle( C.bundleKey.TX, tx ) ) );
         }
     }
 
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
-        //이름검색
+
         if ( Utils.equals( Objects.requireNonNull( recyclerView.getAdapter( ) ).getClass( ), RecentSearchAdapter.class ) ) {
-            transfer = new Transfer( );
-            transfer.setToAddress( searchPlanets.get( position ).getAddress( ) );
-            transfer.setToName( searchPlanets.get( position ).getName( ) );
-            transfer.setChoice( C.transferChoice.PLANET_NAME );
-
+            tx.setTo( searchPlanets.get( position ).getAddress( ) );
+            tx.setTo_planet( searchPlanets.get( position ).getName( ) );
         } else {
-            transfer = new Transfer( );
-            transfer.setToAddress( allPlanets.get( position ).getAddress( ) );
-            transfer.setToName( allPlanets.get( position ).getName( ) );
-            transfer.setChoice( C.transferChoice.PLANET_NAME );
+            tx.setTo( allPlanets.get( position ).getAddress( ) );
+            tx.setTo_planet( allPlanets.get( position ).getName( ) );
         }
 
-        Bundle bundle = new Bundle( );
-        if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-            bundle.putSerializable( C.bundleKey.PLANET, planet );
-
-        } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-
-                bundle.putSerializable( C.bundleKey.PLANET, planet );
-                bundle.putSerializable( C.bundleKey.MAIN_ITEM, erc20 );
-
-            } else {
-
-                bundle.putSerializable( C.bundleKey.PLANET, planet );
-
-            }
-        }
-        bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
         setTransition( Transition.SLIDE_SIDE );
-        sendAction( TransferAmountActivity.class, bundle );
-
+        sendAction( TransferAmountActivity.class,
+                Utils.mergeBundles(
+                        Utils.createSerializableBundle( C.bundleKey.PLANET, planet ),
+                        Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, mainItem ),
+                        Utils.createSerializableBundle( C.bundleKey.TX, tx ) ) );
 
     }
 
@@ -303,7 +266,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             }
 
             viewMapper.listView.setAdapter( viewMapper.etSearch.getText( ).length( ) != 0 ? new TransferAdapter( this, allPlanets ) : recentSearchAdapter );
-
 //            viewMapper.listView.setAdapter( new TransferAdapter( this, allPlanets ) );
         }
     }

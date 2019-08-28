@@ -11,7 +11,7 @@ import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferActivity;
 import io.grabity.planetwallet.Widgets.BarcodeView;
@@ -21,8 +21,9 @@ import io.grabity.planetwallet.Widgets.ToolBar;
 public class DetailAddressActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
 
     private ViewMapper viewMapper;
+
     private Planet planet;
-    private ERC20 erc20;
+    private MainItem mainItem;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -46,22 +47,18 @@ public class DetailAddressActivity extends PlanetWalletActivity implements ToolB
     @Override
     protected void setData( ) {
         super.setData( );
-        if ( getSerialize( C.bundleKey.PLANET ) == null ) {
+        if ( getSerialize( C.bundleKey.PLANET ) == null || getSerialize( C.bundleKey.MAIN_ITEM ) == null ) {
             finish( );
         } else {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
+            mainItem = ( MainItem ) getSerialize( C.bundleKey.MAIN_ITEM );
 
-            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
-                }
-            }
             setUpView( );
         }
     }
 
-    void setUpView( ) {
-        viewMapper.toolBar.setTitle( String.format( "Receive %s", erc20 != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
+    private void setUpView( ) {
+        viewMapper.toolBar.setTitle( String.format( "Receive %s", mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
         viewMapper.textName.setText( planet.getName( ) );
         viewMapper.textAddress.setText( planet.getAddress( ) );
         viewMapper.barcodeView.setData( planet.getAddress( ) );
@@ -76,11 +73,8 @@ public class DetailAddressActivity extends PlanetWalletActivity implements ToolB
             CustomToast.makeText( this, localized( R.string.main_copy_to_clipboard ) ).show( );
 
         } else if ( v == viewMapper.btnTransfer ) {
-            if ( erc20 != null ) {
-                sendAction( TransferActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, erc20 ) ) );
-            } else {
-                sendAction( TransferActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
-            }
+            sendAction( TransferActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, mainItem ) ) );
+
         }
     }
 

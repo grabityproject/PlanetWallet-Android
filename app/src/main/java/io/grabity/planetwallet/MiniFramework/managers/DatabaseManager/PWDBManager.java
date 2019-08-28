@@ -22,12 +22,12 @@ public class PWDBManager extends DBManager {
 
     @Override
     protected String getDatabaseName( ) {
-        return "TESSss2C_DATABASE";
+        return "DATABASE_VERSION4";
     }
 
     @Override
     protected int getDatabaseVersion( ) {
-        return 8;
+        return 1;
     }
 
     @Override
@@ -39,7 +39,6 @@ public class PWDBManager extends DBManager {
                 "pathIndex TEXT," +
                 "name TEXT," +
                 "address TEXT," +
-                "balance TEXT," +
                 "coinType TEXT," +
                 "coinName TEXT," +
                 "symbol TEXT," +
@@ -47,9 +46,10 @@ public class PWDBManager extends DBManager {
                 "decimals TEXT" +
                 ")";
 
-        String createERC20Table = "CREATE TABLE ERC20( " +
+        String createMainItemTable = "CREATE TABLE MainItem( " +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "keyId TEXT," +
+                "coinType INTEGER," +
                 "hide TEXT," +
                 "balance TEXT," +
                 "name TEXT," +
@@ -59,26 +59,27 @@ public class PWDBManager extends DBManager {
                 "contract TEXT" +
                 ")";
 
-        String keyPairTable = "CREATE TABLE KeyPair( " +
+        String createKeyPairTable = "CREATE TABLE KeyPair( " +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "keyId TEXT," +
                 "value TEXT," +
                 "master TEXT" +
                 ")";
 
-        String SearchTable = "CREATE TABLE Search( " +
+        String createSearchTable = "CREATE TABLE Search( " +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "keyId TEXT," +
+                "coinType Integer," +
                 "name TEXT," +
                 "address TEXT," +
                 "symbol TEXT," +
-                "date INTEGER DEFAULT 0"+
+                "date INTEGER DEFAULT 0" +
                 ")";
 
         db.execSQL( createPlanetTable );
-        db.execSQL( createERC20Table );
-        db.execSQL( keyPairTable );
-        db.execSQL( SearchTable );
+        db.execSQL( createMainItemTable );
+        db.execSQL( createKeyPairTable );
+        db.execSQL( createSearchTable );
 
     }
 

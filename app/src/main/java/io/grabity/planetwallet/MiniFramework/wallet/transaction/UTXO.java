@@ -1,6 +1,8 @@
 package io.grabity.planetwallet.MiniFramework.wallet.transaction;
 
-public class UTXO {
+import java.io.Serializable;
+
+public class UTXO implements Serializable {
 
     String block_height = "0";
     String tx_hash;

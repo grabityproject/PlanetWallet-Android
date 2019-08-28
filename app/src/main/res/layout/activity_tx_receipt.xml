@@ -78,7 +78,7 @@
                     android:visibility="gone">
 
                     <io.grabity.planetwallet.Widgets.CircleImageView
-                        android:id="@+id/image_tx_receipt_address_background"
+                        android:id="@+id/image_tx_receipt_coin_icon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="#1E1E28"
@@ -86,18 +86,12 @@
                         app:borderWidth="1dp"
                         app:themeSrc="#F9F9F9" />
 
-                    <io.grabity.planetwallet.Widgets.StretchImageView
-                        android:id="@+id/image_tx_receipt_coin_icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="10dp"
-                        android:src="@drawable/icon_transfer_eth_black" />
 
                     <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_tx_receipt_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/image_tx_receipt_address_background"
+                        android:layout_toRightOf="@id/image_tx_receipt_coin_icon"
                         android:lineSpacingExtra="4dp"
                         android:paddingStart="20dp"
                         android:textColor="#FFF"

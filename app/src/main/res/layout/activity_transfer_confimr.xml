@@ -19,9 +19,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
+        android:layout_above="@id/btn_submit"
         android:layout_below="@id/toolBar"
-        android:layout_above="@id/btn_submit">
+        android:layout_centerHorizontal="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                 android:visibility="gone">
 
                 <io.grabity.planetwallet.Widgets.CircleImageView
-                    android:id="@+id/image_transfer_confirm_address_background"
+                    android:id="@+id/image_transfer_confirm_address_icon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
@@ -85,20 +85,12 @@
                     app:borderWidth="1dp"
                     app:themeSrc="#F9F9F9" />
 
-                <io.grabity.planetwallet.Widgets.StretchImageView
-                    android:id="@+id/image_transfer_confirm_address_icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:padding="10dp"
-                    android:src="@drawable/icon_transfer_eth_black" />
-
                 <io.grabity.planetwallet.Widgets.FontTextView
                     android:id="@+id/text_transfer_confirm_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/image_transfer_confirm_address_background"
-                    android:layout_toRightOf="@id/image_transfer_confirm_address_background"
+                    android:layout_alignTop="@id/image_transfer_confirm_address_icon"
+                    android:layout_toRightOf="@id/image_transfer_confirm_address_icon"
                     android:lineSpacingExtra="4dp"
                     android:paddingStart="20dp"
                     android:textColor="#FFF"
@@ -247,11 +239,11 @@
                             android:id="@+id/seekBar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:max="3"
+                            android:max="0"
                             android:maxHeight="4dp"
-                            android:progress="2"
+                            android:progress="0"
                             android:progressDrawable="@drawable/seekbar_background_black"
-                            android:thumb="@drawable/seekbar_thumb"
+                            android:thumb="@null"
                             app:defaultTheme="Dark" />
 
                         <io.grabity.planetwallet.Widgets.FontTextView

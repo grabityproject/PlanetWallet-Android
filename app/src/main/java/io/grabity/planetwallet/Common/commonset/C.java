@@ -1,16 +1,18 @@
 package io.grabity.planetwallet.Common.commonset;
 
 
-import android.annotation.SuppressLint;
-
-import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferActivity;
-import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferAmountActivity;
-import io.grabity.planetwallet.Views.p6_Transfer.Activity.TransferConfirmActivity;
-
 public class C {
 
     public static char[] PINCODE;
     public static String DEVICE_KEY;
+
+    public final static String ETH_DEFAULT_GAS_LIMIT = "21000";
+    public final static String ETH_DEFAULT_GAS_GWEI = "20";
+    public final static String ETH_DEFAULT_FEE = "0.00042";
+
+    public final static String ERC_DEFAULT_GAS_LIMIT = "100000";
+    public final static String ERC_DEFAULT_GAS_GWEI = "10";
+    public final static String ERC_DEFAULT_FEE = "0.001";
 
     public static class url {
     }
@@ -74,24 +76,12 @@ public class C {
 
     }
 
-    public static class transferChoice {
-        public final static String PLANET_NAME = "planetName";
-        public final static String ADDRESS = "address";
-    }
-
-    @SuppressLint( "StaticFieldLeak" )
-    public static class transferClass {
-        public static TransferActivity transferActivity = null;
-        public static TransferAmountActivity transferAmountActivity = null;
-        public static TransferConfirmActivity transferConfirmActivity = null;
-    }
-
     public static class transferStatus {
         public final static String PENDING = "pending";
         public final static String CONFIRMED = "confirmed";
     }
 
-    public static class transferType{
+    public static class transferType {
         public final static String RECEIVED = "received";
         public final static String SENT = "sent";
     }

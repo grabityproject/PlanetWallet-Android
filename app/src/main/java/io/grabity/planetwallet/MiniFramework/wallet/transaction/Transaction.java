@@ -1,96 +1,26 @@
 package io.grabity.planetwallet.MiniFramework.wallet.transaction;
 
-import java.math.BigInteger;
-
-import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
+import io.grabity.planetwallet.VO.Tx;
 
-public class Transaction implements NetworkInterface {
+public class Transaction {
 
     MainItem mainItem;
-
     String deviceKey;
-    String fromAddress;
-    String toAddress;
-    String amount;
-    String gasPrice;
-    String gasLimit;
-    String nonce;
-    String data;
+    Tx tx;
 
-    String fee;
+    public static Transaction create( MainItem mainItem ) {
+        return new Transaction( mainItem );
+    }
 
-    public Transaction( MainItem mainItem ) {
+    private Transaction( MainItem mainItem ) {
         this.mainItem = mainItem;
     }
 
-    public String getFromAddress( ) {
-        return fromAddress;
-    }
-
-    public Transaction from( String fromAddress ) {
-        this.fromAddress = fromAddress;
-        return this;
-    }
-
-    public String getToAddress( ) {
-        return toAddress;
-    }
-
-    public Transaction to( String toAddress ) {
-        this.toAddress = toAddress;
-        return this;
-    }
-
-    public String getAmount( ) {
-        return amount;
-    }
-
-    public Transaction value( String amount ) {
-        this.amount = amount;
-        return this;
-    }
-
-    public String getGasPrice( ) {
-        return gasPrice;
-    }
-
-    public Transaction gasPrice( String gasPrice ) {
-        this.gasPrice = gasPrice;
-        return this;
-    }
-
-    public String getGasLimit( ) {
-        return gasLimit;
-    }
-
-    public Transaction gasLimit( String gasLimit ) {
-        this.gasLimit = gasLimit;
-        return this;
-    }
-
-    public String getNonce( ) {
-        return nonce;
-    }
-
-    public void setNonce( String nonce ) {
-        this.nonce = nonce;
-    }
-
-    public Transaction nonce( String nonce ) {
-        this.nonce = nonce;
-        return this;
-    }
-
-    public String getData( ) {
-        return data;
-    }
-
-    public Transaction setData( String data ) {
-        this.data = data;
+    public Transaction setTx( Tx tx ) {
+        this.tx = tx;
         return this;
     }
 
@@ -103,51 +33,47 @@ public class Transaction implements NetworkInterface {
         return this;
     }
 
-    public String getFee( ) {
-        if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.BTC ) {
-            return fee;
-        } else {
-            BigInteger gasFee = new BigInteger( gasPrice ).multiply( new BigInteger( gasLimit ) );
-            return gasFee.toString( );
-        }
-    }
-
-    public String getSymbol( ) {
-        if ( Utils.equals( mainItem.getCoinType( ), CoinType.BTC.getCoinType( ) ) ) {
-            return CoinType.BTC.name( );
-        } else if ( Utils.equals( mainItem.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
-            return CoinType.ETH.name( );
-        } else if ( Utils.equals( mainItem.getCoinType( ), CoinType.ERC20.getCoinType( ) ) ) {
-            return ( ( ERC20 ) mainItem ).getSymbol( );
-        }
-        return null;
-    }
-
     public String getRawTransaction( String privateKey ) {
 
-        if ( Utils.equals( CoinType.BTC.getCoinType( ), mainItem.getCoinType( ) ) ) {
+        if ( tx != null && deviceKey != null && privateKey != null ) {
 
-            return BtcRawTx.generateRawTx( this, privateKey );
+            if ( Utils.equals( CoinType.BTC.getCoinType( ), mainItem.getCoinType( ) ) ) {
 
-        } else if ( Utils.equals( CoinType.ETH.getCoinType( ), mainItem.getCoinType( ) ) ) { // ETH
+                return BtcRawTx.generateRawTx( tx, deviceKey, privateKey );
 
-            return EthRawTx.generateRawTx( this, privateKey );
+            } else if ( Utils.equals( CoinType.ETH.getCoinType( ), mainItem.getCoinType( ) ) ) { // ETH
 
-        } else if ( Utils.equals( CoinType.ERC20.getCoinType( ), mainItem.getCoinType( ) ) ) {
+                return EthRawTx.generateRawTx( tx, deviceKey, privateKey );
 
-            ERC20 erc20 = ( ERC20 ) mainItem;
-            return Erc20RawTx.generateRawTx( this, erc20, privateKey );
+            } else if ( Utils.equals( CoinType.ERC20.getCoinType( ), mainItem.getCoinType( ) ) ) {
 
-        } else {
+                return Erc20RawTx.generateRawTx( tx, mainItem, deviceKey, privateKey );
 
-            return "0x";
-
+            }
         }
 
+        return "0x";
     }
 
-    @Override
-    public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
+    public String estimateFee( ) {
 
+        if ( tx != null && deviceKey != null ) {
+
+            if ( Utils.equals( CoinType.BTC.getCoinType( ), mainItem.getCoinType( ) ) ) {
+
+                return BtcRawTx.estimateFee( tx, deviceKey );
+
+            } else if ( Utils.equals( CoinType.ETH.getCoinType( ), mainItem.getCoinType( ) ) ) { // ETH
+
+                return EthRawTx.estimateFee( tx );
+
+            } else if ( Utils.equals( CoinType.ERC20.getCoinType( ), mainItem.getCoinType( ) ) ) {
+
+                return Erc20RawTx.estimateFee( tx );
+
+            }
+        }
+
+        return "0x";
     }
 }

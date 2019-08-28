@@ -12,8 +12,6 @@ import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
-import io.grabity.planetwallet.VO.MainItems.ETH;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.StretchImageView;
@@ -26,32 +24,23 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
 
     @Override
     public ViewMapper viewMapping( int position ) {
-        if ( Math.abs( getObjects( ).get( position ).getCoinType( ) ) == CoinType.ETH.getCoinType( ) ) {
-            return new ETHItem( View.inflate( getContext( ), R.layout.item_main_eth, null ) );
-        } else {
-            return null;
-        }
+        return new ETHItem( View.inflate( getContext( ), R.layout.item_main_eth, null ) );
     }
 
     @Override
     public void bindData( ViewMapper viewMapper, MainItem item, int position ) {
 
+        ( ( ETHItem ) viewMapper ).textName.setText( item.getSymbol( ) );
+        ( ( ETHItem ) viewMapper ).textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( item, item.getBalance( ) ) ) );
+        ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", item.getBalance( ) ) );
+
         if ( Utils.equals( CoinType.ETH.getCoinType( ), item.getCoinType( ) ) ) {
 
-            ETH eth = ( ETH ) item;
-            ( ( ETHItem ) viewMapper ).textName.setText( CoinType.ETH.name( ) );
-            ( ( ETHItem ) viewMapper ).textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( eth, eth.getBalance( ) ) ) );
-            //todo 화폐단위 임시고정
-            ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", eth.getBalance( ) ) );
+            ( ( ETHItem ) viewMapper ).imageIcon.setImageResource( R.drawable.icon_eth );
 
         } else if ( Utils.equals( CoinType.ERC20.getCoinType( ), item.getCoinType( ) ) ) {
 
-            ERC20 erc20 = ( ERC20 ) item;
-            ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), ( ( ETHItem ) viewMapper ).imageIcon );
-            ( ( ETHItem ) viewMapper ).textName.setText( erc20.getSymbol( ) );
-            ( ( ETHItem ) viewMapper ).textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( erc20, erc20.getBalance( ) ) ) );
-            //todo 화폐단위 임시고정
-            ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", erc20.getBalance( ) ) );
+            ImageLoader.getInstance( ).displayImage( Route.URL( item.getImg_path( ) ), ( ( ETHItem ) viewMapper ).imageIcon );
 
         }
 

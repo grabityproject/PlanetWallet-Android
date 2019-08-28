@@ -17,7 +17,7 @@ import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Tx;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
@@ -28,7 +28,7 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
 
     private ViewMapper viewMapper;
     private Tx tx;
-    private ERC20 erc20;
+    private MainItem mainItem;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -58,9 +58,7 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
             tx = ( Tx ) getSerialize( C.bundleKey.TX );
 
             if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
-                }
+                mainItem = ( MainItem ) getSerialize( C.bundleKey.MAIN_ITEM );
             }
             setUpView( );
         }
@@ -78,7 +76,7 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
             viewMapper.textPlanetToAddress.setText( Utils.equals( tx.getType( ), C.transferType.RECEIVED ) ? Utils.addressReduction( tx.getFrom( ) ) : Utils.addressReduction( tx.getTo( ) ) );
         } else {
             if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), viewMapper.imageCoinIcon );
+                ImageLoader.getInstance( ).displayImage( Route.URL( mainItem.getImg_path( ) ), viewMapper.imageCoinIcon );
             } else {
                 viewMapper.imageCoinIcon.setImageResource( Utils.equals( tx.getCoin( ), CoinType.ETH.getDefaultUnit( ) ) ? R.drawable.icon_eth : R.drawable.icon_btc );
             }
@@ -107,7 +105,7 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.textTxID ) {
-            if ( Utils.equals( tx.getCoin() , CoinType.ETH.getDefaultUnit() ) ){
+            if ( Utils.equals( tx.getCoin( ), CoinType.ETH.getDefaultUnit( ) ) ) {
                 sendActionUri( "https://ropsten.etherscan.io/tx/" + tx.getTx_id( ) );
             } else {
                 sendActionUri( "https://live.blockcypher.com/btc-testnet/tx/" + tx.getTx_id( ) );

@@ -11,17 +11,17 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickListener;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class TokenAdapter extends AdvanceArrayAdapter< ERC20 > {
+public class TokenAdapter extends AdvanceArrayAdapter< MainItem > {
 
     private OnInsideItemClickListener onInsideItemClickListener;
 
-    public TokenAdapter( Context context, ArrayList< ERC20 > objects ) {
+    public TokenAdapter( Context context, ArrayList< MainItem > objects ) {
         super( context, objects );
     }
 
@@ -31,7 +31,7 @@ public class TokenAdapter extends AdvanceArrayAdapter< ERC20 > {
     }
 
     @Override
-    public void bindData( ViewMapper viewMapper, ERC20 item, int position ) {
+    public void bindData( ViewMapper viewMapper, MainItem item, int position ) {
 
         ImageLoader.getInstance( ).displayImage( "http://test.planetwallet.io" + item.getImg_path( ), ( ( EthItem ) viewMapper ).icon );
         ( ( EthItem ) viewMapper ).textTokenSymbol.setText( item.getSymbol( ) );

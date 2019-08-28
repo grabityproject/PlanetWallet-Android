@@ -17,9 +17,10 @@ import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
-import io.grabity.planetwallet.MiniFramework.wallet.store.ERC20Store;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.store.MainItemStore;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p5_Token.Activity.TokenAddActivity;
@@ -29,12 +30,12 @@ import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.OnInsideItemClickList
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.StretchImageView;
 
-public class TokenListFragment extends PlanetWalletFragment implements View.OnClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< ERC20 > {
+public class TokenListFragment extends PlanetWalletFragment implements View.OnClickListener, TextWatcher, AdvanceRecyclerView.OnItemClickListener, OnInsideItemClickListener< MainItem > {
 
     private ViewMapper viewMapper;
     private TokenAdapter adapter;
-    private ArrayList< ERC20 > items;
-    private ArrayList< ERC20 > filterItems;
+    private ArrayList< MainItem > items;
+    private ArrayList< MainItem > filterItems;
     private Planet planet;
 
     public TokenListFragment( ) {
@@ -80,21 +81,24 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
 
         if ( !error ) {
             if ( requestCode == 0 && statusCode == 200 ) {
-                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ERC20.class );
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, MainItem.class );
                 if ( returnVO.isSuccess( ) ) {
                     items = new ArrayList<>( );
-                    ArrayList< ERC20 > erc20list = ( ArrayList< ERC20 > ) returnVO.getResult( );
-                    ArrayList< ERC20 > currentUseId = ERC20Store.getInstance( ).getTokenList( planet.getKeyId( ) );
-                    HashMap< String, ERC20 > currentMap = new HashMap<>( );
+                    ArrayList< MainItem > erc20list = ( ArrayList< MainItem > ) returnVO.getResult( );
+                    ArrayList< MainItem > currentUseId = MainItemStore.getInstance( ).getMainItem( planet.getKeyId( ) );
+                    HashMap< String, MainItem > currentMap = new HashMap<>( );
 
-                    for ( ERC20 erc20 : currentUseId ) {
+                    for ( MainItem erc20 : currentUseId ) {
                         currentMap.put( erc20.getContract( ), erc20 );
                     }
 
                     for ( int i = 0; i < erc20list.size( ); i++ ) {
                         if ( currentMap.containsKey( erc20list.get( i ).getContract( ) ) ) {
-                            if ( currentMap.get( erc20list.get( i ).getContract( ) ).getHide( ).equals( "N" ) )
+                            if ( currentMap.get( erc20list.get( i ).getContract( ) ).getHide( ).equals( "N" ) ) {
                                 erc20list.get( i ).setCheck( true );
+                                erc20list.get( i ).set_id( currentMap.get( erc20list.get( i ).getContract( ) ).get_id( ) );
+                            }
+
                         }
                         items.add( erc20list.get( i ) );
                     }
@@ -174,9 +178,10 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     }
 
     @Override
-    public void onInsideItemClick( ERC20 item, int position ) {
+    public void onInsideItemClick( MainItem item, int position ) {
         try {
-            ERC20 erc20 = new ERC20( );
+            MainItem erc20 = new MainItem( );
+            erc20.set_id( item.get_id( ) );
             erc20.setKeyId( planet.getKeyId( ) );
             erc20.setContract( item.getContract( ) );
             erc20.setSymbol( item.getSymbol( ) );
@@ -185,7 +190,8 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
             erc20.setImg_path( item.getImg_path( ) );
             erc20.setHide( item.isCheck( ) ? "N" : "Y" );
             erc20.setBalance( item.getBalance( ) );
-            ERC20Store.getInstance( ).save( erc20 );
+            erc20.setCoinType( CoinType.ERC20.getCoinType( ) );
+            MainItemStore.getInstance( ).save( erc20 );
 
         } catch ( ClassCastException e ) {
 

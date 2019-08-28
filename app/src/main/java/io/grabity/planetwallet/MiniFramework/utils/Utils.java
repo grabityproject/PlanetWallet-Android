@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -32,6 +33,8 @@ import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -68,7 +71,6 @@ import java.util.regex.Pattern;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.Widgets.FontTextView;
 
@@ -248,18 +250,21 @@ public class Utils {
                                     Class< ? > itemType = ( Class< ? > ) myListType.getActualTypeArguments( )[ 0 ];
 
                                     ArrayList list = ( ( ArrayList ) map.get( field.getName( ) ) );
-                                    ArrayList resultList = new ArrayList<>( );
 
-                                    for ( int i = 0; i < list.size( ); i++ ) {
 
-                                        if ( LinkedTreeMap.class.equals( list.get( i ).getClass( ) ) ) {
+                                    if ( list != null ) {
+                                        ArrayList resultList = new ArrayList<>( );
+                                        for ( int i = 0; i < list.size( ); i++ ) {
 
-                                            resultList.add( linkedMapToVO( ( LinkedTreeMap ) list.get( i ), itemType ) );
-                                        } else if ( String.class.equals( list.get( i ).getClass( ) ) ) {
-                                            resultList.add( String.valueOf( list.get( i ) ) );
+                                            if ( LinkedTreeMap.class.equals( list.get( i ).getClass( ) ) ) {
+
+                                                resultList.add( linkedMapToVO( ( LinkedTreeMap ) list.get( i ), itemType ) );
+                                            } else if ( String.class.equals( list.get( i ).getClass( ) ) ) {
+                                                resultList.add( String.valueOf( list.get( i ) ) );
+                                            }
                                         }
+                                        method.invoke( returnObject, resultList );
                                     }
-                                    method.invoke( returnObject, resultList );
 
                                 } catch ( ClassCastException e ) {
 
@@ -1202,24 +1207,24 @@ public class Utils {
 
     public static String moveLeftPoint( String s, int leftPoint ) {
         if ( s == null || leftPoint < 0 ) return "";
-        return new BigDecimal( s ).movePointLeft( leftPoint ).toString( );
+        return new BigDecimal( s ).movePointLeft( leftPoint ).toPlainString( );
     }
 
     public static String moveRightPoint( String s, int rightPoint ) {
         if ( s == null || rightPoint < 0 ) return "";
-        return new BigDecimal( s ).movePointRight( rightPoint ).toString( );
+        return new BigDecimal( s ).movePointRight( rightPoint ).toPlainString( );
     }
 
     public static String ofZeroClear( String s ) {
         if ( s == null ) return "";
-        return new BigDecimal( s ).stripTrailingZeros( ).toString( );
+        return new BigDecimal( s ).stripTrailingZeros( ).toPlainString( );
     }
 
     public static String feeCalculation( String strPrice, String strLimit ) {
         if ( strPrice == null || strLimit == null ) return "";
         BigDecimal price = new BigDecimal( strPrice );
         BigDecimal limit = new BigDecimal( strLimit );
-        return price.multiply( limit ).stripTrailingZeros( ).toString( );
+        return price.multiply( limit ).stripTrailingZeros( ).toPlainString( );
     }
 
 
@@ -1234,14 +1239,27 @@ public class Utils {
     }
 
     public static String toMaxUnit( MainItem item, String balance ) {
-        if ( Utils.equals( item.getClass( ), ERC20.class ) ) {
-            ERC20 erc20 = ( ERC20 ) item;
-            if ( erc20.getDecimals( ) == null ) return balance;
-            return toMaxUnit( ( int ) Math.abs( Double.valueOf( erc20.getDecimals( ) ) ), balance );
+        if ( CoinType.of( item.getCoinType( ) ) == CoinType.ERC20 ) {
+            return toMaxUnit( ( int ) Math.abs( Double.valueOf( item.getDecimals( ) ) ), balance );
         } else {
             return toMaxUnit( CoinType.of( item.getCoinType( ) ), balance );
         }
 
+    }
+
+    public static String toMinUnit( MainItem item, String value ) {
+        int from = 0;
+        int to = 0;
+        if ( CoinType.of( item.getCoinType( ) ) == CoinType.ERC20 ) {
+            from = ( int ) Math.abs( Double.valueOf( item.getDecimals( ) ) );
+        } else {
+            from = CoinType.of( item.getCoinType( ) ).getPrecision( );
+        }
+
+        if ( value == null || from < 0 || to < 0 ) return "";
+        if ( from == to ) return value;
+        if ( from < to ) return moveLeftPoint( value, to - from );
+        return moveRightPoint( value, from - to );
     }
 
     public static String convertUnit( String value, int from, int to ) {
@@ -1260,10 +1278,39 @@ public class Utils {
         return ss.toUpperCase( ) + sss;
     }
 
-    public static String prefTxKey( String coin, String symbol, String keyId ) {
-        if ( coin == null || symbol == null || keyId == null ) return "";
-        return coin + "_" + symbol + "_" + keyId;
+    public static String removeLastZero( String str ) {
+        char[] array = str.toCharArray( );
+        int length = 0;
+        for ( int i = array.length - 1; i > 0; i-- ) {
+            if ( array[ i ] == '0' ) {
+                length++;
+            } else {
+                break;
+            }
+        }
+        str = str.substring( 0, str.length( ) - length );
+        if ( str.charAt( str.length( ) - 1 ) == '.' ) {
+            str = str.substring( 0, str.length( ) - 1 );
+        }
+        return str;
     }
 
+    public static String prefKey( String... elements ) {
+        StringBuilder builder = new StringBuilder( );
+        if ( elements != null ) {
+            for ( String element : elements ) {
+                builder.append( element );
+                builder.append( "_" );
+            }
+        }
+        if ( builder.length( ) > 0 && builder.substring( builder.length( ) - 1 ).equals( "_" ) ) {
+            builder.deleteCharAt( builder.length( ) - 1 );
+        }
+        return builder.toString( );
+    }
+
+    public static String emptyToNull( @Nullable String string ) {
+        return TextUtils.isEmpty( string ) ? null : string;
+    }
 
 }

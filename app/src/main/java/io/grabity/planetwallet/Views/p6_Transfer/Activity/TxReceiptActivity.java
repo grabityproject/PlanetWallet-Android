@@ -8,28 +8,34 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.Locale;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.SearchStore;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.VO.Transfer;
+import io.grabity.planetwallet.VO.Tx;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.RoundRelativeLayout;
-import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
 public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener {
 
     private ViewMapper viewMapper;
+
     private Planet planet;
-    private ERC20 erc20;
-    private Transfer transfer;
+    private MainItem mainItem;
+    private Tx tx;
+
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -38,8 +44,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         viewMapper = new ViewMapper( );
         viewInit( );
         setData( );
-        transferStackCleanUp( );
-
+        getPlanetWalletApplication( ).removeAllStack( );
     }
 
     @Override
@@ -52,85 +57,69 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         viewMapper.btnShare.setOnClickListener( this );
         viewMapper.btnSubmit.setOnClickListener( this );
 
-        viewMapper.imageIconBackground.setBorderColor( !getCurrentTheme( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#000000" ) );
         viewMapper.btnShare.setBorder_color_normal( !getCurrentTheme( ) ? Color.parseColor( "#FFFFFF" ) : Color.parseColor( "#000000" ) );
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
-        if ( getSerialize( C.bundleKey.PLANET ) == null || getSerialize( C.bundleKey.TRANSFER ) == null ) {
+        if ( getSerialize( C.bundleKey.PLANET ) == null || getSerialize( C.bundleKey.MAIN_ITEM ) == null || getSerialize( C.bundleKey.TX ) == null ) {
             finish( );
         } else {
 
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-            transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
+            mainItem = ( MainItem ) getSerialize( C.bundleKey.MAIN_ITEM );
+            tx = ( Tx ) getSerialize( C.bundleKey.TX );
 
-            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
-                    amountViewSetting( erc20.getName( ) );
-                }
-            } else {
-                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-            }
+            // Save Search History
+            saveRecentSearch( );
 
-            viewSetting( );
-            searchSave( );
-        }
-    }
+            viewMapper.groupPlanet.setVisibility( tx.getTo_planet( ) != null ? View.VISIBLE : View.GONE );
+            viewMapper.groupAddress.setVisibility( tx.getTo_planet( ) != null ? View.GONE : View.VISIBLE );
 
 
-    private void transferStackCleanUp( ) {
-        if ( C.transferClass.transferActivity != null && C.transferClass.transferAmountActivity != null && C.transferClass.transferConfirmActivity != null ) {
-            C.transferClass.transferActivity.onBackPressed( );
-            C.transferClass.transferAmountActivity.onBackPressed( );
-            C.transferClass.transferConfirmActivity.onBackPressed( );
-        }
-    }
-
-    private void viewSetting( ) {
-        viewMapper.groupPlanet.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ? View.VISIBLE : View.GONE );
-        viewMapper.groupAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
-        viewMapper.textFromName.setText( planet.getName( ) );
-        viewMapper.textFee.setText( transfer.getFee( ) );
-        viewMapper.btnTxHash.setText( transfer.getTxHash( ) );
-        viewMapper.btnTxHash.underLine( );
-
-        if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
-            viewMapper.planetView.setData( transfer.getToAddress( ) );
-            viewMapper.textPlanetName.setText( transfer.getToName( ) );
-            viewMapper.textPlanetAddress.setText( Utils.addressReduction( transfer.getToAddress( ) ) );
-        } else if ( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ) {
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_bit_white );
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_eth_black : R.drawable.icon_transfer_eth_white );
-            }
-            viewMapper.imageIconBackground.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
-            viewMapper.textAddress.setText( transfer.getToAddress( ) );
+            viewMapper.planetView.setData( tx.getTo( ) );
+            viewMapper.textPlanetName.setText( tx.getTo_planet( ) );
+            viewMapper.textPlanetAddress.setText( Utils.addressReduction( tx.getTo( ) ) );
+            viewMapper.textAddress.setText( tx.getTo( ) );
             Utils.addressForm( viewMapper.textAddress, viewMapper.textAddress.getText( ).toString( ) );
+
+
+            viewMapper.textAmount.setText( String.format( Locale.US, "%s %s", Utils.removeLastZero( Utils.toMaxUnit( mainItem, tx.getAmount( ) ) ), mainItem.getSymbol( ) ) );
+            viewMapper.textAmountList.setText( String.format( Locale.US, "%s %s", Utils.removeLastZero( Utils.toMaxUnit( mainItem, tx.getAmount( ) ) ), mainItem.getSymbol( ) ) );
+
+            viewMapper.textFromName.setText( planet.getName( ) );
+            viewMapper.textFee.setText( String.format( Locale.US, "%s %s", Utils.removeLastZero( Utils.toMaxUnit( CoinType.of( planet.getCoinType( ) ), tx.getFee( ) ) ), CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            viewMapper.btnTxHash.setText( tx.getTx_id( ) );
+            viewMapper.btnTxHash.underLine( );
+
+            // CoinType
+            if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.BTC ) {
+                viewMapper.imageIcon.setImageResource( R.drawable.icon_btc );
+            } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ETH ) {
+                viewMapper.imageIcon.setImageResource( R.drawable.icon_eth );
+            } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ) {
+                ImageLoader.getInstance( ).displayImage( Route.URL( mainItem.getImg_path( ) ), viewMapper.imageIcon );
+            }
+
         }
+
     }
 
 
-    private void searchSave( ) {
+    private void saveRecentSearch( ) {
 
-        if ( !Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) return;
+        if ( tx.getTo_planet( ) == null ) return;
         Planet searchPlanet = new Planet( );
         searchPlanet.setKeyId( planet.getKeyId( ) );
-        searchPlanet.setAddress( transfer.getToAddress( ) );
-        searchPlanet.setName( transfer.getToName( ) );
-        searchPlanet.setSymbol( getSerialize( C.bundleKey.MAIN_ITEM ) != null ? erc20.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
+        searchPlanet.setAddress( tx.getTo( ) );
+        searchPlanet.setName( tx.getTo_planet( ) );
+        searchPlanet.setSymbol( tx.getSymbol( ) );
         searchPlanet.setCoinType( planet.getCoinType( ) );
         searchPlanet.setDate( String.valueOf( System.currentTimeMillis( ) ) );
+
         SearchStore.getInstance( ).save( searchPlanet );
 
-    }
-
-    void amountViewSetting( String type ) {
-        viewMapper.textAmount.setText( String.format( "%s " + type, transfer.getToBalance( ) ) );
-        viewMapper.textAmountList.setText( String.format( "%s " + type, transfer.getToBalance( ) ) );
     }
 
     @Override
@@ -181,8 +170,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         FontTextView btnTxHash;
 
 
-        CircleImageView imageIconBackground;
-        StretchImageView imageIcon;
+        CircleImageView imageIcon;
 
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
@@ -195,7 +183,6 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
             btnTxHash = findViewById( R.id.text_tx_receipt_txhash );
 
             planetView = findViewById( R.id.planet_tx_receipt_planetview );
-            imageIconBackground = findViewById( R.id.image_tx_receipt_address_background );
             imageIcon = findViewById( R.id.image_tx_receipt_coin_icon );
 
             textPlanetName = findViewById( R.id.text_tx_receipt_planet_name );

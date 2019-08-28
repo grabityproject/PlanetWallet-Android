@@ -20,24 +20,28 @@ import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.VO.ReturnVO;
+import io.grabity.planetwallet.VO.Tx;
 
 public class BtcRawTx {
 
 
-    public static String generateRawTx( Transaction tx, String privateKey ) {
+    public static String generateRawTx( Tx tx, String deviceKey, String privateKey ) {
 
         byte[] publicKey = JniWrapper.GenPubkeyFromPrikey( PcwfUtils.hexStringToByteArray( privateKey ) );
 
         long feePerByte = 10;
 
         try {
-            feePerByte = new BigDecimal( tx.getGasPrice( ) ).longValue( );
+            feePerByte = new BigDecimal( tx.getActualFee( ) ).longValue( );
         } catch ( ClassCastException | NumberFormatException | NullPointerException e ) {
             // Do not disturb;
         }
 
         // Getting utxo  list
-        ArrayList< UTXO > utxos = getUtxoList( tx );
+        ArrayList< UTXO > utxos = tx.getUtxos( );
+        if ( tx.getUtxos( ) == null )
+            utxos = getUtxoList( tx, deviceKey );
+
         if ( utxos == null ) return null; // Error, getting utxo List;
         if ( utxos.size( ) == 0 ) return null; // Have not utxo list;
 
@@ -55,17 +59,17 @@ public class BtcRawTx {
         BigDecimal change = inputTotal.subtract( estimateFee ).subtract( amount );
 
         // Fee SetUp
-        tx.fee = estimateFee.toBigInteger( ).toString( 10 );
+        tx.setFee( estimateFee.toBigInteger( ).toString( 10 ) );
 
         // Make outputs
         ArrayList< UTXO > outputs = new ArrayList<>( );
 
         UTXO outputTo = new UTXO( );
-        outputTo.setScript( scriptPubKey( tx.getToAddress( ) ) );
+        outputTo.setScript( scriptPubKey( tx.getTo( ) ) );
         outputTo.setValue( tx.getAmount( ) );
 
         UTXO outputChange = new UTXO( );
-        outputChange.setScript( scriptPubKey( tx.getFromAddress( ) ) );
+        outputChange.setScript( scriptPubKey( tx.getFrom( ) ) );
         outputChange.setValue( change.toBigInteger( ).toString( 10 ) );
 
         outputs.add( outputTo );
@@ -80,6 +84,42 @@ public class BtcRawTx {
         }
 
         return signedTx( inputs, outputs );
+    }
+
+    public static String estimateFee( Tx tx, String deviceKey ) {
+        long feePerByte = 10;
+
+        try {
+            feePerByte = new BigDecimal( tx.getActualFee( ) ).longValue( );
+        } catch ( ClassCastException | NumberFormatException | NullPointerException e ) {
+            // Do not disturb;
+        }
+
+        // Getting utxo  list
+        ArrayList< UTXO > utxos = tx.getUtxos( );
+        if ( tx.getUtxos( ) == null )
+            utxos = getUtxoList( tx, deviceKey );
+
+        if ( utxos == null ) return null; // Error, getting utxo List;
+        if ( utxos.size( ) == 0 ) return null; // Have not utxo list;
+
+        // input coin selection
+        ArrayList< UTXO > inputs = selection( tx.getAmount( ), feePerByte, utxos );
+        if ( inputs.size( ) == 0 ) return null; // no input || balance is less then amount
+
+        // total balance from inputs & estimate Fee
+        BigDecimal amount = new BigDecimal( tx.getAmount( ) );
+        BigDecimal inputTotal = new BigDecimal( "0" );
+        BigDecimal estimateFee = new BigDecimal( ( inputs.size( ) * 148 + 2 * 34 + 10 + 2 ) ).multiply( new BigDecimal( feePerByte ) );
+        for ( UTXO input : inputs )
+            inputTotal = inputTotal.add( new BigDecimal( input.getValue( ) ) );
+
+        BigDecimal change = inputTotal.subtract( estimateFee ).subtract( amount );
+
+        // Fee SetUp
+        tx.setFee( estimateFee.toBigInteger( ).toString( 10 ) );
+
+        return tx.getFee( );
     }
 
 
@@ -167,9 +207,9 @@ public class BtcRawTx {
         }
     };
 
-    private static ArrayList< UTXO > getUtxoList( Transaction tx ) {
+    private static ArrayList< UTXO > getUtxoList( Tx tx, String deviceKey ) {
         try {
-            String[] nonceResult = new Get( null ).setDeviceKey( tx.getDeviceKey( ) ).execute( Route.URL( "utxo", "list", "BTC", tx.getFromAddress( ) ), 0, 0, null ).get( );
+            String[] nonceResult = new Get( null ).setDeviceKey( deviceKey ).execute( Route.URL( "utxo", "list", "BTC", tx.getFrom( ) ), 0, 0, null ).get( );
             if ( nonceResult.length == 3 && Utils.equals( nonceResult[ 0 ], String.valueOf( 200 ) ) ) {
                 ReturnVO returnVO = Utils.jsonToVO( nonceResult[ 1 ], ReturnVO.class, UTXO.class );
                 if ( returnVO.isSuccess( ) ) {

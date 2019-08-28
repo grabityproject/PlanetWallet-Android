@@ -2,7 +2,6 @@ package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,12 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
@@ -25,43 +27,41 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
 import io.grabity.planetwallet.MiniFramework.wallet.transaction.Transaction;
+import io.grabity.planetwallet.MiniFramework.wallet.transaction.UTXO;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.ETHGasProvider;
-import io.grabity.planetwallet.VO.MainItems.ERC20;
-import io.grabity.planetwallet.VO.MainItems.ETH;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
-import io.grabity.planetwallet.VO.Transfer;
+import io.grabity.planetwallet.VO.Tx;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p6_Transfer.Popups.FeePopup;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.PlanetView;
-import io.grabity.planetwallet.Widgets.StretchImageView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class TransferConfirmActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, SeekBar.OnSeekBarChangeListener, FeePopup.OnFeePopupSaveClickListener {
+public class TransferConfirmActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, SeekBar.OnSeekBarChangeListener {
 
 
     private ViewMapper viewMapper;
+
     private Planet planet;
-    private ERC20 erc20;
-    private Transfer transfer;
+    private MainItem mainItem;
+    private Tx tx;
+
     private ArrayList< String > fee;
+
     private Transaction transaction;
-    private ETHGasProvider ethGasProvider;
 
-    private String gasPrice;
-    private String gasLimit;
+    private int networkTaskCount = 0;
 
-    private boolean isERC = false;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        getPlanetWalletApplication( ).recordActvityStack( this );
         setContentView( R.layout.activity_transfer_confimr );
         viewMapper = new ViewMapper( );
-        C.transferClass.transferConfirmActivity = this;
         viewInit( );
         setData( );
     }
@@ -69,49 +69,79 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     @Override
     protected void viewInit( ) {
         super.viewInit( );
-
         viewMapper.seekBar.setOnSeekBarChangeListener( this );
 
         viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_BACK ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 
-        viewMapper.btnFeeReset.setOnClickListener( this );
-        viewMapper.btnFeeOption.setOnClickListener( this );
         viewMapper.btnSubmit.setOnClickListener( this );
+        viewMapper.seekBar.setEnabled( false );
+        viewMapper.btnSubmit.setEnabled( false );
 
-        fee = new ArrayList<>( );
-
+        viewMapper.seekBar.setThumb( getResources( ).getDrawable( R.drawable.seekbar_thumb, this.getTheme( ) ) );
     }
 
     @Override
     protected void setData( ) {
         super.setData( );
-        if ( getSerialize( C.bundleKey.PLANET ) == null || getSerialize( C.bundleKey.TRANSFER ) == null ) {
+        if ( getSerialize( C.bundleKey.PLANET ) == null || getSerialize( C.bundleKey.MAIN_ITEM ) == null || getSerialize( C.bundleKey.TX ) == null ) {
             finish( );
         } else {
+            fee = new ArrayList<>( );
+
+            // Data getting
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-            transfer = ( Transfer ) getSerialize( C.bundleKey.TRANSFER );
+            mainItem = ( MainItem ) getSerialize( C.bundleKey.MAIN_ITEM );
+            tx = ( Tx ) getSerialize( C.bundleKey.TX );
 
-            if ( !Utils.equals( planet.getCoinType( ), CoinType.BTC.getCoinType( ) ) ) {
+            // Set Transaction
+            transaction = Transaction.create( mainItem ).setTx( tx ).setDeviceKey( C.DEVICE_KEY );
+
+            // toolbar, top amount binding
+            viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, mainItem.getSymbol( ) ) );
+            viewMapper.textAmount.setText( String.format( Locale.US, "%s %s", Utils.removeLastZero( Utils.toMaxUnit( mainItem, tx.getAmount( ) ) ), mainItem.getSymbol( ) ) );
+
+            // planet, address check
+            viewMapper.groupAddress.setVisibility( tx.getTo_planet( ) == null ? View.VISIBLE : View.GONE );
+            viewMapper.groupPlanet.setVisibility( tx.getTo_planet( ) == null ? View.GONE : View.VISIBLE );
+
+            // planet, address data Biding
+            Utils.addressForm( viewMapper.textAddress, tx.getTo( ) );
+            viewMapper.planetView.setData( tx.getTo( ) );
+            viewMapper.textPlanetName.setText( tx.getTo_planet( ) );
+            viewMapper.textPlanetAddress.setText( Utils.addressReduction( tx.getTo( ) ) );
+
+            // bottom list view data binding
+            viewMapper.textFromName.setText( planet.getName( ) );
+            viewMapper.textAmountList.setText( String.format( Locale.US, "%s %s", Utils.removeLastZero( Utils.toMaxUnit( mainItem, tx.getAmount( ) ) ), mainItem.getSymbol( ) ) );
+            viewMapper.textFee.setText( String.format( Locale.US, "%s %s", "-", CoinType.of( mainItem.getCoinType( ) ).getParent( ) ) );
+
+            // CoinType
+            if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.BTC ) {
+
+                viewMapper.groupFeeOption.setVisibility( View.GONE );
+                viewMapper.imageIcon.setImageResource( R.drawable.icon_btc );
+                networkTaskCount = 0;
+                new Get( this ).action( Route.URL( "fee", CoinType.BTC.name( ) ), 0, 0, null );
+                new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "utxo", "list", CoinType.BTC.name( ), planet.getAddress( ) ), 1, 0, null );
+
+            } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ETH ) {
+
+                viewMapper.groupFeeOption.setVisibility( View.VISIBLE );
+                viewMapper.imageIcon.setImageResource( R.drawable.icon_eth );
+                networkTaskCount = 0;
                 new Get( this ).action( Route.URL( "gas" ), 0, 0, null );
+                new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "nonce", CoinType.ETH.name( ), planet.getAddress( ) ), 2, 0, null );
+
+            } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ) {
+
+                viewMapper.groupFeeOption.setVisibility( View.VISIBLE );
+                ImageLoader.getInstance( ).displayImage( Route.URL( mainItem.getImg_path( ) ), viewMapper.imageIcon );
+                networkTaskCount = 0;
+                new Get( this ).action( Route.URL( "gas" ), 0, 0, null );
+                new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "nonce", CoinType.ETH.name( ), planet.getAddress( ) ), 2, 0, null );
+
             }
-
-
-            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                if ( Utils.equals( getSerialize( C.bundleKey.MAIN_ITEM ).getClass( ), ERC20.class ) ) {
-                    erc20 = ( ERC20 ) getSerialize( C.bundleKey.MAIN_ITEM );
-                    viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, erc20.getName( ) ) );
-                    amountViewSetting( erc20.getName( ) );
-                    isERC = true;
-                }
-            } else {
-                viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, CoinType.of( planet.getCoinType( ) ).name( ) ) );
-                amountViewSetting( CoinType.of( planet.getCoinType( ) ).name( ) );
-            }
-
-
-            viewSetting( );
-
         }
     }
 
@@ -119,158 +149,65 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( !error ) {
-            if ( statusCode == 200 && requestCode == 0 ) {
-                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ETHGasProvider.class );
-                if ( returnVO.isSuccess( ) ) {
-                    ethGasProvider = ( ETHGasProvider ) returnVO.getResult( );
+            if ( statusCode == 200 ) { //  fee
+                if ( requestCode == 0 ) {
+                    ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class );
+                    if ( returnVO.isSuccess( ) ) {
+                        networkTaskCount++;
+                        LinkedTreeMap< String, String > map = ( LinkedTreeMap< String, String > ) returnVO.getResult( );
+                        fee = new ArrayList<>( map.values( ) );
+                        fee.sort( ( o1, o2 ) -> new BigDecimal( o1 ).compareTo( new BigDecimal( o2 ) ) );
 
-                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethGasProvider.getSafeLow( ), 9, 18 ), !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ) );
-                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethGasProvider.getStandard( ), 9, 18 ), !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ) );
-                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethGasProvider.getFast( ), 9, 18 ), !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ) );
-                    fee.add( Utils.feeCalculation( Utils.convertUnit( ethGasProvider.getFastest( ), 9, 18 ), !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT ) );
+                    }
+                } else if ( requestCode == 1 ) {
+                    ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, UTXO.class );
+                    if ( returnVO.isSuccess( ) ) {
+                        networkTaskCount++;
+                        ArrayList< UTXO > utxos = ( ArrayList< UTXO > ) returnVO.getResult( );
+                        tx.setUtxos( utxos );
 
-                }
-            } else {
-                defaultFee( );
-            }
-            feeSetting( );
-        } else {
-            defaultFee( );
-            feeSetting( );
-        }
+                    }
+                } else if ( requestCode == 2 ) {
+                    ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Tx.class );
+                    if ( returnVO.isSuccess( ) ) {
+                        networkTaskCount++;
+                        Tx nonce = ( Tx ) returnVO.getResult( );
+                        tx.setNonce( nonce.getNonce( ) );
 
-    }
-
-    void defaultFee( ) {
-        for ( int i = 0; i < 4; i++ ) {
-            fee.add( !isERC ? ETHGasProvider.ETH_DEFAULT_FEE : ETHGasProvider.ERC_DEFAULT_FEE );
-        }
-    }
-
-    void gasPriceAndLimitSetting( int progress, boolean isERC ) {
-        if ( ethGasProvider == null ) {
-            gasPrice = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI;
-            gasLimit = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT;
-            return;
-        }
-
-        switch ( progress ) {
-            case 0:
-                gasPrice = ethGasProvider.getSafeLow( );
-                break;
-            case 1:
-                gasPrice = ethGasProvider.getStandard( );
-                break;
-            case 2:
-                gasPrice = ethGasProvider.getFast( );
-                break;
-            case 3:
-                gasPrice = ethGasProvider.getFastest( );
-                break;
-            default:
-                gasPrice = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_GWEI : ETHGasProvider.ERC_DEFAULT_GAS_GWEI;
-        }
-        gasLimit = !isERC ? ETHGasProvider.ETH_DEFAULT_GAS_LIMIT : ETHGasProvider.ERC_DEFAULT_GAS_LIMIT;
-
-
-    }
-
-
-    void feeSetting( ) {
-        viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 2 ) ) );
-        gasPriceAndLimitSetting( 2, isERC );
-    }
-
-    void viewSetting( ) {
-        viewMapper.groupPlanet.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ? View.VISIBLE : View.GONE );
-        viewMapper.groupAddress.setVisibility( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ? View.VISIBLE : View.GONE );
-        viewMapper.groupFeeOption.setVisibility( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? View.VISIBLE : View.GONE );
-        viewMapper.textFromName.setText( planet.getName( ) );
-        viewMapper.seekBar.setMax( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ? 3 : 2 );
-
-        if ( Utils.equals( transfer.getChoice( ), C.transferChoice.PLANET_NAME ) ) {
-            viewMapper.planetView.setData( transfer.getToAddress( ) );
-            viewMapper.textPlanetName.setText( transfer.getToName( ) );
-            viewMapper.textPlanetAddress.setText( Utils.addressReduction( transfer.getToAddress( ) ) );
-        } else if ( Utils.equals( transfer.getChoice( ), C.transferChoice.ADDRESS ) ) {
-            if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                Utils.setPadding( viewMapper.imageIcon, 0, 0, 0, 0 );
-                ImageLoader.getInstance( ).displayImage( Route.URL( erc20.getImg_path( ) ), viewMapper.imageIcon );
-                viewMapper.imageIconBackground.setVisibility( View.INVISIBLE );
-            } else {
-                if ( !getCurrentTheme( ) ) {
-                    viewMapper.imageIcon.setImageResource( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_eth_black );
-                } else {
-                    viewMapper.imageIcon.setImageResource( Utils.equals( CoinType.BTC.getCoinType( ), planet.getCoinType( ) ) ? R.drawable.icon_transfer_bit_white : R.drawable.icon_transfer_eth_white );
+                    }
                 }
             }
-            viewMapper.imageIconBackground.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
-            viewMapper.textAddress.setText( transfer.getToAddress( ) );
-            Utils.addressForm( viewMapper.textAddress, viewMapper.textAddress.getText( ).toString( ) );
         }
-    }
 
-    void amountViewSetting( String type ) {
-        viewMapper.textAmount.setText( String.format( "%s " + type, transfer.getToBalance( ) ) );
-        viewMapper.textAmountList.setText( String.format( "%s " + type, transfer.getToBalance( ) ) );
+        if ( networkTaskCount == 2 ) {
+            feeViewSetting( );
+            viewMapper.btnSubmit.setEnabled( true );
+        }
     }
 
     @Override
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnFeeOption ) {
+
             FeePopup.newInstance( this )
-                    .setOnFeePopupSaveClickListener( this )
-                    .setFee( !isERC ? ETHGasProvider.ETH_DEFAULT_FEE : ETHGasProvider.ERC_DEFAULT_FEE, CoinType.of( planet.getCoinType( ) ).name( ) )
-                    .setERC( isERC )
+                    .setPlanet( planet )
+                    .setMainItem( mainItem )
+                    .setTx( tx )
                     .show( );
+
         } else if ( v == viewMapper.btnFeeReset ) {
+
             viewMapper.groupSeekBar.setVisibility( View.VISIBLE );
             viewMapper.groupFeeOption.setVisibility( View.VISIBLE );
             viewMapper.btnFeeReset.setVisibility( View.GONE );
 
-            //reset fee
-            viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( 2 ) ) );
-            viewMapper.seekBar.setProgress( 2 );
-
-
-            gasPriceAndLimitSetting( 2, isERC );
-
-
         } else if ( v == viewMapper.btnSubmit ) {
+
             setTransition( Transition.SLIDE_UP );
             sendAction( C.requestCode.TRANSFER, PinCodeCertificationActivity.class );
+
         }
-
-    }
-
-    private String transaction( Planet planet, ERC20 erc20 ) {
-        String serializeTx;
-        if ( erc20 != null ) {
-            transaction = new Transaction( erc20 )
-                    .setDeviceKey( C.DEVICE_KEY )
-                    .from( planet.getAddress( ) )
-                    .to( transfer.getToAddress( ) )
-                    .value( Utils.convertUnit( transfer.getToBalance( ), 18, 0 ) )
-                    .gasPrice( Utils.convertUnit( gasPrice, 9, 0 ) )
-                    .gasLimit( gasLimit );
-
-            serializeTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) );
-            PLog.e( "ERC serializeTx : " + serializeTx );
-        } else {
-            transaction = new Transaction( new ETH( ) )
-                    .setDeviceKey( C.DEVICE_KEY )
-                    .from( planet.getAddress( ) )
-                    .to( transfer.getToAddress( ) )
-                    .value( Utils.convertUnit( transfer.getToBalance( ), 18, 0 ) )
-                    .gasPrice( Utils.convertUnit( gasPrice, 9, 0 ) )
-                    .gasLimit( gasLimit );
-
-            serializeTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) );
-            PLog.e( "ETH serializeTx : " + serializeTx );
-        }
-
-        return serializeTx;
 
     }
 
@@ -278,64 +215,68 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.TRANSFER && resultCode == RESULT_OK ) {
-            Bundle bundle = new Bundle( );
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                bundle.putSerializable( C.bundleKey.PLANET, planet );
 
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-
-                if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                    bundle.putSerializable( C.bundleKey.PLANET, planet );
-                    bundle.putSerializable( C.bundleKey.MAIN_ITEM, erc20 );
-
-                    transfer.setSerializeTx( transaction( planet, erc20 ) );
-
-                } else {
-                    bundle.putSerializable( C.bundleKey.PLANET, planet );
-                    transfer.setSerializeTx( transaction( planet, null ) );
-                }
-            }
-            transfer.setFee( viewMapper.textFee.getText( ).toString( ) );
-            PLog.e( "transfer.getSerializeTx() : " + transfer.getSerializeTx( ) );
+            String rawTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) );
 
             new Post( ( error, requestCode1, resultCode1, statusCode, result ) -> {
-                PLog.e( "result : " + result );
                 if ( !error ) {
-                    if ( statusCode == 200 && requestCode1 == 0 ) {
-                        ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Transfer.class );
-                        if ( returnVO.isSuccess( ) ) {
-                            Transfer t = ( Transfer ) returnVO.getResult( );
-                            transfer.setTxHash( t.getTxHash( ) );
-                            bundle.putSerializable( C.bundleKey.TRANSFER, transfer );
-                            setTransition( Transition.SLIDE_UP );
-                            sendAction( TxReceiptActivity.class, bundle );
-                        }
+                    ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class );
+                    if ( returnVO.isSuccess( ) ) {
+                        LinkedTreeMap< String, String > map = ( LinkedTreeMap< String, String > ) returnVO.getResult( );
+                        tx.setTx_id( map.get( "txHash" ) );
+
+                        setTransition( Transition.SLIDE_UP );
+                        sendAction( TxReceiptActivity.class,
+                                Utils.mergeBundles(
+                                        Utils.createSerializableBundle( C.bundleKey.PLANET, planet ),
+                                        Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, mainItem ),
+                                        Utils.createSerializableBundle( C.bundleKey.TX, tx ) ) );
+
                     } else {
                         CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
                     }
                 } else {
                     CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
                 }
-            } ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "transfer", transaction.getSymbol( ) ), 0, 0, new Transfer( transfer.getSerializeTx( ) ) );
+            } ).setDeviceKey( C.DEVICE_KEY )
+                    .action( Route.URL( "transfer", mainItem.getSymbol( ) ), 0, 0, Utils.createStringHashMap( "serializeTx", rawTx ) );
         }
     }
 
-    @Override
-    public void onFeePopupSaveClick( String fee, String gasPrice, String gasLimit ) {
-        super.onBackPressed( );
-        viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ), fee ) );
-        viewMapper.groupSeekBar.setVisibility( View.GONE );
-        viewMapper.groupFeeOption.setVisibility( View.GONE );
-        viewMapper.btnFeeReset.setVisibility( View.VISIBLE );
+    public void feeViewSetting( ) {
+        if ( fee.size( ) > 0 ) {
+            viewMapper.seekBar.setEnabled( true );
+            viewMapper.seekBar.setMax( fee.size( ) - 1 );
+            viewMapper.seekBar.setProgress( ( int ) Math.floor( ( double ) fee.size( ) / 2.0d ) );
 
-        this.gasPrice = gasPrice;
-        this.gasLimit = gasLimit;
+            viewMapper.btnFeeReset.setOnClickListener( this );
+            viewMapper.btnFeeOption.setOnClickListener( this );
 
+        }
     }
+
+//    @Override
+//    public void onFeePopupSaveClick( String fee, String gasPrice, String gasLimit ) {
+//        super.onBackPressed( );
+//
+//        viewMapper.groupSeekBar.setVisibility( View.GONE );
+//        viewMapper.groupFeeOption.setVisibility( View.GONE );
+//        viewMapper.btnFeeReset.setVisibility( View.VISIBLE );
+//
+//        tx.setGasPrice( "" );
+//        tx.setGasLimit( "" );
+//        tx.setActualFee( "" ); // BTC
+//
+//        viewMapper.textFee.setText( String.format( Locale.US, "%s %s",
+//                Utils.removeLastZero( Utils.toMaxUnit( mainItem, transaction.estimateFee( ) ) ),
+//                CoinType.of( mainItem.getCoinType( ) ).getParent( ) )
+//        );
+//    }
 
     @Override
     public void onBackPressed( ) {
         super.onBackPressed( );
+        PLog.e( "onBackPressed" );
     }
 
     @Override
@@ -349,17 +290,20 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {
 
-        if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
-            if ( fee.get( progress ) == null ) {
-                viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), ETHGasProvider.ETH_DEFAULT_FEE ) );
-                return;
-            }
-            viewMapper.textFee.setText( String.format( "%s " + CoinType.of( planet.getCoinType( ) ).name( ), fee.get( progress ) ) );
-            gasPriceAndLimitSetting( progress, isERC );
-        } else {
-            PLog.e( "BTC" );
-        }
+        try {
 
+            // Set GasPrice Changed
+            tx.setGasPrice( fee.get( progress ) ); // ETH
+            tx.setActualFee( fee.get( progress ) ); // BTC
+
+            viewMapper.textFee.setText( String.format( Locale.US, "%s %s",
+                    Utils.removeLastZero( Utils.toMaxUnit( mainItem, transaction.estimateFee( ) ) ),
+                    CoinType.of( mainItem.getCoinType( ) ).getParent( ) )
+            );
+
+        } catch ( IndexOutOfBoundsException | NullPointerException e ) {
+            e.printStackTrace( );
+        }
 
     }
 
@@ -387,8 +331,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
         SeekBar seekBar;
 
-        CircleImageView imageIconBackground;
-        StretchImageView imageIcon;
+        CircleImageView imageIcon;
 
         TextView textPlanetName;
         TextView textPlanetAddress;
@@ -413,7 +356,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
             planetView = findViewById( R.id.planet_transfer_confirm_planetview );
             seekBar = findViewById( R.id.seekBar );
-            imageIconBackground = findViewById( R.id.image_transfer_confirm_address_background );
             imageIcon = findViewById( R.id.image_transfer_confirm_address_icon );
 
             textPlanetName = findViewById( R.id.text_transfer_confirm_planet_name );

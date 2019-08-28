@@ -1,6 +1,7 @@
 package io.grabity.planetwallet.Common.components;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
@@ -19,6 +20,8 @@ import com.pentasecurity.cryptowallet.storage.DefaultStorageCrypter;
 
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Objects;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.MiniFramework.fcm.OnMessagingListener;
@@ -41,10 +44,9 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
 
     private String deviceKey = null;
-
     private char[] PINCODE = null;
-
     private ArrayList< OnMessagingListener > messagingListeners = new ArrayList<>( );
+    private LinkedList< Activity > activityStack = new LinkedList<>( );
 
     static {
         System.loadLibrary( "pallet_core-0.1.0-x64_shared" );
@@ -146,6 +148,20 @@ public class PlanetWalletApplication extends MultiDexApplication {
     public void setDeviceKey( String deviceKey ) {
         this.deviceKey = deviceKey;
         C.DEVICE_KEY = deviceKey;
+    }
+
+    public void recordActvityStack( Activity activity ) {
+        if ( activityStack != null ) {
+            activityStack.offer( activity );
+        }
+    }
+
+    public void removeAllStack( ) {
+        if ( activityStack != null ) {
+            while ( activityStack.size( ) > 0 ) {
+                Objects.requireNonNull( activityStack.poll( ) ).onBackPressed( );
+            }
+        }
     }
 
 }
