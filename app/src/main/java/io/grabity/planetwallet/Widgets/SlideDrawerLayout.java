@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
@@ -284,12 +285,6 @@ public class SlideDrawerLayout extends ViewGroup {
         if ( currentMovingPosition == -1 ) return false;
         View getCurrentPositionView = triggers.get( currentMovingPosition ).view;
 
-        if ( doNotEventViews != null ) {
-            for ( int i = 0; i < doNotEventViews.size( ); i++ ) {
-                doNotEventViews.get( i ).setOnTouchListener( ( v, event1 ) -> true );
-            }
-        }
-
         if ( !isOpen ) {
 
             if ( currentMovingPosition > -1 ) {
@@ -468,7 +463,15 @@ public class SlideDrawerLayout extends ViewGroup {
     protected boolean isInSideTouchORClick( float x, float y ) {
         float clickDp = Utils.dpToPx( getContext( ), 16 );
 
-        return x + clickDp > inSideTouchPositionX && y + clickDp > inSideTouchPositionY;
+        if ( doNotEventViews != null ) {
+            if ( doNotEventViews.get( 0 ).getY( ) > 0 ) {
+                return false;
+            } else {
+                return x + clickDp > inSideTouchPositionX && y + clickDp > inSideTouchPositionY;
+            }
+        } else {
+            return x + clickDp > inSideTouchPositionX && y + clickDp > inSideTouchPositionY;
+        }
 
 //        if ( x + clickDp > inSideTouchPositionX && y + clickDp > inSideTouchPositionY ) {
 //            return true; //클릭으로판단

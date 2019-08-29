@@ -37,6 +37,9 @@ public class BtcRawTx {
             // Do not disturb;
         }
 
+        if ( feePerByte <= 0 ) return null; // fee minimun check
+        if ( new BigDecimal( tx.getAmount( ) ).intValue( ) <= 0 ) return null; //amount precision value check
+
         // Getting utxo  list
         ArrayList< UTXO > utxos = tx.getUtxos( );
         if ( tx.getUtxos( ) == null )
@@ -57,6 +60,8 @@ public class BtcRawTx {
             inputTotal = inputTotal.add( new BigDecimal( input.getValue( ) ) );
 
         BigDecimal change = inputTotal.subtract( estimateFee ).subtract( amount );
+
+        if ( change.intValue( ) < 0 ) return null; // inputAmount - ( fee + amount ) < 0
 
         // Fee SetUp
         tx.setFee( estimateFee.toBigInteger( ).toString( 10 ) );
