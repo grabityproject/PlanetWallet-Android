@@ -21,7 +21,6 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
 import io.grabity.planetwallet.MiniFramework.networktask.Post;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -34,13 +33,13 @@ import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.VO.Tx;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
-import io.grabity.planetwallet.Views.p6_Transfer.Popups.FeePopup;
+import io.grabity.planetwallet.Views.p6_Transfer.Popups.EthFeePopup;
 import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.ToolBar;
 
-public class TransferConfirmActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, SeekBar.OnSeekBarChangeListener {
+public class TransferConfirmActivity extends PlanetWalletActivity implements ToolBar.OnToolBarClickListener, SeekBar.OnSeekBarChangeListener, EthFeePopup.OnEthFeePopupListener {
 
 
     private ViewMapper viewMapper;
@@ -190,10 +189,11 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         super.onClick( v );
         if ( v == viewMapper.btnFeeOption ) {
 
-            FeePopup.newInstance( this )
-                    .setPlanet( planet )
-                    .setMainItem( mainItem )
-                    .setTx( tx )
+            EthFeePopup.newInstance( this )
+                    .setOnEthFeePopupListener( this )
+                    .setCoinType( CoinType.of( mainItem.getCoinType( ) ) )
+                    .setEthBalance( planet.getMainItem( ).getBalance( ) )
+                    .setEthAmount( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ETH ? tx.getAmount( ) : null )
                     .show( );
 
         } else if ( v == viewMapper.btnFeeReset ) {
@@ -201,6 +201,22 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             viewMapper.groupSeekBar.setVisibility( View.VISIBLE );
             viewMapper.groupFeeOption.setVisibility( View.VISIBLE );
             viewMapper.btnFeeReset.setVisibility( View.GONE );
+
+            if ( fee != null && fee.size( ) > 0 ) {
+                try {
+                    tx.setGasPrice( fee.get( viewMapper.seekBar.getProgress( ) ) );
+                    tx.setGasLimit( null );
+                } catch ( NullPointerException | IndexOutOfBoundsException e ) {
+                    tx.setGasPrice( null );
+                    tx.setGasLimit( null );
+                }
+
+
+                viewMapper.textFee.setText( String.format( Locale.US, "%s %s",
+                        Utils.removeLastZero( Utils.toMaxUnit( mainItem, transaction.estimateFee( ) ) ),
+                        CoinType.of( mainItem.getCoinType( ) ).getParent( ) )
+                );
+            }
 
         } else if ( v == viewMapper.btnSubmit ) {
 
@@ -251,49 +267,39 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
             viewMapper.btnFeeReset.setOnClickListener( this );
             viewMapper.btnFeeOption.setOnClickListener( this );
-
         }
-    }
-
-//    @Override
-//    public void onFeePopupSaveClick( String fee, String gasPrice, String gasLimit ) {
-//        super.onBackPressed( );
-//
-//        viewMapper.groupSeekBar.setVisibility( View.GONE );
-//        viewMapper.groupFeeOption.setVisibility( View.GONE );
-//        viewMapper.btnFeeReset.setVisibility( View.VISIBLE );
-//
-//        tx.setGasPrice( "" );
-//        tx.setGasLimit( "" );
-//        tx.setActualFee( "" ); // BTC
-//
-//        viewMapper.textFee.setText( String.format( Locale.US, "%s %s",
-//                Utils.removeLastZero( Utils.toMaxUnit( mainItem, transaction.estimateFee( ) ) ),
-//                CoinType.of( mainItem.getCoinType( ) ).getParent( ) )
-//        );
-//    }
-
-    @Override
-    public void onBackPressed( ) {
-        super.onBackPressed( );
-        PLog.e( "onBackPressed" );
     }
 
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            super.onBackPressed( );
+            onBackPressed( );
         }
     }
 
+    @Override
+    public void onFeePopupSaveClick( EthFeePopup ethFeePopup, String gasPriceWei, String gasLimit ) {
+
+        tx.setGasPrice( gasPriceWei ); // ETH
+        tx.setGasLimit( gasLimit );
+
+        viewMapper.textFee.setText( String.format( Locale.US, "%s %s",
+                Utils.removeLastZero( Utils.toMaxUnit( mainItem, transaction.estimateFee( ) ) ),
+                CoinType.of( mainItem.getCoinType( ) ).getParent( ) )
+        );
+
+        viewMapper.groupSeekBar.setVisibility( View.GONE );
+        viewMapper.groupFeeOption.setVisibility( View.GONE );
+        viewMapper.btnFeeReset.setVisibility( View.VISIBLE );
+    }
 
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {
 
         try {
-
             // Set GasPrice Changed
             tx.setGasPrice( fee.get( progress ) ); // ETH
+            tx.setGasLimit( null );
             tx.setActualFee( fee.get( progress ) ); // BTC
 
             viewMapper.textFee.setText( String.format( Locale.US, "%s %s",

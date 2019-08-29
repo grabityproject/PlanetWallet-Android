@@ -18,14 +18,19 @@ import io.grabity.planetwallet.Common.components.AbsPopupView.AbsSlideUpView;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
-import io.grabity.planetwallet.VO.MainItems.MainItem;
-import io.grabity.planetwallet.VO.Planet;
-import io.grabity.planetwallet.VO.Tx;
 import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
 
-public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
+public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener {
+
+    private final static BigDecimal GWEI = new BigDecimal( "1000000000" );
+    private final static String ETH_DEFAULT_GAS_LIMIT = "21000";
+    private final static String ETH_DEFAULT_GAS_GWEI = "20";
+
+    private final static String ERC20_DEFAULT_GAS_LIMIT = "100000";
+    private final static String ERC20_DEFAULT_GAS_GWEI = "10";
+
 
     private float contentHeight = -1.0f;
     private float defaultY = -1.0f;
@@ -39,19 +44,21 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
     private ViewMapper viewMapper;
     private ArrayList< FontTextView > numberButtons;
 
-    private Planet planet;
-    private MainItem mainItem;
-    private Tx tx;
-
     private StringBuilder stringBuilder = new StringBuilder( );
 
-    public FeePopup( Context context ) {
+    private OnEthFeePopupListener onEthFeePopupListener;
+
+    private CoinType coinType;
+    private BigDecimal ethBalance;
+    private BigDecimal ethAmount;
+
+    public EthFeePopup( Context context ) {
         super( context );
     }
 
-    public static FeePopup newInstance( Context context ) {
-        FeePopup feePopup = new FeePopup( context );
-        return feePopup;
+    public static EthFeePopup newInstance( Context context ) {
+        EthFeePopup ethFeePopup = new EthFeePopup( context );
+        return ethFeePopup;
     }
 
     @Override
@@ -85,26 +92,19 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         setData( );
     }
 
-    public FeePopup setPlanet( Planet planet ) {
-        this.planet = planet;
-        return this;
-    }
-
-    public FeePopup setMainItem( MainItem mainItem ) {
-        this.mainItem = mainItem;
-        return this;
-    }
-
-    public FeePopup setTx( Tx tx ) {
-        this.tx = tx;
-        return this;
-    }
 
     @Override
     public void setData( ) {
         super.setData( );
-        viewMapper.btnGasPrice.setText( "20" );
-        viewMapper.btnGasLimit.setText( "21000" );
+
+        if ( coinType == CoinType.ETH ) {
+            viewMapper.btnGasPrice.setText( ETH_DEFAULT_GAS_GWEI );
+            viewMapper.btnGasLimit.setText( ETH_DEFAULT_GAS_LIMIT );
+        } else if ( coinType == CoinType.ERC20 ) {
+            viewMapper.btnGasPrice.setText( ERC20_DEFAULT_GAS_GWEI );
+            viewMapper.btnGasLimit.setText( ERC20_DEFAULT_GAS_LIMIT );
+        }
+
 
         focusBtn( true );
         setFeeText( );
@@ -116,12 +116,13 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
     }
 
+
     @Override
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnGasPrice && currentFocus( ) == viewMapper.btnGasLimit ) {
 
-            if ( new BigDecimal( viewMapper.btnGasLimit.getText( ).toString( ) ).compareTo( new BigDecimal( "21000" ) ) < 0 ) {
+            if ( tooLowGasLimit( ) ) {
                 CustomToast.makeText( getActivity( ), "21000 이하로 안됨" ).show( );
             } else {
                 focusBtn( true );
@@ -129,13 +130,11 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
 
         } else if ( v == viewMapper.btnGasLimit && currentFocus( ) == viewMapper.btnGasPrice ) {
 
-            if ( Utils.equals( viewMapper.btnGasPrice.getText( ).toString( ), "0" ) ) {
+            if ( isZeroGasPrice( ) ) {
                 CustomToast.makeText( getActivity( ), "gas는 0 안됨" ).show( );
             } else {
-                focusBtn( true );
+                focusBtn( false );
             }
-
-            focusBtn( false );
 
         } else if ( v == viewMapper.btnCancel ) {
 
@@ -144,6 +143,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         } else if ( v == viewMapper.btnSave ) {
 
             if ( validValues( ) ) {
+                Objects.requireNonNull( onEthFeePopupListener ).onFeePopupSaveClick( this, new BigDecimal( viewMapper.btnGasPrice.getText( ).toString( ) ).multiply( GWEI ).toPlainString( ), viewMapper.btnGasLimit.getText( ).toString( ) );
                 getActivity( ).onBackPressed( );
             }
 
@@ -166,14 +166,7 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
             }
             stringBuilder.append( numberButton.getText( ).toString( ) );
 
-            String gasPrice = viewMapper.btnGasPrice.isSelected( ) ? stringBuilder.toString( ) : viewMapper.btnGasPrice.getText( ).toString( );
-            String gasLimit = viewMapper.btnGasLimit.isSelected( ) ? stringBuilder.toString( ) : viewMapper.btnGasLimit.getText( ).toString( );
-
-            BigDecimal amount = new BigDecimal( tx.getAmount( ) );
-            BigDecimal balance = new BigDecimal( mainItem.getBalance( ) );
-            BigDecimal fee = new BigDecimal( gasPrice ).multiply( new BigDecimal( "1000000000" ) ).multiply( new BigDecimal( gasLimit ) );
-
-            if ( balance.subtract( amount.add( fee ) ).signum( ) <= 0 ) {
+            if ( tooLargeFee( ) ) {
                 CustomToast.makeText( getActivity( ), "gas비가 너무 높아" ).show( );
                 stringBuilder.deleteCharAt( stringBuilder.length( ) - 1 );
             } else {
@@ -184,30 +177,26 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         }
     }
 
-    private boolean validValues( ) {
+    private boolean tooLargeFee( ) {
+
         String gasPrice = viewMapper.btnGasPrice.isSelected( ) ? stringBuilder.toString( ) : viewMapper.btnGasPrice.getText( ).toString( );
         String gasLimit = viewMapper.btnGasLimit.isSelected( ) ? stringBuilder.toString( ) : viewMapper.btnGasLimit.getText( ).toString( );
 
-        BigDecimal amount = new BigDecimal( tx.getAmount( ) );
-        BigDecimal balance = new BigDecimal( mainItem.getBalance( ) );
-        BigDecimal fee = new BigDecimal( gasPrice ).multiply( new BigDecimal( "1000000000" ) ).multiply( new BigDecimal( gasLimit ) );
+        BigDecimal fee = new BigDecimal( gasPrice ).multiply( new BigDecimal( gasLimit ) ).multiply( GWEI );
 
-        if ( new BigDecimal( gasLimit ).compareTo( new BigDecimal( "21000" ) ) < 0 ) {
-            CustomToast.makeText( getActivity( ), "21000 이하로 안됨" ).show( );
-            return false;
-        }
+        return ethBalance.subtract( ethAmount ).subtract( fee ).signum( ) <= 0;
+    }
 
-        if ( currentFocus( ) == viewMapper.btnGasPrice && Utils.equals( gasPrice, "0" ) ) {
-            CustomToast.makeText( getActivity( ), "gas는 0 안됨" ).show( );
-            return false;
-        }
+    private boolean isZeroGasPrice( ) {
+        return Utils.equals( viewMapper.btnGasPrice.getText( ).toString( ), "0" );
+    }
 
-        if ( balance.subtract( amount.add( fee ) ).signum( ) <= 0 ) {
-            CustomToast.makeText( getActivity( ), "gas비가 너무 높아" ).show( );
-            return false;
-        }
+    private boolean tooLowGasLimit( ) {
+        return new BigDecimal( viewMapper.btnGasLimit.getText( ).toString( ) ).compareTo( new BigDecimal( "21000" ) ) < 0;
+    }
 
-        return true;
+    private boolean validValues( ) {
+        return !( tooLargeFee( ) || tooLowGasLimit( ) || isZeroGasPrice( ) );
     }
 
     private void focusBtn( boolean isGasPrice ) {
@@ -241,8 +230,31 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
     }
 
     private void setFeeText( ) {
-        String fee = new BigDecimal( viewMapper.btnGasPrice.getText( ).toString( ) ).multiply( new BigDecimal( "1000000000" ) ).multiply( new BigDecimal( viewMapper.btnGasLimit.getText( ).toString( ) ) ).toPlainString( );
-        viewMapper.textGasFee.setText( String.format( Locale.US, "%s %s", Utils.ofZeroClear( Utils.toMaxUnit( CoinType.of( CoinType.of( mainItem.getCoinType( ) ).getParent( ) ), fee ) ), CoinType.of( mainItem.getCoinType( ) ).getParent( ) ) );
+        String fee = new BigDecimal( viewMapper.btnGasPrice.getText( ).toString( ) ).multiply( GWEI ).multiply( new BigDecimal( viewMapper.btnGasLimit.getText( ).toString( ) ) ).toPlainString( );
+        viewMapper.textGasFee.setText( String.format( Locale.US, "%s %s", Utils.ofZeroClear( Utils.toMaxUnit( CoinType.ETH, fee ) ), CoinType.ETH.name( ) ) );
+    }
+
+    public EthFeePopup setEthBalance( String ethBalance ) {
+        if ( ethBalance == null ) {
+            this.ethBalance = new BigDecimal( 0 );
+        } else {
+            this.ethBalance = new BigDecimal( ethBalance );
+        }
+        return this;
+    }
+
+    public EthFeePopup setEthAmount( String ethAmount ) {
+        if ( ethAmount == null ) {
+            this.ethAmount = new BigDecimal( 0 );
+        } else {
+            this.ethAmount = new BigDecimal( ethAmount );
+        }
+        return this;
+    }
+
+    public EthFeePopup setCoinType( CoinType coinType ) {
+        this.coinType = coinType;
+        return this;
     }
 
     @Override
@@ -298,6 +310,10 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
         return true;
     }
 
+    public EthFeePopup setOnEthFeePopupListener( OnEthFeePopupListener onEthFeePopupListener ) {
+        this.onEthFeePopupListener = onEthFeePopupListener;
+        return this;
+    }
 
     class ViewMapper {
 
@@ -329,5 +345,9 @@ public class FeePopup extends AbsSlideUpView implements View.OnTouchListener {
             btnDelete = findViewById( R.id.group_popup_fee_bottom_delete );
             btnHeader = findViewById( R.id.btn_popup_fee_header );
         }
+    }
+
+    public interface OnEthFeePopupListener {
+        void onFeePopupSaveClick( EthFeePopup ethFeePopup, String gasPriceWei, String gasLimit );
     }
 }

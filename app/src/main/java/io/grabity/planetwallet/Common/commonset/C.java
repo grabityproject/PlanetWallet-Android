@@ -6,14 +6,6 @@ public class C {
     public static char[] PINCODE;
     public static String DEVICE_KEY;
 
-    public final static String ETH_DEFAULT_GAS_LIMIT = "21000";
-    public final static String ETH_DEFAULT_GAS_GWEI = "20";
-    public final static String ETH_DEFAULT_FEE = "0.00042";
-
-    public final static String ERC_DEFAULT_GAS_LIMIT = "100000";
-    public final static String ERC_DEFAULT_GAS_GWEI = "10";
-    public final static String ERC_DEFAULT_FEE = "0.001";
-
     public static class url {
     }
 
