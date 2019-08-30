@@ -70,7 +70,8 @@ public class BitCoinManager {
         WalletAccount account = btcWalletAccountService.createHDWalletAccount(
                 btcCoinAccountKey.getId( ),
                 CoinType.BTC.name( ),
-                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
+//                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
+                DefinedCurrency.of( 251658240 ),
                 "0/0" );
 
         Planet planet = new Planet( );
@@ -267,7 +268,12 @@ public class BitCoinManager {
     }
 
     public boolean validateAddress( String address ) {
-        return btcWalletAccountService.validateAddress( address );
+        //test bitcoin testNet + mainNet address
+        Pattern p = Pattern.compile( "^[13nNmM][a-km-zA-HJ-NP-Z1-9]{25,34}$" );
+        Matcher m = p.matcher( address );
+
+        return m.find( );
+//        return btcWalletAccountService.validateAddress( address );
     }
 
 

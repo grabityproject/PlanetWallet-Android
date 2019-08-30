@@ -123,7 +123,7 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
         if ( v == viewMapper.btnGasPrice && currentFocus( ) == viewMapper.btnGasLimit ) {
 
             if ( tooLowGasLimit( ) ) {
-                CustomToast.makeText( getActivity( ), "21000 이하로 안됨" ).show( );
+                CustomToast.makeText( getActivity( ), coinType == CoinType.ETH ? "최소 가스 한도는 21,000 입니다."  : "최소 가스 한도는 100,000 입니다.").show( );
             } else {
                 focusBtn( true );
             }
@@ -131,7 +131,7 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
         } else if ( v == viewMapper.btnGasLimit && currentFocus( ) == viewMapper.btnGasPrice ) {
 
             if ( isZeroGasPrice( ) ) {
-                CustomToast.makeText( getActivity( ), "gas는 0 안됨" ).show( );
+                CustomToast.makeText( getActivity( ), "가스비는 0이 될 수 없습니다." ).show( );
             } else {
                 focusBtn( false );
             }
@@ -145,6 +145,8 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
             if ( validValues( ) ) {
                 Objects.requireNonNull( onEthFeePopupListener ).onFeePopupSaveClick( this, new BigDecimal( viewMapper.btnGasPrice.getText( ).toString( ) ).multiply( GWEI ).toPlainString( ), viewMapper.btnGasLimit.getText( ).toString( ) );
                 getActivity( ).onBackPressed( );
+            } else {
+                CustomToast.makeText( getActivity( ), "가스비 또는 가스한도를 확인해주세요." ).show( );
             }
 
         } else if ( v == viewMapper.btnDelete ) {
@@ -167,7 +169,7 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
             stringBuilder.append( numberButton.getText( ).toString( ) );
 
             if ( tooLargeFee( ) ) {
-                CustomToast.makeText( getActivity( ), "gas비가 너무 높아" ).show( );
+                CustomToast.makeText( getActivity( ), "수수료가 너무 높습니다." ).show( );
                 stringBuilder.deleteCharAt( stringBuilder.length( ) - 1 );
             } else {
                 currentFocus( ).setText( stringBuilder );
@@ -192,7 +194,8 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
     }
 
     private boolean tooLowGasLimit( ) {
-        return new BigDecimal( viewMapper.btnGasLimit.getText( ).toString( ) ).compareTo( new BigDecimal( "21000" ) ) < 0;
+
+        return new BigDecimal( viewMapper.btnGasLimit.getText( ).toString( ) ).compareTo( coinType == CoinType.ETH ? new BigDecimal( "21000" ) : new BigDecimal( "100000" ) ) < 0;
     }
 
     private boolean validValues( ) {

@@ -101,6 +101,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.listMain.addHeaderView( R.layout.header_main );
         viewMapper.listMain.addFooterView( R.layout.footer_main );
 
+        //refresh bottom launcher not working
         viewMapper.slideDrawer.addNotEventArea( viewMapper.listMain );
 
         // View Components
@@ -360,6 +361,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             if ( coinType == CoinType.ETH ) {
 
+                setTransition( Transition.SLIDE_SIDE );
                 sendAction( TxListActivity.class,
                         Utils.mergeBundles(
                                 Utils.createSerializableBundle( C.bundleKey.PLANET, selectedPlanet ),
@@ -367,6 +369,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             } else if ( coinType == CoinType.BTC ) {
 
+                setTransition( Transition.SLIDE_UP );
                 sendAction( DetailTxActivity.class,
                         Utils.createSerializableBundle( C.bundleKey.TX, ( Serializable ) Objects.requireNonNull( recyclerView.getAdapter( ) ).getObjects( ).get( position ) ) );
 
@@ -421,6 +424,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     public void onBalance( Planet p, String balance ) {
         if ( selectedPlanet.getItems( ) != null && selectedPlanet.getItems( ).size( ) > 0 ) {
             selectedPlanet.getItems( ).get( 0 ).setBalance( balance );
+
         }
         bottomLauncherComponent.setPlanet( selectedPlanet );
     }
@@ -434,6 +438,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
         }
 
+        bottomLauncherComponent.setPlanet( selectedPlanet );
 
     }
 

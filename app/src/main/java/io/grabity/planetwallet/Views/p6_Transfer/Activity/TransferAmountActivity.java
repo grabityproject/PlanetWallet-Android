@@ -14,8 +14,10 @@ import java.util.Locale;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
+import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
@@ -99,6 +101,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 viewMapper.planetView.setData( tx.getTo( ) );
                 viewMapper.textName.setText( tx.getTo_planet( ) );
             }
+            
 
             getBalance( );
         }
@@ -167,13 +170,18 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 if ( !amount.toString( ).contains( "." ) ) amount.add( s );
                 break;
             case "0":
-                if ( amount.toString( ).contains( "." ) || !amount.get( 0 ).equals( "0" ) )
+                if ( amount.toString( ).contains( "." ) ) {
+                    if ( amountPrecision( ) ) break;
                     amount.add( s );
+                } else if ( !amount.get( 0 ).equals( "0" ) ) {
+                    amount.add( s );
+                }
                 break;
             default:
                 if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
                     amount.set( 0, s );
                 } else {
+                    if ( amountPrecision( ) ) break;
                     amount.add( s );
                 }
                 break;
@@ -189,13 +197,27 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         viewMapper.btnSubmit.setEnabled( btnEnable( ) );
     }
 
+    boolean amountPrecision( ) {
+        if ( amount.toString( ).contains( "." ) ) {
+            String balance = Utils.join( amount ).substring( amount.indexOf( "." ) + 1 );
+            if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ?
+                    balance.length( ) >= Math.abs( Double.valueOf( mainItem.getDecimals( ) ) ) :
+                    balance.length( ) >= CoinType.of( planet.getCoinType( ) ).getPrecision( ) ) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     private boolean btnEnable( ) {
         if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
             viewMapper.textError.setVisibility( View.GONE );
             viewMapper.textAmountUSD.setVisibility( View.VISIBLE );
             return false;
         } else {
-            if ( amount.get( amount.size( ) - 1 ).equals( "." ) ) return false;
+            if ( amount.get( amount.size( ) - 1 ).equals( "." )
+                    || amount.get( amount.size( ) - 1 ).equals( "0" ) ) return false;
             return balanceCheck( );
         }
     }
@@ -218,6 +240,12 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             super.onBackPressed( );
         }
+    }
+
+    @Override
+    public void onBackPressed( ) {
+        super.onBackPressed( );
+
     }
 
     public class ViewMapper {

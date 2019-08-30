@@ -39,8 +39,23 @@ public class MainItemStore {
         return mainItem.getKeyId( );
     }
 
+    public String tokenSave( MainItem mainItem ) {
+        if ( PWDBManager.getInstance( ).select( MainItem.class, "MainItem", String.format( Locale.US, "keyId = '%s' AND contract = '%s'", mainItem.getKeyId( ), mainItem.getContract( ) ), null ).size( ) == 0 ) {
+            PWDBManager.getInstance( ).insertData( mainItem );
+        } else {
+            tokenUpdate( mainItem );
+        }
+
+        return mainItem.getKeyId( );
+    }
+
     public String update( MainItem mainItem ) {
         PWDBManager.getInstance( ).updateData( mainItem, String.format( Locale.US, "_id = %d", mainItem.get_id( ) ) );
+        return mainItem.getKeyId( );
+    }
+
+    public String tokenUpdate( MainItem mainItem ) {
+        PWDBManager.getInstance( ).updateData( mainItem, String.format( Locale.US, "KeyId = '%s' AND contract = '%s'", mainItem.getKeyId( ), mainItem.getContract( ) ) );
         return mainItem.getKeyId( );
     }
 

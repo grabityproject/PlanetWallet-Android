@@ -80,10 +80,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
-                    android:src="#1E1E28"
-                    app:borderColor="#1E1E28"
-                    app:borderWidth="1dp"
-                    app:themeSrc="#F9F9F9" />
+                     />
 
                 <io.grabity.planetwallet.Widgets.FontTextView
                     android:id="@+id/text_transfer_confirm_address"

@@ -155,6 +155,8 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
 
     @Override
     public void onTextChanged( CharSequence s, int start, int before, int count ) {
+        if ( items == null ) return;
+
         filterItems.clear( );
         for ( int i = 0; i < items.size( ); i++ ) {
             if ( items.get( i ).getName( ).toLowerCase( ).contains( viewMapper.etSearch.getText( ).toString( ).toLowerCase( ) )
@@ -191,7 +193,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
             erc20.setHide( item.isCheck( ) ? "N" : "Y" );
             erc20.setBalance( item.getBalance( ) );
             erc20.setCoinType( CoinType.ERC20.getCoinType( ) );
-            MainItemStore.getInstance( ).save( erc20 );
+            MainItemStore.getInstance( ).tokenSave( erc20 );
 
         } catch ( ClassCastException e ) {
 

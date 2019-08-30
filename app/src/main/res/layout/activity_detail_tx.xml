@@ -72,15 +72,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="10dp"
-                    android:visibility="gone"
                     android:paddingStart="20dp"
-                    android:paddingEnd="20dp">
+                    android:paddingEnd="20dp"
+                    android:visibility="visible">
 
                     <io.grabity.planetwallet.Widgets.StretchImageView
                         android:id="@+id/image_detail_tx_coin_icon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/icon_eth" />
+                        android:src="@drawable/icon_btc"
+                        />
 
                     <io.grabity.planetwallet.Widgets.FontTextView
                         android:id="@+id/text_detail_tx_address"
@@ -91,6 +92,7 @@
                         android:paddingStart="20dp"
                         android:textColor="#FFF"
                         android:textSize="18dp"
+                        android:includeFontPadding="false"
                         app:themeTextColor="#000"
                         app:typefaceStyle="semibold" />
 

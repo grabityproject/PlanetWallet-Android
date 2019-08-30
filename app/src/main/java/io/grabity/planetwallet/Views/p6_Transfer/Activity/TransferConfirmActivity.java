@@ -78,6 +78,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         viewMapper.btnSubmit.setEnabled( false );
 
         viewMapper.seekBar.setThumb( getResources( ).getDrawable( R.drawable.seekbar_thumb, this.getTheme( ) ) );
+
     }
 
     @Override
@@ -115,13 +116,15 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             viewMapper.textAmountList.setText( String.format( Locale.US, "%s %s", Utils.removeLastZero( Utils.toMaxUnit( mainItem, tx.getAmount( ) ) ), mainItem.getSymbol( ) ) );
             viewMapper.textFee.setText( String.format( Locale.US, "%s %s", "-", CoinType.of( mainItem.getCoinType( ) ).getParent( ) ) );
 
+            //fee api
+            new Get( this ).action( Route.URL( "fee", planet.getSymbol( ) ), 0, 0, null );
+
             // CoinType
             if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.BTC ) {
 
                 viewMapper.groupFeeOption.setVisibility( View.GONE );
                 viewMapper.imageIcon.setImageResource( R.drawable.icon_btc );
                 networkTaskCount = 0;
-                new Get( this ).action( Route.URL( "fee", CoinType.BTC.name( ) ), 0, 0, null );
                 new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "utxo", "list", CoinType.BTC.name( ), planet.getAddress( ) ), 1, 0, null );
 
             } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ETH ) {
@@ -129,7 +132,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 viewMapper.groupFeeOption.setVisibility( View.VISIBLE );
                 viewMapper.imageIcon.setImageResource( R.drawable.icon_eth );
                 networkTaskCount = 0;
-                new Get( this ).action( Route.URL( "gas" ), 0, 0, null );
                 new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "nonce", CoinType.ETH.name( ), planet.getAddress( ) ), 2, 0, null );
 
             } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ) {
@@ -137,7 +139,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 viewMapper.groupFeeOption.setVisibility( View.VISIBLE );
                 ImageLoader.getInstance( ).displayImage( Route.URL( mainItem.getImg_path( ) ), viewMapper.imageIcon );
                 networkTaskCount = 0;
-                new Get( this ).action( Route.URL( "gas" ), 0, 0, null );
                 new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "nonce", CoinType.ETH.name( ), planet.getAddress( ) ), 2, 0, null );
 
             }
@@ -220,17 +221,30 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
         } else if ( v == viewMapper.btnSubmit ) {
 
-            setTransition( Transition.SLIDE_UP );
-            sendAction( C.requestCode.TRANSFER, PinCodeCertificationActivity.class );
+            if ( tooLargeFee( ) ) {
+                CustomToast.makeText( this, "보내려는 금액과 수수료의 합이 총 금액을 넘습니다." ).show( );
+            } else {
+                setTransition( Transition.SLIDE_UP );
+                sendAction( C.requestCode.TRANSFER, PinCodeCertificationActivity.class );
+            }
+
 
         }
+    }
 
+    private boolean tooLargeFee( ) {
+        BigDecimal totalBalance = new BigDecimal( planet.getMainItem( ).getBalance( ) );
+        BigDecimal amount = new BigDecimal( tx.getAmount( ) );
+        BigDecimal fee = new BigDecimal( transaction.estimateFee( ) );
+
+        return totalBalance.subtract( amount ).subtract( fee ).signum( ) <= 0;
     }
 
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == C.requestCode.TRANSFER && resultCode == RESULT_OK ) {
+            viewMapper.btnSubmit.setEnabled( false );
 
             String rawTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) );
 
@@ -273,8 +287,14 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            onBackPressed( );
+            super.onBackPressed( );
         }
+    }
+
+    @Override
+    public void onBackPressed( ) {
+        super.onBackPressed( );
+
     }
 
     @Override

@@ -65,18 +65,24 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
     }
 
     void setUpView( ) {
-        Utils.addressForm( viewMapper.textAddress, tx.getFrom( ) );
+        Utils.addressForm( viewMapper.textAddress, tx.getTo_planet( ) == null ? tx.getTo( ) : tx.getFrom( ) );
         viewMapper.toolBar.setTitle( Utils.equals( tx.getStatus( ), C.transferStatus.PENDING ) ? "Pending" : Utils.firstUpperCase( tx.getType( ) ) );
-        viewMapper.groupPlanet.setVisibility( tx.getFrom_planet( ) != null ? View.VISIBLE : View.GONE );
-        viewMapper.groupAddress.setVisibility( tx.getFrom_planet( ) != null ? View.GONE : View.VISIBLE );
 
-        if ( tx.getFrom_planet( ) != null ) {
+        viewMapper.groupPlanet.setVisibility( tx.getTo_planet( ) != null && tx.getFrom_planet( ) != null ? View.VISIBLE : View.GONE );
+        viewMapper.groupAddress.setVisibility( tx.getTo_planet( ) != null && tx.getFrom_planet( ) != null ? View.GONE : View.VISIBLE );
+
+
+        if ( tx.getTo_planet( ) != null ) {
             viewMapper.planetViewTo.setData( Utils.equals( tx.getType( ), C.transferType.RECEIVED ) ? tx.getFrom( ) : tx.getTo( ) );
             viewMapper.textPlanetName.setText( Utils.equals( tx.getType( ), C.transferType.RECEIVED ) ? tx.getFrom_planet( ) : tx.getTo_planet( ) );
             viewMapper.textPlanetToAddress.setText( Utils.equals( tx.getType( ), C.transferType.RECEIVED ) ? Utils.addressReduction( tx.getFrom( ) ) : Utils.addressReduction( tx.getTo( ) ) );
         } else {
             if ( getSerialize( C.bundleKey.MAIN_ITEM ) != null ) {
-                ImageLoader.getInstance( ).displayImage( Route.URL( mainItem.getImg_path( ) ), viewMapper.imageCoinIcon );
+                if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ) {
+                    ImageLoader.getInstance( ).displayImage( Route.URL( mainItem.getImg_path( ) ), viewMapper.imageCoinIcon );
+                } else {
+                    viewMapper.imageCoinIcon.setImageResource( R.drawable.icon_eth );
+                }
             } else {
                 viewMapper.imageCoinIcon.setImageResource( Utils.equals( tx.getCoin( ), CoinType.ETH.getDefaultUnit( ) ) ? R.drawable.icon_eth : R.drawable.icon_btc );
             }

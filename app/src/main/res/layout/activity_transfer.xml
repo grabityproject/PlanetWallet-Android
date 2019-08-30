@@ -115,23 +115,12 @@
         android:paddingEnd="18dp"
         android:visibility="gone">
 
-        <io.grabity.planetwallet.Widgets.CircleImageView
-            android:id="@+id/image_transfer_address_search_background"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="#1E1E28"
-            app:themeSrc="#F9F9F9"
-            app:borderWidth="1dp"
-            app:borderColor="#1E1E28"
-            android:layout_centerVertical="true" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_transfer_address_search_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="10dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/icon_transfer_eth_black" />
+            android:layout_centerVertical="true" />
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_transfer_address_search_arrow"

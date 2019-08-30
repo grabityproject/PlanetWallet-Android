@@ -39,6 +39,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
     private TxAdapter adapter;
     private ArrayList< Tx > items;
+    private ArrayList< Tx > resultItems;
 
     HeaderViewMapper headerViewMapper;
 
@@ -75,7 +76,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
             viewMapper.toolBar.setTitle( mainItem.getName( ) );
 
             items = getCacheTxList( );
-            viewMapper.listView.setAdapter( adapter = new TxAdapter( this, items == null ? new ArrayList<>( ) : items ) );
+            viewMapper.listView.setAdapter( adapter = new TxAdapter( this, items == null ? items = new ArrayList<>( ) : items ) );
         }
 
     }
@@ -142,14 +143,14 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == headerViewMapper.btnReceive ) {
-
+            setTransition( Transition.SLIDE_SIDE );
             sendAction( DetailAddressActivity.class,
                     Utils.mergeBundles(
                             Utils.createSerializableBundle( C.bundleKey.PLANET, planet ),
                             Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, mainItem ) ) );
 
         } else if ( v == headerViewMapper.btnTransfer ) {
-
+            setTransition( Transition.SLIDE_SIDE );
             sendAction( TransferActivity.class,
                     Utils.mergeBundles(
                             Utils.createSerializableBundle( C.bundleKey.PLANET, planet ),
@@ -178,10 +179,18 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 if ( returnVO.isSuccess( ) ) {
 
                     Utils.setPreferenceData( this, Utils.prefKey( CoinType.of( mainItem.getCoinType( ) ).getParent( ), mainItem.getSymbol( ), planet.getKeyId( ) ), result );
-                    items = getCacheTxList( );
-                    if ( items != null && items.size( ) > 0 )
-                        Objects.requireNonNull( viewMapper.listView.getAdapter( ) ).notifyItemRangeChanged( 1, items.size( ) );
+                    resultItems = ( ArrayList< Tx > ) returnVO.getResult( );
 
+                    if ( resultItems.size( ) == 0 ) return;
+                    if ( resultItems.size( ) != items.size( ) || !Utils.equals( items.get( 0 ).getStatus( ), resultItems.get( 0 ).getStatus( ) ) ) {
+                        items = getCacheTxList( );
+                        adapter.setObjects( items );
+                        Objects.requireNonNull( viewMapper.listView.getAdapter( ) ).notifyItemRangeChanged( 1, items.size( ) );
+                    }
+
+//                    items = getCacheTxList( );
+//                    if ( items != null && items.size( ) > 0 ) adapter.setObjects( items );
+//                    Objects.requireNonNull( viewMapper.listView.getAdapter( ) ).notifyItemRangeChanged( 1, items.size( ) );
                 }
 
             }
@@ -194,6 +203,7 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
     @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
 
+        setTransition( Transition.SLIDE_UP );
         if ( mainItem != null ) {
             sendAction( DetailTxActivity.class, Utils.mergeBundles( Utils.createSerializableBundle( C.bundleKey.TX, items.get( position ) ),
                     Utils.createSerializableBundle( C.bundleKey.PLANET, planet ), Utils.createSerializableBundle( C.bundleKey.MAIN_ITEM, mainItem ) ) );

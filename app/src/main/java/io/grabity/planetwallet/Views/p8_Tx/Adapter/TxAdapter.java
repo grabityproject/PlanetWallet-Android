@@ -26,6 +26,7 @@ public class TxAdapter extends AdvanceArrayAdapter< Tx > {
         return new TxItem( View.inflate( getContext( ), R.layout.item_tx_list, null ) );
     }
 
+
     @Override
     public void bindData( ViewMapper viewMapper, Tx item, int position ) {
 

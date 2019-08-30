@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -98,12 +100,13 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             tx = new Tx( );
             tx.setFrom( planet.getAddress( ) );
             tx.setFrom_planet( planet.getName( ) );
+            tx.setSymbol( mainItem.getSymbol( ) );
 
             if ( Utils.checkClipboard( this, planet.getCoinType( ) ) ) {
                 if ( !Utils.equals( Utils.getClipboard( this ), planet.getAddress( ) ) )
                     viewMapper.btnClip.setVisibility( View.VISIBLE );
             }
-            viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title, mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            viewMapper.toolBar.setTitle( localized( R.string.transfer_toolbar_title ) );
 
             SyncManager.getInstance( ).recentSyncPlanet( this, planet, mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) );
         }
@@ -137,6 +140,12 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         }
     }
 
+    @Override
+    public void onBackPressed( ) {
+        super.onBackPressed( );
+
+
+    }
 
     @Override
     protected void neverNotAllowed( int code, String permission ) {
@@ -306,17 +315,19 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
 
     private void addressSearchView( boolean b ) {
         viewMapper.groupSearchAddress.setVisibility( b ? View.VISIBLE : View.GONE );
-
         if ( b ) {
-            if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_bit_black : R.drawable.icon_transfer_bit_white );
-            } else if ( CoinType.ETH.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-                viewMapper.imageIcon.setImageResource( !getCurrentTheme( ) ? R.drawable.icon_transfer_eth_black : R.drawable.icon_transfer_eth_white );
+            viewMapper.listView.setAdapter( new TransferAdapter( this, new ArrayList<>( ) ) );
+            if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ETH ) {
+                viewMapper.imageIcon.setImageResource( R.drawable.icon_eth );
+            } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.BTC ) {
+                viewMapper.imageIcon.setImageResource( R.drawable.icon_btc );
+            } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ) {
+                ImageLoader.getInstance( ).displayImage( Route.URL( mainItem.getImg_path( ) ), viewMapper.imageIcon );
             }
-            viewMapper.imageIconBackground.setBorderColor( Color.parseColor( !getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );
             viewMapper.textAddress.setText( viewMapper.etSearch.getText( ).toString( ) );
             Utils.addressForm( viewMapper.textAddress, viewMapper.textAddress.getText( ).toString( ) );
         }
+
 
     }
 
@@ -351,7 +362,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         StretchImageView imageNotSearch;
         StretchImageView imageSearch;
         CircleImageView btnClear;
-        CircleImageView imageIconBackground;
         AdvanceRecyclerView listView;
 
         View textNoItem;
@@ -367,7 +377,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             etSearch = findViewById( R.id.et_transfer_search );
             imageNotSearch = findViewById( R.id.image_transfer_nosearch_icon );
             imageSearch = findViewById( R.id.image_transfer_search_icon );
-            imageIconBackground = findViewById( R.id.image_transfer_address_search_background );
             btnClear = findViewById( R.id.btn_transfer_clear );
             listView = findViewById( R.id.listView );
             textNoItem = findViewById( R.id.text_transfer_noitem );

@@ -80,11 +80,7 @@
                     <io.grabity.planetwallet.Widgets.CircleImageView
                         android:id="@+id/image_tx_receipt_coin_icon"
                         android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="#1E1E28"
-                        app:borderColor="#1E1E28"
-                        app:borderWidth="1dp"
-                        app:themeSrc="#F9F9F9" />
+                        android:layout_height="40dp" />
 
 
                     <io.grabity.planetwallet.Widgets.FontTextView
