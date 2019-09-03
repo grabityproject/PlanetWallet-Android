@@ -134,10 +134,6 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
         }
     }
 
-    @Override
-    public void onBackPressed( ) {
-        super.onBackPressed( );
-    }
 
     @Override
     public void onToolBarClick( Object tag, View view ) {

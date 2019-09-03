@@ -27,7 +27,8 @@
         android:textSize="24dp"
         android:minLines="2"
         app:themeTextColor="#FFF"
-        app:typefaceStyle="semibold" />
+        app:typefaceStyle="semibold"
+        android:paddingBottom="24dp"/>
 
     <LinearLayout
         android:id="@+id/group_setting_image"

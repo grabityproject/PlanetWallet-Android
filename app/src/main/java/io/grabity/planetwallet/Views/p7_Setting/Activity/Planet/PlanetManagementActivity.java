@@ -1,6 +1,5 @@
 package io.grabity.planetwallet.Views.p7_Setting.Activity.Planet;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -73,14 +72,8 @@ public class PlanetManagementActivity extends PlanetWalletActivity implements Ad
     }
 
     @Override
-    protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
-        super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.PLANET_ADD && resultCode == RESULT_OK ) {
-        }
-    }
-
-    @Override
     public void onItemClick( AdvanceRecyclerView recyclerView, View view, int position ) {
+        setTransition( Transition.SLIDE_SIDE );
         sendAction( DetailPlanetActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, items.get( position ) ) );
     }
 

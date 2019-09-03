@@ -12,8 +12,6 @@ import io.grabity.planetwallet.R;
 
 public class FontTextView extends androidx.appcompat.widget.AppCompatTextView implements Themeable {
 
-    //Todo QA 이후 defaultUnderLine 수정
-
     private int defaultTheme;
     private int defaultUnderLine;
 
@@ -54,6 +52,8 @@ public class FontTextView extends androidx.appcompat.widget.AppCompatTextView im
     }
 
     public void underLine( ) {
+        if ( this.getText( ) == null ) return;
+        if ( this.getText( ).length( ) <= 0 ) return;
         SpannableString s = new SpannableString( this.getText( ).toString( ) );
         s.setSpan( new UnderlineSpan( ), 0, s.length( ), 0 );
         this.setText( s );

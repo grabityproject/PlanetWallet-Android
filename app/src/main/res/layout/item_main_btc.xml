@@ -15,7 +15,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
-            android:text="choi3950s"
             android:textColor="#FFF"
             android:textSize="16dp"
             app:themeTextColor="#000" />
@@ -26,7 +25,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_item_main_btc_name"
             android:paddingTop="2dp"
-            android:text="April 04, 11:32"
             android:textColor="#5C5964"
             android:textSize="14dp"
             app:themeTextColor="#aaaaaa" />
@@ -46,7 +44,6 @@
             android:layout_below="@id/image_item_main_btc_arrow"
             android:layout_alignParentRight="true"
             android:paddingTop="2dp"
-            android:text="BTC"
             android:textColor="#5C5964"
             android:textSize="14dp"
             app:themeTextColor="#aaaaaa" />
@@ -59,7 +56,6 @@
             android:layout_toLeftOf="@id/text_item_main_btc_value"
             android:paddingTop="2dp"
             android:paddingEnd="6dp"
-            android:text="0.2341"
             android:textColor="#FFF"
             android:textSize="14dp"
             app:themeTextColor="#000" />

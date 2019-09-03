@@ -417,16 +417,18 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             selectedPlanet = PlanetStore.getInstance( ).getPlanet( selectedPlanet.getKeyId( ) );
             setUpViews( );
         }
-
+        
     }
 
     @Override
     public void onBalance( Planet p, String balance ) {
         if ( selectedPlanet.getItems( ) != null && selectedPlanet.getItems( ).size( ) > 0 ) {
             selectedPlanet.getItems( ).get( 0 ).setBalance( balance );
-
         }
-        bottomLauncherComponent.setPlanet( selectedPlanet );
+
+        if ( CoinType.of( bottomLauncherComponent.getMainItem( ).getCoinType( ) ) != CoinType.ERC20 )
+            bottomLauncherComponent.setPlanet( selectedPlanet );
+
     }
 
     @Override
@@ -438,7 +440,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( );
         }
 
-        bottomLauncherComponent.setPlanet( selectedPlanet );
+        if ( CoinType.of( bottomLauncherComponent.getMainItem( ).getCoinType( ) ) == CoinType.ERC20 )
+            bottomLauncherComponent.setPlanet( selectedPlanet );
 
     }
 

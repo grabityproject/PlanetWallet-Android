@@ -153,7 +153,6 @@ public class PlanetWalletApplication extends MultiDexApplication {
     public void recordActvityStack( Activity activity ) {
         if ( activityStack != null ) {
             activityStack.offer( activity );
-
         }
     }
 
@@ -163,8 +162,7 @@ public class PlanetWalletApplication extends MultiDexApplication {
                 try {
                     Objects.requireNonNull( activityStack.pollLast( ) ).onBackPressed( );
                 } catch ( NullPointerException e ) {
-                    activityStack.clear( );
-                    break;
+
                 }
             }
         }

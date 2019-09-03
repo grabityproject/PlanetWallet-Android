@@ -222,7 +222,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         } else if ( v == viewMapper.btnSubmit ) {
 
             if ( tooLargeFee( ) ) {
-                CustomToast.makeText( this, "보내려는 금액과 수수료의 합이 총 금액을 넘습니다." ).show( );
+                CustomToast.makeText( this, "전송 금액과 수수료의 합이 총 금액을 넘습니다." ).show( );
             } else {
                 setTransition( Transition.SLIDE_UP );
                 sendAction( C.requestCode.TRANSFER, PinCodeCertificationActivity.class );
@@ -264,9 +264,11 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
                     } else {
                         CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
+                        viewMapper.btnSubmit.setEnabled( false );
                     }
                 } else {
                     CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
+                    viewMapper.btnSubmit.setEnabled( false );
                 }
             } ).setDeviceKey( C.DEVICE_KEY )
                     .action( Route.URL( "transfer", mainItem.getSymbol( ) ), 0, 0, Utils.createStringHashMap( "serializeTx", rawTx ) );
@@ -291,11 +293,6 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         }
     }
 
-    @Override
-    public void onBackPressed( ) {
-        super.onBackPressed( );
-
-    }
 
     @Override
     public void onFeePopupSaveClick( EthFeePopup ethFeePopup, String gasPriceWei, String gasLimit ) {

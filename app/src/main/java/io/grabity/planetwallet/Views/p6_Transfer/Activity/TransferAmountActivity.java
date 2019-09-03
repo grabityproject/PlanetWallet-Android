@@ -14,7 +14,6 @@ import java.util.Locale;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -101,7 +100,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
                 viewMapper.planetView.setData( tx.getTo( ) );
                 viewMapper.textName.setText( tx.getTo_planet( ) );
             }
-            
+
 
             getBalance( );
         }
@@ -240,12 +239,6 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             super.onBackPressed( );
         }
-    }
-
-    @Override
-    public void onBackPressed( ) {
-        super.onBackPressed( );
-
     }
 
     public class ViewMapper {

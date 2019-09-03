@@ -29,6 +29,8 @@ public class BottomLauncherComponent extends ViewComponent implements SlideDrawe
     private float dp20;
     private Planet planet;
 
+    private MainItem mainItem;
+
     public BottomLauncherComponent( PlanetWalletActivity activity, SlideDrawerLayout slideDrawerLayout ) {
         super( activity );
 
@@ -123,7 +125,12 @@ public class BottomLauncherComponent extends ViewComponent implements SlideDrawe
 
     @Override
     public void onMainItemChange( MainItem mainItem ) {
+        this.mainItem = mainItem;
         viewMapper.textCoinName.setText( bottomPanelComponent.getMainItem( ).getName( ) );
+    }
+
+    public MainItem getMainItem( ) {
+        return mainItem;
     }
 
 

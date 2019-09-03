@@ -92,7 +92,7 @@ public class WalletAddActivity extends PlanetWalletActivity implements ListPopup
     @Override
     protected void onActivityResult( int requestCode, int resultCode, @Nullable Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == C.requestCode.PLANET_ADD || requestCode == C.requestCode.MAIN_PLANET_ADD && resultCode == RESULT_OK ) {
+        if ( resultCode == RESULT_OK && requestCode == C.requestCode.PLANET_ADD || requestCode == C.requestCode.MAIN_PLANET_ADD ) {
             setResult( RESULT_OK );
             super.onBackPressed( );
         }

@@ -141,13 +141,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     }
 
     @Override
-    public void onBackPressed( ) {
-        super.onBackPressed( );
-
-
-    }
-
-    @Override
     protected void neverNotAllowed( int code, String permission ) {
         super.neverNotAllowed( code, permission );
         if ( Utils.equals( code, C.requestCode.QR_CODE ) ) {
