@@ -32,7 +32,8 @@
         app:themeTextColor="#000"
         android:textSize="16dp"
         android:gravity="center"
-        android:paddingTop="4dp" />
+        android:paddingTop="4dp"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/group_tx_header_btn"

@@ -53,6 +53,9 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
     protected void viewInit( ) {
         super.viewInit( );
 
+        //next version coinMarketCap update
+        viewMapper.textAmountUSD.setVisibility( View.GONE );
+
         if ( Utils.getScrennHeight( this ) <= 1920 ) {
             Utils.setPadding( viewMapper.textBalance, 0, 24, 0, 0 );
             Utils.setPadding( viewMapper.textAmount, 0, 20, 0, 0 );
@@ -191,7 +194,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
         inputAmount = Utils.join( amount );
 
         viewMapper.textAmount.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0" : inputAmount );
-        viewMapper.textAmountUSD.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0 USD" : String.format( "%s USD", String.valueOf( Float.valueOf( inputAmount ) / 2f ) ) );
+//        viewMapper.textAmountUSD.setText( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ? "0 USD" : String.format( "%s USD", String.valueOf( Float.valueOf( inputAmount ) / 2f ) ) );
 
         viewMapper.btnSubmit.setEnabled( btnEnable( ) );
     }
@@ -212,33 +215,56 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
     private boolean btnEnable( ) {
         if ( amount.size( ) == 1 && amount.get( 0 ).equals( "0" ) ) {
             viewMapper.textError.setVisibility( View.GONE );
-            viewMapper.textAmountUSD.setVisibility( View.VISIBLE );
+//            viewMapper.textAmountUSD.setVisibility( View.VISIBLE );
             return false;
         } else {
-            if ( amount.get( amount.size( ) - 1 ).equals( "." )
-                    || amount.get( amount.size( ) - 1 ).equals( "0" ) ) return false;
+            if ( amount.get( amount.size( ) - 1 ).equals( "." ) ) return false;
+            if ( amount.contains( "." ) && amount.get( amount.size( ) - 1 ).equals( "0" ) )
+                return false;
             return balanceCheck( );
         }
     }
 
     private boolean balanceCheck( ) {
+        if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ) { //erc20 ether fee check
+            BigDecimal fee = new BigDecimal( planet.getMainItem( ).getBalance( ) );
+            if ( fee.compareTo( BigDecimal.ZERO ) <= 0 ) {
+                viewMapper.textError.setText( localized( R.string.transfer_amount_not_fee_title ) );
+                viewMapper.textError.setVisibility( View.VISIBLE );
+//                viewMapper.textAmountUSD.setVisibility( View.GONE );
+                return false;
+            }
+        }
 
         BigDecimal balance = new BigDecimal( mainItem.getBalance( ) );
         BigDecimal amount = new BigDecimal( Utils.toMinUnit( mainItem, viewMapper.textAmount.getText( ).toString( ) ) );
 
         int compare = amount.compareTo( balance );
-        viewMapper.textError.setVisibility( compare < 0 ? View.GONE : View.VISIBLE );
-        viewMapper.textAmountUSD.setVisibility( compare < 0 ? View.VISIBLE : View.GONE );
+        if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ) {
+            viewMapper.textError.setVisibility( compare <= 0 ? View.GONE : View.VISIBLE );
+//            viewMapper.textAmountUSD.setVisibility( compare <= 0 ? View.VISIBLE : View.GONE );
+        } else {
+            viewMapper.textError.setVisibility( compare < 0 ? View.GONE : View.VISIBLE );
+//            viewMapper.textAmountUSD.setVisibility( compare < 0 ? View.VISIBLE : View.GONE );
+        }
 
-        return compare < 0;
+        //erc amount <= allBalance true
+        //not erc amount < allBalance true
+        return CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ? compare <= 0 : compare < 0;
     }
 
 
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            super.onBackPressed( );
+            onBackPressed( );
         }
+    }
+
+    @Override
+    protected void onDestroy( ) {
+        getPlanetWalletApplication( ).removeStack( );
+        super.onDestroy( );
     }
 
     public class ViewMapper {

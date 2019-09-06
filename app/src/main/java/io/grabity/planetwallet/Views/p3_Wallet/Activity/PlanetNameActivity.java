@@ -98,7 +98,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             viewMapper.planetBackground.setData( planet.getAddress( ) );
 
 
-            viewMapper.etPlanetName.setText( "WelcomePlanet" );
+            viewMapper.etPlanetName.setText( Utils.randomPlanetName( this, planet.getAddress( ) ) );
             viewMapper.cursor.setX( ( ( Utils.getScreenWidth( this ) + Utils.getTextWidth( viewMapper.etPlanetName ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
         }
     }

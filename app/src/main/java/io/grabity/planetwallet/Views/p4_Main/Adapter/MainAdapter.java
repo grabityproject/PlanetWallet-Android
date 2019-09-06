@@ -30,9 +30,12 @@ public class MainAdapter extends AdvanceArrayAdapter< MainItem > {
     @Override
     public void bindData( ViewMapper viewMapper, MainItem item, int position ) {
 
+        //next version coinMarketCap update
+        ((ETHItem) viewMapper).textPrice.setVisibility( View.GONE );
+
         ( ( ETHItem ) viewMapper ).textName.setText( item.getSymbol( ) );
         ( ( ETHItem ) viewMapper ).textBalance.setText( Utils.balanceReduction( Utils.toMaxUnit( item, item.getBalance( ) ) ) );
-        ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", item.getBalance( ) ) );
+//        ( ( ETHItem ) viewMapper ).textPrice.setText( String.format( "%s USD", item.getBalance( ) ) );
 
         if ( Utils.equals( CoinType.ETH.getCoinType( ), item.getCoinType( ) ) ) {
 

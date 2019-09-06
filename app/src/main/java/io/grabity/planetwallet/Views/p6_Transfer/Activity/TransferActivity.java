@@ -128,7 +128,7 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
             Utils.hideKeyboard( this, getCurrentFocus( ) );
-            super.onBackPressed( );
+            onBackPressed( );
         } else if ( Utils.equals( tag, C.tag.TOOLBAR_TRANSFER_QRCODE ) ) {
 
             if ( !isQRScan ) {
@@ -268,7 +268,6 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
             }
 
             viewMapper.listView.setAdapter( viewMapper.etSearch.getText( ).length( ) != 0 ? new TransferAdapter( this, allPlanets ) : recentSearchAdapter );
-//            viewMapper.listView.setAdapter( new TransferAdapter( this, allPlanets ) );
         }
     }
 
@@ -287,6 +286,12 @@ public class TransferActivity extends PlanetWalletActivity implements ToolBar.On
         super.onResume( );
         isQRScan = false;
         clipView( );
+    }
+
+    @Override
+    protected void onDestroy( ) {
+        getPlanetWalletApplication( ).removeStack( );
+        super.onDestroy( );
     }
 
     private void searchViewThemeSet( ) {

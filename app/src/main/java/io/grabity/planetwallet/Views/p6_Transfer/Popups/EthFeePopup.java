@@ -123,7 +123,7 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
         if ( v == viewMapper.btnGasPrice && currentFocus( ) == viewMapper.btnGasLimit ) {
 
             if ( tooLowGasLimit( ) ) {
-                CustomToast.makeText( getActivity( ), coinType == CoinType.ETH ? "최소 가스 한도는 21,000 입니다."  : "최소 가스 한도는 100,000 입니다.").show( );
+                CustomToast.makeText( getActivity( ), coinType == CoinType.ETH ? localized( R.string.eth_fee_popup_eth_minimun_gas_limit_error_title ) : localized( R.string.eth_fee_popup_erc_minimun_gas_limit_error_title ) ).show( );
             } else {
                 focusBtn( true );
             }
@@ -131,7 +131,7 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
         } else if ( v == viewMapper.btnGasLimit && currentFocus( ) == viewMapper.btnGasPrice ) {
 
             if ( isZeroGasPrice( ) ) {
-                CustomToast.makeText( getActivity( ), "가스비는 0이 될 수 없습니다." ).show( );
+                CustomToast.makeText( getActivity( ), localized( R.string.eth_fee_popup_not_gas_zero_title ) ).show( );
             } else {
                 focusBtn( false );
             }
@@ -146,7 +146,7 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
                 Objects.requireNonNull( onEthFeePopupListener ).onFeePopupSaveClick( this, new BigDecimal( viewMapper.btnGasPrice.getText( ).toString( ) ).multiply( GWEI ).toPlainString( ), viewMapper.btnGasLimit.getText( ).toString( ) );
                 getActivity( ).onBackPressed( );
             } else {
-                CustomToast.makeText( getActivity( ), "가스비 또는 가스한도를 확인해주세요." ).show( );
+                CustomToast.makeText( getActivity( ), localized( R.string.eth_fee_popup_gas_check_title ) ).show( );
             }
 
         } else if ( v == viewMapper.btnDelete ) {
@@ -169,7 +169,7 @@ public class EthFeePopup extends AbsSlideUpView implements View.OnTouchListener 
             stringBuilder.append( numberButton.getText( ).toString( ) );
 
             if ( tooLargeFee( ) ) {
-                CustomToast.makeText( getActivity( ), "수수료가 너무 높습니다." ).show( );
+                CustomToast.makeText( getActivity( ), localized( R.string.eth_fee_popup_high_fee_error_title ) ).show( );
                 stringBuilder.deleteCharAt( stringBuilder.length( ) - 1 );
             } else {
                 currentFocus( ).setText( stringBuilder );

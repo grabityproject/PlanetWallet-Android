@@ -112,6 +112,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
             } else {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
                 ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
+                if ( errorResult == null ) return;
                 viewMapper.textError.setText( errorResult.getErrorMsg( ) );
             }
         }

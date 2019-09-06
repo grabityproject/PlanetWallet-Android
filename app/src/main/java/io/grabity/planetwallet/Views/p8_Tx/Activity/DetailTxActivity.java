@@ -66,7 +66,13 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
 
     void setUpView( ) {
         Utils.addressForm( viewMapper.textAddress, tx.getTo_planet( ) == null ? tx.getTo( ) : tx.getFrom( ) );
-        viewMapper.toolBar.setTitle( Utils.equals( tx.getStatus( ), C.transferStatus.PENDING ) ? "Pending" : Utils.firstUpperCase( tx.getType( ) ) );
+        if ( Utils.equals( tx.getStatus() , C.transferStatus.PENDING ) ) {
+            viewMapper.toolBar.setTitle( localized( R.string.transaction_status_pending_title ) );
+        } else if ( Utils.equals( tx.getType() , C.transferType.SENT ) ){
+            viewMapper.toolBar.setTitle( localized( R.string.transaction_type_sent_title ) );
+        } else{
+            viewMapper.toolBar.setTitle( localized( R.string.transaction_type_received_title ) );
+        }
 
         viewMapper.groupPlanet.setVisibility( tx.getTo_planet( ) != null && tx.getFrom_planet( ) != null ? View.VISIBLE : View.GONE );
         viewMapper.groupAddress.setVisibility( tx.getTo_planet( ) != null && tx.getFrom_planet( ) != null ? View.GONE : View.VISIBLE );
@@ -89,9 +95,9 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
         }
 
         viewMapper.textBalance.setText( String.format( "%s " + tx.getSymbol( ), Utils.ofZeroClear( Utils.toMaxUnit( CoinType.of( tx.getCoin( ) ), tx.getAmount( ) ) ) ) );
-        viewMapper.textStatus.setText( Utils.equals( tx.getStatus( ), C.transferStatus.PENDING ) ? "Pending" : "Completed" );
+        viewMapper.textStatus.setText( Utils.equals( tx.getStatus( ), C.transferStatus.PENDING ) ? localized( R.string.transaction_status_pending_title ) : localized( R.string.transaction_status_completed_title ) );
         viewMapper.textAmount.setText( String.format( "%s " + tx.getSymbol( ), Utils.ofZeroClear( Utils.toMaxUnit( CoinType.of( tx.getCoin( ) ), tx.getAmount( ) ) ) ) );
-        viewMapper.textFee.setText( String.format( "%s " + tx.getSymbol( ), Utils.equals( tx.getCoin( ), CoinType.BTC.getDefaultUnit( ) ) ? Utils.convertUnit( tx.getFee( ), 0, Integer.valueOf( tx.getDecimals( ) ) ) : Utils.feeCalculation( Utils.convertUnit( tx.getGasPrice( ), 0, CoinType.of( tx.getCoin( ) ).getPrecision( ) ), tx.getGasLimit( ) ) ) );
+        viewMapper.textFee.setText( String.format( "%s " + tx.getCoin( ), Utils.equals( tx.getCoin( ), CoinType.BTC.getDefaultUnit( ) ) ? Utils.convertUnit( tx.getFee( ), 0, Integer.valueOf( tx.getDecimals( ) ) ) : Utils.feeCalculation( Utils.convertUnit( tx.getGasPrice( ), 0, CoinType.of( tx.getCoin( ) ).getPrecision( ) ), tx.getGasLimit( ) ) ) );
         viewMapper.textTxID.setText( tx.getTx_id( ) );
         viewMapper.textTxID.underLine( );
 

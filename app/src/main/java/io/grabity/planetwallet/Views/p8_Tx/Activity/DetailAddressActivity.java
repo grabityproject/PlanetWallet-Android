@@ -58,7 +58,8 @@ public class DetailAddressActivity extends PlanetWalletActivity implements ToolB
     }
 
     private void setUpView( ) {
-        viewMapper.toolBar.setTitle( String.format( "Receive %s", mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
+        viewMapper.toolBar.setTitle( String.format( localized( R.string.detail_address_toolbar_receive_title ) + " %s", mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
+
         viewMapper.textName.setText( planet.getName( ) );
         viewMapper.textAddress.setText( planet.getAddress( ) );
         viewMapper.barcodeView.setData( planet.getAddress( ) );

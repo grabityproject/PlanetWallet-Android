@@ -47,6 +47,7 @@ public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar
         webSettings.setJavaScriptEnabled( true );
         viewMapper.webView.setWebChromeClient( new WebChromeClient( ) );
         viewMapper.webView.setWebViewClient( new WebViewClient( ) );
+
     }
 
     @Override

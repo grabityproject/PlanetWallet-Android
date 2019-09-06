@@ -57,6 +57,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
     private boolean btcMaster = false;
 
+
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -106,7 +107,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     @Override
     protected void setData( ) {
         super.setData( );
-
         try {
             if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
 
@@ -137,13 +137,14 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 generateEthPlanet( );
             }
 
-            viewMapper.etPlanetName.setText( "WelcomePlanet" );
-            viewMapper.cursor.setX( ( ( Utils.getScreenWidth( this ) + Utils.getTextWidth( viewMapper.etPlanetName ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
+            setPlanetName( );
+
         } catch ( DecryptionErrorException e ) {
             e.printStackTrace( );
         }
 
     }
+
 
     @Override
     public void onGlobalLayout( ) {
@@ -186,6 +187,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                     generateEthPlanet( );
 
                 }
+                setPlanetName( );
             } catch ( DecryptionErrorException e ) {
                 e.printStackTrace( );
             }
@@ -208,8 +210,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                         Signer.getInstance( ).sign( planet.getName( ),
                                 planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) ) );
                 request.setAddress( planet.getAddress( ) );
-
-                PLog.e( "URL : " + Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ) );
 
                 new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );
 
@@ -253,6 +253,11 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         setData( );
     }
 
+    void setPlanetName( ) {
+        viewMapper.etPlanetName.setText( Utils.randomPlanetName( this, planet.getAddress( ) ) );
+        viewMapper.cursor.setX( ( ( Utils.getScreenWidth( this ) + Utils.getTextWidth( viewMapper.etPlanetName ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
+    }
+
     void addBtcPlanet( ) {
         if ( planet != null ) {
             KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
@@ -273,6 +278,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
         viewMapper.planetView.setData( planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
+
     }
 
 
@@ -312,6 +318,8 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
         viewMapper.planetView.setData( planet.getAddress( ) );
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
+
+
     }
 
     void generateEthPlanet( ) {
@@ -325,6 +333,26 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
 
     }
+
+    //test
+//    void randomPlanetName( ) {
+//        PLog.e( "address Sha256 : " + Utils.sha256( planet.getAddress( ) ) );
+//        String addressToSha256 = Utils.sha256( planet.getAddress( ) );
+//        PLog.e( "name.length : " + name.length );
+//
+//        if ( addressToSha256 == null ) return;
+//        int index = Utils.hexToDecimal( addressToSha256.substring( 0, 4 ) );
+//        if ( index > name.length ) {
+//            index = Utils.hexToDecimal( addressToSha256.substring( 0, 3 ) );
+//        }
+//
+//        int last = Utils.hexToDecimal( addressToSha256.substring( addressToSha256.length( ) - 3 ) );
+//
+//        String planetname = name[ index ] + last;
+//        PLog.e( "random name : " + planetname );
+//
+//
+//    }
 
     @Override
     public void onVisibilityChanged( boolean isOpen, float oldHeight, float keyboardHeight ) {

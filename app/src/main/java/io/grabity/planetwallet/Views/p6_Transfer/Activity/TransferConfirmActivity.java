@@ -21,6 +21,7 @@ import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
 import io.grabity.planetwallet.MiniFramework.networktask.Post;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -222,7 +223,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
         } else if ( v == viewMapper.btnSubmit ) {
 
             if ( tooLargeFee( ) ) {
-                CustomToast.makeText( this, "전송 금액과 수수료의 합이 총 금액을 넘습니다." ).show( );
+                CustomToast.makeText( this, localized( R.string.transfer_confirm_not_fee_title ) ).show( );
             } else {
                 setTransition( Transition.SLIDE_UP );
                 sendAction( C.requestCode.TRANSFER, PinCodeCertificationActivity.class );
@@ -234,7 +235,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
 
     private boolean tooLargeFee( ) {
         BigDecimal totalBalance = new BigDecimal( planet.getMainItem( ).getBalance( ) );
-        BigDecimal amount = new BigDecimal( tx.getAmount( ) );
+        BigDecimal amount = new BigDecimal( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ? "0" : tx.getAmount( ) );
         BigDecimal fee = new BigDecimal( transaction.estimateFee( ) );
 
         return totalBalance.subtract( amount ).subtract( fee ).signum( ) <= 0;
@@ -249,6 +250,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             String rawTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) );
 
             new Post( ( error, requestCode1, resultCode1, statusCode, result ) -> {
+                PLog.e( "transaction result check : " + result );
                 if ( !error ) {
                     ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class );
                     if ( returnVO.isSuccess( ) ) {
@@ -263,15 +265,16 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                                         Utils.createSerializableBundle( C.bundleKey.TX, tx ) ) );
 
                     } else {
-                        CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
+                        CustomToast.makeText( this, localized( R.string.transfer_confirm_transaction_error_title ) ).show( );
                         viewMapper.btnSubmit.setEnabled( false );
                     }
                 } else {
-                    CustomToast.makeText( this, "현재 거래를 완료할 수 없는 상태입니다." ).show( );
+                    CustomToast.makeText( this, localized( R.string.transfer_confirm_transaction_error_title ) ).show( );
                     viewMapper.btnSubmit.setEnabled( false );
                 }
             } ).setDeviceKey( C.DEVICE_KEY )
                     .action( Route.URL( "transfer", mainItem.getSymbol( ) ), 0, 0, Utils.createStringHashMap( "serializeTx", rawTx ) );
+
         }
     }
 
@@ -289,8 +292,14 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_BACK ) ) {
-            super.onBackPressed( );
+            onBackPressed( );
         }
+    }
+
+    @Override
+    protected void onDestroy( ) {
+        getPlanetWalletApplication( ).removeStack( );
+        super.onDestroy( );
     }
 
 

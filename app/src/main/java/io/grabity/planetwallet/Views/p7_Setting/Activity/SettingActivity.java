@@ -79,6 +79,10 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     @Override
     protected void viewInit( ) {
         super.viewInit( );
+
+        //next version coinMarketCap update
+        viewMapper.btnCurrency.setVisibility( View.GONE );
+
         viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_CLOSE ) );
         viewMapper.toolBar.setOnToolBarClickListener( this );
 

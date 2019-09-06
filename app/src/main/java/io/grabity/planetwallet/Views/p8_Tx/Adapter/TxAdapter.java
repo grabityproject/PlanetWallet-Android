@@ -30,22 +30,25 @@ public class TxAdapter extends AdvanceArrayAdapter< Tx > {
     @Override
     public void bindData( ViewMapper viewMapper, Tx item, int position ) {
 
+        //next version coinMarketCap update
+        ((TxItem) viewMapper).textCurrency.setVisibility( View.GONE );
+
 
         if ( Utils.equals( item.getStatus( ), C.transferStatus.PENDING ) ) {
             ( ( TxItem ) viewMapper ).imageStatusIcon.setImageResource( !getTheme( ) ? R.drawable.image_tx_list_pending_gray : R.drawable.image_tx_list_pending_blue );
-            ( ( TxItem ) viewMapper ).textStatus.setText( "pending" );
+            ( ( TxItem ) viewMapper ).textStatus.setText( localized( R.string.transaction_status_pending_title ) );
             ( ( TxItem ) viewMapper ).textBalance.setText( Utils.equals( item.getType( ), C.transferType.RECEIVED ) ? String.format( "%s", Utils.balanceReduction( Utils.toMaxUnit( Integer.valueOf( item.getDecimals( ) ), item.getAmount( ) ) ) ) : String.format( "-%s", Utils.balanceReduction( Utils.toMaxUnit( Integer.valueOf( item.getDecimals( ) ), item.getAmount( ) ) ) ) );
 
         } else if ( Utils.equals( item.getStatus( ), C.transferStatus.CONFIRMED ) ) {
             ( ( TxItem ) viewMapper ).imageStatusIcon.setImageResource( Utils.equals( item.getType( ), C.transferType.RECEIVED ) ? R.drawable.image_tx_list_received : R.drawable.image_tx_list_sent );
-            ( ( TxItem ) viewMapper ).textStatus.setText( Utils.equals( item.getType( ), C.transferType.RECEIVED ) ? "Received" : "Sent" );
+            ( ( TxItem ) viewMapper ).textStatus.setText( Utils.equals( item.getType( ), C.transferType.RECEIVED ) ? localized( R.string.transaction_type_received_title ) : localized( R.string.transaction_type_sent_title ) );
             ( ( TxItem ) viewMapper ).textBalance.setText( Utils.equals( item.getType( ), C.transferType.RECEIVED ) ? String.format( "%s", Utils.balanceReduction( Utils.toMaxUnit( Integer.valueOf( item.getDecimals( ) ), item.getAmount( ) ) ) ) : String.format( "-%s", Utils.balanceReduction( Utils.toMaxUnit( Integer.valueOf( item.getDecimals( ) ), item.getAmount( ) ) ) ) );
 
             if ( Utils.equals( item.getType( ), C.transferType.RECEIVED ) )
                 ( ( TxItem ) viewMapper ).textBalance.setTextColor( Color.parseColor( "#00E291" ) );
         }
         ( ( TxItem ) viewMapper ).textSymbol.setText( item.getSymbol( ) );
-        ( ( TxItem ) viewMapper ).textCurrency.setText( String.format( "%s USD ", item.getAmount( ) ) );
+//        ( ( TxItem ) viewMapper ).textCurrency.setText( String.format( "%s USD ", item.getAmount( ) ) );
 
     }
 

@@ -14,6 +14,7 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.SyncManager;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
@@ -89,7 +90,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         viewMapper.toolBar.setLeftButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MENU ) );
         viewMapper.toolBar.setRightButton( ToolBar.ButtonItem( ).setTag( C.tag.TOOLBAR_MUTIUNIVERSE ) );
 
-
         // RippleView
         Objects.requireNonNull( Utils.getAndroidContentViewGroup( this ) ).addView( viewMapper.rippleView );
         viewMapper.rippleView.setOnRippleEffectListener( this );
@@ -109,7 +109,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         topLauncherComponent.setTrigger( viewMapper.toolBar.getButtonItems( ).get( 1 ).getView( ) );
         bottomLauncherComponent = new BottomLauncherComponent( this, viewMapper.slideDrawer );
         refreshAnimationComponent = new RefreshAnimationComponent( this, viewMapper.overScrollWrapper, viewMapper.listMain );
-
 
         viewMapper.textNotice.setOnClickListener( this );
     }
@@ -163,15 +162,19 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             } else if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
 
                 selectedPlanet.setItems( MainItemStore.getInstance( ).getMainItem( selectedPlanet.getKeyId( ), false ) );
-
                 String btcPrefTx = Utils.getPreferenceData( this, Utils.prefKey( CoinType.of( selectedPlanet.getCoinType( ) ).getDefaultUnit( ), selectedPlanet.getSymbol( ), selectedPlanet.getKeyId( ) ) );
                 if ( !Utils.equals( btcPrefTx, "" ) ) {
                     ReturnVO returnVO = Utils.jsonToVO( btcPrefTx, ReturnVO.class, Tx.class );
                     if ( returnVO.isSuccess( ) ) {
                         txList = ( ArrayList< Tx > ) returnVO.getResult( );
                     }
+                } else {
+                    if ( txList == null ) {
+                        txList = new ArrayList<>( );
+                    } else {
+                        txList.clear( );
+                    }
                 }
-
                 viewMapper.listMain.setAdapter( adapter = new TxAdapter( this, txList == null ? new ArrayList<>( ) : txList ) );
 
             }
@@ -194,6 +197,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     }
 
+
     void setUpNotice( ) {
 
         if ( Utils.equals( CoinType.BTC.getCoinType( ), selectedPlanet.getCoinType( ) ) ) {
@@ -205,7 +209,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             viewMapper.textNotice.setVisibility( selectedPlanet.getPathIndex( ) >= 0 && Utils.equals( Utils.getPreferenceData( this, C.pref.BACK_UP_MNEMONIC_ETH, String.valueOf( false ) ), String.valueOf( false ) ) ?
                     View.VISIBLE : View.INVISIBLE );
-
         }
 
 
@@ -417,7 +420,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             selectedPlanet = PlanetStore.getInstance( ).getPlanet( selectedPlanet.getKeyId( ) );
             setUpViews( );
         }
-        
+
     }
 
     @Override
@@ -448,7 +451,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     public void onTxList( Planet p, ArrayList< Tx > txList, String result ) {
         Utils.setPreferenceData( this, Utils.prefKey( CoinType.of( p.getCoinType( ) ).getDefaultUnit( ), p.getSymbol( ), p.getKeyId( ) ), result );
-
         if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
             viewMapper.overScrollWrapper.completeRefresh( );
             adapter.setObjects( txList );
@@ -460,7 +462,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
 
     }
-
 
     public class ViewMapper {
 

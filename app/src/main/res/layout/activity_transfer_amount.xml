@@ -79,6 +79,8 @@
         android:paddingEnd="20dp"
         android:textColor="#FFF"
         android:textSize="40dp"
+        android:maxLines="2"
+        android:ellipsize="end"
         app:themeTextColor="#000"
         app:typefaceStyle="medium" />
 

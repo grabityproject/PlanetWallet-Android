@@ -71,6 +71,7 @@ import java.util.regex.Pattern;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
+import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.Widgets.FontTextView;
 
@@ -111,7 +112,18 @@ public class Utils {
 
     public static < T > T jsonToVO( String jsonString, Class< T > type ) {
         Gson gson = new Gson( );
-        return gson.fromJson( jsonString, type );
+        try {
+            return gson.fromJson( jsonString, type );
+        } catch ( JsonSyntaxException e ) {
+            try {
+                return type.newInstance( );
+            } catch ( IllegalAccessException e1 ) {
+                return null;
+            } catch ( InstantiationException e1 ) {
+                return null;
+            }
+        }
+
     }
 
     public static < T > T jsonToVO( String jsonString, Class< T > type, Class subType ) {
@@ -1311,6 +1323,23 @@ public class Utils {
 
     public static String emptyToNull( @Nullable String string ) {
         return TextUtils.isEmpty( string ) ? null : string;
+    }
+
+    public static String randomPlanetName( Context context, String address ) {
+        if ( address == null || context == null ) return null;
+        String[] list = context.getResources( ).getStringArray( R.array.planetRandomName );
+        String nameSha256 = sha256( address );
+
+        if ( nameSha256 == null || nameSha256.length( ) != 64 ) return null;
+
+        int index = 0;
+        if ( hexToDecimal( nameSha256.substring( 0, 4 ) ) > list.length ) {
+            index = hexToDecimal( nameSha256.substring( 0, 3 ) );
+        } else {
+            index = hexToDecimal( nameSha256.substring( 0, 4 ) );
+        }
+
+        return new StringBuilder( ).append( list[ index ] ).append( hexToDecimal( nameSha256.substring( nameSha256.length( ) - 3 ) ) ).toString( );
     }
 
 }

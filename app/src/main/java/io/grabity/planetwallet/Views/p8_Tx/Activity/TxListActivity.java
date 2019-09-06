@@ -95,6 +95,10 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 headerViewMapper = new HeaderViewMapper( view );
                 headerViewMapper.btnTransfer.setOnClickListener( this );
                 headerViewMapper.btnReceive.setOnClickListener( this );
+
+                //next version coinMarketCap update
+                headerViewMapper.textCurrency.setVisibility( View.GONE );
+
                 setDataToHeaderView( );
             }
         }
@@ -187,10 +191,6 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                         adapter.setObjects( items );
                         Objects.requireNonNull( viewMapper.listView.getAdapter( ) ).notifyItemRangeChanged( 1, items.size( ) );
                     }
-
-//                    items = getCacheTxList( );
-//                    if ( items != null && items.size( ) > 0 ) adapter.setObjects( items );
-//                    Objects.requireNonNull( viewMapper.listView.getAdapter( ) ).notifyItemRangeChanged( 1, items.size( ) );
                 }
 
             }

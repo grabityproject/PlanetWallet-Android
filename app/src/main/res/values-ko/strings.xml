@@ -109,4 +109,31 @@
     <string name="fee_popup_gas_price_least_title">가스비는 최소 1 Gwei 이상 입니다.</string>
     <string name="pincode_registration_one_more_registration_title">한번 더 입력해주세요.</string>
     <string name="pincode_registration_reset_title">리셋</string>
-    <string name="main_footer_planets_add_new_planet_title">플래닛 추가하기</string></resources>
+    <string name="main_footer_planets_add_new_planet_title">플래닛 추가하기</string>
+
+
+    <string name="transfer_confirm_transaction_error_title">현재 거래를 완료할 수 없는 상태입니다.</string>
+    <string name="transfer_amount_not_fee_title">전송에 필요한 수수료가 부족합니다.</string>
+    <string name="transfer_confirm_not_fee_title">전송에 필요한 수수료가 부족합니다.</string>
+    <string name="eth_fee_popup_eth_minimun_gas_limit_error_title">최소 가스 한도는 21,000 입니다.</string>
+    <string name="eth_fee_popup_erc_minimun_gas_limit_error_title">최소 가스 한도는 100,000 입니다.</string>
+    <string name="eth_fee_popup_not_gas_zero_title">가스비는 0이 될 수 없습니다.</string>
+    <string name="eth_fee_popup_gas_check_title">가스비 또는 가스한도를 확인해주세요.</string>
+    <string name="eth_fee_popup_high_fee_error_title">수수료가 너무 높습니다.</string>
+    <string name="transaction_status_pending_title">Pending</string>
+    <string name="transaction_status_completed_title">Completed</string>
+    <string name="transaction_type_sent_title">Sent</string>
+    <string name="transaction_type_received_title">Received</string>
+    <string name="detail_tx_status_title">Status</string>
+    <string name="detail_tx_amount_title">Amount</string>
+    <string name="detail_tx_fee_title">Fee</string>
+    <string name="detail_tx_date_title">Date</string>
+    <string name="detail_tx_tx_hash_title">Tx Hash</string>
+    <string name="detail_address_btn_copy_title">Copy</string>
+    <string name="detail_address_btn_transfer_title">Transfer</string>
+    <string name="detail_address_toolbar_receive_title">Receive</string>
+    <string name="tx_list_header_btn_receive_title">Receive</string>
+    <string name="tx_list_header_btn_transfer_title">Transfer</string>
+
+</resources>
+

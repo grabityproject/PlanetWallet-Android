@@ -1,5 +1,6 @@
 package io.grabity.planetwallet.Views.p6_Transfer.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -126,8 +127,19 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnTxHash ) {
+            if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
+                sendActionUri( "https://ropsten.etherscan.io/tx/" + tx.getTx_id( ) );
+            } else {
+                sendActionUri( "https://live.blockcypher.com/btc-testnet/tx/" + tx.getTx_id( ) );
+            }
 
         } else if ( v == viewMapper.btnShare ) {
+            Intent intent = new Intent( Intent.ACTION_SEND )
+                    .addCategory( Intent.CATEGORY_DEFAULT )
+                    .setType( "text/plain" )
+                    .putExtra( Intent.EXTRA_SUBJECT, "서브젝트" )
+                    .putExtra( Intent.EXTRA_TEXT, "텍스트 전송" );
+            startActivity( Intent.createChooser( intent, "공유기능" ) );
 
         } else if ( v == viewMapper.btnSubmit ) {
             super.onBackPressed( );
@@ -138,7 +150,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
     @Override
     public void onToolBarClick( Object tag, View view ) {
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
-            super.onBackPressed( );
+            onBackPressed( );
         }
     }
 

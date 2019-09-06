@@ -45,10 +45,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/image_item_main_eth_arrow"
-            android:paddingTop="14dp"
+            android:layout_centerVertical="true"
             android:textColor="#FFF"
             android:textSize="16dp"
             android:paddingEnd="14dp"
+            android:includeFontPadding="false"
             app:themeTextColor="#000"
             app:typefaceStyle="medium" />
 

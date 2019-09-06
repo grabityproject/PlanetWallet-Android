@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.Themeable;
@@ -65,6 +66,15 @@ public abstract class AdvanceArrayAdapter< T > extends RecyclerView.Adapter< Adv
     public abstract ViewMapper viewMapping( int position );
 
     public abstract void bindData( ViewMapper viewMapper, T item, int position );
+
+    public String localized( int id ) {
+        if ( getContext( ) == null ) return "";
+        try {
+            return ( ( PlanetWalletActivity ) getContext( ) ).localized( id );
+        } catch ( ClassCastException e ) {
+            return "";
+        }
+    }
 
     @Override
     public ViewMapper onCreateViewHolder( ViewGroup parent, int viewType ) {
