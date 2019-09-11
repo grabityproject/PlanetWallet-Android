@@ -186,7 +186,8 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                     resultItems = ( ArrayList< Tx > ) returnVO.getResult( );
 
                     if ( resultItems.size( ) == 0 ) return;
-                    if ( resultItems.size( ) != items.size( ) || !Utils.equals( items.get( 0 ).getStatus( ), resultItems.get( 0 ).getStatus( ) ) ) {
+                    if ( resultItems.size( ) != items.size( ) || !Utils.equals( items.get( 0 ).getTx_id( ), resultItems.get( 0 ).getTx_id( ) )
+                            || !Utils.equals( items.get( 0 ).getStatus( ), resultItems.get( 0 ).getStatus( ) ) ) {
                         items = getCacheTxList( );
                         adapter.setObjects( items );
                         Objects.requireNonNull( viewMapper.listView.getAdapter( ) ).notifyItemRangeChanged( 1, items.size( ) );

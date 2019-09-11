@@ -68,9 +68,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
+import io.grabity.planetwallet.MiniFramework.wallet.store.MainItemStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.Widgets.FontTextView;
@@ -1340,6 +1342,21 @@ public class Utils {
         }
 
         return new StringBuilder( ).append( list[ index ] ).append( hexToDecimal( nameSha256.substring( nameSha256.length( ) - 3 ) ) ).toString( );
+    }
+
+    public static void gbtSave( String keyId ) {
+        MainItem gbt = new MainItem( );
+
+        gbt.setKeyId( keyId );
+        gbt.setCoinType( CoinType.ERC20.getCoinType( ) );
+        gbt.setHide( "N" );
+        gbt.setName( C.gbtInfo.GBT_NAME );
+        gbt.setSymbol( C.gbtInfo.GBT_SYMBOL );
+        gbt.setDecimals( C.gbtInfo.GBT_DECIMALS );
+        gbt.setImg_path( C.gbtInfo.GBT_IMG_PATH );
+        gbt.setContract( C.gbtInfo.GBT_CONTRACT );
+
+        MainItemStore.getInstance( ).tokenSave( gbt );
     }
 
 }

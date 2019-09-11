@@ -12,6 +12,7 @@ import java.util.Collections;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.managers.BioMetricManager;
 import io.grabity.planetwallet.MiniFramework.utils.CornerRound;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
@@ -219,6 +220,8 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
             KeyPairStore.getInstance( ).changePWDBKeyPairs( beforeValue, newValue );
             KeyValueStore.getInstance( ).setValue( C.pref.PASSWORD, Utils.sha256( Utils.join( inputKeyList ) ), newValue );
             getPlanetWalletApplication( ).setPINCODE( newValue );
+
+            BioMetricManager.getInstance().saveKey( newValue );
 
             setResult( RESULT_OK );
             super.onBackPressed( );

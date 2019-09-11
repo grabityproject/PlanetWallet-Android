@@ -40,6 +40,7 @@ public class AppLifeCycleTracker implements Application.ActivityLifecycleCallbac
         }
         numStarted++;
         beforeClassName = activity.getClass( ).getName( );
+        planetWalletApplication.setTopActivity( activity );
     }
 
     @Override
@@ -57,9 +58,11 @@ public class AppLifeCycleTracker implements Application.ActivityLifecycleCallbac
         numStarted--;
         if ( numStarted == 0 ) {
             if ( planetWalletApplication != null ) {
+                planetWalletApplication.setTopActivity( null );
                 if ( PinCodeRegistrationActivity.class.equals( activity.getClass( ) ) ) return;
                 if ( SplashActivity.class.equals( activity.getClass( ) ) ) return;
                 planetWalletApplication.setPINCODE( null );
+
             }
         }
     }

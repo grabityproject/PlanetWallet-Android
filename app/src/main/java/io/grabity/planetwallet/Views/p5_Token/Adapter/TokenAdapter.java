@@ -50,7 +50,9 @@ public class TokenAdapter extends AdvanceArrayAdapter< MainItem > {
             }
         }
 
+
         ( ( EthItem ) viewMapper ).clickView.setOnClickListener( v -> {
+            if ( position == 0 ) return;
             getObjects( ).get( position ).setCheck( !getObjects( ).get( position ).isCheck( ) );
             if ( getObjects( ).get( position ).isCheck( ) ) {
                 ( ( EthItem ) viewMapper ).btnTokenRefresh.setImageResource( R.drawable.image_checkbox_on );

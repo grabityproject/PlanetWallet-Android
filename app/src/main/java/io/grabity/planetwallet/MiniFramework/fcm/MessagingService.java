@@ -18,6 +18,9 @@ import io.grabity.planetwallet.Common.components.PlanetWalletApplication;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.Views.p1_Splash.Activity.SplashActivity;
+import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 
 public class MessagingService extends FirebaseMessagingService {
@@ -29,45 +32,80 @@ public class MessagingService extends FirebaseMessagingService {
     public void onNewToken( String s ) {
         super.onNewToken( s );
         PLog.e( "newToken : " + s );
+
     }
 
     @Override
     public void onMessageReceived( RemoteMessage remoteMessage ) {
+        PLog.e( "onMessageReceived : " + remoteMessage.getData( ) );
         super.onMessageReceived( remoteMessage );
         if ( ( ( PlanetWalletApplication ) getApplication( ) ).getMessagingListeners( ) != null ) {
             for ( OnMessagingListener listener : ( ( PlanetWalletApplication ) getApplication( ) ).getMessagingListeners( ) ) {
                 listener.onMessage( remoteMessage );
             }
-
-            if ( Utils.equals( Utils.getPreferenceData( this, C.pref.LAST_PLANET_KEYID ), "" ) ) return;
-            sendNotification( );
         }
+        if ( Utils.equals( Utils.getPreferenceData( this, C.pref.LAST_PLANET_KEYID ), "" ) ) return;
+        sendNotification( remoteMessage );
     }
 
-    private void sendNotification( ) {
+    private void sendNotification( RemoteMessage remoteMessage ) {
+        int count = ( int ) Utils.getPreferenceData( this, C.pref.NOTIFIACTION_COUNT, 0 );
+        count += 1;
+        Utils.setPreferenceData( this, C.pref.NOTIFIACTION_COUNT, count );
         NotificationManager notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
-        PendingIntent intent = PendingIntent.getActivity( this, 0, new Intent( ), PendingIntent.FLAG_ONE_SHOT );
 
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
             NotificationChannel channel = new NotificationChannel( channelID, channelName, NotificationManager.IMPORTANCE_HIGH );
             channel.setLockscreenVisibility( Notification.VISIBILITY_PUBLIC ); //lock Screen show notification
 
-            if ( notificationManager.getNotificationChannel( channelID ) == null ) {
+            if ( notificationManager.getNotificationChannel( channelID ) == null ) { // channel not exist create channel
                 notificationManager.createNotificationChannel( channel );
             }
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder( getApplicationContext(), Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? channelID : ""  )
+        NotificationCompat.Builder builder = new NotificationCompat.Builder( getApplicationContext( ), Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? channelID : "" )
                 .setSmallIcon( R.drawable.icon_planet_noti )
                 .setWhen( System.currentTimeMillis( ) )
                 .setShowWhen( true )
                 .setAutoCancel( true )
-                .setContentTitle( "노티알림" )
-                .setContentText( "서브메시지" )
-                .setContentIntent( intent )
+                .setContentTitle( remoteMessage.getData( ).get( "title" ) )
+                .setContentText( remoteMessage.getData( ).get( "body" ) )
+                .setContentIntent( clickOnNotification( ) )
+                .setDeleteIntent( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? null : versionMinNougatNotificationSlide( ) )
                 .setDefaults( Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE )
                 .setPriority( NotificationCompat.PRIORITY_MAX );
         notificationManager.notify( 0, builder.build( ) );
 
+
+        if ( ( ( PlanetWalletApplication ) getApplication( ) ).getTopActivity( ) != null ) {
+            if ( Utils.equals( ( ( PlanetWalletApplication ) getApplication( ) ).getTopActivity( ).getClass( ).getSimpleName( ), MainActivity.class.getSimpleName( ) ) ) {
+                Utils.setPreferenceData( this, C.pref.NOTIFIACTION_COUNT, 0 );
+                ShortcutBadger.removeCount( this );
+                return;
+            }
+        }
+
+        if ( Build.MANUFACTURER.equalsIgnoreCase( "Xiaomi" ) ) {  //device Xiaomi
+            Notification notification = builder.build( );
+            ShortcutBadger.applyNotification( this, notification, ( int ) Utils.getPreferenceData( this, C.pref.NOTIFIACTION_COUNT, 0 ) );
+        } else {
+            ShortcutBadger.applyCount( this, ( int ) Utils.getPreferenceData( this, C.pref.NOTIFIACTION_COUNT, 0 ) );
+        }
     }
+
+    private PendingIntent versionMinNougatNotificationSlide( ) {
+        return PendingIntent.getBroadcast( this, 0, new Intent( this, NotificationSlideListener.class )
+                .setAction( C.action.NOTIFICATION_SLIDE ), PendingIntent.FLAG_ONE_SHOT );
+    }
+
+    private PendingIntent clickOnNotification( ) {
+        if ( ( ( PlanetWalletApplication ) getApplication( ) ).getPINCODE( ) == null ) {
+            return PendingIntent.getActivity( this, 0, new Intent( this, SplashActivity.class )
+                    .setAction( Intent.ACTION_MAIN )
+                    .addCategory( Intent.CATEGORY_LAUNCHER )
+                    .addFlags( Intent.FLAG_ACTIVITY_NEW_TASK ), PendingIntent.FLAG_ONE_SHOT );
+        }
+        return PendingIntent.getActivity( this, 0, new Intent( ), PendingIntent.FLAG_ONE_SHOT );
+    }
+
 }

@@ -66,11 +66,11 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
 
     void setUpView( ) {
         Utils.addressForm( viewMapper.textAddress, tx.getTo_planet( ) == null ? tx.getTo( ) : tx.getFrom( ) );
-        if ( Utils.equals( tx.getStatus() , C.transferStatus.PENDING ) ) {
+        if ( Utils.equals( tx.getStatus( ), C.transferStatus.PENDING ) ) {
             viewMapper.toolBar.setTitle( localized( R.string.transaction_status_pending_title ) );
-        } else if ( Utils.equals( tx.getType() , C.transferType.SENT ) ){
+        } else if ( Utils.equals( tx.getType( ), C.transferType.SENT ) ) {
             viewMapper.toolBar.setTitle( localized( R.string.transaction_type_sent_title ) );
-        } else{
+        } else {
             viewMapper.toolBar.setTitle( localized( R.string.transaction_type_received_title ) );
         }
 
@@ -117,12 +117,9 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.textTxID ) {
-            if ( Utils.equals( tx.getCoin( ), CoinType.ETH.getDefaultUnit( ) ) ) {
-                sendActionUri( "https://ropsten.etherscan.io/tx/" + tx.getTx_id( ) );
-            } else {
-                sendActionUri( "https://live.blockcypher.com/btc-testnet/tx/" + tx.getTx_id( ) );
-            }
 
+            sendActionUri( Utils.equals( tx.getCoin( ), CoinType.ETH.getDefaultUnit( ) ) ?
+                    tx.getExplorer( ) : tx.getUrl( ) );
         }
     }
 

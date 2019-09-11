@@ -296,6 +296,7 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     }
 
     public void sendActionUri( String uri ) {
+        if ( uri == null ) return;
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( Uri.parse( uri ) );
         startActivity( putTransitionToBundle( intent, transition ) );

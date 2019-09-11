@@ -248,9 +248,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             viewMapper.btnSubmit.setEnabled( false );
 
             String rawTx = transaction.getRawTransaction( planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) );
-
             new Post( ( error, requestCode1, resultCode1, statusCode, result ) -> {
-                PLog.e( "transaction result check : " + result );
                 if ( !error ) {
                     ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class );
                     if ( returnVO.isSuccess( ) ) {

@@ -62,7 +62,6 @@
                 android:maxLength="20"
                 android:paddingStart="50dp"
                 android:paddingEnd="50dp"
-                android:text="WalletName"
                 android:textColor="#FF0050"
                 android:textSize="28dp" />
 

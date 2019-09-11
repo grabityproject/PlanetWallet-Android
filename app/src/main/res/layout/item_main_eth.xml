@@ -12,8 +12,8 @@
 
         <io.grabity.planetwallet.Widgets.StretchImageView
             android:id="@+id/image_item_main_eth_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:src="@drawable/icon_eth"
             android:layout_centerVertical="true" />
 

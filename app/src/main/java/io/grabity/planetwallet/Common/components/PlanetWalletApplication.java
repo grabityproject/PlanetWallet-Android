@@ -48,6 +48,8 @@ public class PlanetWalletApplication extends MultiDexApplication {
     private ArrayList< OnMessagingListener > messagingListeners = new ArrayList<>( );
     private LinkedList< Activity > activityStack = new LinkedList<>( );
 
+    private Activity topActivity = null;
+
     static {
         System.loadLibrary( "pallet_core-0.1.0-x64_shared" );
     }
@@ -162,6 +164,14 @@ public class PlanetWalletApplication extends MultiDexApplication {
             activityStack.pollLast( );
 
         }
+    }
+
+    public void setTopActivity( Activity activity ) {
+        topActivity = activity;
+    }
+
+    public Activity getTopActivity( ) {
+        return topActivity;
     }
 
     public void removeAllStack( ) {

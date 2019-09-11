@@ -1,5 +1,7 @@
 package io.grabity.planetwallet.Views.p4_Main.Activity;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -46,6 +48,7 @@ import io.grabity.planetwallet.Widgets.OverScrollWrapper.OverScrollWrapper;
 import io.grabity.planetwallet.Widgets.RippleEffectView;
 import io.grabity.planetwallet.Widgets.SlideDrawerLayout;
 import io.grabity.planetwallet.Widgets.ToolBar;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAdapter.OnAttachViewListener, ToolBar.OnToolBarClickListener, RippleEffectView.OnRippleEffectListener, AdvanceRecyclerView.OnItemClickListener, OverScrollWrapper.OnRefreshListener, SyncManager.OnSyncListener, NodeService.OnNodeServiceListener {
 
@@ -190,8 +193,8 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             setUpNotice( );
 
-            NodeService.getInstance( ).getBalance( selectedPlanet );
-            NodeService.getInstance( ).getMainList( selectedPlanet );
+//            NodeService.getInstance( ).getBalance( selectedPlanet );
+//            NodeService.getInstance( ).getMainList( selectedPlanet );
 
         }
 
@@ -271,6 +274,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
             planetList = PlanetStore.getInstance( ).getPlanetList( false );
             selectedPlanet = planetList.get( planetList.size( ) - 1 );
             if ( selectedPlanet != null ) setUpViews( );
+
         }
     }
 
@@ -299,6 +303,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             viewMapper.slideDrawer.close( );
 
+
         } else {
 
             if ( getPopupViewStack( ) != null && !getPopupViewStack( ).isEmpty( ) ) {
@@ -325,6 +330,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     protected void onResume( ) {
         super.onResume( );
+        Utils.setPreferenceData( this, C.pref.NOTIFIACTION_COUNT, 0 );
+        ShortcutBadger.removeCount( this );
+        NotificationManager notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
+        notificationManager.cancel( 0 );
+
         viewMapper.rippleView.ripple( false );
         viewMapper.rippleView.setTheme( getCurrentTheme( ) );
 
@@ -341,6 +351,9 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
 
         setUpNotice( );
+
+        NodeService.getInstance( ).getBalance( selectedPlanet );
+        NodeService.getInstance( ).getMainList( selectedPlanet );
 
 
     }
@@ -450,6 +463,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
     @Override
     public void onTxList( Planet p, ArrayList< Tx > txList, String result ) {
+        PLog.e( "BTC txList : " + result );
         Utils.setPreferenceData( this, Utils.prefKey( CoinType.of( p.getCoinType( ) ).getDefaultUnit( ), p.getSymbol( ), p.getKeyId( ) ), result );
         if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
             viewMapper.overScrollWrapper.completeRefresh( );

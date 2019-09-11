@@ -66,5 +66,7 @@ dependencies {
     implementation 'androidx.biometric:biometric:1.0.0-alpha04'
 
     implementation('org.web3j:core:4.2.0-android')
+
+    implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -13,8 +13,8 @@
 
         <io.grabity.planetwallet.Widgets.PlanetView
             android:id="@+id/planetview_item_main_planets"
-            android:layout_width="22dp"
-            android:layout_height="22dp" />
+            android:layout_width="28dp"
+            android:layout_height="28dp" />
 
         <io.grabity.planetwallet.Widgets.FontTextView
             android:id="@+id/text_item_main_planets_name"
@@ -22,10 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/planetview_item_main_planets"
             android:layout_toLeftOf="@id/text_item_main_planets_type"
-            android:paddingStart="10dp"
+            android:paddingStart="14dp"
             android:paddingEnd="10dp"
-            android:text="planetName"
-            android:textSize="14dp"
+            android:textSize="16dp"
             android:textColor="#FFF"
             android:maxLines="1"
             android:ellipsize="end"
@@ -47,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/image_item_main_planets_arrow"
             android:paddingEnd="8dp"
+            android:textSize="14dp"
             android:textColor="#5C5964"
             app:themeTextColor="#aaaaaa" />
 

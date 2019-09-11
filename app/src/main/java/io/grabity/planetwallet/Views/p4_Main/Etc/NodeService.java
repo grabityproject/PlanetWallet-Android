@@ -82,7 +82,7 @@ public class NodeService {
             if ( !error ) {
                 if ( requestCode == 0 && resultCode == planet.get_id( ) ) {
 
-                    PLog.e( result );
+                    PLog.e( "btc : " + result );
 
                     ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, MainItem.class );
                     if ( returnVO.isSuccess( ) ) {

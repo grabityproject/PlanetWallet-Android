@@ -22,7 +22,6 @@ import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.managers.FontManager;
 import io.grabity.planetwallet.MiniFramework.managers.KeyboardManager;
 import io.grabity.planetwallet.MiniFramework.networktask.Post;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -187,7 +186,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                     generateEthPlanet( );
 
                 }
-                setPlanetName( );
             } catch ( DecryptionErrorException e ) {
                 e.printStackTrace( );
             }
@@ -228,6 +226,12 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
                     PlanetStore.getInstance( ).save( planet );
 
+                    //ETH Wallet GBT add
+                    if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
+//                        defaultSave( );
+                        Utils.gbtSave( planet.getKeyId( ) );
+                    }
+
                     if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
                         setResult( RESULT_OK );
                         super.onBackPressed( );
@@ -247,6 +251,20 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         }
     }
 
+//    void defaultSave( ) {
+//        MainItem gbt = new MainItem( );
+//        gbt.setKeyId( planet.getKeyId( ) );
+//        gbt.setCoinType( CoinType.ERC20.getCoinType( ) );
+//        gbt.setHide( "N" );
+//        gbt.setName( "Grabity Coin" );
+//        gbt.setSymbol( "GBT" );
+//        gbt.setDecimals( "18" );
+//        gbt.setImg_path( "/erc20/img/gbt.png" );
+//        gbt.setContract( "0xcbD49182346421D3B410B04AeB1789346DA6Ce43" );
+//
+//        MainItemStore.getInstance( ).tokenSave( gbt );
+//    }
+
     @Override
     public void onSetPinCode( ) {
         super.onSetPinCode( );
@@ -254,6 +272,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     }
 
     void setPlanetName( ) {
+
         viewMapper.etPlanetName.setText( Utils.randomPlanetName( this, planet.getAddress( ) ) );
         viewMapper.cursor.setX( ( ( Utils.getScreenWidth( this ) + Utils.getTextWidth( viewMapper.etPlanetName ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
     }

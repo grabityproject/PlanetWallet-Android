@@ -24,9 +24,11 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.signer.Signer;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
+import io.grabity.planetwallet.MiniFramework.wallet.store.MainItemStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.ErrorResult;
+import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
@@ -93,13 +95,33 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
         } else {
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
 
-            planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
-            viewMapper.planetView.setData( planet.getAddress( ) );
-            viewMapper.planetBackground.setData( planet.getAddress( ) );
+            if ( planet.getName( ) != null ) {
+
+                PlanetStore.getInstance( ).save( planet );
+                //ETH wallet GBT add
+                if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
+                    Utils.gbtSave( planet.getKeyId( ) );
+                }
+
+                if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
+                    setResult( RESULT_OK );
+                    super.onBackPressed( );
+
+                } else {
+                    sendAction( MainActivity.class );
+                    finish( );
+                }
+
+            } else {
+                planet.setName( Objects.requireNonNull( viewMapper.etPlanetName.getText( ) ).toString( ) );
+                viewMapper.planetView.setData( planet.getAddress( ) );
+                viewMapper.planetBackground.setData( planet.getAddress( ) );
 
 
-            viewMapper.etPlanetName.setText( Utils.randomPlanetName( this, planet.getAddress( ) ) );
-            viewMapper.cursor.setX( ( ( Utils.getScreenWidth( this ) + Utils.getTextWidth( viewMapper.etPlanetName ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
+                viewMapper.etPlanetName.setText( Utils.randomPlanetName( this, planet.getAddress( ) ) );
+                viewMapper.cursor.setX( ( ( Utils.getScreenWidth( this ) + Utils.getTextWidth( viewMapper.etPlanetName ) ) / 2.0f ) + Utils.dpToPx( this, 4 ) );
+            }
+
         }
     }
 
@@ -139,6 +161,12 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
                 if ( returnVO.isSuccess( ) ) {
 
                     PlanetStore.getInstance( ).save( planet );
+
+                    //ETH wallet GBT add
+                    if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
+                        Utils.gbtSave( planet.getKeyId( ) );
+                    }
+
                     if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
                         setResult( RESULT_OK );
                         super.onBackPressed( );
@@ -155,8 +183,8 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
                 CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
             }
         }
-
     }
+
 
     @Override
     public void beforeTextChanged( CharSequence s, int start, int count, int after ) {

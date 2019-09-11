@@ -65,7 +65,6 @@ public class C {
         public final static String TX = "tx";
 
         public final static String MAIN_ITEM = "mainItem";
-
     }
 
     public static class transferStatus {
@@ -113,6 +112,8 @@ public class C {
 
         public final static String BIO_METRIC = "bio_metric";
 
+        public final static String NOTIFIACTION_COUNT = "notification_count";
+
 
     }
 
@@ -132,6 +133,18 @@ public class C {
         public final static String USD = "USD";
         public final static String KRW = "KRW";
         public final static String CNY = "CNY";
+    }
+
+    public static class action {
+        public final static String NOTIFICATION_SLIDE = "notificationSlide";
+    }
+
+    public static class gbtInfo{
+        public final static String GBT_NAME = "Grabity Coin";
+        public final static String GBT_SYMBOL = "GBT";
+        public final static String GBT_DECIMALS = "18";
+        public final static String GBT_IMG_PATH = "/erc20/img/gbt.png";
+        public final static String GBT_CONTRACT = "0xcbD49182346421D3B410B04AeB1789346DA6Ce43";
     }
 
 

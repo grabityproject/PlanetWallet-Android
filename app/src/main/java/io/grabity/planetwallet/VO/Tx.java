@@ -31,6 +31,8 @@ public class Tx implements Serializable {
     String updated_at;
     String decimals;
     String actualFee;
+    String explorer;
+    String url;
 
     ArrayList< UTXO > utxos;
 
@@ -219,6 +221,22 @@ public class Tx implements Serializable {
 
     public void setActualFee( String actualFee ) {
         this.actualFee = actualFee;
+    }
+
+    public String getExplorer( ) {
+        return explorer;
+    }
+
+    public void setExplorer( String explorer ) {
+        this.explorer = explorer;
+    }
+
+    public String getUrl( ) {
+        return url;
+    }
+
+    public void setUrl( String url ) {
+        this.url = url;
     }
 
     @NonNull
