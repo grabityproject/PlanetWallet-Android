@@ -3,6 +3,8 @@ package io.grabity.planetwallet.Common.commonset;
 
 public class C {
 
+    public static final boolean DEBUG = false;
+
     public static char[] PINCODE;
     public static String DEVICE_KEY;
 
@@ -139,13 +141,23 @@ public class C {
         public final static String NOTIFICATION_SLIDE = "notificationSlide";
     }
 
-    public static class gbtInfo{
+    public static class gbtInfo {
         public final static String GBT_NAME = "Grabity Coin";
         public final static String GBT_SYMBOL = "GBT";
         public final static String GBT_DECIMALS = "18";
-        public final static String GBT_IMG_PATH = "/erc20/img/gbt.png";
+        public final static String GBT_IMG_PATH = "/img/erc20/gbt.png";
         public final static String GBT_CONTRACT = "0xcbD49182346421D3B410B04AeB1789346DA6Ce43";
     }
 
+    public static class boardCategory{
+        public final static String CATEGORY_WALLET = "Wallet";
+        public final static String CATEGORY_PLANET = "Planet";
+        public final static String CATEGORY_UNIVERSE = "Universe";
+        public final static String CATEGORY_SECURITY = "Security";
+        public final static String CATEGORY_TRANSFER = "Transfer";
+        public final static String CATEGORY_CONTACT = "Contact us";
+        public final static String CATEGORY_ANNOUNCEMENTS = "notice";
+        public final static String CATEGORY_FAQ = "faq";
+    }
 
 }

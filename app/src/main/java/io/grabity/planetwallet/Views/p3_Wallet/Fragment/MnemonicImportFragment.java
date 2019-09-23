@@ -23,6 +23,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.Views.p2_Pincode.Activity.PinCodeCertificationActivity;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.WalletImportActivity;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.RoundEditText;
 
 public class MnemonicImportFragment extends PlanetWalletFragment implements View.OnClickListener, TextWatcher {
@@ -80,33 +81,35 @@ public class MnemonicImportFragment extends PlanetWalletFragment implements View
             viewMapper.etPassword.setInputType( viewMapper.passwordInvisible.getVisibility( ) == View.GONE ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
             viewMapper.etPassword.setSelection( viewMapper.etPassword.length( ) );
         } else if ( v == viewMapper.btnSubmit ) {
-            if ( C.PINCODE != null ) {
+            if ( getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) != null ) {
                 if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
                     try {
-                        Planet btcPlanet = BitCoinManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), Objects.requireNonNull( viewMapper.etPassword.getText( ) ).toString( ), C.PINCODE );
+                        Planet btcPlanet = BitCoinManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), Objects.requireNonNull( viewMapper.etPassword.getText( ) ).toString( ),
+                                getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
 
                         if ( PlanetStore.getInstance( ).getPlanet( btcPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( btcPlanet );
                         } else {
-                            Toast.makeText( getActivity( ), getString( R.string.mnemonic_import_exists_title ), Toast.LENGTH_SHORT ).show( );
+                            CustomToast.makeText( getActivity( ), getString( R.string.mnemonic_import_exists_title ) ).show( );
                         }
 
                     } catch ( Exception e ) {
-                        Toast.makeText( getContext( ), getString( R.string.mnemonic_import_not_match_title ), Toast.LENGTH_SHORT ).show( );
+                        CustomToast.makeText( getActivity( ), getString( R.string.mnemonic_import_not_match_title ) ).show( );
                     }
 
                 } else if ( getPlanetWalletActivity( ).getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.ETH.getCoinType( ) ) {
                     try {
-                        Planet ethPlanet = EthereumManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), Objects.requireNonNull( viewMapper.etPassword.getText( ) ).toString( ), C.PINCODE );
+                        Planet ethPlanet = EthereumManager.getInstance( ).importMnemonic( viewMapper.etMnemonic.getText( ).toString( ), Objects.requireNonNull( viewMapper.etPassword.getText( ) ).toString( ),
+                                getPlanetWalletActivity( ).getPlanetWalletApplication( ).getPINCODE( ) );
 
                         if ( PlanetStore.getInstance( ).getPlanet( ethPlanet.getKeyId( ) ) == null ) {
                             walletImportActivity.setPlanet( ethPlanet );
                         } else {
-                            Toast.makeText( getActivity( ), getString( R.string.mnemonic_import_exists_title ), Toast.LENGTH_SHORT ).show( );
+                            CustomToast.makeText( getActivity( ), getString( R.string.mnemonic_import_exists_title ) ).show( );
                         }
 
                     } catch ( Exception e ) {
-                        Toast.makeText( getContext( ), getString( R.string.mnemonic_import_not_match_title ), Toast.LENGTH_SHORT ).show( );
+                        CustomToast.makeText( getActivity( ), getString( R.string.mnemonic_import_not_match_title ) ).show( );
                     }
                 }
 

@@ -60,7 +60,7 @@
     <string name="transfer_confirm_fee_title">Fee</string>
     <string name="transfer_confirm_slow_title">Slow</string>
     <string name="transfer_confirm_fast_title">Fast</string>
-    <string name="transfer_confirm_advanced_options_title">Input yourself</string>
+    <string name="transfer_confirm_advanced_options_title">Customize Fee</string>
     <string name="transfer_confirm_btn_title">Confirm</string>
     <string name="tx_receipt_from_title">From</string>
     <string name="tx_receipt_amount">Amount</string>
@@ -91,14 +91,14 @@
     <string name="setting_universe_title">Universe</string>
     <string name="setting_security_title">Security</string>
     <string name="setting_announcements_title">Notifications</string>
-    <string name="setting_faq_title">FAQ</string>
+    <string name="setting_faq_title">FAQ &amp; Enquiry</string>
     <string name="setting_language_title">Language</string>
     <string name="setting_currency_title">Currency</string>
     <string name="setting_theme_setting_title">Theme Setting</string>
     <string name="setting_version_title">Version</string>
     <string name="erc_popup_btn_copy_title">Copy</string>
     <string name="erc_popup_btn_transfer_title">Transfer</string>
-    <string name="fee_popup_advanced_option_title">Input fee yourself</string>
+    <string name="fee_popup_advanced_option_title">Customize Fee</string>
     <string name="fee_popup_gas_price_title">Gas Price (Gwei)</string>
     <string name="fee_popup_gas_limit_title">Gas Limit</string>
     <string name="fee_popup_fees_title">Fee:</string>
@@ -111,14 +111,14 @@
     <string name="pincode_registration_reset_title">Reset</string>
     <string name="main_footer_planets_add_new_planet_title">Add New Planet</string>
 
-    <string name="transfer_confirm_transaction_error_title">현재 거래를 완료할 수 없는 상태입니다.</string>
-    <string name="transfer_amount_not_fee_title">전송에 필요한 수수료가 부족합니다.</string>
-    <string name="transfer_confirm_not_fee_title">전송에 필요한 수수료가 부족합니다.</string>
-    <string name="eth_fee_popup_eth_minimun_gas_limit_error_title">최소 가스 한도는 21,000 입니다.</string>
-    <string name="eth_fee_popup_erc_minimun_gas_limit_error_title">최소 가스 한도는 100,000 입니다.</string>
-    <string name="eth_fee_popup_not_gas_zero_title">가스비는 0이 될 수 없습니다.</string>
-    <string name="eth_fee_popup_gas_check_title">가스비 또는 가스한도를 확인해주세요.</string>
-    <string name="eth_fee_popup_high_fee_error_title">수수료가 너무 높습니다.</string>
+    <string name="transfer_confirm_transaction_error_title">Currently, it is not possible to complete the transaction. Please try it again after few minutes.</string>
+    <string name="transfer_amount_not_fee_title">Transfer fee is not sufficient.</string>
+    <string name="transfer_confirm_not_fee_title">Transfer fee is not sufficient.</string>
+    <string name="eth_fee_popup_eth_minimun_gas_limit_error_title">Minimum Gas limit is 21,000.</string>
+    <string name="eth_fee_popup_erc_minimun_gas_limit_error_title">Minimum Gas limit is 100,000.</string>
+    <string name="eth_fee_popup_not_gas_zero_title">Gas price can not be 0.</string>
+    <string name="eth_fee_popup_gas_check_title">Please check GasPrice or GasLimit again.</string>
+    <string name="eth_fee_popup_high_fee_error_title">Transfer fee is too high.</string>
     <string name="transaction_status_pending_title">Pending</string>
     <string name="transaction_status_completed_title">Completed</string>
     <string name="transaction_type_sent_title">Sent</string>
@@ -130,7 +130,25 @@
     <string name="detail_tx_tx_hash_title">Tx Hash</string>
     <string name="detail_address_btn_copy_title">Copy</string>
     <string name="detail_address_btn_transfer_title">Transfer</string>
-    <string name="detail_address_toolbar_receive_title">Receive</string>
+    <string name="detail_address_toolbar_receive_title">Receive %s</string>
     <string name="tx_list_header_btn_receive_title">Receive</string>
     <string name="tx_list_header_btn_transfer_title">Transfer</string>
+    <string name="bio_metric_manager_title">Fingerprint Verification</string>
+    <string name="bio_metric_manager_cancel_title">Cancel</string>
+    <string name="security_bio_permission_never_not_allowed_title">Please allow us to access Fingerprint registration on settings.</string>
+    <string name="security_bio_permission_not_allowed_title">Please allow us to access Fingerprint registration.</string>
+    <string name="security_bio_not_registered_fingerprint">There is no registered Fingerprint on this device.</string>
+    <string name="tx_receipt_shard_shard_title">Share</string>
+    <string name="tx_receipt_shard_text">%s sent %s %s\n\nPlease refer to the link below to check the transaction.\n\n%s</string>
+
+    <string name="service_wallet_title">Wallet</string>
+    <string name="service_planet_title">Planet</string>
+    <string name="service_universe_title">Universe</string>
+    <string name="service_security_title">Security</string>
+    <string name="service_transfer_title">Transfer</string>
+    <string name="service_contact_us_title">Contact us</string>
+
+    <string name="tx_list_no_history">The transaction is not existed</string>
+
+
 </resources>

@@ -14,6 +14,7 @@ import java.util.Locale;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -111,7 +112,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
 
 
     private void getBalance( ) {
-        new Get( this ).setDeviceKey( C.DEVICE_KEY )
+        new Get( this ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) )
                 .action( Route.URL( "balance", mainItem.getSymbol( ), planet.getAddress( ) ), 0, 0, null );
     }
 
@@ -265,6 +266,7 @@ public class TransferAmountActivity extends PlanetWalletActivity implements Tool
     protected void onDestroy( ) {
         getPlanetWalletApplication( ).removeStack( );
         super.onDestroy( );
+
     }
 
     public class ViewMapper {

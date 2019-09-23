@@ -16,7 +16,6 @@ import java.util.concurrent.ExecutionException;
 
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
 import io.grabity.planetwallet.MiniFramework.utils.Base58.Base58;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.VO.ReturnVO;
@@ -38,7 +37,8 @@ public class BtcRawTx {
         }
 
         if ( feePerByte <= 0 ) return null; // fee minimun check
-        if ( new BigDecimal( tx.getAmount( ) ).intValue( ) <= 0 ) return null; //amount precision value check
+        if ( new BigDecimal( tx.getAmount( ) ).intValue( ) <= 0 )
+            return null; //amount precision value check
 
         // Getting utxo  list
         ArrayList< UTXO > utxos = tx.getUtxos( );
@@ -225,7 +225,7 @@ public class BtcRawTx {
             }
         } catch ( ExecutionException | InterruptedException e ) {
             e.printStackTrace( );
-            PLog.e( "error, getting utxo list" );
+
         }
         return null;
     }

@@ -96,7 +96,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
             tx = ( Tx ) getSerialize( C.bundleKey.TX );
 
             // Set Transaction
-            transaction = Transaction.create( mainItem ).setTx( tx ).setDeviceKey( C.DEVICE_KEY );
+            transaction = Transaction.create( mainItem ).setTx( tx ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) );
 
             // toolbar, top amount binding
             viewMapper.toolBar.setTitle( localized( R.string.transfer_confirm_toolbar_title, mainItem.getSymbol( ) ) );
@@ -126,21 +126,21 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                 viewMapper.groupFeeOption.setVisibility( View.GONE );
                 viewMapper.imageIcon.setImageResource( R.drawable.icon_btc );
                 networkTaskCount = 0;
-                new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "utxo", "list", CoinType.BTC.name( ), planet.getAddress( ) ), 1, 0, null );
+                new Get( this ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) ).action( Route.URL( "utxo", "list", CoinType.BTC.name( ), planet.getAddress( ) ), 1, 0, null );
 
             } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ETH ) {
 
                 viewMapper.groupFeeOption.setVisibility( View.VISIBLE );
                 viewMapper.imageIcon.setImageResource( R.drawable.icon_eth );
                 networkTaskCount = 0;
-                new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "nonce", CoinType.ETH.name( ), planet.getAddress( ) ), 2, 0, null );
+                new Get( this ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) ).action( Route.URL( "nonce", CoinType.ETH.name( ), planet.getAddress( ) ), 2, 0, null );
 
             } else if ( CoinType.of( mainItem.getCoinType( ) ) == CoinType.ERC20 ) {
 
                 viewMapper.groupFeeOption.setVisibility( View.VISIBLE );
                 ImageLoader.getInstance( ).displayImage( Route.URL( mainItem.getImg_path( ) ), viewMapper.imageIcon );
                 networkTaskCount = 0;
-                new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "nonce", CoinType.ETH.name( ), planet.getAddress( ) ), 2, 0, null );
+                new Get( this ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) ).action( Route.URL( "nonce", CoinType.ETH.name( ), planet.getAddress( ) ), 2, 0, null );
 
             }
         }
@@ -254,6 +254,8 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                     if ( returnVO.isSuccess( ) ) {
                         LinkedTreeMap< String, String > map = ( LinkedTreeMap< String, String > ) returnVO.getResult( );
                         tx.setTx_id( map.get( "txHash" ) );
+                        tx.setDate( map.get( "date" ) );
+                        tx.setExplorer( map.get( "explorer" ) );
 
                         setTransition( Transition.SLIDE_UP );
                         sendAction( TxReceiptActivity.class,
@@ -270,7 +272,7 @@ public class TransferConfirmActivity extends PlanetWalletActivity implements Too
                     CustomToast.makeText( this, localized( R.string.transfer_confirm_transaction_error_title ) ).show( );
                     viewMapper.btnSubmit.setEnabled( false );
                 }
-            } ).setDeviceKey( C.DEVICE_KEY )
+            } ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) )
                     .action( Route.URL( "transfer", mainItem.getSymbol( ) ), 0, 0, Utils.createStringHashMap( "serializeTx", rawTx ) );
 
         }

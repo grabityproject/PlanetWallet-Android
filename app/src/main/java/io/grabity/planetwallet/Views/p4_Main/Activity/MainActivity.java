@@ -70,6 +70,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
 
     private long backPressedTime = 0;
+    private boolean topListClick = false;
 
 
     @Override
@@ -119,7 +120,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     @Override
     protected void setData( ) {
         super.setData( );
-        NodeService.getInstance( ).setOnNodeServiceListener( this );
+        NodeService.getInstance( ).setOnNodeServiceListener( this, this );
 
         planetList = PlanetStore.getInstance( ).getPlanetList( false );
         topLauncherComponent.setPlanetList( planetList );
@@ -178,7 +179,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
                         txList.clear( );
                     }
                 }
-                viewMapper.listMain.setAdapter( adapter = new TxAdapter( this, txList == null ? new ArrayList<>( ) : txList ) );
+                viewMapper.listMain.setAdapter( adapter = new TxAdapter( this, txList ) );
 
             }
 
@@ -193,8 +194,11 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
 
             setUpNotice( );
 
-//            NodeService.getInstance( ).getBalance( selectedPlanet );
-//            NodeService.getInstance( ).getMainList( selectedPlanet );
+            if ( topListClick ) {
+                topListClick = false;
+                NodeService.getInstance( ).getBalance( selectedPlanet );
+                NodeService.getInstance( ).getMainList( selectedPlanet );
+            }
 
         }
 
@@ -355,7 +359,6 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         NodeService.getInstance( ).getBalance( selectedPlanet );
         NodeService.getInstance( ).getMainList( selectedPlanet );
 
-
     }
 
     @Override
@@ -394,6 +397,7 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
         } else if ( recyclerView == topLauncherComponent.getListView( ) ) {
 
             if ( position < planetList.size( ) ) {
+                topListClick = true;
 
                 selectedPlanet = planetList.get( position );
                 viewMapper.slideDrawer.close( );
@@ -437,18 +441,27 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     }
 
     @Override
-    public void onBalance( Planet p, String balance ) {
+    public void onBalance( Planet p, String balance, boolean complete ) {
+        if ( !complete ) return;
+
         if ( selectedPlanet.getItems( ) != null && selectedPlanet.getItems( ).size( ) > 0 ) {
             selectedPlanet.getItems( ).get( 0 ).setBalance( balance );
         }
 
         if ( CoinType.of( bottomLauncherComponent.getMainItem( ).getCoinType( ) ) != CoinType.ERC20 )
             bottomLauncherComponent.setPlanet( selectedPlanet );
-
     }
 
     @Override
-    public void onTokenBalance( Planet p, ArrayList< MainItem > tokenList ) {
+    public void onTokenBalance( Planet p, ArrayList< MainItem > tokenList, boolean complete ) {
+        if ( !complete ) {
+            if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
+                viewMapper.overScrollWrapper.completeRefresh( );
+            }
+            return;
+        }
+
+
         if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
             viewMapper.overScrollWrapper.completeRefresh( );
             Utils.postDelayed( ( ) -> Objects.requireNonNull( viewMapper.listMain.getAdapter( ) ).notifyDataSetChanged( ), 300 );
@@ -462,8 +475,14 @@ public class MainActivity extends PlanetWalletActivity implements AdvanceArrayAd
     }
 
     @Override
-    public void onTxList( Planet p, ArrayList< Tx > txList, String result ) {
-        PLog.e( "BTC txList : " + result );
+    public void onTxList( Planet p, ArrayList< Tx > txList, String result, boolean complete ) {
+        if ( !complete ) {
+            if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
+                viewMapper.overScrollWrapper.completeRefresh( );
+            }
+            return;
+        }
+
         Utils.setPreferenceData( this, Utils.prefKey( CoinType.of( p.getCoinType( ) ).getDefaultUnit( ), p.getSymbol( ), p.getKeyId( ) ), result );
         if ( viewMapper.overScrollWrapper.isRefreshing( ) ) {
             viewMapper.overScrollWrapper.completeRefresh( );

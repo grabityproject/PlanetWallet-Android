@@ -54,28 +54,25 @@ public class BoardActivity extends PlanetWalletActivity implements ToolBar.OnToo
             if ( board.getType( ) == null ) {
                 onBackPressed( );
             } else {
-                viewMapper.toolBar.setTitle( board.getType( ) );
-                if ( Utils.equals( board.getType( ), localized( R.string.setting_faq_title ) ) ) {
-                    new Get( this ).action( Route.URL( "board", "faq", "list" ), 0, 0, null );
-                } else {
-                    new Get( this ).action( Route.URL( "board", "notice", "list" ), 0, 0, null );
-                }
+                viewMapper.toolBar.setTitle( Utils.boardTitleLocalized( board.getType( ), this ) );
+
+                new Get( this ).action( Route.URL( "board", board.getType( ).toLowerCase( ), "list" ), 0, 0, null );
             }
         }
+
     }
 
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
-
         if ( !error ) {
             ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Board.class );
             if ( returnVO.isSuccess( ) ) {
                 items = ( ArrayList< Board > ) returnVO.getResult( );
-                if ( Utils.equals( board.getType( ), localized( R.string.setting_faq_title ) ) ) {
-                    viewMapper.listView.setAdapter( new FAQAdapter( getApplicationContext( ), items ) );
-                } else {
+                if ( Utils.equals( board.getType( ), C.boardCategory.CATEGORY_ANNOUNCEMENTS ) ) {
                     viewMapper.listView.setAdapter( new AnnounceAdapter( getApplicationContext( ), items ) );
+                } else {
+                    viewMapper.listView.setAdapter( new FAQAdapter( getApplicationContext( ), items ) );
                 }
             }
         }

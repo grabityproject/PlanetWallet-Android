@@ -23,6 +23,7 @@ import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p3_Wallet.Activity.PlanetGenerateActivity;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
 import io.grabity.planetwallet.Widgets.CircleImageView;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.FontTextView;
 import io.grabity.planetwallet.Widgets.PlanetWalletViews.PWView;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -279,7 +280,7 @@ public class PinCodeCertificationActivity extends PlanetWalletActivity implement
                 if ( getRequestCode( ) == C.requestCode.PINCODE_IS_NULL ) {
                     if ( System.currentTimeMillis( ) > backPressedTime + 2000 ) {
                         backPressedTime = System.currentTimeMillis( );
-                        Toast.makeText( this, localized( R.string.main_back_pressed_finish_title ), Toast.LENGTH_SHORT ).show( );
+                        CustomToast.makeText( this, localized( R.string.main_back_pressed_finish_title ) ).show( );
                     } else {
                         this.finishAffinity( );
                         System.runFinalization( );

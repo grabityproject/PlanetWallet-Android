@@ -102,7 +102,6 @@ public class KeyPairStore implements HDKeyPairStore {
 
 
     public String saveKeyPair( HDKeyPair keyPair, String phrase, char[] pinCode ) {
-        Log.e( getClass( ).getSimpleName( ), "saveKeyPair with phrase" );
         String keyId = keyPair.getId( );
         byte[] privateKey = this.storageCrypter.doubleEncrypt( keyPair.getPrivateKey( ), pinCode );
         byte[] publicKey = this.storageCrypter.singleEncrypt( keyPair.getPublicKey( ) );

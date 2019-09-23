@@ -13,10 +13,6 @@ public class Board implements Serializable {
     public Board( ) {
     }
 
-    public Board( String type ) {
-        this.type = type;
-    }
-
     public String getId( ) {
         return id;
     }

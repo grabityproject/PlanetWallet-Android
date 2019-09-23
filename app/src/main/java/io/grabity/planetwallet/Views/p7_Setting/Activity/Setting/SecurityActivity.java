@@ -86,14 +86,13 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
     @Override
     protected void neverNotAllowed( int code, String permission ) {
         super.neverNotAllowed( code, permission );
-        CustomToast.makeText( this, "설정에서 권한을 추가해주세요." ).show( );
-
+        CustomToast.makeText( this, localized( R.string.security_bio_permission_never_not_allowed_title ) ).show( );
     }
 
     @Override
     protected void permissionNotAllowed( int code, String permission ) {
         super.permissionNotAllowed( code, permission );
-        CustomToast.makeText( this, "지문인식을 위해서 권한이 필요합니다." ).show( );
+        CustomToast.makeText( this, localized( R.string.security_bio_permission_not_allowed_title ) ).show( );
     }
 
     @Override
@@ -103,7 +102,7 @@ public class SecurityActivity extends PlanetWalletActivity implements ToolBar.On
             setTransition( Transition.SLIDE_UP );
             sendAction( C.requestCode.BIO_METRIC, PinCodeCertificationActivity.class );
         } else {
-            CustomToast.makeText( this, "등록된 지문이 없습니다." ).show( );
+            CustomToast.makeText( this, localized( R.string.security_bio_not_registered_fingerprint ) ).show( );
         }
     }
 

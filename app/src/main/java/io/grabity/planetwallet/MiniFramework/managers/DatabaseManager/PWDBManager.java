@@ -22,7 +22,7 @@ public class PWDBManager extends DBManager {
 
     @Override
     protected String getDatabaseName( ) {
-        return "DATABASE_VERSION4";
+        return "<DataBase>";
     }
 
     @Override
@@ -48,6 +48,7 @@ public class PWDBManager extends DBManager {
 
         String createMainItemTable = "CREATE TABLE MainItem( " +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "seq INTEGER," +
                 "keyId TEXT," +
                 "coinType INTEGER," +
                 "hide TEXT," +

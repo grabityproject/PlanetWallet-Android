@@ -37,7 +37,6 @@ public abstract class PlanetWalletFragment extends Fragment implements NetworkIn
     @Override
     public void onAttach( Context context ) {
         super.onAttach( context );
-        PLog.setTAG( this.getClass( ).getSimpleName( ) );
     }
 
     @Override

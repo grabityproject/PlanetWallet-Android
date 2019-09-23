@@ -24,11 +24,9 @@ import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.signer.Signer;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
-import io.grabity.planetwallet.MiniFramework.wallet.store.MainItemStore;
 import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.VO.ErrorResult;
-import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p4_Main.Activity.MainActivity;
@@ -97,12 +95,6 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
 
             if ( planet.getName( ) != null ) {
 
-                PlanetStore.getInstance( ).save( planet );
-                //ETH wallet GBT add
-                if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
-                    Utils.gbtSave( planet.getKeyId( ) );
-                }
-
                 if ( getRequestCode( ) == C.requestCode.PLANET_ADD || getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ) {
                     setResult( RESULT_OK );
                     super.onBackPressed( );
@@ -141,7 +133,7 @@ public class PlanetNameActivity extends PlanetWalletActivity implements ToolBar.
             request.setPlanet( planet.getName( ) );
             request.setSignature(
                     Signer.getInstance( ).sign( planet.getName( ),
-                            planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) ) );
+                            planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
             request.setAddress( planet.getAddress( ) );
 
             new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );

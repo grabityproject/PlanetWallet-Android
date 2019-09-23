@@ -18,8 +18,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
-
 public class BarcodeReaderView extends SurfaceView implements Detector.Processor< Barcode >, SurfaceHolder.Callback {
 
     private CameraSource cameraSource;
@@ -52,7 +50,6 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
 
     @Override
     public void surfaceChanged( SurfaceHolder surfaceHolder, int i, int i1, int i2 ) {
-        PLog.e( "surfaceChanged : " + cameraSource );
         try {
             if ( ActivityCompat.checkSelfPermission( getContext( ), Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED ) {
                 // TODO: Consider calling
@@ -66,7 +63,7 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
 
     @Override
     public void surfaceDestroyed( SurfaceHolder surfaceHolder ) {
-        cameraSource.stop( );    // SurfaceView가 종료되었을 때, Mobile Vision API 종료
+        cameraSource.stop( );    // exit Mobile vision API when surfaceView shuts down
     }
 
     public void barCodeDetectorStop( ) {
@@ -76,8 +73,8 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
 
     public void resourceRelease( ) {
         this.post( ( ) -> {
-            cameraSource.release( ); //카메라 해제
-            barcodeDetector.release( ); // 바코드인식기능해제
+            cameraSource.release( ); // camera resource release
+            barcodeDetector.release( ); // barcode resource release
         } );
     }
 
@@ -94,7 +91,7 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
                 .Builder( getContext( ), barcodeDetector )
                 .setFacing( CameraSource.CAMERA_FACING_BACK )
                 .setRequestedPreviewSize( h, w )
-                .setAutoFocusEnabled( true )  // AutoFocus를 안하면 초점을 못 잡아서 화질이 많이 흐립니다.
+                .setAutoFocusEnabled( true )
                 .build( );
 
 
@@ -112,8 +109,7 @@ public class BarcodeReaderView extends SurfaceView implements Detector.Processor
     public void receiveDetections( Detector.Detections< Barcode > detections ) {
         final SparseArray< Barcode > barcodes = detections.getDetectedItems( );
         if ( barcodes.size( ) != 0 ) {
-            String barcodeContents = barcodes.valueAt( 0 ).displayValue; // 바코드 인식 결과물
-            Log.e( "Detection", barcodeContents );
+            String barcodeContents = barcodes.valueAt( 0 ).displayValue; // barcode output
             if ( onBarcodeDetectListener != null ) {
                 onBarcodeDetectListener.onBarcodeDetect( barcodeContents );
             }

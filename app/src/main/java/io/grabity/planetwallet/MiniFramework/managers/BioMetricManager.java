@@ -19,8 +19,9 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
+import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyValueStore;
+import io.grabity.planetwallet.R;
 
 public class BioMetricManager {
 
@@ -39,17 +40,21 @@ public class BioMetricManager {
 
     private OnBioAuthListener onBioAuthListener;
 
+    private Context context;
+
     public static BioMetricManager getInstance( ) {
         if ( instance == null ) return instance = new BioMetricManager( );
         return instance;
     }
 
     public boolean isHardwareCheck( Context context ) {
+        this.context = context;
         FingerprintManagerCompat fingerprintManagerCompat = FingerprintManagerCompat.from( context );
         return fingerprintManagerCompat.isHardwareDetected( );
     }
 
     public boolean isFingerPrintCheck( Context context ) {
+        this.context = context;
         FingerprintManagerCompat fingerprintManagerCompat = FingerprintManagerCompat.from( context );
         return fingerprintManagerCompat.hasEnrolledFingerprints( );
     }
@@ -59,13 +64,22 @@ public class BioMetricManager {
             biometricPrompt = new BiometricPrompt( activity, executor, getAuthenticationCallback( ) );
             try {
                 promptInfo = new BiometricPrompt.PromptInfo.Builder( )
-                        .setTitle( "지문인식" )
-                        .setNegativeButtonText( "취소" )
+                        .setTitle( localized( R.string.bio_metric_manager_title ) )
+                        .setNegativeButtonText( localized( R.string.bio_metric_manager_cancel_title ) )
                         .build( );
                 biometricPrompt.authenticate( promptInfo );
             } catch ( IllegalArgumentException e ) {
 
             }
+        }
+    }
+
+    public String localized( int id ) {
+        if ( context == null ) return "";
+        try {
+            return ( ( PlanetWalletActivity ) context ).localized( id );
+        } catch ( ClassCastException e ) {
+            return "";
         }
     }
 
@@ -119,7 +133,7 @@ public class BioMetricManager {
             byte[] enc = cipher.doFinal( String.valueOf( PINCODE ).getBytes( ) );
             KeyValueStore.getInstance( ).setValue( ALIAS_ENC, Base64.encodeToString( enc, Base64.DEFAULT ) );
         } catch ( Throwable var4 ) {
-            PLog.e( "Error" );
+            var4.printStackTrace( );
         }
     }
 

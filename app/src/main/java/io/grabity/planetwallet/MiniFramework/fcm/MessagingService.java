@@ -15,7 +15,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletApplication;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 import io.grabity.planetwallet.Views.p1_Splash.Activity.SplashActivity;
@@ -25,19 +24,16 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MessagingService extends FirebaseMessagingService {
 
-    private String channelID = "ID_PlanetWallet";
-    private String channelName = "Name_PlanetWallet";
+    private final String channelID = "PlanetWallet";
+    private final String channelName = "메시지";
 
     @Override
     public void onNewToken( String s ) {
         super.onNewToken( s );
-        PLog.e( "newToken : " + s );
-
     }
 
     @Override
     public void onMessageReceived( RemoteMessage remoteMessage ) {
-        PLog.e( "onMessageReceived : " + remoteMessage.getData( ) );
         super.onMessageReceived( remoteMessage );
         if ( ( ( PlanetWalletApplication ) getApplication( ) ).getMessagingListeners( ) != null ) {
             for ( OnMessagingListener listener : ( ( PlanetWalletApplication ) getApplication( ) ).getMessagingListeners( ) ) {
@@ -64,13 +60,14 @@ public class MessagingService extends FirebaseMessagingService {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder( getApplicationContext( ), Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? channelID : "" )
-                .setSmallIcon( R.drawable.icon_planet_noti )
+                .setSmallIcon( R.drawable.ic_notification )
                 .setWhen( System.currentTimeMillis( ) )
                 .setShowWhen( true )
                 .setAutoCancel( true )
                 .setContentTitle( remoteMessage.getData( ).get( "title" ) )
                 .setContentText( remoteMessage.getData( ).get( "body" ) )
                 .setContentIntent( clickOnNotification( ) )
+                .setStyle( new NotificationCompat.BigTextStyle( ).bigText( remoteMessage.getData( ).get( "body" ) ) )
                 .setDeleteIntent( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? null : versionMinNougatNotificationSlide( ) )
                 .setDefaults( Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE )
                 .setPriority( NotificationCompat.PRIORITY_MAX );
@@ -99,13 +96,10 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     private PendingIntent clickOnNotification( ) {
-        if ( ( ( PlanetWalletApplication ) getApplication( ) ).getPINCODE( ) == null ) {
-            return PendingIntent.getActivity( this, 0, new Intent( this, SplashActivity.class )
-                    .setAction( Intent.ACTION_MAIN )
-                    .addCategory( Intent.CATEGORY_LAUNCHER )
-                    .addFlags( Intent.FLAG_ACTIVITY_NEW_TASK ), PendingIntent.FLAG_ONE_SHOT );
-        }
-        return PendingIntent.getActivity( this, 0, new Intent( ), PendingIntent.FLAG_ONE_SHOT );
+        return PendingIntent.getActivity( this, 0, new Intent( this, SplashActivity.class )
+                .setAction( Intent.ACTION_MAIN )
+                .addCategory( Intent.CATEGORY_LAUNCHER )
+                .addFlags( Intent.FLAG_ACTIVITY_NEW_TASK ), PendingIntent.FLAG_ONE_SHOT );
     }
 
 }

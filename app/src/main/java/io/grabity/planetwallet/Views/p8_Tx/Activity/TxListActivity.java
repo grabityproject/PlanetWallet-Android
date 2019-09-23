@@ -77,6 +77,8 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
             items = getCacheTxList( );
             viewMapper.listView.setAdapter( adapter = new TxAdapter( this, items == null ? items = new ArrayList<>( ) : items ) );
+            viewMapper.textNoHistory.setVisibility( items.size( ) > 0 ? View.GONE : View.VISIBLE );
+
         }
 
     }
@@ -84,8 +86,8 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
     @Override
     protected void onResume( ) {
         super.onResume( );
-        new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", mainItem.getSymbol( ), planet.getAddress( ) ), 0, 0, null );
-        new Get( this ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "tx", "list", mainItem.getSymbol( ), planet.getAddress( ) ), 1, 0, null );
+        new Get( this ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) ).action( Route.URL( "balance", mainItem.getSymbol( ), planet.getAddress( ) ), 0, 0, null );
+        new Get( this ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) ).action( Route.URL( "tx", "list", mainItem.getSymbol( ), planet.getAddress( ) ), 1, 0, null );
     }
 
     @Override
@@ -167,7 +169,6 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
     public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
         super.onReceive( error, requestCode, resultCode, statusCode, result );
         if ( !error ) {
-
             if ( requestCode == 0 ) {
 
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, MainItem.class );
@@ -178,12 +179,13 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 }
 
             } else if ( requestCode == 1 ) {
-
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Tx.class );
                 if ( returnVO.isSuccess( ) ) {
 
                     Utils.setPreferenceData( this, Utils.prefKey( CoinType.of( mainItem.getCoinType( ) ).getParent( ), mainItem.getSymbol( ), planet.getKeyId( ) ), result );
                     resultItems = ( ArrayList< Tx > ) returnVO.getResult( );
+
+                    viewMapper.textNoHistory.setVisibility( resultItems.size( ) > 0 ? View.GONE : View.VISIBLE );
 
                     if ( resultItems.size( ) == 0 ) return;
                     if ( resultItems.size( ) != items.size( ) || !Utils.equals( items.get( 0 ).getTx_id( ), resultItems.get( 0 ).getTx_id( ) )
@@ -220,11 +222,13 @@ public class TxListActivity extends PlanetWalletActivity implements ToolBar.OnTo
 
         ToolBar toolBar;
         AdvanceRecyclerView listView;
+        View textNoHistory;
 
         public ViewMapper( ) {
 
             toolBar = findViewById( R.id.toolBar );
             listView = findViewById( R.id.listView );
+            textNoHistory = findViewById( R.id.text_tx_list_no_history_message );
         }
     }
 

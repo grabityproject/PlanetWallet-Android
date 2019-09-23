@@ -1,12 +1,15 @@
 package io.grabity.planetwallet.Widgets;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.R;
 
 public class CustomToast extends View {
@@ -45,6 +48,5 @@ public class CustomToast extends View {
         toast.show( );
         return this;
     }
-
 
 }

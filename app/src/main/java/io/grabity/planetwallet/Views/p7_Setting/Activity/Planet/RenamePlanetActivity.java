@@ -13,7 +13,6 @@ import java.util.Objects;
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Post;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -77,7 +76,7 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
             request.setPlanet( viewMapper.etName.getText( ).toString( ) );
             request.setSignature(
                     Signer.getInstance( ).sign( viewMapper.etName.getText( ).toString( ),
-                            planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) ) );
+                            planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
             request.setAddress( planet.getAddress( ) );
 
             new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );
@@ -106,8 +105,6 @@ public class RenamePlanetActivity extends PlanetWalletActivity implements ToolBa
                     setResult( RESULT_OK );
                     super.onBackPressed( );
 
-                } else {
-                    PLog.e( returnVO.getResult( ).getClass( ) + result );
                 }
             } else {
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );

@@ -67,7 +67,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
         } else {
             applyTheme( getPlanetWalletApplication( ).getCurrentTheme( ) );
         }
-        PLog.setTAG( this.getClass( ).getSimpleName( ) );
     }
 
     @Override
@@ -535,7 +534,6 @@ public abstract class PlanetWalletActivity extends FragmentActivity implements V
     @Override
     public void onReceive( boolean error, int requestCode, int resultCode,
                            int statusCode, String result ) {
-        PLog.e( result );
     }
 
 

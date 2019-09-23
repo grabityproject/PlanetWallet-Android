@@ -3,7 +3,7 @@ package io.grabity.planetwallet.Views.p4_Main.Etc;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import io.grabity.planetwallet.Common.commonset.C;
+import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
 import io.grabity.planetwallet.MiniFramework.networktask.NetworkInterface;
 import io.grabity.planetwallet.MiniFramework.utils.PLog;
@@ -25,6 +25,8 @@ public class NodeService {
 
     private static final NodeService ourInstance = new NodeService( );
 
+    private PlanetWalletActivity activity;
+
     public static NodeService getInstance( ) {
         return ourInstance;
     }
@@ -41,9 +43,8 @@ public class NodeService {
         this.planet = planet;
         CoinType coinType = CoinType.of( planet.getCoinType( ) );
         new Get( networkInterfaces.get( coinType ) )
-                .setDeviceKey( C.DEVICE_KEY )
+                .setDeviceKey( activity != null ? activity.getPlanetWalletApplication( ).getDeviceKey( ) : "" )
                 .action( Route.URL( "balance", coinType.name( ), planet.getAddress( ) ), 0, planet.get_id( ), null );
-
     }
 
     public void getMainList( Planet planet ) {
@@ -53,7 +54,7 @@ public class NodeService {
         if ( coinType == CoinType.BTC ) {
 
             new Get( networkInterfaces.get( coinType ) )
-                    .setDeviceKey( C.DEVICE_KEY )
+                    .setDeviceKey( activity != null ? activity.getPlanetWalletApplication( ).getDeviceKey( ) : "" )
                     .action( Route.URL( "tx", "list", coinType.name( ), planet.getAddress( ) ), 1, planet.get_id( ), null );
 
         } else if ( coinType == CoinType.ETH ) {
@@ -63,11 +64,13 @@ public class NodeService {
                 for ( int i = 0; i < planet.getItems( ).size( ); i++ ) {
                     if ( Utils.equals( CoinType.ETH.getCoinType( ), planet.getItems( ).get( i ).getCoinType( ) ) ) {
 
-                        new Get( networkInterfaces.get( coinType ) ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", CoinType.ETH.name( ), planet.getName( ) ), planet.get_id( ), i, null );
+                        new Get( networkInterfaces.get( coinType ) ).
+                                setDeviceKey( activity != null ? activity.getPlanetWalletApplication( ).getDeviceKey( ) : "" ).action( Route.URL( "balance", CoinType.ETH.name( ), planet.getName( ) ), planet.get_id( ), i, null );
 
                     } else {
 
-                        new Get( networkInterfaces.get( coinType ) ).setDeviceKey( C.DEVICE_KEY ).action( Route.URL( "balance", planet.getItems( ).get( i ).getSymbol( ), planet.getName( ) ), planet.get_id( ), i, null );
+                        new Get( networkInterfaces.get( coinType ) ).
+                                setDeviceKey( activity != null ? activity.getPlanetWalletApplication( ).getDeviceKey( ) : "" ).action( Route.URL( "balance", planet.getItems( ).get( i ).getSymbol( ), planet.getName( ) ), planet.get_id( ), i, null );
 
                     }
                 }
@@ -81,9 +84,6 @@ public class NodeService {
         public void onReceive( boolean error, int requestCode, int resultCode, int statusCode, String result ) {
             if ( !error ) {
                 if ( requestCode == 0 && resultCode == planet.get_id( ) ) {
-
-                    PLog.e( "btc : " + result );
-
                     ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, MainItem.class );
                     if ( returnVO.isSuccess( ) ) {
                         MainItem mainItem = ( MainItem ) returnVO.getResult( );
@@ -92,7 +92,7 @@ public class NodeService {
                         MainItemStore.getInstance( ).update( planet.getMainItem( ) );
 
                         if ( onNodeServiceListener != null ) {
-                            onNodeServiceListener.onBalance( planet, mainItem.getBalance( ) );
+                            onNodeServiceListener.onBalance( planet, mainItem.getBalance( ), true );
                         }
                     }
                 } else if ( requestCode == 1 && planet.get_id( ) == resultCode ) {
@@ -100,10 +100,12 @@ public class NodeService {
                     if ( returnVO.isSuccess( ) ) {
                         ArrayList< Tx > txList = ( ArrayList< Tx > ) returnVO.getResult( );
                         if ( onNodeServiceListener != null ) {
-                            onNodeServiceListener.onTxList( planet, txList, result );
+                            onNodeServiceListener.onTxList( planet, txList, result, true );
                         }
                     }
                 }
+            } else {
+                onNodeServiceListener.onTxList( null, null, null, false );
             }
 
         }
@@ -121,8 +123,6 @@ public class NodeService {
             if ( !error ) {
                 if ( requestCode == 0 && resultCode == planet.get_id( ) ) {
 
-                    PLog.e( result );
-
                     ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, MainItem.class );
                     if ( returnVO.isSuccess( ) ) {
                         MainItem mainItem = ( MainItem ) returnVO.getResult( );
@@ -131,7 +131,7 @@ public class NodeService {
                         MainItemStore.getInstance( ).update( planet.getMainItem( ) );
 
                         if ( onNodeServiceListener != null ) {
-                            onNodeServiceListener.onBalance( planet, mainItem.getBalance( ) );
+                            onNodeServiceListener.onBalance( planet, mainItem.getBalance( ), true );
                         }
                     }
 
@@ -150,29 +150,33 @@ public class NodeService {
                         if ( tokenCount == 0 ) {
 
                             if ( onNodeServiceListener != null ) {
-                                onNodeServiceListener.onTokenBalance( planet, planet.getItems( ) );
+                                onNodeServiceListener.onTokenBalance( planet, planet.getItems( ), true );
                             }
 
                         }
                     }
 
                 }
+            } else {
+                onNodeServiceListener.onBalance( null, null, false );
+                onNodeServiceListener.onTokenBalance( null, null, false );
             }
 
         }
     };
 
-    public void setOnNodeServiceListener( OnNodeServiceListener onNodeServiceListener ) {
+    public void setOnNodeServiceListener( OnNodeServiceListener onNodeServiceListener, PlanetWalletActivity activity ) {
+        this.activity = activity;
         this.onNodeServiceListener = onNodeServiceListener;
     }
 
     public interface OnNodeServiceListener {
 
-        void onBalance( Planet p, String balance );
+        void onBalance( Planet p, String balance, boolean complete );
 
-        void onTokenBalance( Planet p, ArrayList< MainItem > tokenList );
+        void onTokenBalance( Planet p, ArrayList< MainItem > tokenList, boolean complete );
 
-        void onTxList( Planet p, ArrayList< Tx > txList, String result );
+        void onTxList( Planet p, ArrayList< Tx > txList, String result, boolean complete );
 
     }
 }

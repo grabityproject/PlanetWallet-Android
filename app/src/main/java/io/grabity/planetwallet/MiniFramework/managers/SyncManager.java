@@ -33,6 +33,7 @@ public class SyncManager {
             addresses.put( String.format( Locale.US, "%s[%d]", CoinType.of( planets.get( i ).getCoinType( ) ).name( ), i ), planets.get( i ).getAddress( ) );
         }
         new Post( ( error, requestCode, resultCode, statusCode, result ) -> {
+
             if ( !error ) {
                 if ( requestCode == 0 && statusCode == 200 ) {
                     AtomicBoolean isUpdated = new AtomicBoolean( false );
@@ -54,10 +55,15 @@ public class SyncManager {
                             onSyncListener.onSyncComplete( SyncType.PLANET, true, isUpdated.get( ) );
 
                         } catch ( ClassCastException e ) {
-                            PLog.e( e.getMessage( ) );
+                            e.printStackTrace( );
                             onSyncListener.onSyncComplete( SyncType.PLANET, true, false );
                         }
+                    } else {
+                        onSyncListener.onSyncComplete( SyncType.PLANET, false, false );
                     }
+                } else {
+                    //app install Sync result
+                    onSyncListener.onSyncComplete( SyncType.PLANET, false, false );
                 }
 
             } else {

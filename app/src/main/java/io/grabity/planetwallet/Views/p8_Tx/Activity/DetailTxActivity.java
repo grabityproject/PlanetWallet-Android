@@ -9,10 +9,9 @@ import androidx.annotation.Nullable;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.Date;
-
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
+import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -101,9 +100,10 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
         viewMapper.textTxID.setText( tx.getTx_id( ) );
         viewMapper.textTxID.underLine( );
 
-        if ( Utils.equals( tx.getStatus( ), C.transferStatus.CONFIRMED ) )
-            viewMapper.textDate.setText( Utils.dateFormat( new Date( Long.valueOf( tx.getCreated_at( ) ) * 1000 ), "yyyy. MM. dd HH:mm:ss" ) );
-
+        viewMapper.textDate.setText( Utils.equals( tx.getStatus( ), C.transferStatus.CONFIRMED ) ?
+                Utils.dateFormat( tx.getUpdated_at( ), "yyyy. MM. dd HH:mm:ss" ) :
+                Utils.dateFormat( tx.getCreated_at( ), "yyyy. MM. dd HH:mm:ss" )
+        );
     }
 
     @Override
@@ -117,9 +117,7 @@ public class DetailTxActivity extends PlanetWalletActivity implements ToolBar.On
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.textTxID ) {
-
-            sendActionUri( Utils.equals( tx.getCoin( ), CoinType.ETH.getDefaultUnit( ) ) ?
-                    tx.getExplorer( ) : tx.getUrl( ) );
+            sendActionUri( tx.getExplorer( ) );
         }
     }
 

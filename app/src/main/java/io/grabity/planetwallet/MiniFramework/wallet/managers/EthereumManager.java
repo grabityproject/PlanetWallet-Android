@@ -1,7 +1,6 @@
 package io.grabity.planetwallet.MiniFramework.wallet.managers;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.pentasecurity.cryptowallet.JniWrapper;
 import com.pentasecurity.cryptowallet.currencies.DefinedCurrency;
@@ -79,16 +78,12 @@ public class EthereumManager {
         planet.setKeyId( childKeyId );
         planet.setHide( "N" );
         planet.setSymbol( CoinType.ETH.getDefaultUnit( ) );
-        Log.e( "ETH Import MN Planet info : ", planet.toString( ) );
         KeyPairStore.getInstance( ).deleteKeyPair( ethCoinAccountKey.getId( ) );
-//        PlanetStore.getInstance( ).save( planet );
-
 
         return planet;
     }
 
     public Planet importPrivateKey( String privKey, char[] pinCode ) {
-        //패턴체크
         if ( privKey.substring( 0, 2 ).equals( "0x" ) ) {
             Pattern p = Pattern.compile( "^0x[a-fA-F0-9]{64}$" );
             Matcher m = p.matcher( privKey );
@@ -123,7 +118,6 @@ public class EthereumManager {
         planet.setKeyId( keyPair.getId( ) );
         planet.setHide( "N" );
         planet.setSymbol( CoinType.ETH.getDefaultUnit( ) );
-//        PlanetStore.getInstance( ).save( planet );
 
         return planet;
     }
@@ -158,7 +152,6 @@ public class EthereumManager {
         planet.setHide( "N" );
         planet.setSymbol( CoinType.ETH.getDefaultUnit( ) );
 
-//        PlanetStore.getInstance( ).save( planet );
         return planet;
     }
 
@@ -182,7 +175,6 @@ public class EthereumManager {
         planet.setHide( "N" );
         planet.setSymbol( CoinType.ETH.getDefaultUnit( ) );
 
-//        PlanetStore.getInstance( ).save( planet );
         return planet;
     }
 

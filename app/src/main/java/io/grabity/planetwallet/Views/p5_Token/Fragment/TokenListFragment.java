@@ -15,7 +15,6 @@ import java.util.HashMap;
 
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
@@ -73,7 +72,7 @@ public class TokenListFragment extends PlanetWalletFragment implements View.OnCl
     @Override
     public void setData( ) {
         super.setData( );
-        new Get( this ).action( Route.URL( "search","token" ), 0, 0, null );
+        new Get( this ).action( Route.URL( "token", "erc20" ), 0, 0, null );
     }
 
     @Override

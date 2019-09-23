@@ -166,15 +166,6 @@ public class Signer {
         }
     }
 
-//        PLog.e( "pubkey : " + bytesToHexString( publickeyByte ) );
-//        PLog.e( "pubkey.size : " + bytesToHexString( publickeyByte ).length() );
-//        PLog.e( "pubkey 1 : " + bytesToHexString( publicKeyFromPrivateCCC( new BigInteger( privatekey, 16 ), true ) ) );
-//        PLog.e( "pubkey 1.size : " + bytesToHexString( publicKeyFromPrivateCCC( new BigInteger( privatekey, 16 ), true ) ).length() );
-//    PLog.e( "real prKey : " + encodeChecked( 239 , privateByteToEncode( bigIntegerToBytes( new BigInteger( privatekey , 16 ), 32 ), true ) ) );
-    // 테스트넷 실제 prkey 확인
-    //
-
-
     private static byte[] bigIntegerToBytes( BigInteger b, int numBytes ) {
         byte[] src = b.toByteArray( );
         byte[] dest = new byte[ numBytes ];

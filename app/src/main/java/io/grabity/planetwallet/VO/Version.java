@@ -5,6 +5,10 @@ public class Version {
     String platform;
     String version;
     String url;
+    String force_update;
+
+    public Version( ) {
+    }
 
     public String getPlatform( ) {
         return platform;
@@ -29,4 +33,14 @@ public class Version {
     public void setUrl( String url ) {
         this.url = url;
     }
+
+    public String getForce_update( ) {
+        if ( force_update == null ) return "N";
+        return force_update;
+    }
+
+    public void setForce_update( String force_update ) {
+        this.force_update = force_update;
+    }
+
 }

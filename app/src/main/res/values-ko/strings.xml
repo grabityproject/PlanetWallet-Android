@@ -91,7 +91,7 @@
     <string name="setting_universe_title">Universe</string>
     <string name="setting_security_title">Security</string>
     <string name="setting_announcements_title">공지사항</string>
-    <string name="setting_faq_title">FAQ</string>
+    <string name="setting_faq_title">서비스 안내 및 문의</string>
     <string name="setting_language_title">언어</string>
     <string name="setting_currency_title">통화</string>
     <string name="setting_theme_setting_title">테마 설정</string>
@@ -112,28 +112,44 @@
     <string name="main_footer_planets_add_new_planet_title">플래닛 추가하기</string>
 
 
-    <string name="transfer_confirm_transaction_error_title">현재 거래를 완료할 수 없는 상태입니다.</string>
-    <string name="transfer_amount_not_fee_title">전송에 필요한 수수료가 부족합니다.</string>
+    <string name="transfer_confirm_transaction_error_title">현재 거래를 완료할 수 없는 상태입니다. 잠시 후에 다시 시도해 주세요.</string>
     <string name="transfer_confirm_not_fee_title">전송에 필요한 수수료가 부족합니다.</string>
+    <string name="transfer_amount_not_fee_title">전송에 필요한 수수료가 부족합니다.</string>
     <string name="eth_fee_popup_eth_minimun_gas_limit_error_title">최소 가스 한도는 21,000 입니다.</string>
     <string name="eth_fee_popup_erc_minimun_gas_limit_error_title">최소 가스 한도는 100,000 입니다.</string>
     <string name="eth_fee_popup_not_gas_zero_title">가스비는 0이 될 수 없습니다.</string>
     <string name="eth_fee_popup_gas_check_title">가스비 또는 가스한도를 확인해주세요.</string>
     <string name="eth_fee_popup_high_fee_error_title">수수료가 너무 높습니다.</string>
-    <string name="transaction_status_pending_title">Pending</string>
-    <string name="transaction_status_completed_title">Completed</string>
-    <string name="transaction_type_sent_title">Sent</string>
-    <string name="transaction_type_received_title">Received</string>
-    <string name="detail_tx_status_title">Status</string>
-    <string name="detail_tx_amount_title">Amount</string>
-    <string name="detail_tx_fee_title">Fee</string>
-    <string name="detail_tx_date_title">Date</string>
-    <string name="detail_tx_tx_hash_title">Tx Hash</string>
-    <string name="detail_address_btn_copy_title">Copy</string>
-    <string name="detail_address_btn_transfer_title">Transfer</string>
-    <string name="detail_address_toolbar_receive_title">Receive</string>
-    <string name="tx_list_header_btn_receive_title">Receive</string>
-    <string name="tx_list_header_btn_transfer_title">Transfer</string>
+    <string name="transaction_status_pending_title">거래대기</string>
+    <string name="transaction_status_completed_title">완료</string>
+    <string name="transaction_type_sent_title">송금완료</string>
+    <string name="transaction_type_received_title">입금완료</string>
+    <string name="detail_tx_status_title">거래상태</string>
+    <string name="detail_tx_amount_title">금액</string>
+    <string name="detail_tx_fee_title">수수료</string>
+    <string name="detail_tx_date_title">날짜</string>
+    <string name="detail_tx_tx_hash_title">트랜잭션 해시</string>
+    <string name="detail_address_btn_copy_title">주소 복사</string>
+    <string name="detail_address_btn_transfer_title">전송하기</string>
+    <string name="detail_address_toolbar_receive_title">%s 입금주소</string>
+    <string name="tx_list_header_btn_receive_title">입금주소</string>
+    <string name="tx_list_header_btn_transfer_title">전송하기</string>
+    <string name="bio_metric_manager_title">지문인식</string>
+    <string name="bio_metric_manager_cancel_title">취소</string>
+    <string name="security_bio_permission_never_not_allowed_title">지문인식을 위해 설정에서 권한을 허용해주세요.</string>
+    <string name="security_bio_permission_not_allowed_title">지문인식을 위해 권한을 허용해 주세요.</string>
+    <string name="security_bio_not_registered_fingerprint">디바이스에 등록된 지문이 없습니다.</string>
+    <string name="tx_receipt_shard_shard_title">공유하기</string>
+    <string name="tx_receipt_shard_text">%s 에서 %s %s 를 송금했습니다.\n\n아래 링크를 눌러 내역을 확인하세요.\n\n%s</string>
+
+    <string name="service_wallet_title">월렛</string>
+    <string name="service_planet_title">플래닛</string>
+    <string name="service_universe_title">유니버스</string>
+    <string name="service_security_title">보안</string>
+    <string name="service_transfer_title">거래</string>
+    <string name="service_contact_us_title">문의하기</string>
+
+    <string name="tx_list_no_history">트랜잭션이 존재하지 않습니다. :)</string>
 
 </resources>
 

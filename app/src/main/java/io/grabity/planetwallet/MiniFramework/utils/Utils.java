@@ -69,6 +69,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.grabity.planetwallet.Common.commonset.C;
+import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.BitCoinManager;
 import io.grabity.planetwallet.MiniFramework.wallet.managers.EthereumManager;
@@ -364,15 +365,15 @@ public class Utils {
         if ( defValue != null && context != null ) {
             //Log.v("", "type : " + defValue.getClass());
             if ( defValue.getClass( ) == String.class ) {
-                return context.getSharedPreferences( "default", context.MODE_PRIVATE ).getString( key, ( String ) defValue );
+                return context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).getString( key, ( String ) defValue );
             } else if ( defValue.getClass( ) == Integer.class ) {
-                return context.getSharedPreferences( "default", context.MODE_PRIVATE ).getInt( key, ( Integer ) defValue );
+                return context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).getInt( key, ( Integer ) defValue );
             } else if ( defValue.getClass( ) == Long.class ) {
-                return context.getSharedPreferences( "default", context.MODE_PRIVATE ).getLong( key, ( Long ) defValue );
+                return context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).getLong( key, ( Long ) defValue );
             } else if ( defValue.getClass( ) == Boolean.class ) {
-                return context.getSharedPreferences( "default", context.MODE_PRIVATE ).getBoolean( key, ( Boolean ) defValue );
+                return context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).getBoolean( key, ( Boolean ) defValue );
             } else if ( defValue.getClass( ) == Float.class ) {
-                return context.getSharedPreferences( "default", context.MODE_PRIVATE ).getFloat( key, ( Float ) defValue );
+                return context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).getFloat( key, ( Float ) defValue );
             }
             return defValue;
         } else return null;
@@ -381,7 +382,7 @@ public class Utils {
     public static String getPreferenceData( Context context, String key ) {
         if ( context != null ) {
             //Log.v("", "type : " + defValue.getClass());
-            return context.getSharedPreferences( "default", context.MODE_PRIVATE ).getString( key, ( String ) "" );
+            return context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).getString( key, ( String ) "" );
         } else return null;
     }
 
@@ -389,20 +390,20 @@ public class Utils {
         if ( value != null ) {
             //Log.v("", "Set type : " + defValue.getClass());
             if ( value.getClass( ) == String.class ) {
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).putString( key, ( String ) value ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).putString( key, ( String ) value ).commit( );
             } else if ( value.getClass( ) == Integer.class ) {
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).putInt( key, ( Integer ) value ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).putInt( key, ( Integer ) value ).commit( );
             } else if ( value.getClass( ) == Long.class ) {
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).putLong( key, ( Long ) value ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).putLong( key, ( Long ) value ).commit( );
             } else if ( value.getClass( ) == Boolean.class ) {
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).putBoolean( key, ( Boolean ) value ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).putBoolean( key, ( Boolean ) value ).commit( );
             } else if ( value.getClass( ) == Float.class ) {
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
-                context.getSharedPreferences( "default", context.MODE_PRIVATE ).edit( ).putFloat( key, ( Float ) value ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).remove( key ).commit( );
+                context.getSharedPreferences( C.pref.PREF, context.MODE_PRIVATE ).edit( ).putFloat( key, ( Float ) value ).commit( );
             }
 
 
@@ -710,6 +711,17 @@ public class Utils {
     public static String dateFormat( String format ) {
         SimpleDateFormat formatter = new SimpleDateFormat( format, Locale.US );
         return formatter.format( new Date( ) );
+    }
+
+    public static String dateFormat( String longTime, String format ) {
+        if ( longTime == null || format == null ) return "-";
+        try {
+            Long.valueOf( longTime );
+        } catch ( NumberFormatException e ) {
+            return "-";
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat( format, Locale.US );
+        return formatter.format( new Date( Long.valueOf( longTime ) * 1000 ) );
     }
 
     public static String changeDateFormat( String dateString, String before, String after ) {
@@ -1093,7 +1105,6 @@ public class Utils {
         if ( balance == null ) return "";
         if ( balance.length( ) <= 8 ) return balance;
         return new BigDecimal( balance.substring( 0, 8 ) ).stripTrailingZeros( ).toPlainString( );
-//        return balance.substring( 0, 8 );
     }
 
     public static void addressForm( View v, String address ) {
@@ -1329,19 +1340,22 @@ public class Utils {
 
     public static String randomPlanetName( Context context, String address ) {
         if ( address == null || context == null ) return null;
+        int index = 0;
+        int number = 0;
         String[] list = context.getResources( ).getStringArray( R.array.planetRandomName );
         String nameSha256 = sha256( address );
 
         if ( nameSha256 == null || nameSha256.length( ) != 64 ) return null;
 
-        int index = 0;
-        if ( hexToDecimal( nameSha256.substring( 0, 4 ) ) > list.length ) {
-            index = hexToDecimal( nameSha256.substring( 0, 3 ) );
-        } else {
-            index = hexToDecimal( nameSha256.substring( 0, 4 ) );
-        }
+        index = hexToDecimal( nameSha256.substring( 0, 4 ) );
+        if ( index > list.length ) index = hexToDecimal( nameSha256.substring( 0, 3 ) );
 
-        return new StringBuilder( ).append( list[ index ] ).append( hexToDecimal( nameSha256.substring( nameSha256.length( ) - 3 ) ) ).toString( );
+        number = hexToDecimal( nameSha256.substring( nameSha256.length( ) - 3 ) );
+        if ( number > 999 )
+            number = hexToDecimal( nameSha256.substring( nameSha256.length( ) - 2 ) );
+
+
+        return new StringBuilder( ).append( list[ index ] ).append( "_" ).append( number ).toString( );
     }
 
     public static void gbtSave( String keyId ) {
@@ -1358,5 +1372,25 @@ public class Utils {
 
         MainItemStore.getInstance( ).tokenSave( gbt );
     }
+
+    public static String boardTitleLocalized( String type, Context context ) {
+        if ( context == null ) return "";
+
+        if ( Utils.equals( type, C.boardCategory.CATEGORY_ANNOUNCEMENTS ) ) {
+            return ( ( PlanetWalletActivity ) context ).localized( R.string.setting_announcements_title );
+        } else if ( Utils.equals( type, C.boardCategory.CATEGORY_WALLET ) ) {
+            return ( ( PlanetWalletActivity ) context ).localized( R.string.service_wallet_title );
+        } else if ( Utils.equals( type, C.boardCategory.CATEGORY_PLANET ) ) {
+            return ( ( PlanetWalletActivity ) context ).localized( R.string.service_planet_title );
+        } else if ( Utils.equals( type, C.boardCategory.CATEGORY_UNIVERSE ) ) {
+            return ( ( PlanetWalletActivity ) context ).localized( R.string.service_universe_title );
+        } else if ( Utils.equals( type, C.boardCategory.CATEGORY_SECURITY ) ) {
+            return ( ( PlanetWalletActivity ) context ).localized( R.string.service_security_title );
+        } else if ( Utils.equals( type, C.boardCategory.CATEGORY_TRANSFER ) ) {
+            return ( ( PlanetWalletActivity ) context ).localized( R.string.service_transfer_title );
+        }
+        return "";
+    }
+
 
 }

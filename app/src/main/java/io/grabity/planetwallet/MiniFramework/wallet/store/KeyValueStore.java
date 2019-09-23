@@ -5,10 +5,6 @@ import android.content.Context;
 import com.pentasecurity.cryptowallet.exceptions.DecryptionErrorException;
 import com.pentasecurity.cryptowallet.storage.DefaultStorageCrypter;
 
-import java.util.Arrays;
-
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
-
 public class KeyValueStore {
 
     private static KeyValueStore instance;
@@ -47,9 +43,6 @@ public class KeyValueStore {
         if ( context != null && key != null ) {
             String encryptString = context.getSharedPreferences( "KeyValueStore", Context.MODE_PRIVATE ).getString( key, null );
             if ( encryptString != null ) {
-                PLog.e( "hexStringToByteArray : " + Arrays.toString( hexStringToByteArray( encryptString ) ) );
-                PLog.e( "pinCode : " + Arrays.toString( pinCode ) );
-                PLog.e( "encryptString : " + encryptString );
                 try {
                     return new String( storageCrypter.doubleDecrypt( hexStringToByteArray( encryptString ), pinCode ) );
                 } catch ( DecryptionErrorException e ) {

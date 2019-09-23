@@ -72,6 +72,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
             mainItem = ( MainItem ) getSerialize( C.bundleKey.MAIN_ITEM );
             tx = ( Tx ) getSerialize( C.bundleKey.TX );
 
+
             // Save Search History
             saveRecentSearch( );
 
@@ -91,6 +92,7 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
 
             viewMapper.textFromName.setText( planet.getName( ) );
             viewMapper.textFee.setText( String.format( Locale.US, "%s %s", Utils.removeLastZero( Utils.toMaxUnit( CoinType.of( planet.getCoinType( ) ), tx.getFee( ) ) ), CoinType.of( planet.getCoinType( ) ).name( ) ) );
+            viewMapper.textDate.setText( Utils.dateFormat( tx.getDate( ), "yyyy. MM. dd HH:mm:ss" ) );
             viewMapper.btnTxHash.setText( tx.getTx_id( ) );
             viewMapper.btnTxHash.underLine( );
 
@@ -127,19 +129,16 @@ public class TxReceiptActivity extends PlanetWalletActivity implements ToolBar.O
     public void onClick( View v ) {
         super.onClick( v );
         if ( v == viewMapper.btnTxHash ) {
-            if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
-                sendActionUri( "https://ropsten.etherscan.io/tx/" + tx.getTx_id( ) );
-            } else {
-                sendActionUri( "https://live.blockcypher.com/btc-testnet/tx/" + tx.getTx_id( ) );
-            }
+
+            sendActionUri( tx.getExplorer( ) );
 
         } else if ( v == viewMapper.btnShare ) {
             Intent intent = new Intent( Intent.ACTION_SEND )
                     .addCategory( Intent.CATEGORY_DEFAULT )
                     .setType( "text/plain" )
-                    .putExtra( Intent.EXTRA_SUBJECT, "서브젝트" )
-                    .putExtra( Intent.EXTRA_TEXT, "텍스트 전송" );
-            startActivity( Intent.createChooser( intent, "공유기능" ) );
+                    .putExtra( Intent.EXTRA_TEXT, localized( R.string.tx_receipt_shard_text,
+                            tx.getFrom_planet( ), Utils.removeLastZero( Utils.toMaxUnit( mainItem, tx.getAmount( ) ) ), tx.getSymbol( ), tx.getExplorer( ) ) );
+            startActivity( Intent.createChooser( intent, localized( R.string.tx_receipt_shard_shard_title ) ) );
 
         } else if ( v == viewMapper.btnSubmit ) {
             super.onBackPressed( );

@@ -50,11 +50,15 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     private Activity topActivity = null;
 
+    private String recentVersion = "";
+
+    private String playStoreUrl = "";
+
     static {
         System.loadLibrary( "pallet_core-0.1.0-x64_shared" );
     }
 
-    private String keystoreAlias = "TEST_WALLET";
+    private String keystoreAlias = "<KeyAlias>";
     private PinBasedKeyCrypter pinBasedKeyCrypter;
     private HsmKeyCrypter hsmKeyCrypter;
     private DefaultStorageCrypter storageCrypter;
@@ -102,7 +106,6 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     }
 
-
     public boolean getCurrentTheme( ) {
         return theme;
     }
@@ -129,7 +132,6 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void setPINCODE( @Nullable char[] PINCODE ) {
         this.PINCODE = PINCODE;
-        C.PINCODE = this.PINCODE;
     }
 
 
@@ -149,18 +151,17 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void setDeviceKey( String deviceKey ) {
         this.deviceKey = deviceKey;
-        C.DEVICE_KEY = deviceKey;
     }
 
     public void recordActvityStack( Activity activity ) {
         if ( activityStack != null ) {
             activityStack.offer( activity );
-
         }
     }
 
     public void removeStack( ) {
         if ( activityStack != null ) {
+
             activityStack.pollLast( );
 
         }
@@ -176,12 +177,31 @@ public class PlanetWalletApplication extends MultiDexApplication {
 
     public void removeAllStack( ) {
         if ( activityStack != null ) {
+
             while ( activityStack.size( ) > 0 ) {
-                Objects.requireNonNull( activityStack.poll( ) ).onBackPressed( );
+
+                Objects.requireNonNull( activityStack.pollLast( ) ).finish( );
+
             }
         }
     }
 
+    public String getRecentVersion( ) {
+        return recentVersion;
+    }
+
+    public void setRecentVersion( String recentVersion ) {
+        this.recentVersion = recentVersion;
+    }
+
+
+    public String getPlayStoreUrl( ) {
+        return playStoreUrl;
+    }
+
+    public void setPlayStoreUrl( String playStoreUrl ) {
+        this.playStoreUrl = playStoreUrl;
+    }
 }
 
 

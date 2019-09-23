@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import java.util.Locale;
+
 import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
@@ -58,7 +60,7 @@ public class DetailAddressActivity extends PlanetWalletActivity implements ToolB
     }
 
     private void setUpView( ) {
-        viewMapper.toolBar.setTitle( String.format( localized( R.string.detail_address_toolbar_receive_title ) + " %s", mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
+        viewMapper.toolBar.setTitle( localized( R.string.detail_address_toolbar_receive_title , mainItem != null ? mainItem.getSymbol( ) : CoinType.of( planet.getCoinType( ) ).name( ) ) );
 
         viewMapper.textName.setText( planet.getName( ) );
         viewMapper.textAddress.setText( planet.getAddress( ) );

@@ -104,8 +104,7 @@ public class ScanQRActivity extends PlanetWalletActivity implements ToolBar.OnTo
                 viewMapper.barcodeReaderView.resourceRelease( );
             }
         } else if ( CoinType.BTC.getCoinType( ).equals( planet.getCoinType( ) ) ) {
-//            Pattern p = Pattern.compile( "^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$" );
-            Pattern p = Pattern.compile( "^[13nNmM][a-km-zA-HJ-NP-Z1-9]{25,34}$" ); //btc mainNet + testNet
+            Pattern p = Pattern.compile( C.DEBUG ? "^[13nNmM][a-km-zA-HJ-NP-Z1-9]{25,34}$" : "^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$" );
             Matcher m = p.matcher( contents );
 
             if ( m.find( ) ) {

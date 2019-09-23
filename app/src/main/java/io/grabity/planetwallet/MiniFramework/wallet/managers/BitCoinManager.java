@@ -1,7 +1,6 @@
 package io.grabity.planetwallet.MiniFramework.wallet.managers;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.pentasecurity.cryptowallet.JniWrapper;
 import com.pentasecurity.cryptowallet.currencies.DefinedCurrency;
@@ -20,8 +19,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.grabity.planetwallet.Common.commonset.C;
 import io.grabity.planetwallet.MiniFramework.utils.Base58.Base58;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
@@ -54,7 +53,6 @@ public class BitCoinManager {
             JniWrapper.CheckMnemonicValid( mnemonicPhrase );
 
         } catch ( Exception e ) {
-            PLog.e( "Not 니모닉" );
             return null;
         }
 
@@ -70,8 +68,7 @@ public class BitCoinManager {
         WalletAccount account = btcWalletAccountService.createHDWalletAccount(
                 btcCoinAccountKey.getId( ),
                 CoinType.BTC.name( ),
-//                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
-                DefinedCurrency.of( 251658240 ),
+                DefinedCurrency.of( C.DEBUG ? 251658240 : CoinType.BTC.getCoinType( ) ),
                 "0/0" );
 
         Planet planet = new Planet( );
@@ -82,17 +79,15 @@ public class BitCoinManager {
         planet.setKeyId( childKeyId );
         planet.setHide( "N" );
         planet.setSymbol( CoinType.BTC.getDefaultUnit( ) );
-        Log.e( getClass( ).getSimpleName( ), planet.toString( ) );
 
 
         KeyPairStore.getInstance( ).deleteKeyPair( btcCoinAccountKey.getId( ) );
-//        PlanetStore.getInstance( ).save( planet );
 
         return planet;
     }
 
     public Planet importPrivateKey( String privKey, char[] pinCode ) {
-        PLog.e( "input PrivateKey : " + privKey );
+
         byte[] privateKeyWif = null;
         byte[] checksum = null;
         try {
@@ -100,7 +95,7 @@ public class BitCoinManager {
             if ( privKey.length( ) < 10 ) return null;
             JniWrapper.GenBase58CheckDecode( privKey );
             privateKeyWif = Base58.decode( privKey );
-            // compressed 조사는 여기서 L, K , 5
+            // compressed check L, K , 5
             if ( privKey.substring( 0, 1 ).equals( "L" ) || privKey.substring( 0, 1 ).equals( "K" ) ) {
 
                 checksum = Arrays.copyOfRange( privateKeyWif, privateKeyWif.length - 4, privateKeyWif.length );
@@ -126,10 +121,9 @@ public class BitCoinManager {
             }
 
         } catch ( Exception e ) {
-            PLog.e( "Not WIF" );
         }
 
-        //WIF가 아닌경우 HEX 체크
+        //not wif -> hex check
         if ( privateKeyWif == null ) {
             Pattern p = Pattern.compile( "^[a-fA-F0-9]{64}$" );
             Matcher m = p.matcher( privKey );
@@ -148,13 +142,11 @@ public class BitCoinManager {
         WalletAccount account = btcWalletAccountService.createBasicAccount(
                 keyPair.getId( ),
                 CoinType.BTC.name( ),
-//                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
-                DefinedCurrency.of( 251658240 )
+                DefinedCurrency.of( C.DEBUG ? 251658240 : CoinType.BTC.getCoinType( ) )
         );
 
         Planet planet = new Planet( );
         planet.setAddress( account.getAddress( ) );
-        PLog.e( "BitCoin Manager PrKey Import address : " + planet.getAddress( ) );
         planet.setCoinType( CoinType.BTC.getCoinType( ) );
         planet.setDecimals( String.valueOf( CoinType.BTC.getPrecision( ) ) );
         planet.setPathIndex( -1 );
@@ -185,8 +177,7 @@ public class BitCoinManager {
         WalletAccount account = btcWalletAccountService.createHDWalletAccount(
                 masterKeyPair.getId( ),
                 CoinType.BTC.name( ),
-//                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
-                DefinedCurrency.of( 251658240 ),
+                DefinedCurrency.of( C.DEBUG ? 251658240 : CoinType.BTC.getCoinType( ) ),
                 "0/" + index );
 
         Planet planet = new Planet( );
@@ -197,8 +188,6 @@ public class BitCoinManager {
         planet.setKeyId( childKeyId );
         planet.setHide( "N" );
         planet.setSymbol( CoinType.BTC.getDefaultUnit( ) );
-
-//        PlanetStore.getInstance( ).save( planet );
 
         return planet;
     }
@@ -212,8 +201,7 @@ public class BitCoinManager {
         WalletAccount account = btcWalletAccountService.createHDWalletAccount(
                 masterKeyPair.getId( ),
                 CoinType.BTC.name( ),
-//                DefinedCurrency.of( CoinType.BTC.getCoinType( ) ),
-                DefinedCurrency.of( 251658240 ),
+                DefinedCurrency.of( C.DEBUG ? 251658240 : CoinType.BTC.getCoinType( ) ),
                 "0/" + index );
 
         Planet planet = new Planet( );
@@ -224,8 +212,6 @@ public class BitCoinManager {
         planet.setKeyId( childKeyId );
         planet.setHide( "N" );
         planet.setSymbol( CoinType.BTC.getDefaultUnit( ) );
-
-//        PlanetStore.getInstance( ).save( planet );
 
         return planet;
     }
@@ -268,12 +254,10 @@ public class BitCoinManager {
     }
 
     public boolean validateAddress( String address ) {
-        //test bitcoin testNet + mainNet address
-        Pattern p = Pattern.compile( "^[13nNmM][a-km-zA-HJ-NP-Z1-9]{25,34}$" );
+        Pattern p = Pattern.compile( C.DEBUG ? "^[13nNmM][a-km-zA-HJ-NP-Z1-9]{25,34}$" : "^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$" );
         Matcher m = p.matcher( address );
 
         return m.find( );
-//        return btcWalletAccountService.validateAddress( address );
     }
 
 

@@ -14,14 +14,20 @@ import io.grabity.planetwallet.Common.components.PlanetWalletActivity;
 import io.grabity.planetwallet.Common.components.PlanetWalletFragment;
 import io.grabity.planetwallet.Common.components.ViewPagerAdapter;
 import io.grabity.planetwallet.MiniFramework.networktask.Get;
+import io.grabity.planetwallet.MiniFramework.networktask.Post;
 import io.grabity.planetwallet.MiniFramework.utils.Route;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
+import io.grabity.planetwallet.MiniFramework.wallet.signer.Signer;
+import io.grabity.planetwallet.MiniFramework.wallet.store.KeyPairStore;
+import io.grabity.planetwallet.MiniFramework.wallet.store.PlanetStore;
 import io.grabity.planetwallet.R;
+import io.grabity.planetwallet.VO.ErrorResult;
 import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.MnemonicImportFragment;
 import io.grabity.planetwallet.Views.p3_Wallet.Fragment.PrivateKeyImportFragment;
+import io.grabity.planetwallet.Widgets.CustomToast;
 import io.grabity.planetwallet.Widgets.LockableViewPager;
 import io.grabity.planetwallet.Widgets.TabBar;
 import io.grabity.planetwallet.Widgets.ToolBar;
@@ -113,11 +119,42 @@ public class WalletImportActivity extends PlanetWalletActivity implements ToolBa
                     ArrayList< Planet > planets = ( ArrayList< Planet > ) returnVO.getResult( );
                     if ( planets.size( ) > 0 ) {
                         this.planet.setName( planets.get( 0 ).getName( ) );
+
+                        Planet request = new Planet( );
+                        request.setPlanet( planet.getName( ) );
+                        request.setSignature(
+                                Signer.getInstance( ).sign( planet.getName( ),
+                                        planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
+                        request.setAddress( planet.getAddress( ) );
+
+                        new Post( this ).setDeviceKey( getPlanetWalletApplication( ).getDeviceKey( ) ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 1, 0, request );
+
+                    } else {
+                        setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
+                        sendAction( getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ? C.requestCode.MAIN_PLANET_ADD : C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
                     }
                 }
 
-                setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
-                sendAction( getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ? C.requestCode.MAIN_PLANET_ADD : C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+            } else if ( statusCode == 200 && requestCode == 1 ) {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Planet.class );
+                if ( returnVO.isSuccess( ) ) {
+
+                    PlanetStore.getInstance( ).save( planet );
+
+                    //ETH wallet GBT add
+                    if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
+                        Utils.gbtSave( planet.getKeyId( ) );
+                    }
+
+                    setTransition( PlanetWalletActivity.Transition.SLIDE_UP );
+                    sendAction( getRequestCode( ) == C.requestCode.MAIN_PLANET_ADD ? C.requestCode.MAIN_PLANET_ADD : C.requestCode.PLANET_ADD, PlanetNameActivity.class, Utils.createSerializableBundle( C.bundleKey.PLANET, planet ) );
+
+                }
+            } else {
+                ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, ErrorResult.class );
+                ErrorResult errorResult = ( ErrorResult ) returnVO.getResult( );
+                if ( errorResult == null ) return;
+                CustomToast.makeText( this, errorResult.getErrorMsg( ) ).show( );
             }
         }
 

@@ -25,6 +25,7 @@ public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar
 
     private ViewMapper viewMapper;
     private WebSettings webSettings;
+    private Board board;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -56,21 +57,20 @@ public class DetailBoardActivity extends PlanetWalletActivity implements ToolBar
         if ( getSerialize( C.bundleKey.BOARD ) == null ) {
             onBackPressed( );
         } else {
-            Board board = ( Board ) getSerialize( C.bundleKey.BOARD );
+            board = ( Board ) getSerialize( C.bundleKey.BOARD );
             String parameter = !getCurrentTheme( ) ? "?theme=white" : "?theme=black";
-            viewMapper.toolBar.setTitle( board.getType( ) );
+            viewMapper.toolBar.setTitle( Utils.boardTitleLocalized( board.getType( ), this ) );
             viewMapper.title.setText( board.getSubject( ) );
             viewMapper.webView.clearCache( true );
             viewMapper.webView.clearHistory( );
-            if ( Utils.equals( board.getType( ), localized( R.string.setting_faq_title ) ) ) {
-                ( ( RelativeLayout.LayoutParams ) viewMapper.groupBoard.getLayoutParams( ) ).height = ( int ) Utils.dpToPx( this, 60 );
-                viewMapper.groupBoard.requestLayout( );
-                viewMapper.webView.loadUrl( Route.URL( "board", "faq", board.getId( ) ) + parameter );
-            } else {
+            if ( Utils.equals( board.getType( ), C.boardCategory.CATEGORY_ANNOUNCEMENTS ) ) {
                 viewMapper.time.setVisibility( View.VISIBLE );
                 viewMapper.time.setText( board.getCreated_at( ) );
-                viewMapper.webView.loadUrl( Route.URL( "board", "notice", board.getId( ) ) + parameter );
+            } else {
+                ( ( RelativeLayout.LayoutParams ) viewMapper.groupBoard.getLayoutParams( ) ).height = ( int ) Utils.dpToPx( this, 60 );
+                viewMapper.groupBoard.requestLayout( );
             }
+            viewMapper.webView.loadUrl( Route.URL( "board", board.getType( ).toLowerCase( ), board.getId( ) ) + parameter );
         }
     }
 

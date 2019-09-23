@@ -261,7 +261,7 @@
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@id/views"
                         android:textColor="#FFF"
-                        android:textSize="16dp"
+                        android:textSize="14dp"
                         app:themeTextColor="#000" />
 
                 </RelativeLayout>

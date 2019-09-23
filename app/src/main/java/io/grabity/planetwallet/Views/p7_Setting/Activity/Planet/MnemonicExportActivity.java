@@ -47,8 +47,7 @@ public class MnemonicExportActivity extends PlanetWalletActivity implements Tool
         } else {
 
             Planet planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
-            String mnemonic = planet.getMnemonic( KeyPairStore.getInstance( ), C.PINCODE );
-            PLog.e( "mnemonic : " + mnemonic );
+            String mnemonic = planet.getMnemonic( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) );
             viewMapper.etMnemonic.setHint( mnemonic );
             viewMapper.groupMnemonic.setBackground_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#F5F5F5" ) );
             viewMapper.groupMnemonic.setBorder_color_normal( Color.parseColor( getCurrentTheme( ) ? "#1E1E28" : "#EDEDED" ) );

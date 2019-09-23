@@ -215,7 +215,7 @@ public class BottomPanelComponent extends ViewComponent implements AdvanceRecycl
             try {
                 viewMapper.imageBlurView.setImageBitmap( BlurBuilder.blur( getActivity( ), viewMapper.listView.getScreenshot( Color.parseColor( theme ? "#FFFFFF" : "#111117" ) ), 0.25f, 25 ) );
             } catch ( IllegalArgumentException e ) {
-                PLog.e( "image width or height is 0" );
+                e.printStackTrace( );
             }
         }
     }

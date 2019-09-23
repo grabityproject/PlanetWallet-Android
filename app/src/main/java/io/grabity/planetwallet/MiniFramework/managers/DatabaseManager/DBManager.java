@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -13,7 +12,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.utils.Utils;
 
 /**
@@ -79,7 +77,6 @@ public abstract class DBManager {
 
         try {
             Cursor cursor = sqLiteDatabase.rawQuery( String.format( "SELECT %s FROM %s %s", selector, table, condition, Locale.US ), null );
-            PLog.e( String.format( "SELECT %s FROM %s %s", selector, table, condition, Locale.US ) );
             while ( cursor.moveToNext( ) ) {
                 T item = type.newInstance( );
                 Field[] fields = type.getDeclaredFields( );
@@ -105,8 +102,7 @@ public abstract class DBManager {
                                         method.invoke( item, cursor.getFloat( index ) );
 
                                 } catch ( IllegalAccessException | InvocationTargetException | IllegalArgumentException e ) {
-//                                    System.err.println( e.getMessage( ) );
-                                    // Do not disturb
+                                    e.printStackTrace( );
                                 }
                             }
                         }
@@ -150,20 +146,11 @@ public abstract class DBManager {
                             break;
                         }
                     }
-//                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
-//                    for ( Field field : fields ) {
-//                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
-//                            Object item = method.invoke( object );
-//                            if ( item != null ) {
-//                                contentValues.put( field.getName( ), String.valueOf( item ) );
-//                            }
-//                            break;
-//                        }
-//                    }
+
                 }
 
             } catch ( InvocationTargetException | IllegalAccessException e ) {
-                // Do not disturb
+                e.printStackTrace( );
             }
         }
         return sqLiteDatabase.insert( table, null, contentValues ) > 0;
@@ -195,20 +182,9 @@ public abstract class DBManager {
                             break;
                         }
                     }
-//                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
-//                    for ( Field field : fields ) {
-//                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
-//                            Object item = method.invoke( object );
-//                            if ( item != null ) {
-//                                valueSet.append( String.format( ", %s='%s'", field.getName( ), String.valueOf( item ) ) );
-//                            }
-//                            break;
-//                        }
-//                    }
                 }
 
             } catch ( InvocationTargetException | IllegalAccessException e ) {
-                // Do not disturb
                 e.printStackTrace( );
             }
         }
@@ -216,7 +192,6 @@ public abstract class DBManager {
         if ( valueSet.length( ) > 2 ) {
             valueSet.delete( 0, 2 );
         }
-        Log.e( TAG, String.format( "UPDATE %s SET %s %s", table, valueSet.toString( ), condition ) );
         sqLiteDatabase.execSQL( String.format( "UPDATE %s SET %s %s", table, valueSet.toString( ), condition ) );
     }
 
@@ -224,12 +199,10 @@ public abstract class DBManager {
         deleteData( object.getClass( ).getSimpleName( ), object );
     }
 
-    //add
     public void deleteData( Object object, String condition ) {
         deleteData( object.getClass( ).getSimpleName( ), object, condition );
     }
 
-    //add
     public void deleteData( String table, Object object, String condition ) {
         condition = condition == null ? "" : ( "WHERE " + condition.replace( "WHERE ", "" ) );
         if ( table == null || object == null ) return;
@@ -252,20 +225,9 @@ public abstract class DBManager {
                             break;
                         }
                     }
-//                } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
-//                    for ( Field field : fields ) {
-//                        if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
-//                            Object item = method.invoke( object );
-//                            if ( item != null ) {
-//                                valueSet.append( String.format( ", %s='%s'", field.getName( ), String.valueOf( item ) ) );
-//                            }
-//                            break;
-//                        }
-//                    }
                 }
 
             } catch ( InvocationTargetException | IllegalAccessException e ) {
-                // Do not disturb
                 e.printStackTrace( );
             }
         }
@@ -274,7 +236,6 @@ public abstract class DBManager {
             valueSet.delete( 0, 2 );
         }
 
-        Log.e( TAG, String.format( "DELETE FROM %s %s", table, condition ) );
         sqLiteDatabase.execSQL( String.format( "DELETE FROM %s %s", table, condition ) );
     }
 
@@ -303,20 +264,9 @@ public abstract class DBManager {
                                 break;
                             }
                         }
-//                    } else if ( methodName.length( ) > 2 && methodName.substring( 0, 2 ).equals( "is" ) ) {
-//                        for ( Field field : fields ) {
-//                            if ( methodName.substring( 2 ).toLowerCase( ).equals( field.getName( ).toLowerCase( ) ) ) {
-//                                Object item = method.invoke( object );
-//                                if ( item != null ) {
-//                                    valueSet.append( String.format( " AND %s='%s'", field.getName( ), String.valueOf( item ) ) );
-//                                }
-//                                break;
-//                            }
-//                        }
                     }
 
                 } catch ( InvocationTargetException | IllegalAccessException e ) {
-                    // Do not disturb
                     e.printStackTrace( );
                 }
             }
@@ -327,7 +277,6 @@ public abstract class DBManager {
             condition = valueSet.toString( );
         }
 
-        Log.e( TAG, String.format( "DELETE FROM %s WHERE %s ", table, condition ) );
         sqLiteDatabase.execSQL( String.format( "DELETE FROM %s WHERE %s ", table, condition ) );
     }
 

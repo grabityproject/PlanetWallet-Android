@@ -24,11 +24,13 @@ import io.grabity.planetwallet.VO.Planet;
 import io.grabity.planetwallet.VO.ReturnVO;
 import io.grabity.planetwallet.VO.Version;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Board.BoardActivity;
+import io.grabity.planetwallet.Views.p7_Setting.Activity.Board.ServiceActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.DetailPlanetActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Planet.PlanetManagementActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Activity.Setting.SecurityActivity;
 import io.grabity.planetwallet.Views.p7_Setting.Adapter.PopupCurrencyAdapter;
 import io.grabity.planetwallet.Widgets.AdvanceRecyclerView.AdvanceArrayAdapter;
+import io.grabity.planetwallet.Widgets.CircleImageView;
 import io.grabity.planetwallet.Widgets.ListPopupView.ListPopup;
 import io.grabity.planetwallet.Widgets.PlanetView;
 import io.grabity.planetwallet.Widgets.RoundButton.RoundButton;
@@ -43,6 +45,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
     private ArrayList< String > items;
 
     private Planet planet;
+    private Board board;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -64,16 +67,23 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         if ( getSerialize( C.bundleKey.PLANET ) == null ) {
             finish( );
         } else {
+            board = new Board( );
+
             planet = ( Planet ) getSerialize( C.bundleKey.PLANET );
             planet = PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) );
             viewMapper.textName.setText( localized( R.string.setting_planet_main_title, planet.getName( ) ) );
             viewMapper.planetView.setData( planet.getAddress( ) );
+            viewMapper.textVersion.setText( Utils.getAppVersion( this ) );
+
+            viewMapper.imageVersionUpdate.setVisibility( compareVersion( getPlanetWalletApplication( ).getRecentVersion( ) ) ? View.VISIBLE : View.GONE );
+
 
             new Get( this ).action( Route.URL( "version", "android" ), 0, 0, null );
         }
 
         items = new ArrayList<>( Arrays.asList( C.currency.USD, C.currency.KRW, C.currency.CNY ) );
         adapter = new PopupCurrencyAdapter( this, items );
+
     }
 
     @Override
@@ -94,6 +104,8 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         viewMapper.btnThemeWhite.setOnClickListener( this );
         viewMapper.btnThemeBlack.setOnClickListener( this );
         viewMapper.btnCurrency.setOnClickListener( this );
+        viewMapper.btnVersion.setOnClickListener( this );
+        viewMapper.textVersion.setText( Utils.getAppVersion( this ) );
 
         btnThemeSetting( );
     }
@@ -111,11 +123,12 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
                 ReturnVO returnVO = Utils.jsonToVO( result, ReturnVO.class, Version.class );
                 if ( returnVO.isSuccess( ) ) {
                     Version version = ( Version ) returnVO.getResult( );
-                    viewMapper.textVersion.setText( version.getVersion( ) );
+                    viewMapper.imageVersionUpdate.setVisibility( compareVersion( version.getVersion( ) ) ? View.VISIBLE : View.GONE );
+                    getPlanetWalletApplication( ).setRecentVersion( version.getVersion( ) );
+                    getPlanetWalletApplication( ).setPlayStoreUrl( version.getUrl( ) );
+
                 }
             }
-        } else {
-            viewMapper.textVersion.setText( "1.0" );
         }
     }
 
@@ -129,9 +142,10 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         } else if ( v == viewMapper.btnSecurity ) {
             sendAction( SecurityActivity.class );
         } else if ( v == viewMapper.btnAnnouncements ) {
-            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( localized( R.string.setting_announcements_title ) ) ) );
+            board.setType( C.boardCategory.CATEGORY_ANNOUNCEMENTS );
+            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, board ) );
         } else if ( v == viewMapper.btnFaq ) {
-            sendAction( BoardActivity.class, Utils.createSerializableBundle( C.bundleKey.BOARD, new Board( localized( R.string.setting_faq_title ) ) ) );
+            sendAction( ServiceActivity.class );
         } else if ( v == viewMapper.btnThemeBlack ) {
 
             getPlanetWalletApplication( ).setTheme( false );
@@ -152,6 +166,11 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
                     .setAdapter( adapter )
                     .setOnListPopupItemClickListener( this )
                     .show( );
+        } else if ( v == viewMapper.btnVersion ) {
+            if ( viewMapper.imageVersionUpdate.getVisibility( ) == View.VISIBLE ) {
+                sendActionUri( getPlanetWalletApplication( ).getPlayStoreUrl( ) );
+            }
+
         }
 
     }
@@ -161,6 +180,18 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         if ( Utils.equals( tag, C.tag.TOOLBAR_CLOSE ) ) {
             super.onBackPressed( );
         }
+    }
+
+    private boolean compareVersion( String version ) {
+        try {
+            Double localVersion = Double.parseDouble( Utils.getAppVersion( this ) );
+            Double recentVersion = Double.parseDouble( version );
+            return localVersion < recentVersion;
+
+        } catch ( NumberFormatException e ) {
+            e.printStackTrace( );
+        }
+        return false;
     }
 
 
@@ -184,12 +215,15 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
         ViewGroup btnAnnouncements;
         ViewGroup btnFaq;
         ViewGroup btnCurrency;
+        ViewGroup btnVersion;
 
 
         RoundButton btnThemeWhite;
         RoundButton btnThemeBlack;
 
         PlanetView planetView;
+
+        CircleImageView imageVersionUpdate;
 
         public ViewMapper( ) {
             toolBar = findViewById( R.id.toolBar );
@@ -199,6 +233,7 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
             btnSecurity = findViewById( R.id.group_setting_security );
             btnAnnouncements = findViewById( R.id.group_setting_announcements );
             btnFaq = findViewById( R.id.group_setting_faq );
+            btnVersion = findViewById( R.id.group_setting_version );
 
             btnThemeBlack = findViewById( R.id.btn_setting_theme_black );
             btnThemeWhite = findViewById( R.id.btn_setting_theme_white );
@@ -209,6 +244,9 @@ public class SettingActivity extends PlanetWalletActivity implements ToolBar.OnT
             planetView = findViewById( R.id.planet_setting_planetview );
 
             textVersion = findViewById( R.id.text_setting_version );
+
+            imageVersionUpdate = findViewById( R.id.image_setting_version_update );
+
 
         }
 

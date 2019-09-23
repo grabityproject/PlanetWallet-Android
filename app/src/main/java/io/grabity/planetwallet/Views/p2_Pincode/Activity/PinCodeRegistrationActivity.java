@@ -221,7 +221,7 @@ public class PinCodeRegistrationActivity extends PlanetWalletActivity implements
             KeyValueStore.getInstance( ).setValue( C.pref.PASSWORD, Utils.sha256( Utils.join( inputKeyList ) ), newValue );
             getPlanetWalletApplication( ).setPINCODE( newValue );
 
-            BioMetricManager.getInstance().saveKey( newValue );
+            BioMetricManager.getInstance( ).saveKey( newValue );
 
             setResult( RESULT_OK );
             super.onBackPressed( );

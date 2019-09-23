@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.grabity.planetwallet.MiniFramework.managers.DatabaseManager.PWDBManager;
-import io.grabity.planetwallet.MiniFramework.utils.PLog;
 import io.grabity.planetwallet.MiniFramework.wallet.cointype.CoinType;
 import io.grabity.planetwallet.VO.MainItems.MainItem;
 import io.grabity.planetwallet.VO.Planet;
@@ -55,7 +54,6 @@ public class PlanetStore {
             PWDBManager.getInstance( ).insertData( planet );
 
             // Coin Main Item add
-            PLog.e( "add Main Item insert func" );
             MainItem mainItem = new MainItem( );
             mainItem.setKeyId( planet.getKeyId( ) );
             mainItem.setCoinType( planet.getCoinType( ) );

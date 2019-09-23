@@ -27,12 +27,12 @@ public class Tx implements Serializable {
     String status;
     String to_planet;
     String from_planet;
+    String date;
     String created_at;
     String updated_at;
     String decimals;
     String actualFee;
     String explorer;
-    String url;
 
     ArrayList< UTXO > utxos;
 
@@ -231,12 +231,12 @@ public class Tx implements Serializable {
         this.explorer = explorer;
     }
 
-    public String getUrl( ) {
-        return url;
+    public String getDate( ) {
+        return date;
     }
 
-    public void setUrl( String url ) {
-        this.url = url;
+    public void setDate( String date ) {
+        this.date = date;
     }
 
     @NonNull

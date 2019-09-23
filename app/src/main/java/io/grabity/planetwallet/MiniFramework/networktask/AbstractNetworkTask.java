@@ -70,7 +70,6 @@ public abstract class AbstractNetworkTask {
                                                 ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ).getClass( ).equals( double.class ) ||
                                                 ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ).getClass( ).equals( float.class ) ) {
                                             result.add( new BasicNameValuePair( fields[ i ].getName( ) + "[]", String.valueOf( ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ) ) ) );
-                                            PLog.e( fields[ i ].getName( ) + "[]", String.valueOf( ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ) ) );
                                         } else {
                                             ArrayList< NameValuePair > inner = VOToMap( ( ( ArrayList ) fields[ i ].get( obj ) ).get( j ) );
                                             for ( int k = 0; k < inner.size( ); k++ ) {

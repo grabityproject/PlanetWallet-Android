@@ -115,7 +115,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 if ( getInt( C.bundleKey.COINTYPE, -1 ) == CoinType.BTC.getCoinType( ) ) {
 
 
-                    if ( KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.BTC.getCoinType( ), C.PINCODE ) == null ) {
+                    if ( KeyPairStore.getInstance( ).getMasterKeyPair( CoinType.BTC.getCoinType( ), getPlanetWalletApplication( ).getPINCODE( ) ) == null ) {
 
                         btcMaster = true;
                         generateBtcPlanet( );
@@ -206,7 +206,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
                 request.setPlanet( planet.getName( ) );
                 request.setSignature(
                         Signer.getInstance( ).sign( planet.getName( ),
-                                planet.getPrivateKey( KeyPairStore.getInstance( ), C.PINCODE ) ) );
+                                planet.getPrivateKey( KeyPairStore.getInstance( ), getPlanetWalletApplication( ).getPINCODE( ) ) ) );
                 request.setAddress( planet.getAddress( ) );
 
                 new Post( this ).action( Route.URL( "planet", CoinType.of( planet.getCoinType( ) ).name( ) ), 0, 0, request, Utils.createStringHashMap( "device-key", getPlanetWalletApplication( ).getDeviceKey( ) ) );
@@ -228,7 +228,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
                     //ETH Wallet GBT add
                     if ( Utils.equals( planet.getCoinType( ), CoinType.ETH.getCoinType( ) ) ) {
-//                        defaultSave( );
                         Utils.gbtSave( planet.getKeyId( ) );
                     }
 
@@ -251,19 +250,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         }
     }
 
-//    void defaultSave( ) {
-//        MainItem gbt = new MainItem( );
-//        gbt.setKeyId( planet.getKeyId( ) );
-//        gbt.setCoinType( CoinType.ERC20.getCoinType( ) );
-//        gbt.setHide( "N" );
-//        gbt.setName( "Grabity Coin" );
-//        gbt.setSymbol( "GBT" );
-//        gbt.setDecimals( "18" );
-//        gbt.setImg_path( "/erc20/img/gbt.png" );
-//        gbt.setContract( "0xcbD49182346421D3B410B04AeB1789346DA6Ce43" );
-//
-//        MainItemStore.getInstance( ).tokenSave( gbt );
-//    }
 
     @Override
     public void onSetPinCode( ) {
@@ -280,14 +266,14 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     void addBtcPlanet( ) {
         if ( planet != null ) {
             KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
-            planet = BitCoinManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, C.PINCODE );
+            planet = BitCoinManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
 
             if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
                 addBtcPlanet( );
                 return;
             }
         } else {
-            planet = BitCoinManager.getInstance( ).addPlanet( C.PINCODE );
+            planet = BitCoinManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
             if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
                 addBtcPlanet( );
                 return;
@@ -302,7 +288,7 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
 
 
     void generateBtcPlanet( ) {
-        char[] pinCode = C.PINCODE;
+        char[] pinCode = getPlanetWalletApplication( ).getPINCODE( );
         if ( pinCode == null ) {
             return;
         }
@@ -320,14 +306,14 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
     void addEthPlanet( ) {
         if ( planet != null ) {
             KeyPairStore.getInstance( ).deleteKeyPair( planet.getKeyId( ) );
-            planet = EthereumManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, C.PINCODE );
+            planet = EthereumManager.getInstance( ).addPlanet( planet.getPathIndex( ) + 1, getPlanetWalletApplication( ).getPINCODE( ) );
 
             if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
                 addEthPlanet( );
                 return;
             }
         } else {
-            planet = EthereumManager.getInstance( ).addPlanet( C.PINCODE );
+            planet = EthereumManager.getInstance( ).addPlanet( getPlanetWalletApplication( ).getPINCODE( ) );
 
             if ( PlanetStore.getInstance( ).getPlanet( planet.getKeyId( ) ) != null ) {
                 addEthPlanet( );
@@ -352,26 +338,6 @@ public class PlanetGenerateActivity extends PlanetWalletActivity implements Tool
         viewMapper.planetBackground.setData( viewMapper.planetView.getData( ) );
 
     }
-
-    //test
-//    void randomPlanetName( ) {
-//        PLog.e( "address Sha256 : " + Utils.sha256( planet.getAddress( ) ) );
-//        String addressToSha256 = Utils.sha256( planet.getAddress( ) );
-//        PLog.e( "name.length : " + name.length );
-//
-//        if ( addressToSha256 == null ) return;
-//        int index = Utils.hexToDecimal( addressToSha256.substring( 0, 4 ) );
-//        if ( index > name.length ) {
-//            index = Utils.hexToDecimal( addressToSha256.substring( 0, 3 ) );
-//        }
-//
-//        int last = Utils.hexToDecimal( addressToSha256.substring( addressToSha256.length( ) - 3 ) );
-//
-//        String planetname = name[ index ] + last;
-//        PLog.e( "random name : " + planetname );
-//
-//
-//    }
 
     @Override
     public void onVisibilityChanged( boolean isOpen, float oldHeight, float keyboardHeight ) {
